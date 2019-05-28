@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Bundle;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
 
-public class FootPrint extends Fragment {
+public class FootPrint extends Fragment implements OnMapReadyCallback {
     ImageView btnCal;
     TextView btnToday;
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
     int month = cal.get(Calendar.MONTH);
     int day = cal.get(Calendar.DAY_OF_MONTH);
-
+    MapFragment mapFrag;
     public FootPrint() {
     }
 
@@ -32,6 +43,9 @@ public class FootPrint extends Fragment {
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.footprint, container, false);
         btnCal = layout.findViewById(R.id.btnCal);
         btnToday = layout.findViewById(R.id.btnToday);
+
+        mapFrag = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFrag.getMapAsync(this);
         btnCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,28 +66,21 @@ public class FootPrint extends Fragment {
             }
         });
 
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-        /*eifguegiqewhfugjlerk*/
-
         return layout;
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng SEOUL = new LatLng(37.56, 126.97);
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(SEOUL);
+        markerOptions.title("서울");
+        markerOptions.snippet("한국의 수도");
+        googleMap.addMarker(markerOptions);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
+    }
 }
