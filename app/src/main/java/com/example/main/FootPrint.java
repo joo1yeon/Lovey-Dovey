@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,13 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
 
-public class FootPrint extends Fragment implements OnMapReadyCallback {
+public class FootPrint extends Fragment {
     ImageView btnCal;
     TextView btnToday;
     Calendar cal = Calendar.getInstance();
@@ -44,8 +46,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         btnCal = layout.findViewById(R.id.btnCal);
         btnToday = layout.findViewById(R.id.btnToday);
 
-        mapFrag = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFrag.getMapAsync(this);
         btnCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,17 +70,4 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     }
 
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        LatLng SEOUL = new LatLng(37.56, 126.97);
-
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(SEOUL);
-        markerOptions.title("서울");
-        markerOptions.snippet("한국의 수도");
-        googleMap.addMarker(markerOptions);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
-
-    }
 }
