@@ -3,26 +3,81 @@ package com.example.main;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 public class Datecourse extends Fragment {
-    /*원래 자바 코드에서 전역변수 선언 부분*/
 
     public Datecourse(){}
 
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.datecourse,container,false);
-        /*이 부분에 원래 자바 코드의 onCreate에 있는 부분 작성!!!
-            findViewByid 는 layout.findViewByID로 바꾸면 사용가능!!!!
-            MainActivity.this 이런거는 getContext()로 사용가능!!!
-        */
+        ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse,container,false);
+        // Fragment로 넘길 Image Resource
 
+        ArrayList<Integer> listImage = new ArrayList<>();
+        listImage.add(R.drawable.image1);
+        listImage.add(R.drawable.image2);
+        listImage.add(R.drawable.image3);
+        listImage.add(R.drawable.image4);
+
+        ViewPager viewPager = layout.findViewById(R.id.viewPager);
+        FragmentAdapter fragmentAdapter = new FragmentAdapter(getFragmentManager());
+        // ViewPager와  FragmentAdapter 연결
+        viewPager.setAdapter(fragmentAdapter);
+
+        viewPager.setClipToPadding(false);
+        viewPager.setPadding(80, 0, 10, 0);
+        viewPager.setPageMargin(getResources().getDisplayMetrics().widthPixels / -9);
+
+        // FragmentAdapter에 Fragment 추가, Image 개수만큼 추가
+        for (int i = 0; i < listImage.size(); i++) {
+            DateImage imageFragment = new DateImage();
+            Bundle bundle = new Bundle();
+            bundle.putInt("imgRes", listImage.get(i));
+            imageFragment.setArguments(bundle);
+            fragmentAdapter.addItem(imageFragment);
+        }
+        fragmentAdapter.notifyDataSetChanged();
         return layout;
+    }
+    class FragmentAdapter extends FragmentPagerAdapter {
+
+        // ViewPager에 들어갈 Fragment들을 담을 리스트
+        private ArrayList<Fragment> fragments = new ArrayList<>();
+
+        // 필수 생성자
+        FragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        // List에 Fragment를 담을 함수
+        void addItem(Fragment fragment) {
+            fragments.add(fragment);
+        }
+        @Override
+        public float getPageWidth(int position) {
+            return (0.9f);
+        }
     }
 }
