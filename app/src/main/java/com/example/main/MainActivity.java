@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     String color = "#B8D9C0";
     ViewPager viewPager;
     ImageButton btnHome, btnOverflow;

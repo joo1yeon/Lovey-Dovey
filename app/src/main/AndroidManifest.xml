@@ -3,10 +3,8 @@
     package="com.example.main">
     <uses-feature
         android:required="true" android:glEsVersion="0x00020000"/>
-    <permission android:name="com.example.myapplication0603.permission.MAPS_RECEIVE"
+    <permission android:name="com.example.main.permission.MAPS_RECEIVE"
         android:label="signature"/>
-    <uses-permission android:name="com.example.mapview.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="com.example.mapview.fragment.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -25,8 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBbHuZdKUKyEEB5jsG-ZN-bTaIcuJEQV1g"/>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB7fJgMea4_D6otROMwy70aCwNg1S7sB0U"/>
         <uses-library android:name="org.apache.http.legacy"
             android:required="false"/>
 
