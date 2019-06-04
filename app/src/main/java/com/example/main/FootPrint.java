@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,7 +35,7 @@ import java.util.Calendar;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FootPrint extends Fragment {
+public class FootPrint extends Fragment implements OnMapReadyCallback {
     ImageView btnCal;
     TextView btnToday;
     Calendar cal = Calendar.getInstance();
@@ -61,6 +62,8 @@ public class FootPrint extends Fragment {
         fabToday = layout.findViewById(R.id.fabToday);
         fabSearch = layout.findViewById(R.id.fabSearch);
         fabCal = layout.findViewById(R.id.fabCal);
+        ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MODE_PRIVATE);
+        //mapFrag=(MapFragment)getFragmentManager().findFragmentById(R.id.map);
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,18 +74,29 @@ public class FootPrint extends Fragment {
             @Override
             public void onClick(View v) {
                 anim();
+                Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
+
             }
         });
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 anim();
+                Toast.makeText(getContext(),"장소 검색하기",Toast.LENGTH_SHORT).show();
             }
         });
         fabCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 anim();
+                DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Toast.makeText(getContext(), year + "년도 " + (month + 1) + "월 " + dayOfMonth + "일", Toast.LENGTH_SHORT).show();
+                    }
+                }, year, month, day);
+                dateDialog.show();
+
             }
         });
 
@@ -96,24 +110,21 @@ public class FootPrint extends Fragment {
         btnCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Toast.makeText(getContext(), year + "년도 " + (month + 1) + "월 " + dayOfMonth + "일", Toast.LENGTH_SHORT).show();
-                    }
-                }, year, month, day);
-                dateDialog.show();
             }
         });
 
         btnToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
             }
         });*/
 
         return layout;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 
     public void anim() {

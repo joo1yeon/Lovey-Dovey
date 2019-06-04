@@ -90,5 +90,10 @@ public class MainActivity extends AppCompatActivity {
             return 4;
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
 
