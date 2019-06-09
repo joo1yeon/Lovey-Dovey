@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:src="@drawable/mark" />
+
+    <TextView
+        android:id="@+id/tvView"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="9"
+        android:fontFamily="@font/netmarble_b"
+        android:text="장소명"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+</LinearLayout>

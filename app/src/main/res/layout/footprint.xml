@@ -29,7 +29,8 @@
                 android:text="2019년 5월 24일"
                 android:textAlignment="center"
                 android:textColor="#A6A6A6"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:id="@+id/tvYesterday"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -39,7 +40,8 @@
                 android:text="2019년 5월 25일"
                 android:textAlignment="center"
                 android:textColor="#B8D9C0"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:id="@+id/tvToday"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -49,7 +51,8 @@
                 android:text="2019년 5월 26일"
                 android:textAlignment="center"
                 android:textColor="#A6A6A6"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:id="@+id/tvTomorrow"/>
 
         </LinearLayout>
 
