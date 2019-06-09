@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     String color = "#B8D9C0";
     ViewPager viewPager;
     ImageButton btnHome, btnOverflow;
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity{
     Main mainFrag;
     Datecourse dateFrag;
     FootPrint footFrag;
-    Album albumFrag;
+    StoryListFragment albumFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity{
         mainFrag = new Main();
         dateFrag = new Datecourse();
         footFrag = new FootPrint();
-        albumFrag = new Album();
+        albumFrag = new StoryListFragment();
 
         btnHome.setOnClickListener(movePageListener);
         btnHome.setTag(0);
