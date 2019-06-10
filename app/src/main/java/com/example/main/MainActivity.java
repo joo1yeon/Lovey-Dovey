@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     Main mainFrag;
     Datecourse dateFrag;
     FootPrint footFrag;
-    Album albumFrag;
+    StoryListFragment albumFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mainFrag = new Main();
         dateFrag = new Datecourse();
         footFrag = new FootPrint();
-        albumFrag = new Album();
+        albumFrag = new StoryListFragment();
 
         btnHome.setOnClickListener(movePageListener);
         btnHome.setTag(0);
