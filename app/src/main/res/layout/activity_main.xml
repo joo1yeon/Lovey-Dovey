@@ -67,7 +67,8 @@
             android:layout_weight="1"
             android:background="@drawable/menu_button"
             android:fontFamily="@font/netmarble_m"
-            android:text="데이트코스"/>
+            android:text="데이트코스"
+            android:textColor="@color/button_click"/>
 
         <Button
             android:id="@+id/btnFoot"
@@ -76,7 +77,8 @@
             android:layout_weight="1"
             android:background="@drawable/menu_button"
             android:fontFamily="@font/netmarble_m"
-            android:text="발자국"/>
+            android:text="발자국"
+            android:textColor="@color/button_click"/>
 
 
 
@@ -87,7 +89,8 @@
             android:layout_weight="1"
             android:background="@drawable/menu_button"
             android:fontFamily="@font/netmarble_m"
-            android:text="앨범"/>
+            android:text="앨범"
+            android:textColor="@color/button_click"/>
 
 
     </LinearLayout>
