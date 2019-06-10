@@ -61,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
     private class PagerAdapter extends FragmentStatePagerAdapter {
-
 
         public PagerAdapter(FragmentManager fm) {
             super(fm);
