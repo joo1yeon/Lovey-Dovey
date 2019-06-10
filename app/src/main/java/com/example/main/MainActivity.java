@@ -6,12 +6,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     String color = "#B8D9C0";
     ViewPager viewPager;
     ImageButton btnHome, btnOverflow;
@@ -89,6 +90,11 @@ public class MainActivity extends AppCompatActivity{
         public int getCount() {
             return 4;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
 
