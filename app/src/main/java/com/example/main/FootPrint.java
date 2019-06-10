@@ -2,6 +2,7 @@ package com.example.main;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -83,7 +84,8 @@ public class FootPrint extends Fragment  {
             @Override
             public void onClick(View v) {
                 anim();
-
+                Intent intent = new Intent(getContext(),Search.class);
+                startActivity(intent);
                 Toast.makeText(getContext(),"장소 검색하기",Toast.LENGTH_SHORT).show();
             }
         });
@@ -95,7 +97,7 @@ public class FootPrint extends Fragment  {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         tvYesterday.setText(year+"년 "+(month+1)+"월 "+(dayOfMonth-1)+"일");
-                         tvToday.setText(year+"년 "+(month+1)+"월 "+dayOfMonth+"일");
+                        tvToday.setText(year+"년 "+(month+1)+"월 "+dayOfMonth+"일");
                         tvTomorrow.setText(year+"년 "+(month+1)+"월 "+(dayOfMonth+1)+"일");
 
                     }

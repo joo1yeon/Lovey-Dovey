@@ -5,4 +5,7 @@ public class ContentList {
     public ContentList(String _location){
         location=_location;
     }
+    public void setLocation(String _location){
+        location=_location;
+    }
 }
