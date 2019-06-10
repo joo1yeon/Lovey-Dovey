@@ -19,7 +19,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_margin="3dp"
-            android:background="@null"
+            android:background="@drawable/ic_home"
             android:scaleType="fitXY"
             android:src="@drawable/ic_home"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -44,7 +44,7 @@
             android:id="@+id/btnOverflow"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:background="@null"
+            android:background="@drawable/ic_menu"
             android:scaleType="fitXY"
             android:src="@drawable/ic_menu"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -65,39 +65,30 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#ffffff"
+            android:background="@drawable/menu_button"
             android:fontFamily="@font/netmarble_m"
-            android:text="데이트코스"
-            android:textAlignment="center"
-            android:textColor="#B8D9C0"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:text="데이트코스"/>
 
         <Button
             android:id="@+id/btnFoot"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#ffffff"
+            android:background="@drawable/menu_button"
             android:fontFamily="@font/netmarble_m"
-            android:text="발자국"
-            android:textAlignment="center"
-            android:textColor="#B8D9C0"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:text="발자국"/>
+
+
 
         <Button
             android:id="@+id/btnGallery"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#ffffff"
+            android:background="@drawable/menu_button"
             android:fontFamily="@font/netmarble_m"
-            android:text="앨범"
-            android:textAlignment="center"
-            android:textColor="#B8D9C0"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:text="앨범"/>
+
 
     </LinearLayout>
 
