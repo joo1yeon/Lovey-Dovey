@@ -42,16 +42,16 @@ public class Main extends Fragment {
         doDateSystem();
 
 
-/*
+
         //to_do_list 버튼 눌렀을 때 --> to_do 화면 이동
-        to_do_Btn.setOnClickListener(new View.OnClickListener() {
+        /*to_do_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), TodoActivity.class);
+                Intent intent = new Intent(getContext(), ToDoList.class);
                 startActivity(intent);
             }
-        });
-*/
+        });*/
+
 
         //선물버튼 눌렀을 때 --> 선물화면 이동
         gift_Btn.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +108,7 @@ public class Main extends Fragment {
     }
 
     public void doDateSystem(){
-        String start = "2018-05-28";        // 사귄 날짜 입력
+        String start = "2019-03-04";        // 사귄 날짜 입력
 
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
