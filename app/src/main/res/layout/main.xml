@@ -36,7 +36,7 @@
         android:layout_height="80dp"
         android:fontFamily="@font/netmarble_m"
         android:gravity="center"
-        android:text=" 100일"
+        android:text="미설정"
         android:textColor="#FFFFFF"
         android:textSize="50sp"
 
@@ -72,9 +72,10 @@
         android:id="@+id/to_do_Btn"
         android:layout_width="300dp"
         android:layout_height="30dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="24dp"
         android:layout_marginLeft="30dp"
-        android:text="To do - 뭐로하는게 좋을까 하기"
+        android:text="To do - 일단 임시 투두위치입니다."
+        android:fontFamily="@font/netmarble_m"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
 
@@ -137,4 +138,5 @@
         app:layout_constraintGuide_begin="205dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
