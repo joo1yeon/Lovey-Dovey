@@ -19,9 +19,9 @@
         android:id="@+id/content"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:text="놀이동산가기"
+        android:text=""
         android:textSize="20dp"
-        android:layout_margin="5dp"
+        android:layout_margin="8dp"
 
         app:layout_constraintLeft_toRightOf="@id/checkBox"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -29,7 +29,7 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2019년05월19일"
+        android:text=""
 
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content"
