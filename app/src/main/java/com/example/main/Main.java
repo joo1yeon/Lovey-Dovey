@@ -121,7 +121,7 @@ public class Main extends Fragment {
             long coupleDays = diff / (24 * 60 * 60 * 1000);
 
             if(coupleDays > 1000) {
-                date.setTextSize(40);
+                date.setTextSize(30);
             }
             date.setText (coupleDays+" 일");
 

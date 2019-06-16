@@ -3,6 +3,10 @@ package com.example.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -10,10 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +35,65 @@ public class ToDoList extends AppCompatActivity {
     TextView change, delete;
     private ListView mListView1, mListView2;
     private ListViewAdapter mAdapter1, mAdapter2;
+    SlidingDrawer handle;
+
+    ImageButton btnHome, btnOverflow;
+    Button btnDate, btnFoot, btnGal;
+    Main mainFrag;
+    Datecourse dateFrag;
+    FootPrint footFrag;
+    Album albumFrag;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
+
+        btnHome = findViewById(R.id.btnHome);
+        btnOverflow = findViewById(R.id.btnOverflow);
+        btnDate = findViewById(R.id.btnDate);
+        btnFoot = findViewById(R.id.btnFoot);
+        btnGal = findViewById(R.id.btnGallery);
+
+        mainFrag = new Main();
+       /*dateFrag = new Datecourse();
+        footFrag = new FootPrint();
+        albumFrag = new Album();*/
+
+       handle = findViewById(R.id.slidingdrawer);
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(mainFrag);
+                btnAdd.setVisibility(View.INVISIBLE);
+                handle.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        /*btnDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(dateFrag);
+            }
+        });
+
+        btnFoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(footFrag);
+            }
+        });
+
+        btnGal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(albumFrag);
+            }
+        });*/
+
+
+
         //리스트뷰 인플레이트
         mListView1 = findViewById(R.id.list);
         mListView2 = findViewById(R.id.checked_list);
@@ -193,6 +254,13 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
+    //액티비티에서 프레그먼트 화면전환
+    public void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_content, fragment);
+        fragmentTransaction.commit();
+    }
 
     //아이템 요소들 선언
     class ViewHolder {
