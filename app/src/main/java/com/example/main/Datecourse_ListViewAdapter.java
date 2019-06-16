@@ -49,7 +49,7 @@ public class Datecourse_ListViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void addItem(String title,Drawable image) {
+    public void addItem(Drawable image,String title) {
         Datecourse_ListViewItem item = new Datecourse_ListViewItem();
 
         item.setImage(image);

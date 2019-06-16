@@ -9,13 +9,16 @@ public class Datecourse_ListViewItem {
     public void setImage(Drawable image) {
         image = image;
     }
+
     public void setTitle(String title) {
         title = title;
     }
+
     public Drawable getImage() {
-        return this.image ;
+        return this.image;
     }
+
     public String getTitle() {
-        return this.title ;
+        return this.title;
     }
 }
