@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager = findViewById(R.id.mainFrame);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(0);        //viewPager의 초기값을 0(메인화면)으로 설정
 
         btnHome = findViewById(R.id.btnHome);
         btnOverflow = findViewById(R.id.btnOverflow);
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         footFrag = new FootPrint();
         albumFrag = new StoryListFragment();
 
+        //TODO 버튼에 ViewPager 태그값 및 클릭 리스너 설정
         btnHome.setOnClickListener(movePageListener);
         btnHome.setTag(0);
         btnDate.setOnClickListener(movePageListener);
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //TODO 버튼을 클릭하면 해당 태그의 fragment로 이동
     View.OnClickListener movePageListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    //TODO 각 태그값에 해당하는 fragment 설정
     private class PagerAdapter extends FragmentStatePagerAdapter {
 
         public PagerAdapter(FragmentManager fm) {

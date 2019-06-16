@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO 장소검색 어댑터
 public class ContentAdapter extends RecyclerView.Adapter<ContentHolder> {
     ArrayList<ContentList> tList = new ArrayList<>();
 
@@ -33,7 +34,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentHolder> {
     @Override
     public void onBindViewHolder(@NonNull ContentHolder holder, int position) {
         String location = tList.get(position).location;
-        Log.d("test",location);
         ((TextView) holder.tvView).setText(location);
     }
 

@@ -63,12 +63,16 @@ public class FootPrint extends Fragment  {
 
         ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MODE_PRIVATE);
         //mapFrag=(MapFragment)getFragmentManager().findFragmentById(R.id.map);
+
+        //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 anim();
             }
         });
+
+        //TODO 오늘 날짜로 이동
         fabToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +84,8 @@ public class FootPrint extends Fragment  {
 
             }
         });
+
+        //TODO 장소 검색 화면으로 이동
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +95,8 @@ public class FootPrint extends Fragment  {
                 Toast.makeText(getContext(),"장소 검색하기",Toast.LENGTH_SHORT).show();
             }
         });
+
+        //TODO DatePickerDialog 출력
         fabCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +137,7 @@ public class FootPrint extends Fragment  {
         return layout;
     }
 
-
+    //TODO FloatingActionButton에 애니메이션 설정
     public void anim() {
         if(isFabOpen){
             fabCal.startAnimation(fab_close);

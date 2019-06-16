@@ -33,6 +33,7 @@ public class Search extends AppCompatActivity {
         final ContentAdapter contentAdapter = new ContentAdapter(locList, getApplicationContext());
         recyclerView.setAdapter(contentAdapter);
 
+        //TODO 검색버튼을 누르면 ArrayList에 검색 내역 추가
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
