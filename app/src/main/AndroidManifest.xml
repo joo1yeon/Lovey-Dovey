@@ -40,6 +40,7 @@
         <activity android:name=".SearchStory" android:label="스토리 검색" />
         <activity android:name=".DateImageClick" android:label="이미지 클릭"/>
         <activity android:name=".Datecourse_Fragment" android:label="코스 정보"/>
+        <activity android:name=".AllReview" android:label="전체 리뷰"/>
     </application>
 
 </manifest>
