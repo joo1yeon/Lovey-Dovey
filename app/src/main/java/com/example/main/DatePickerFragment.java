@@ -18,7 +18,6 @@ public class DatePickerFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setTitle("날짜 선택")
                 .setPositiveButton("선택", null)
                 .create();
     }

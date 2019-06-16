@@ -148,7 +148,6 @@ public class FootPrint extends Fragment  {
             fabToday.setClickable(true);
             isFabOpen=true;
         }
-
     }
 
 //    @Override

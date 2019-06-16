@@ -66,24 +66,16 @@ public class MainActivity extends AppCompatActivity {
         public PagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
         @Override
         public Fragment getItem(int i) {
             switch (i) {
-                case 0:
-                    return mainFrag;
-                case 1:
-                    return dateFrag;
-                case 2:
-                    return footFrag;
-                case 3:
-                    return albumFrag;
-
-                default:
-                    return null;
+                case 0: return mainFrag;
+                case 1: return dateFrag;
+                case 2: return footFrag;
+                case 3: return albumFrag;
+                default: return null;
             }
         }
-
         @Override
         public int getCount() {
             return 4;
