@@ -25,12 +25,13 @@ public class DateImage extends Fragment {
             // MainActivity에서 받아온 Resource를 ImageView에 셋팅
             imageView.setImageResource(args.getInt("imgRes"));
         }
-       /* imageView.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DateImage.this, DateImageClick.class);
+                Intent intent = new Intent(getContext(), DateImageClick.class);
+                startActivity(intent);
             }
-        });*/
+        });
         return view;
     }
 }

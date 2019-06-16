@@ -36,12 +36,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Search" android:label="장소검색"/>
-        <activity
-            android:name=".CreateStory"
-            android:label="스토리 생성" />
-        <activity
-            android:name=".SearchStory"
-            android:label="스토리 검색" />
+        <activity android:name=".CreateStory" android:label="스토리 생성" />
+        <activity android:name=".SearchStory" android:label="스토리 검색" />
+        <activity android:name=".DateImageClick" android:label="이미지 클릭"/>
+        <activity android:name=".Datecourse_Fragment" android:label="코스 정보"/>
     </application>
 
 </manifest>
