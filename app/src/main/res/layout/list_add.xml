@@ -49,7 +49,7 @@
         android:id="@+id/cancel"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/cancel_0"
+        android:src="@drawable/cancel0"
         android:layout_margin="2.5dp"
 
         app:layout_constraintHorizontal_weight="1"
