@@ -25,9 +25,9 @@ public class DateImageClick extends AppCompatActivity {
 
         adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage1),"석촌 호수");
         adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage2),"수원 경기도청");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.dateimage1),"서울 어린이 대공원");
-        adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage1),"여의도");
-        adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage1),"인천 대공원");
+        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.dateimage3),"서울 어린이 대공원");
+        adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage4),"여의도");
+        adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage5),"인천 대공원");
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
