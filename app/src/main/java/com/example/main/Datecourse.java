@@ -37,8 +37,11 @@ public class Datecourse extends Fragment {
         viewPager.setAdapter(fragmentAdapter);
 
         viewPager.setClipToPadding(false);
-        viewPager.setPadding(80, 0, 10, 0);
-        viewPager.setPageMargin(getResources().getDisplayMetrics().widthPixels / -9);
+        int dpValue = 60;
+        float d = getResources().getDisplayMetrics().density;
+        int margin = (int) (dpValue * d);
+        viewPager.setPadding(margin, 0, margin, 0);
+        viewPager.setPageMargin(margin/2);
 
         // FragmentAdapter에 Fragment 추가, Image 개수만큼 추가
         for (int i = 0; i < listImage.size(); i++) {
@@ -74,10 +77,6 @@ public class Datecourse extends Fragment {
         // List에 Fragment를 담을 함수
         void addItem(Fragment fragment) {
             fragments.add(fragment);
-        }
-        @Override
-        public float getPageWidth(int position) {
-            return (0.9f);
         }
     }
 }
