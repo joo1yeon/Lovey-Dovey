@@ -25,6 +25,7 @@ public class Datecourse extends Fragment {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse,container,false);
         // Fragment로 넘길 Image Resource
 
+        //ArrayList에 해당 image를 넣는다.
         ArrayList<Integer> listImage = new ArrayList<>();
         listImage.add(R.drawable.image1);
         listImage.add(R.drawable.image2);
@@ -36,6 +37,7 @@ public class Datecourse extends Fragment {
         // ViewPager와  FragmentAdapter 연결
         viewPager.setAdapter(fragmentAdapter);
 
+        //뷰페이저 양옆에 다음 사진이 보일 수 있게 위치 설정
         viewPager.setClipToPadding(false);
         int dpValue = 60;
         float d = getResources().getDisplayMetrics().density;

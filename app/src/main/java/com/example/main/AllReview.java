@@ -15,6 +15,7 @@ public class AllReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_reviewcheck);
 
+        //리뷰 정렬하는 요소를 넣는 ArrayList 선언 및 생성, 어댑터
         ArrayList<String> reviewList;
         ArrayAdapter reviewAdapter;
         String[] review = {"최신순", "별점 높은 순 ", "별점 낮은 순"};

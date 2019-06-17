@@ -29,6 +29,7 @@ public class Date_Review extends Fragment {
         review = layout.findViewById(R.id.review);
         add = layout.findViewById(R.id.add);
 
+        //전체리뷰 보기 클릭시 발생하는 이벤트 리스러
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +38,7 @@ public class Date_Review extends Fragment {
             }
         });
 
+        //리뷰를 추가할 수 있는 dialog를 띄운다.
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
