@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 public class CreateStory extends AppCompatActivity {
 
-    Button btnConfirm;
+    Button btnConfirm,btnCancel;
     ImageView icCalendar;
     EditText etStoryTitle;
     TextView tvPressIcon;
@@ -32,6 +32,7 @@ public class CreateStory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_story);
 
+        btnCancel=findViewById(R.id.btn_cancel);
         btnConfirm = findViewById(R.id.btn_confirm);
         icCalendar = findViewById(R.id.ic_calendar);
         etStoryTitle = findViewById(R.id.et_story_title);
@@ -68,5 +69,11 @@ public class CreateStory extends AppCompatActivity {
             }
         });
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
