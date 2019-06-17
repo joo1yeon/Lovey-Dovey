@@ -55,10 +55,11 @@ public class StoryListFragment extends Fragment {
     }
     public void updateUI() {
         Album_singleton album_singleton = Album_singleton.get(getActivity());
-        List<Story> stories = Album_singleton.getStories();
+        List<Story> stories = album_singleton.getStories();
 
         mAdapter = new StoryAdapter(stories);
         mStoryRecyclerView.setAdapter(mAdapter);
+        //mAdapter.notifyItemInserted(stories.size());
     }
 
     public class StoryHolder extends RecyclerView.ViewHolder {
@@ -79,7 +80,7 @@ public class StoryListFragment extends Fragment {
             mStory = story;
             //mStoryMainImg.setImageDrawable();
             mStoryTitle.setText(mStory.getTitle());
-            mStoryDate.setText(mStory.getDate().toString());
+            mStoryDate.setText(mStory.getYear() + "년 " + mStory.getMonth() + "월 " + mStory.getDay() + "일");
         }
     }
 
