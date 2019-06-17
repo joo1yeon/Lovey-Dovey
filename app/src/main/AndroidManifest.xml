@@ -41,17 +41,10 @@
         <activity
             android:name=".SearchStory"
             android:label="스토리 검색" />
-<<<<<<< HEAD
-=======
         <activity android:name=".ToDoList"/>
->>>>>>> Main
-=======
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Stashed changes
->>>>>>> Album
+<activity android:name=".DateImageClick"/>
+        <activity android:name=".Datecourse_Fragment"/>
+        <activity android:name=".AllReview"/>
     </application>
 
 </manifest>
