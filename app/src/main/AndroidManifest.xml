@@ -23,12 +23,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB7fJgMea4_D6otROMwy70aCwNg1S7sB0U"/>
-        <uses-library android:name="org.apache.http.legacy"
-            android:required="false"/>
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB7fJgMea4_D6otROMwy70aCwNg1S7sB0U"/>
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,6 +41,10 @@
         <activity
             android:name=".SearchStory"
             android:label="스토리 검색" />
+        <activity android:name=".ToDoList"/>
+<activity android:name=".DateImageClick"/>
+        <activity android:name=".Datecourse_Fragment"/>
+        <activity android:name=".AllReview"/>
     </application>
 
 </manifest>
