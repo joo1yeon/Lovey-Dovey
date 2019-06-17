@@ -7,11 +7,11 @@ public class Datecourse_ListViewItem {
     public String title;
 
     public void setImage(Drawable image) {
-        image = image;
+        this.image = image;
     }
 
     public void setTitle(String title) {
-        title = title;
+        this.title = title;
     }
 
     public Drawable getImage() {
