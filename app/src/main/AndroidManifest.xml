@@ -41,9 +41,18 @@
         <activity
             android:name=".SearchStory"
             android:label="스토리 검색" />
+<<<<<<< HEAD
 =======
         <activity android:name=".ToDoList"/>
 >>>>>>> Main
+=======
+<<<<<<< Updated upstream
+=======
+
+        <activity android:name=".ToDoList"/>
+
+>>>>>>> Stashed changes
+>>>>>>> Album
     </application>
 
 </manifest>
