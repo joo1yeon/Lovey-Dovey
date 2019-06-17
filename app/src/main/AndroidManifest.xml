@@ -24,12 +24,10 @@
         <activity
             android:name=".SearchStory"
             android:label="스토리 검색" />
-<<<<<<< Updated upstream
-=======
+
 
         <activity android:name=".ToDoList"/>
 
->>>>>>> Stashed changes
     </application>
 
 </manifest>
