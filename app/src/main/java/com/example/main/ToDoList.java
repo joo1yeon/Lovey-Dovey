@@ -3,10 +3,6 @@ package com.example.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -14,13 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,20 +23,14 @@ import java.util.Collections;
 
 public class ToDoList extends AppCompatActivity {
 
-    View addLayout, menuLayout;
-    EditText contents;
-    ImageView btnAdd, cancel, add;
-    TextView change, delete;
-    private ListView mListView1, mListView2;
-    private ListViewAdapter mAdapter1, mAdapter2;
-    SlidingDrawer handle;
+    View addLayout, menuLayout;                     //리스트추가뷰, 롱클릭시 메뉴뷰
+    EditText contents;                              //리스트 추가 시 내용을 입력할 곳
+    ImageView btnAdd, cancel, add;                  //리스트 추가 버튼 및 다이얼로그 취소, 추가 버튼
+    TextView change, delete;                        //롱클릭 시 다이얼로그 수정, 삭제 버튼
+    private ListView mListView1, mListView2;        //리스트뷰, 슬라이딩드로어에 리스트뷰
+    private ListViewAdapter mAdapter1, mAdapter2;   //리스트어댑터, 슬라이딩드로어에 리스트어댑터
 
     ImageButton btnHome, btnOverflow;
-    Button btnDate, btnFoot, btnGal;
-    Main mainFrag;
-    Datecourse dateFrag;
-    FootPrint footFrag;
-    Album albumFrag;
 
 
     @Override
@@ -50,49 +38,16 @@ public class ToDoList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
 
+        //홈버튼 인플레이트
         btnHome = findViewById(R.id.btnHome);
-        btnOverflow = findViewById(R.id.btnOverflow);
-        btnDate = findViewById(R.id.btnDate);
-        btnFoot = findViewById(R.id.btnFoot);
-        btnGal = findViewById(R.id.btnGallery);
 
-        mainFrag = new Main();
-       /*dateFrag = new Datecourse();
-        footFrag = new FootPrint();
-        albumFrag = new Album();*/
-
-       handle = findViewById(R.id.slidingdrawer);
+        //홈버튼 클릭할 때 투두화면 종료
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(mainFrag);
-                btnAdd.setVisibility(View.INVISIBLE);
-                handle.setVisibility(View.INVISIBLE);
+                finish();
             }
         });
-
-        /*btnDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(dateFrag);
-            }
-        });
-
-        btnFoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(footFrag);
-            }
-        });
-
-        btnGal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(albumFrag);
-            }
-        });*/
-
-
 
         //리스트뷰 인플레이트
         mListView1 = findViewById(R.id.list);
@@ -117,7 +72,7 @@ public class ToDoList extends AppCompatActivity {
         mAdapter1.sort();
 
 
-        //체크된 투두 아이템 추가
+        //체크된 투두 아이템 추가(슬라이딩 드로어)
         mAdapter2.addItem( "베가보쌈에서 식사하기", "");
         mAdapter2.addItem("카페에서 회의하기", "");
 
@@ -128,6 +83,7 @@ public class ToDoList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ListData mData = mAdapter1.listData.get(i);
                 Toast.makeText(ToDoList.this, "체크됨" , Toast.LENGTH_SHORT).show();
+                //체크했을 때 체크박스의 상태변화 구현해야함 일단 토스트메시지로 대체
             }
         });
 
@@ -135,13 +91,15 @@ public class ToDoList extends AppCompatActivity {
         mListView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                final ListData mData = mAdapter1.listData.get(position);
-                AlertDialog.Builder dlg2 = new AlertDialog.Builder(ToDoList.this);
-                final AlertDialog dl2 = dlg2.create();
-                menuLayout = View.inflate(ToDoList.this, R.layout.list_menu, null);
-                dl2.setView(menuLayout);
-                dl2.show();
+                final ListData mData = mAdapter1.listData.get(position);        //클릭한 위치 저장
 
+                AlertDialog.Builder dlg2 = new AlertDialog.Builder(ToDoList.this);                      //TodoList에 다이얼로그 생성
+                final AlertDialog dl2 = dlg2.create();                                                           //빌더를 이용해 AlertDialog 객체 생성
+                menuLayout = View.inflate(ToDoList.this, R.layout.list_menu, null);               //레이아웃뷰인 menuLayout을 list_menu.xml 사용해서 인플레이트
+                dl2.setView(menuLayout);                                                                         //menuLayout을 AlertDialog 객체로 보여줌
+                dl2.show();                                                                                      //다이얼로그 보여줌
+
+                //투두리스트 다이얼로그에 들어가는 list_menu의 뷰들 인플레이트
                 change = menuLayout.findViewById(R.id.change);
                 delete = menuLayout.findViewById(R.id.delete);
 
@@ -151,24 +109,28 @@ public class ToDoList extends AppCompatActivity {
                     public void onClick(View v) {
                         dl2.dismiss();
 
-                        AlertDialog.Builder dlg = new AlertDialog.Builder(ToDoList.this);
-                        final AlertDialog dl = dlg.create();
-                        addLayout = View.inflate(ToDoList.this, R.layout.list_add, null);
-                        dl.setView(addLayout);
-                        dl.show();
+                        AlertDialog.Builder dlg = new AlertDialog.Builder(ToDoList.this);               //TodoList에 다이얼로그 생성
+                        final AlertDialog dl = dlg.create();                                                     //빌더를 이용해 AlertDialog 객체 생성
+                        addLayout = View.inflate(ToDoList.this, R.layout.list_add, null);         //레이아웃뷰인 addLayout을 list_add.xml 사용해서 인플레이트
+                        dl.setView(addLayout);                                                                   //addLayout을 AlertDialog 객체로 보여줌
+                        dl.show();                                                                               //다이얼로그 보여줌
 
+                        //투두리스트 추가 다이얼로그에 들어가는 list_add의 뷰들 인플레이트
                         add = addLayout.findViewById(R.id.add);
                         cancel = addLayout.findViewById(R.id.cancel);
                         contents = addLayout.findViewById(R.id.content);
 
+                        //클릭한 리스트데이터의 해당 내용을 불러옴
                         contents.setText(mData.content);
 
+                        //내용을 수정 후 추가를 클릭했을 떄
                         add.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 String text = contents.getText().toString();
 
-                                //데이터 수정하는 코드
+                                //데이터 수정하는 코드를 넣어야함
+
                                 mAdapter1.notifyDataSetChanged();
                                 dl.dismiss();
 
@@ -198,7 +160,7 @@ public class ToDoList extends AppCompatActivity {
             }
         });
 
-        //체크된 투두리스트 클릭했을 때
+        //체크된 투두리스트 클릭했을 때(슬라이딩 드로어 부분)
         mListView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -207,42 +169,46 @@ public class ToDoList extends AppCompatActivity {
             }
         });
 
-        btnAdd = findViewById(R.id.btnAdd);
 
-        //취소선하는법
+
+        /*취소선하는법
         //textView.setPaintFlags(textView.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-        //textView.setPaintFlags(0);
+        //textView.setPaintFlags(0);*/
 
 
+        btnAdd = findViewById(R.id.btnAdd);
 
         //투두리스트를 추가 버튼을 클릭했을 떄
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder dlg = new AlertDialog.Builder(ToDoList.this);
-                final AlertDialog dl = dlg.create();
-                addLayout = View.inflate(ToDoList.this, R.layout.list_add, null);
-                dl.setView(addLayout);
-                dl.show();
+                AlertDialog.Builder dlg = new AlertDialog.Builder(ToDoList.this);               //TodoList에 다이얼로그 생성
+                final AlertDialog dl = dlg.create();                                                     //빌더를 이용해 AlertDialog 객체 생성
+                addLayout = View.inflate(ToDoList.this, R.layout.list_add, null);         //레이아웃뷰인 addLayout을 list_add.xml 사용해서 인플레이트
+                dl.setView(addLayout);                                                                   //addLayout을 AlertDialog 객체로 보여줌
+                dl.show();                                                                               //다이얼로그 보여줌
 
+                //투두리스트 추가 다이얼로그에 들어가는 list_add의 뷰들 인플레이트
                 add = addLayout.findViewById(R.id.add);
                 cancel = addLayout.findViewById(R.id.cancel);
                 contents = addLayout.findViewById(R.id.content);
 
 
+                //내용을 입력 후 추가를 클릭했을 떄
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String text = contents.getText().toString();
-                        mAdapter1.addItem(text, "");
-                        contents.setText("");
-                        mAdapter1.notifyDataSetChanged();
-                        dl.dismiss();
+                        String text = contents.getText().toString();        //EditText 내용을 String으로 받아옴
+                        mAdapter1.addItem(text, "");                  //아이템을 추가함
+                        contents.setText("");                               //EditText 내용을 비워줌
+                        mAdapter1.notifyDataSetChanged();                   //변경
+                        dl.dismiss();                                       //다이얼로그 창 닫기
 
                     }
                 });
 
+                //취소버튼을 클릭했을 때 다이얼로그 창 종료
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -254,14 +220,6 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
-    //액티비티에서 프레그먼트 화면전환
-    public void replaceFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_content, fragment);
-        fragmentTransaction.commit();
-    }
-
     //아이템 요소들 선언
     class ViewHolder {
         public CheckBox checkBox;
@@ -269,13 +227,15 @@ public class ToDoList extends AppCompatActivity {
         public TextView date;
     }
 
+    //BaseAdapter를 상속받은 ListViewAdapter
     private class ListViewAdapter extends BaseAdapter {
         private Context mContext = null;
         ArrayList<ListData> listData = new ArrayList<ListData>();
-        private boolean[] isCheckedConfrim;
-        private LayoutInflater inflater = null;
+        //private boolean[] isCheckedConfrim;
+        //private LayoutInflater inflater = null;
 
 
+        //생성자
         public ListViewAdapter(Context mContext) {
             this.mContext = mContext;
         }
@@ -295,11 +255,10 @@ public class ToDoList extends AppCompatActivity {
             return (long) position;
         }
 
+        //어댑터가 가진 데이터를 보여줄 때
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             ListData data = (ListData) listData.get(position);    //ListData의 위치를 받아옴
-
-
 
             if (convertView == null) {
                 holder = new ViewHolder();  //view가 매번 인플레이트를 하지않게 저장해놓음
@@ -320,6 +279,7 @@ public class ToDoList extends AppCompatActivity {
             holder.checkBox.setClickable(false);
             holder.checkBox.setFocusable(false);
 
+            //ListData에 내용 출력
             holder.content.setText(data.content);
             holder.date.setText(data.date);
 
@@ -332,13 +292,12 @@ public class ToDoList extends AppCompatActivity {
         }
 
         //아이템 추가
-        public void addItem(String name, String date) {
+        public void addItem(String content, String date) {
             ListData addInfo = new ListData();      //ListData 객체 생성
             //받은 값들을 넣어줌
-            addInfo.content = name;
-            addInfo.date = date;
-
-            this.listData.add(addInfo);        //ListView에 ListData 추가
+            addInfo.content = content;              //내용 할당
+            addInfo.date = date;                    //시간 할당
+            this.listData.add(addInfo);             //ListView에 ListData 추가
         }
 
         //아이템을 제거
@@ -353,7 +312,7 @@ public class ToDoList extends AppCompatActivity {
             dataChange();
         }
 
-        //데이터를 변경한 후 호출해야 함
+        //데이터를 변경한 후 호출할 함수
         public void dataChange(){
             mAdapter1.notifyDataSetChanged();
             mAdapter2.notifyDataSetChanged();
