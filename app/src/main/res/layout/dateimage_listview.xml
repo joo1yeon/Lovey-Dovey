@@ -16,8 +16,9 @@
     <TextView
         android:id="@+id/placeName"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="150dp"
         android:background="#80000000"
+        android:text="석촌호수"
         android:fontFamily="@font/netmarble_m"
         android:gravity="center"
         android:textColor="#FFFF"
