@@ -44,7 +44,7 @@ public class DatePickerFragment extends DialogFragment {
 
                         Intent intent = new Intent(getContext(), CreateStory.class);
                         intent.putExtra("Year", year);
-                        intent.putExtra("Month", month);
+                        intent.putExtra("Month", month+1);
                         intent.putExtra("Day", day);
                         startActivity(intent);
                     }
