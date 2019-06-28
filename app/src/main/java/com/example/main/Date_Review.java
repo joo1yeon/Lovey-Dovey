@@ -21,6 +21,7 @@ public class Date_Review extends Fragment {
     }
 
     Button review, OK, cancel;
+    EditText addText;
     ImageView add;
     ListView listView;
     DateReview_listViewAdapter adapter;
@@ -54,7 +55,7 @@ public class Date_Review extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder dig = new AlertDialog.Builder(getContext());
                 final AlertDialog _dig = dig.create();
-                View digView = View.inflate(getContext(), R.layout.dialog_date_review, null);
+                final View digView = View.inflate(getContext(), R.layout.dialog_date_review, null);
 
                 OK = digView.findViewById(R.id.OK);
                 cancel = digView.findViewById(R.id.cancel);
@@ -66,8 +67,10 @@ public class Date_Review extends Fragment {
                 OK.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EditText addText = layout.findViewById(R.id.addText);
+                        addText = digView.findViewById(R.id.addText);
                         String text = addText.getText().toString();
+                        adapter.addItem(text);
+                        adapter.notifyDataSetChanged();
                         Toast.makeText(getContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show();
                         _dig.dismiss();
                     }
