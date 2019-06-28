@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 public class Datecourse extends Fragment {
+    Main mainFrag;
 
     public Datecourse(){}
 
@@ -32,7 +33,7 @@ public class Datecourse extends Fragment {
         listImage.add(R.drawable.image4);
 
         ViewPager viewPager = layout.findViewById(R.id.viewPager);
-        FragmentAdapter fragmentAdapter = new FragmentAdapter(getFragmentManager());
+        FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager());
         // ViewPager와  FragmentAdapter 연결
         viewPager.setAdapter(fragmentAdapter);
 

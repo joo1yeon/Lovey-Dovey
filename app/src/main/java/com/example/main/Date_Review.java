@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class Date_Review extends Fragment {
@@ -20,11 +22,21 @@ public class Date_Review extends Fragment {
 
     Button review, OK, cancel;
     ImageView add;
+    ListView listView;
+    DateReview_listViewAdapter adapter;
 
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.date_review, container, false);
+        final ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.date_review, container, false);
+
+        adapter = new DateReview_listViewAdapter();
+
+        listView = layout.findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+
+        adapter.addItem("밤에 가도 벚꽃이 너무 예뻐요!");
+        adapter.addItem("벚꽃을 보러간건지 사람을 보러 간건지..");
 
         review = layout.findViewById(R.id.review);
         add = layout.findViewById(R.id.add);
@@ -54,6 +66,8 @@ public class Date_Review extends Fragment {
                 OK.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        EditText addText = layout.findViewById(R.id.addText);
+                        String text = addText.getText().toString();
                         Toast.makeText(getContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show();
                         _dig.dismiss();
                     }
