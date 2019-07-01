@@ -2,17 +2,20 @@ package com.example.main;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.media.Rating;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class DateReview_listViewAdapter extends BaseAdapter {
 
+    public static RatingBar ratingbar;
     ArrayList<DateReview_listViewItem> review_listItem = new ArrayList<DateReview_listViewItem>();
 
     @Override
@@ -40,17 +43,21 @@ public class DateReview_listViewAdapter extends BaseAdapter {
         }
 
         TextView context = convertView.findViewById(R.id.context);
+        ratingbar = convertView.findViewById(R.id.ratingBar);
 
         DateReview_listViewItem listItem = review_listItem.get(position);
 
         context.setText(listItem.getContext());
+        ratingbar.setRating(listItem.getRating());
 
         return convertView;
     }
-    public void addItem(String context) {
+
+    public void addItem(float rating,String context) {
         DateReview_listViewItem item = new DateReview_listViewItem();
 
         item.setContext(context);
+        item.setRating(rating);
 
         review_listItem.add(item);
     }

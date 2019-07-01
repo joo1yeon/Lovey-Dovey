@@ -2,11 +2,13 @@ package com.example.main;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.media.Rating;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 public class Date_Review extends Fragment {
@@ -22,6 +25,8 @@ public class Date_Review extends Fragment {
 
     Button review, OK, cancel;
     EditText addText;
+    RatingBar _ratingbar;
+    float ratingNum;
     ImageView add;
     ListView listView;
     DateReview_listViewAdapter adapter;
@@ -35,9 +40,10 @@ public class Date_Review extends Fragment {
 
         listView = layout.findViewById(R.id.listView);
         listView.setAdapter(adapter);
+        Log.d("list1",adapter+"");
 
-        adapter.addItem("밤에 가도 벚꽃이 너무 예뻐요!");
-        adapter.addItem("벚꽃을 보러간건지 사람을 보러 간건지..");
+        // adapter.addItem( 1,"밤에 가도 벚꽃이 너무 예뻐요!");
+        // adapter.addItem(1,"벚꽃을 보러간건지 사람을 보러 간건지..");
 
         review = layout.findViewById(R.id.review);
         add = layout.findViewById(R.id.add);
@@ -59,7 +65,16 @@ public class Date_Review extends Fragment {
 
                 OK = digView.findViewById(R.id.OK);
                 cancel = digView.findViewById(R.id.cancel);
+                _ratingbar = digView.findViewById(R.id.ratingBar);
 
+                _ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                        ratingNum = _ratingbar.getRating();
+                        Log.d("list1",ratingNum+"");
+
+                    }
+                });
                 _dig.setCancelable(false);
                 _dig.setView(digView);
                 _dig.show();
@@ -69,7 +84,7 @@ public class Date_Review extends Fragment {
                     public void onClick(View v) {
                         addText = digView.findViewById(R.id.addText);
                         String text = addText.getText().toString();
-                        adapter.addItem(text);
+                        adapter.addItem(ratingNum, text);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(getContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show();
                         _dig.dismiss();

@@ -16,11 +16,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
 
     TextView dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
-   /* ViewPager viewPager;
-    Date_Info InfoFrag;
-    Date_Review ReviewFrag;
-    FragmentManager fm;
-    FragmentTransaction tran;*/
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
