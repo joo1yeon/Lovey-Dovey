@@ -15,9 +15,14 @@ import java.util.ArrayList;
 
 public class DateReview_listViewAdapter extends BaseAdapter {
 
-    public static RatingBar ratingbar;
+    public static Object context;
+    public int position;
+    public RatingBar ratingbar;
     ArrayList<DateReview_listViewItem> review_listItem = new ArrayList<DateReview_listViewItem>();
 
+    public DateReview_listViewAdapter(){
+        context=this;
+    }
     @Override
     public int getCount() {
         return review_listItem.size();
