@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.MapFragment;
+
 import java.util.Calendar;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -33,12 +35,18 @@ public class FootPrint extends Fragment  {
     int day = cal.get(Calendar.DAY_OF_MONTH);
 //    GroundOverlayOptions videoMark;
 //    GoogleMap gMap;
-//    MapFragment mapFrag;
+    MapFragment mapFrag;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
 
     public FootPrint() {
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Nullable
@@ -62,7 +70,7 @@ public class FootPrint extends Fragment  {
 
 
         ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MODE_PRIVATE);
-        //mapFrag=(MapFragment)getFragmentManager().findFragmentById(R.id.map);
+//        mapFrag=(MapFragment)getChildFragmentManager().findFragmentById(R.id.map);
 
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +98,7 @@ public class FootPrint extends Fragment  {
             @Override
             public void onClick(View v) {
                 anim();
-                Intent intent = new Intent(getContext(),Search.class);
+                Intent intent = new Intent(getContext(), LocSearch.class);
                 startActivity(intent);
                 Toast.makeText(getContext(),"장소 검색하기",Toast.LENGTH_SHORT).show();
             }
