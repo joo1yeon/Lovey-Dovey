@@ -7,6 +7,7 @@ public class DateReview_listViewItem {
     public String context;
     public static float rating;
 
+
     public void setContext(String context) {
         this.context = context;
     }
@@ -22,5 +23,4 @@ public class DateReview_listViewItem {
     public float getRating() {
         return this.rating;
     }
-
 }

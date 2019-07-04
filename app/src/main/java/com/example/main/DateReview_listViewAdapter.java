@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class DateReview_listViewAdapter extends BaseAdapter {
 
     public static Object context;
-    public int position;
     public RatingBar ratingbar;
     ArrayList<DateReview_listViewItem> review_listItem = new ArrayList<DateReview_listViewItem>();
 
@@ -58,7 +57,7 @@ public class DateReview_listViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void addItem(float rating,String context) {
+    public void addItem(float rating, String context) {
         DateReview_listViewItem item = new DateReview_listViewItem();
 
         item.setContext(context);
