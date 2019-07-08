@@ -53,7 +53,7 @@ public class StoryListFragment extends Fragment {
 
         return view;
     }
-    public void updateUI() {
+    public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
         Album_singleton album_singleton = Album_singleton.get(getActivity());
         List<Story> stories = album_singleton.getStories();
 
@@ -76,7 +76,7 @@ public class StoryListFragment extends Fragment {
             mStoryDate = (TextView) itemView.findViewById(R.id.story_date1);
         }
 
-        public void bindStory(Story story) {
+        public void bindStory(Story story) { //제목과 날짜를 화면에 출력
             mStory = story;
             //mStoryMainImg.setImageDrawable();
             mStoryTitle.setText(mStory.getTitle());
