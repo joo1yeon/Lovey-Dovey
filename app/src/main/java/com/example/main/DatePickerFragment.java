@@ -26,10 +26,8 @@ public class DatePickerFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
-<<<<<<< Updated upstream
                 .setTitle("날짜 선택")
                 .setPositiveButton("선택", null)
-=======
                 .setPositiveButton("선택", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -46,7 +44,6 @@ public class DatePickerFragment extends DialogFragment {
                         startActivity(intent);
                     }
                 })
->>>>>>> Stashed changes
                 .create();
     }
 }
