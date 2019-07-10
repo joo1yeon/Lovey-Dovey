@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class StoryListFragment extends Fragment {
+public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 때 뜨는 화면
 
     public RecyclerView mStoryRecyclerView;
     public StoryAdapter mAdapter;
