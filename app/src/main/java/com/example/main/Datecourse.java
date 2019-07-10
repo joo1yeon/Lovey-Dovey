@@ -1,9 +1,11 @@
 package com.example.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -25,6 +27,18 @@ public class Datecourse extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse,container,false);
         // Fragment로 넘길 Image Resource
+
+        FloatingActionButton search;
+
+        search=layout.findViewById(R.id.search);
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(),Datecourse_Search.class);
+                startActivity(intent);
+            }
+        });
 
         ArrayList<Integer> listImage = new ArrayList<>();
         listImage.add(R.drawable.image1);

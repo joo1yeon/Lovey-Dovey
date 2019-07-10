@@ -44,6 +44,7 @@
        <activity android:name=".AllReview"/>
         <activity android:name=".Datecourse_Fragment"/>
         <activity android:name=".DateImageClick"/>
+        <activity android:name=".Datecourse_Search"/>
     </application>
 
 </manifest>
