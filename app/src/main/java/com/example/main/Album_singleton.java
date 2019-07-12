@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Album_singleton { //싱글톤 만들기
+public class Album_singleton { //Story 객체들을 저장하는 저장소
     private static Album_singleton sAlbum_singleton;
-    private static List<Story> mStories; //여기 왜 static???
+    private List<Story> mStories; //List에 사용자가 생성한 Story 객체 저장
 
     public static Album_singleton get(Context context) {
         if (sAlbum_singleton == null) {
@@ -18,8 +18,9 @@ public class Album_singleton { //싱글톤 만들기
         return sAlbum_singleton;
     }
 
-    private Album_singleton(Context context) {
-        mStories = new ArrayList<>();
+    //TODO 생성자
+    private Album_singleton(Context context) { //생성자가 private 이므로 다른 클래스에서 호출시 get() 메서드 호출
+        mStories = new ArrayList<>(); //Story 객체를 저장하는 비어있는 List 생성
         /*for (int i = 0; i < 5; i++) {
             Story story = new Story();
             story.setTitle("제목");
@@ -45,10 +46,12 @@ public class Album_singleton { //싱글톤 만들기
         
     }
 
-    public static List<Story> getStories() {
+    //TODO 생성된 List를 반환하는 메서드
+    public List<Story> getStories() {
         return mStories;
     }
 
+    //TODO 지정된 ID를 갖는 Story 객체를 반환하는 메서드
     public Story getStory(UUID id) {
         for (Story story : mStories) {
             if (story.getId().equals(id)) {
