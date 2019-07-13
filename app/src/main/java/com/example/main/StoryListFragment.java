@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,7 +28,6 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("test", "실행1");
         View view = inflater.inflate(R.layout.album, container, false);
         mStoryRecyclerView = view.findViewById(R.id.story_recycler_view);
         mStoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -64,7 +64,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
         //mAdapter.notifyItemInserted(stories.size());
     }
 
-    public class StoryHolder extends RecyclerView.ViewHolder {
+    public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public Story mStory;
         public ImageView mStoryMainImg;
         public TextView mStoryTitle;
@@ -72,10 +72,17 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
         public StoryHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
 
             mStoryMainImg = (ImageView) itemView.findViewById(R.id.story_mainImg1);
             mStoryTitle = (TextView) itemView.findViewById(R.id.story_title1);
             mStoryDate = (TextView) itemView.findViewById(R.id.story_date1);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), StoryActivity.class);
+            startActivity(intent); //스토리 대표사진을 누르면 액티비티 시작
         }
 
         public void bindStory(Story story) { //제목과 날짜를 화면에 출력
@@ -86,7 +93,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
         }
     }
 
-    public class StoryAdapter extends RecyclerView.Adapter<StoryHolder> {
+    public class StoryAdapter extends RecyclerView.Adapter<StoryHolder> { //Album_singleton에서 Story 리스트를 가져온다.
         private List<Story> mStories;
 
         public StoryAdapter(List<Story> stories) {
@@ -113,7 +120,3 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
         }
     }
 }
-//얘들아 안녕 방학 잘 보내고 있니 오늘 캡스톤을 하려고 들어왔어!
-//근데 아무것도 안했는데 벌써 실행이 안되어서
-//그냥 안부인사 해봤어,,,ㅋㅋㅋㅋ
-//남은 방학 잘보내~~

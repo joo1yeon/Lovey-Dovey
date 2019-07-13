@@ -24,6 +24,9 @@
         <activity
             android:name=".SearchStory"
             android:label="스토리 검색" />
+        <activity
+            android:name=".StoryActivity"
+            android:label="스토리 내용 보기" />
 
 
         <activity android:name=".ToDoList"/>

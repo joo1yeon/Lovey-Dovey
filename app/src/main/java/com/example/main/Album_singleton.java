@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class Album_singleton { //Story 객체들을 저장하는 저장소
     private static Album_singleton sAlbum_singleton;
-    private List<Story> mStories; //List에 사용자가 생성한 Story 객체 저장
+    private List<Story> mStories; //List에 사용자가 생성한 Story 객체 저장, 데이터 저장소
 
     public static Album_singleton get(Context context) {
         if (sAlbum_singleton == null) {
