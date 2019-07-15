@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,10 +38,10 @@ public class CreateStory extends AppCompatActivity {
         etStoryTitle = findViewById(R.id.et_story_title);
         tvPressIcon = findViewById(R.id.tv_press_icon);
 
-        Intent intent = getIntent();
-        year = intent.getIntExtra("Year", 0);
-        month = intent.getIntExtra("Month", 0);
-        day = intent.getIntExtra("Day", 0);
+//        Intent intent
+//        year = intent.getIntExtra("Year", 0);
+//        month = intent.getIntExtra("Month", 0);
+//        day = intent.getIntExtra("Day", 0);
 
         icCalendar.setOnClickListener(new View.OnClickListener() {
             @Override

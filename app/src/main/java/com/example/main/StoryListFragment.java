@@ -55,12 +55,23 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI(); //리스트로 돌아오기 위해 뒤로가기 버튼 눌렀을 때 StoryListFragment 재실행
+    }
+
     public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
         Album_singleton album_singleton = Album_singleton.get(getActivity());
         List<Story> stories = album_singleton.getStories();
 
-        mAdapter = new StoryAdapter(stories);
-        mStoryRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new StoryAdapter(stories);
+            mStoryRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
+        }
         //mAdapter.notifyItemInserted(stories.size());
     }
 
