@@ -60,6 +60,7 @@
         android:layout_marginTop="50dp"
         android:hint="검색어를 입력하세요."
         android:completionThreshold="1"
+        android:fontFamily="@font/netmarble_m"
         app:layout_constraintTop_toBottomOf="@+id/cons"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -74,5 +75,59 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cons"
         />
-
+    <TextView
+        android:id="@+id/a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="#루프탑 카페"
+        android:textSize="20sp"
+        android:fontFamily="@font/netmarble_m"
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        />
+    <TextView
+        android:id="@+id/b"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="#홍대 놀거리"
+        android:textSize="20sp"
+        android:fontFamily="@font/netmarble_m"
+        app:layout_constraintTop_toBottomOf="@+id/a"
+        />
+    <TextView
+        android:id="@+id/c"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="#방탈출"
+        android:textSize="20sp"
+        android:fontFamily="@font/netmarble_m"
+        app:layout_constraintTop_toBottomOf="@+id/b"
+        />
+    <TextView
+        android:id="@+id/d"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="#실내 데이트"
+        android:textSize="20sp"
+        android:fontFamily="@font/netmarble_m"
+        app:layout_constraintTop_toBottomOf="@+id/c"
+        />
+    <TextView
+        android:id="@+id/e"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="#애견 카페"
+        android:textSize="20sp"
+        android:fontFamily="@font/netmarble_m"
+        app:layout_constraintTop_toBottomOf="@+id/d"
+        />
 </android.support.constraint.ConstraintLayout>
