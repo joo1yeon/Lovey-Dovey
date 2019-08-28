@@ -20,7 +20,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Calendar;
 
@@ -33,14 +40,15 @@ public class FootPrint extends Fragment  {
     int year = cal.get(Calendar.YEAR);
     int month = cal.get(Calendar.MONTH)+1;
     int day = cal.get(Calendar.DAY_OF_MONTH);
-//    GroundOverlayOptions videoMark;
+    GroundOverlayOptions videoMark;
 //    GoogleMap gMap;
-    MapFragment mapFrag;
+//    MapFragment mapFrag;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
 
     public FootPrint() {
+
     }
 
     @Override
@@ -70,8 +78,6 @@ public class FootPrint extends Fragment  {
 
 
         ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MODE_PRIVATE);
-//        mapFrag=(MapFragment)getChildFragmentManager().findFragmentById(R.id.map);
-
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override

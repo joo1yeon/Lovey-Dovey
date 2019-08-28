@@ -53,55 +53,68 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="45dp"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:paddingHorizontal="10dp"-->
+    <!--android:paddingVertical="5dp">-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btnDate"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/menu_button"-->
+    <!--android:fontFamily="@font/netmarble_b"-->
+    <!--android:text="데이트코스"-->
+    <!--android:textColor="@color/button_click"-->
+    <!--android:textSize="17sp"/>-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btnFoot"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/menu_button"-->
+    <!--android:fontFamily="@font/netmarble_b"-->
+    <!--android:text="발자국"-->
+    <!--android:textColor="@color/button_click"-->
+    <!--android:textSize="17sp"/>-->
+
+
+    <!--<Button-->
+    <!--android:id="@+id/btnGallery"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/menu_button"-->
+    <!--android:fontFamily="@font/netmarble_b"-->
+    <!--android:text="앨범"-->
+    <!--android:textColor="@color/button_click"-->
+    <!--android:textSize="17sp"/>-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--<android.support.v4.view.ViewPager-->
+    <!--android:id="@+id/mainFrame"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--</android.support.v4.view.ViewPager>-->
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="5dp">
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable"
+        app:tabGravity="fill"/>
 
-        <Button
-            android:id="@+id/btnDate"
-            android:layout_width="0dp"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/menu_button"
-            android:fontFamily="@font/netmarble_b"
-            android:text="데이트코스"
-            android:textColor="@color/button_click"
-            android:textSize="17sp"/>
+            android:layout_below="@id/tab"></android.support.v4.view.ViewPager>
 
-        <Button
-            android:id="@+id/btnFoot"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/menu_button"
-            android:fontFamily="@font/netmarble_b"
-            android:text="발자국"
-            android:textColor="@color/button_click"
-            android:textSize="17sp"/>
-
-
-
-        <Button
-            android:id="@+id/btnGallery"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/menu_button"
-            android:fontFamily="@font/netmarble_b"
-            android:text="앨범"
-            android:textColor="@color/button_click"
-            android:textSize="17sp"/>
-
-
-    </LinearLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/mainFrame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v4.view.ViewPager>
 </LinearLayout>
