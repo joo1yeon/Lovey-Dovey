@@ -20,7 +20,7 @@ public class StoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.album, container, false);
+        View v = inflater.inflate(R.layout.fragment_album, container, false);
         return v;
     }
 }

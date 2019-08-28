@@ -28,7 +28,7 @@ public class Main extends Fragment {
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.main,container,false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main,container,false);
 
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼

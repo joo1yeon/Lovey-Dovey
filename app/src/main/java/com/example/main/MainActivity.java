@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
 //        btnGal.setTag(3);
 
     }
-    private View createTabView(String tabName){
-        View tabView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.fragment_date,null);
-        return tabView;
-    }
+//    private View createTabView(String tabName){
+//        View tabView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.fragment_main,null);
+//        return tabView;
+//    }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments = new ArrayList<Fragment>();
@@ -93,26 +93,26 @@ public class MainActivity extends AppCompatActivity {
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
-            fragments.add(new MainFragment());
-            fragments.add(new DateFragment());
-            fragments.add(new FootFragment());
-            fragments.add(new AlbumFragment());
+            fragments.add(new Main());
+            fragments.add(new Datecourse());
+            fragments.add(new FootPrint());
+            fragments.add(new Album());
         }
 
         @Override
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    MainFragment mainFragment = new MainFragment();
+                    Main mainFragment = new Main();
                     return mainFragment;
                 case 1:
-                    DateFragment dateFragment = new DateFragment();
+                    Datecourse dateFragment = new Datecourse();
                     return dateFragment;
                 case 2:
-                    FootFragment footFragment = new FootFragment();
+                    FootPrint footFragment = new FootPrint();
                     return footFragment;
                 case 3:
-                    AlbumFragment albumFragment = new AlbumFragment();
+                    Album albumFragment = new Album();
                     return albumFragment;
                     default: return null;
             }

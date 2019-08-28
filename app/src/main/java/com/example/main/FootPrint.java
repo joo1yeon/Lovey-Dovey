@@ -59,7 +59,7 @@ public class FootPrint extends Fragment  {
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.footprint, container, false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
 
