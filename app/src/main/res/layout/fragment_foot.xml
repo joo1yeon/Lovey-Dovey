@@ -17,42 +17,39 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="10dp"
             android:orientation="horizontal">
 
-            <TextView
+            <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/netmarble_b"
-                android:text="2019년 5월 24일"
-                android:textAlignment="center"
-                android:textColor="#A6A6A6"
-                android:textSize="10sp"
-                android:id="@+id/tvYesterday"/>
+                android:id="@+id/tvYesterday"
+                android:src="@drawable/ic_chevron_left_black_24dp"
+                android:background="@android:color/transparent" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
                 android:fontFamily="@font/netmarble_b"
-                android:text="2019년 5월 25일"
+                android:text="today"
                 android:textAlignment="center"
                 android:textColor="#B8D9C0"
                 android:textSize="15sp"
-                android:id="@+id/tvToday"/>
+                android:id="@+id/tvToday"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
 
-            <TextView
+            <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/netmarble_b"
-                android:text="2019년 5월 26일"
-                android:textAlignment="center"
-                android:textColor="#A6A6A6"
-                android:textSize="10sp"
-                android:id="@+id/tvTomorrow"/>
+                android:id="@+id/tvTomorrow"
+                android:src="@drawable/ic_chevron_right_black_24dp"
+                android:background="@android:color/transparent"/>
 
         </LinearLayout>
 

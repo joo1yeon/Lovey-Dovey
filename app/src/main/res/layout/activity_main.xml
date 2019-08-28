@@ -11,8 +11,9 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#B8D9C0">
+        android:layout_height="0dp"
+        android:background="#B8D9C0"
+        android:layout_weight="1">
 
         <ImageButton
             android:id="@+id/btnHome"
@@ -107,14 +108,18 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:tabMode="fixed"
-        app:tabGravity="fill"/>
+        app:tabGravity="fill"
+        android:background="#70B8D9C0"
+        android:layout_weight="0.8"
+        />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tab"></android.support.v4.view.ViewPager>
+            android:layout_height="0dp"
+            android:layout_below="@id/tab"
+            android:layout_weight="14"></android.support.v4.view.ViewPager>
 
 </LinearLayout>
