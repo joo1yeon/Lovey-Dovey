@@ -56,6 +56,13 @@
         <activity android:name=".Datecourse_Fragment" />
         <activity android:name=".AllReview" />
 
+        <activity android:name=".LocSearch" android:label="장소검색"/>
+        <activity android:name=".CreateStory" android:label="스토리 생성" />
+        <activity android:name=".SearchStory" android:label="스토리 검색" />
+        <activity android:name=".ToDoList"/>
+        <activity android:name=".DateImageClick"/>
+        <activity android:name=".Datecourse_Fragment"/>
+        <activity android:name=".AllReview"/>
     </application>
 
 </manifest>
