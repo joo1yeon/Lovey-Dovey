@@ -28,7 +28,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.album, container, false);
+        View view = inflater.inflate(R.layout.fragment_album, container, false);
         mStoryRecyclerView = view.findViewById(R.id.story_recycler_view);
         mStoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
