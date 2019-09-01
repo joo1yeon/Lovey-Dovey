@@ -26,6 +26,7 @@ public class StoryContentsFragment extends Fragment { //하루의 스토리(사�
 
         mTitle = v.findViewById(R.id.story_title);
         //mDate.setText(mStory.getYear());
+
         return v;
     }
 }
