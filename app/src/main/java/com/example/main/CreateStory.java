@@ -25,6 +25,7 @@ public class CreateStory extends AppCompatActivity {
     TextView tvPressIcon;
     public Story mStory;
     private static final String DIALOG_DATE = "DialogDate";
+    private static final int REQUEST_DATE = 0; // DatePicker 에서 데이터 반환하기 위해 요청 코드 상수 정의
     DbOpenHelper mDbOpenHelper;
     int year, month, day;
 
@@ -48,7 +49,7 @@ public class CreateStory extends AppCompatActivity {
             public void onClick(View view) {
                 FragmentManager manager = getSupportFragmentManager();
                 DatePickerFragment dialog = new DatePickerFragment();
-                dialog.show(manager, DIALOG_DATE);
+                dialog.show(manager, DIALOG_DATE); //DialogFragment 를 화면에 보여주기 위해 FragmentManager가 onCreateDialog 호출
 
                 //Log.d("test", "받아온 값" + String.valueOf(year));
             }
@@ -66,6 +67,13 @@ public class CreateStory extends AppCompatActivity {
                 mDbOpenHelper.open();
                 mDbOpenHelper.create();
                 mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
+                Story story = new Story();
+                story.setTitle("테스트");
+                story.setYear(123);
+                story.setMonth(123);
+                story.setDay(123);
+                Album_singleton.get(getApplicationContext()).addStory(story);
+                finish();
             }
         });
 

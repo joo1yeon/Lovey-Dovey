@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.DatePicker;
 
 public class DatePickerFragment extends DialogFragment {
+    //Alert Dialog 가 DialogFragment 의 인스턴스에 포함되어 같이 동작
 
     public DatePicker mDatePicker;
 
@@ -27,7 +28,7 @@ public class DatePickerFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle("날짜 선택")
-                .setPositiveButton("선택", null)
+//                .setPositiveButton("선택", null)
                 .setPositiveButton("선택", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
