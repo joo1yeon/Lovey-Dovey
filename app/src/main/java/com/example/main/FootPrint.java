@@ -3,11 +3,17 @@ package com.example.main;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +28,19 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.text.DateFormat;
+import java.util.List;
 
 public class FootPrint extends Fragment implements OnMapReadyCallback {
     ImageButton btnTomorrow, btnYesterday;
@@ -41,13 +51,10 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     int year = cal.get(Calendar.YEAR);
     int month = cal.get(Calendar.MONTH);
     int day = cal.get(Calendar.DATE);
-
+    MapView map;
     Date today = cal.getTime();
-//
-//    String getToday = sdf.format(today);
     GroundOverlayOptions videoMark;
     GoogleMap gMap;
-    MapFragment mapFrag;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
@@ -59,7 +66,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Nullable
@@ -76,7 +82,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         btnTomorrow = layout.findViewById(R.id.btnTomorrow);
         btnYesterday = layout.findViewById(R.id.btnYesterday);
         tvToday.setText(sdf.format(cal.getTime()));
-
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +96,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
-                cal.set(year,month,day);
+                cal.set(year, month, day);
                 tvToday.setText(sdf.format(today));
 
             }
@@ -124,23 +129,28 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        //TODO 날짜 이동 버튼(하루 전)
         btnYesterday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.DATE,-1);
+                cal.add(Calendar.DATE, -1);
                 tvToday.setText(sdf.format(cal.getTime()));
-                Toast.makeText(getContext(),"어제 날짜로 이동합니다",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "어제 날짜로 이동합니다", Toast.LENGTH_SHORT).show();
             }
         });
 
+        //TODO 날짜 이동 버튼(하루 후)
         btnTomorrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cal.add(Calendar.DATE,+1);
+                cal.add(Calendar.DATE, +1);
                 tvToday.setText(sdf.format(cal.getTime()));
-                Toast.makeText(getContext(),"내일 날짜로 이동합니다",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "내일 날짜로 이동합니다", Toast.LENGTH_SHORT).show();
             }
         });
+        map = layout.findViewById(R.id.map);
+        map.onCreate(savedInstanceState);
+        map.getMapAsync(this);
         return layout;
     }
 
@@ -168,16 +178,96 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
-        gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+        gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584, 126.925), 15));
         gMap.getUiSettings().setZoomControlsEnabled(true);
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                videoMark = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.marker2)).position(latLng, 100f, 100f);
+                videoMark = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.mark)).position(latLng, 100f, 100f);
                 gMap.addGroundOverlay(videoMark);
             }
         });
+//        if (gMap != null) {
+//            LatLng latLng = new LatLng(37.566643, 126.978279);
+//            CameraPosition position = new CameraPosition.Builder().target(latLng).zoom(16f).build();
+//            gMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
+//            MarkerOptions markerOptions = new MarkerOptions();
+//            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.mark));
+//            markerOptions.position(latLng);
+//            gMap.addMarker(markerOptions);
+//            MyGeocodingThread thread = new MyGeocodingThread(latLng);
+//            thread.start();
+//        }
+    }
 
+    class MyGeocodingThread extends Thread {
+        LatLng latLng;
+
+        public MyGeocodingThread(LatLng _latLng) {
+            latLng = _latLng;
+        }
+
+        @Override
+        public void run() {
+            Geocoder geocoder = new Geocoder(getContext());
+            List<Address> addresses = null;
+            String addressText ="";
+            try{
+                addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
+                Thread.sleep(500);
+                if(addresses!=null && addresses.size()>0){
+                    Address address = addresses.get(0);
+                    addressText = address.getAdminArea()+""+(address.getMaxAddressLineIndex()>0?address.getAddressLine(0):address.getLocality())+"";
+                    String txt = address.getSubLocality();
+                    if(txt!=null)addressText+=txt+"";
+                    addressText+=address.getThoroughfare()+""+address.getSubThoroughfare();
+
+                    Message msg = new Message();
+                    msg.what=100;
+                    msg.obj=addressText;
+                    handler.sendMessage(msg);
+                }
+            }catch(Exception e){}
+        }
+    }
+    Handler handler =new Handler(){
+      public void handleMessage(Message msg){
+          switch (msg.what){
+              case 100: Toast.makeText(getContext(),(String)msg.obj,Toast.LENGTH_SHORT).show();break;
+          }
+      }
+    };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        map.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        map.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        map.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        map.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        map.onPause();
     }
 }
+
