@@ -6,13 +6,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-<<<<<<< Updated upstream
-=======
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
->>>>>>> Stashed changes
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,10 +37,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-<<<<<<< Updated upstream
         viewPager = findViewById(R.id.mainFrame);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(0);        //viewPager의 초기값을 0(메인화면)으로 설정
 
         btnHome = findViewById(R.id.btnHome);
         btnOverflow = findViewById(R.id.btnOverflow);
@@ -54,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         footFrag = new FootPrint();
         albumFrag = new StoryListFragment();
 
+        //TODO 버튼에 ViewPager 태그값 및 클릭 리스너 설정
         btnHome.setOnClickListener(movePageListener);
         btnHome.setTag(0);
         btnDate.setOnClickListener(movePageListener);
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         btnFoot.setTag(2);
         btnGal.setOnClickListener(movePageListener);
         btnGal.setTag(3);
-=======
         linearLayout = findViewById(R.id.main_content);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -80,12 +78,11 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
->>>>>>> Stashed changes
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
-<<<<<<< Updated upstream
+    //TODO 버튼을 클릭하면 해당 태그의 fragment로 이동
     View.OnClickListener movePageListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -94,12 +91,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+    //TODO 각 태그값에 해당하는 fragment 설정
     private class PagerAdapter extends FragmentStatePagerAdapter {
 
-
         public PagerAdapter(FragmentManager fm) {
-=======
             }
 
             @Override
@@ -143,19 +138,16 @@ public class MainActivity extends AppCompatActivity {
         private String titles[] = new String[]{"홈","데이트코스", "발자국", "앨범"};
 
         public MyPagerAdapter(FragmentManager fm) {
->>>>>>> Stashed changes
             super(fm);
             fragments.add(new Main());
             fragments.add(new Datecourse());
             fragments.add(new FootPrint());
             fragments.add(new Album());
         }
-
         @Override
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-<<<<<<< Updated upstream
                     return mainFrag;
                 case 1:
                     return dateFrag;
@@ -166,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
 
                 default:
                     return null;
-=======
                     Main mainFragment = new Main();
                     return mainFragment;
                 case 1:
@@ -179,17 +170,18 @@ public class MainActivity extends AppCompatActivity {
                     Album albumFragment = new Album();
                     return albumFragment;
                     default: return null;
->>>>>>> Stashed changes
+                case 0: return mainFrag;
+                case 1: return dateFrag;
+                case 2: return footFrag;
+                case 3: return albumFrag;
+                default: return null;
             }
         }
-
         @Override
         public int getCount() {
             return this.fragments.size();
         }
-<<<<<<< Updated upstream
     }
-=======
 
         @Nullable
         @Override
@@ -234,6 +226,9 @@ public class MainActivity extends AppCompatActivity {
 //    protected void onResume() {
 //        super.onResume();
 //    }
->>>>>>> Stashed changes
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
 
