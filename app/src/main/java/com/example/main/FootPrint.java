@@ -1,7 +1,6 @@
 package com.example.main;
 
 
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,15 +30,21 @@ import com.google.android.gms.maps.model.LatLng;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.text.DateFormat;
 
 public class FootPrint extends Fragment implements OnMapReadyCallback {
     ImageButton btnTomorrow, btnYesterday;
     TextView tvToday;
-    Calendar cal = GregorianCalendar.getInstance();
-    Date today = cal.getTime();
+    Date date = new Date();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-    String getToday = sdf.format(today);
+    Calendar cal = Calendar.getInstance();
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH);
+    int day = cal.get(Calendar.DATE);
+
+    Date today = cal.getTime();
+//
+//    String getToday = sdf.format(today);
     GroundOverlayOptions videoMark;
     GoogleMap gMap;
     MapFragment mapFrag;
@@ -68,9 +73,9 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         fabSearch = layout.findViewById(R.id.fabSearch);
         fabCal = layout.findViewById(R.id.fabCal);
         tvToday = layout.findViewById(R.id.tvToday);
-        btnTomorrow=layout.findViewById(R.id.btnTomorrow);
-        btnYesterday=layout.findViewById(R.id.btnYesterday);
-        tvToday.setText(getToday);
+        btnTomorrow = layout.findViewById(R.id.btnTomorrow);
+        btnYesterday = layout.findViewById(R.id.btnYesterday);
+        tvToday.setText(sdf.format(cal.getTime()));
 
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +91,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
-                tvToday.setText(getToday);
+                cal.set(year,month,day);
+                tvToday.setText(sdf.format(today));
 
             }
         });
@@ -110,15 +116,31 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tvToday.setText(year+"년 "+(month+1)+"월 "+dayOfMonth+"일");
-                        Toast.makeText(getContext(),"선택한 날짜로 이동합니당",Toast.LENGTH_SHORT).show();
+                        tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
+                        Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
                     }
-                },today.getYear()+1900,today.getMonth(),today.getDate());
+                }, year, month, day);
                 dateDialog.show();
             }
         });
 
+        btnYesterday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cal.add(Calendar.DATE,-1);
+                tvToday.setText(sdf.format(cal.getTime()));
+                Toast.makeText(getContext(),"어제 날짜로 이동합니다",Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        btnTomorrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cal.add(Calendar.DATE,+1);
+                tvToday.setText(sdf.format(cal.getTime()));
+                Toast.makeText(getContext(),"내일 날짜로 이동합니다",Toast.LENGTH_SHORT).show();
+            }
+        });
         return layout;
     }
 
@@ -147,12 +169,12 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
         gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584,126.925),15));
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584, 126.925), 15));
         gMap.getUiSettings().setZoomControlsEnabled(true);
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                videoMark=new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.marker2)).position(latLng,100f,100f);
+                videoMark = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.marker2)).position(latLng, 100f, 100f);
                 gMap.addGroundOverlay(videoMark);
             }
         });
