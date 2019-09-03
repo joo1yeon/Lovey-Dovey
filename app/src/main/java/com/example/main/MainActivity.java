@@ -137,41 +137,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    //    //TODO 버튼을 클릭하면 해당 태그의 fragment로 이동
-//    View.OnClickListener movePageListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            int tag = (int) v.getTag();
-//            viewPager.setCurrentItem(tag);
-//        }
-//    };
-//
-//    //TODO 각 태그값에 해당하는 fragment 설정
-//    private class PagerAdapter extends FragmentStatePagerAdapter {
-//
-//        public PagerAdapter(FragmentManager fm) {
-//            super(fm);
-//        }
-//        @Override
-//        public Fragment getItem(int i) {
-//            switch (i) {
-//                case 0: return mainFrag;
-//                case 1: return dateFrag;
-//                case 2: return footFrag;
-//                case 3: return albumFrag;
-//                default: return null;
-//            }
-//        }
-//        @Override
-//        public int getCount() {
-//            return 4;
-//        }
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//    }
 }
 

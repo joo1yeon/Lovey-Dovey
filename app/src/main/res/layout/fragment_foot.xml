@@ -22,7 +22,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/tvYesterday"
+                android:id="@+id/btnYesterday"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -43,7 +43,7 @@
                 android:textStyle="bold" />
 
             <ImageButton
-                android:id="@+id/tvTomorrow"
+                android:id="@+id/btnTomorrow"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class FootPrint extends Fragment implements OnMapReadyCallback {
-    ImageButton btnYesterday, btnTomorrow;
+    ImageButton btnTomorrow, btnYesterday;
     TextView tvToday;
     Calendar cal = GregorianCalendar.getInstance();
     Date today = cal.getTime();
@@ -68,9 +68,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         fabSearch = layout.findViewById(R.id.fabSearch);
         fabCal = layout.findViewById(R.id.fabCal);
         tvToday = layout.findViewById(R.id.tvToday);
-        btnTomorrow = layout.findViewById(R.id.tvTomorrow);
-        btnYesterday = layout.findViewById(R.id.tvYesterday);
-
+        btnTomorrow=layout.findViewById(R.id.btnTomorrow);
+        btnYesterday=layout.findViewById(R.id.btnYesterday);
         tvToday.setText(getToday);
 
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
@@ -118,6 +117,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 dateDialog.show();
             }
         });
+
+
         return layout;
     }
 
