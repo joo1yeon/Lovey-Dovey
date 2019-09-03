@@ -56,7 +56,7 @@ public class CreateStory extends AppCompatActivity {
             }
         });
 
-        Log.d("test", "캘린더 닫혔을 때 year 값" + String.valueOf(year));
+        Log.d("test", "캘린더 닫혔을 때 month 값" + String.valueOf(month));
         if (year != 0 && month != 0 && day != 0) {
             tvPressIcon.setText(year + "년 " + month + "월 " + day + "일");
         }
@@ -67,13 +67,16 @@ public class CreateStory extends AppCompatActivity {
                 mDbOpenHelper = new DbOpenHelper(getApplicationContext());
                 mDbOpenHelper.open();
                 mDbOpenHelper.create();
-                mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
+                mDbOpenHelper.deleteAllColumns();
+                //mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
+                Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
                 story.setTitle("테스트");
                 story.setYear(123);
                 story.setMonth(123);
                 story.setDay(123);
                 Album_singleton.get(getApplicationContext()).addStory(story);
+                mDbOpenHelper.close();
                 finish();
             }
         });

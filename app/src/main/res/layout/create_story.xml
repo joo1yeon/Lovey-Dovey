@@ -5,6 +5,20 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B8D9C0"
+        android:fontFamily="@font/netmarble_b"
+        android:padding="10dp"
+        android:text="스토리 생성하기"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/tv_story_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +28,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/topPanel" />
 
     <EditText
         android:id="@+id/et_story_title"
