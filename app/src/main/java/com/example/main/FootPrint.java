@@ -26,7 +26,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class FootPrint extends Fragment  {
     ImageView btnCal;
-    TextView btnToday,tvYesterday,tvToday,tvTomorrow;
+    TextView tvToday;
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
     int month = cal.get(Calendar.MONTH)+1;
@@ -43,7 +43,7 @@ public class FootPrint extends Fragment  {
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.footprint, container, false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
 
@@ -51,14 +51,10 @@ public class FootPrint extends Fragment  {
         fabToday = layout.findViewById(R.id.fabToday);
         fabSearch = layout.findViewById(R.id.fabSearch);
         fabCal = layout.findViewById(R.id.fabCal);
-        tvYesterday=layout.findViewById(R.id.tvYesterday);
         tvToday=layout.findViewById(R.id.tvToday);
-        tvTomorrow=layout.findViewById(R.id.tvTomorrow);
 
 
-        tvYesterday.setText(year+"년 "+month+"월 "+(day-1)+"일");
         tvToday.setText(year+"년 "+month+"월 "+day+"일");
-        tvTomorrow.setText(year+"년 "+month+"월 "+(day+1)+"일");
 
 
         ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MODE_PRIVATE);
@@ -78,9 +74,7 @@ public class FootPrint extends Fragment  {
             public void onClick(View v) {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
-                tvYesterday.setText(year+"년 "+month+"월 "+(day-1)+"일");
                 tvToday.setText(year+"년 "+month+"월 "+day+"일");
-                tvTomorrow.setText(year+"년 "+month+"월 "+(day+1)+"일");
 
             }
         });
@@ -104,9 +98,7 @@ public class FootPrint extends Fragment  {
                 DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tvYesterday.setText(year+"년 "+(month+1)+"월 "+(dayOfMonth-1)+"일");
                         tvToday.setText(year+"년 "+(month+1)+"월 "+dayOfMonth+"일");
-                        tvTomorrow.setText(year+"년 "+(month+1)+"월 "+(dayOfMonth+1)+"일");
 
                     }
                 }, year, month-1, day);
