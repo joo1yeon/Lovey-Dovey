@@ -20,15 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.Calendar;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -40,8 +31,7 @@ public class FootPrint extends Fragment  {
     int year = cal.get(Calendar.YEAR);
     int month = cal.get(Calendar.MONTH)+1;
     int day = cal.get(Calendar.DAY_OF_MONTH);
-    GroundOverlayOptions videoMark;
-//    GroundOverlayOptions videoMark;
+    //    GroundOverlayOptions videoMark;
 //    GoogleMap gMap;
 //    MapFragment mapFrag;
     private Animation fab_open, fab_close;
@@ -49,22 +39,11 @@ public class FootPrint extends Fragment  {
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
 
     public FootPrint() {
-
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.footprint, container, false);
-        btnCal = layout.findViewById(R.id.btnCal);
-        btnToday = layout.findViewById(R.id.btnToday);
-        btnCal.setOnClickListener(new View.OnClickListener() {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
 
@@ -111,7 +90,6 @@ public class FootPrint extends Fragment  {
             @Override
             public void onClick(View v) {
                 anim();
-                Intent intent = new Intent(getContext(), LocSearch.class);
                 Intent intent = new Intent(getContext(),Search.class);
                 startActivity(intent);
                 Toast.makeText(getContext(),"장소 검색하기",Toast.LENGTH_SHORT).show();
