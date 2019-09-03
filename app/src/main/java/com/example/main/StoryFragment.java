@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class StoryFragment extends Fragment { //전체 스토리 정보를 보여줌, 컨트롤러 객체
-    public Story mStory; //인스턴스를 보존하기 위해 갖는 멤버변수
+public class StoryFragment extends Fragment {
+    public Story mStory;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -19,9 +19,9 @@ public class StoryFragment extends Fragment { //전체 스토리 정보를 보�
 
     @Nullable
     @Override
-    //fragment 생명주기 메서드는 public
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.album, container, false);
         return v;
     }
 }
+//커밋 왜안돼진짜ㅠㅠㅠㅠ
