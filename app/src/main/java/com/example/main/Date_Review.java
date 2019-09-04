@@ -86,7 +86,6 @@ public class Date_Review extends Fragment {
                         addText = digView.findViewById(R.id.addText);
                         String text = addText.getText().toString();
                         adapter.addItem(_ratingbar.getRating(),text);
-                       // adapter.notifyDataSetChanged();
                         Toast.makeText(getContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show();
                         _dig.dismiss();
                     }

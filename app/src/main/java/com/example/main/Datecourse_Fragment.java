@@ -33,6 +33,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         favorite = findViewById(R.id.favorite);
         date_info = new Date_Info();
 
+
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +57,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         dateInfo.setOnClickListener(this);
         dateReview.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
