@@ -22,7 +22,7 @@ public class Datecourse extends Fragment {
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_date,container,false);
+        ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse,container,false);
         // Fragment로 넘길 Image Resource
 
         //ArrayList에 해당 image를 넣는다.
@@ -32,7 +32,7 @@ public class Datecourse extends Fragment {
         listImage.add(R.drawable.image3);
         listImage.add(R.drawable.image4);
 
-        ViewPager viewPager = layout.findViewById(R.id.date_viewPager);
+        ViewPager viewPager = layout.findViewById(R.id.viewPager);
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getFragmentManager());
         // ViewPager와  FragmentAdapter 연결
         viewPager.setAdapter(fragmentAdapter);
