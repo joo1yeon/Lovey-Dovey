@@ -1,49 +1,76 @@
 package com.example.main;
 
-import android.Manifest;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class FootPrint extends Fragment  {
-    ImageView btnCal;
-    TextView btnToday,tvYesterday,tvToday,tvTomorrow;
+public class FootPrint extends Fragment implements OnMapReadyCallback {
+    ImageButton btnTomorrow, btnYesterday;
+    TextView tvToday;
+    Date date = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
-    int month = cal.get(Calendar.MONTH)+1;
-    int day = cal.get(Calendar.DAY_OF_MONTH);
-//    GroundOverlayOptions videoMark;
-//    GoogleMap gMap;
-//    MapFragment mapFrag;
+    int month = cal.get(Calendar.MONTH);
+    int day = cal.get(Calendar.DATE);
+    MapView map;
+    Date today = cal.getTime();
+    GroundOverlayOptions videoMark;
+    GoogleMap gMap;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
 
     public FootPrint() {
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.footprint, container, false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
 
@@ -51,19 +78,10 @@ public class FootPrint extends Fragment  {
         fabToday = layout.findViewById(R.id.fabToday);
         fabSearch = layout.findViewById(R.id.fabSearch);
         fabCal = layout.findViewById(R.id.fabCal);
-        tvYesterday=layout.findViewById(R.id.tvYesterday);
-        tvToday=layout.findViewById(R.id.tvToday);
-        tvTomorrow=layout.findViewById(R.id.tvTomorrow);
-
-
-        tvYesterday.setText(year+"년 "+month+"월 "+(day-1)+"일");
-        tvToday.setText(year+"년 "+month+"월 "+day+"일");
-        tvTomorrow.setText(year+"년 "+month+"월 "+(day+1)+"일");
-
-
-        ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MODE_PRIVATE);
-        //mapFrag=(MapFragment)getFragmentManager().findFragmentById(R.id.map);
-
+        tvToday = layout.findViewById(R.id.tvToday);
+        btnTomorrow = layout.findViewById(R.id.btnTomorrow);
+        btnYesterday = layout.findViewById(R.id.btnYesterday);
+        tvToday.setText(sdf.format(cal.getTime()));
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,9 +96,8 @@ public class FootPrint extends Fragment  {
             public void onClick(View v) {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
-                tvYesterday.setText(year+"년 "+month+"월 "+(day-1)+"일");
-                tvToday.setText(year+"년 "+month+"월 "+day+"일");
-                tvTomorrow.setText(year+"년 "+month+"월 "+(day+1)+"일");
+                cal.set(year, month, day);
+                tvToday.setText(sdf.format(today));
 
             }
         });
@@ -90,9 +107,9 @@ public class FootPrint extends Fragment  {
             @Override
             public void onClick(View v) {
                 anim();
-                Intent intent = new Intent(getContext(),Search.class);
+                Intent intent = new Intent(getContext(), LocSearch.class);
                 startActivity(intent);
-                Toast.makeText(getContext(),"장소 검색하기",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "장소 검색하기", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -104,73 +121,153 @@ public class FootPrint extends Fragment  {
                 DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tvYesterday.setText(year+"년 "+(month+1)+"월 "+(dayOfMonth-1)+"일");
-                        tvToday.setText(year+"년 "+(month+1)+"월 "+dayOfMonth+"일");
-                        tvTomorrow.setText(year+"년 "+(month+1)+"월 "+(dayOfMonth+1)+"일");
-
+                        tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
+                        Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
                     }
-                }, year, month-1, day);
+                }, year, month, day);
                 dateDialog.show();
-
             }
         });
 
-        /*btnCal = layout.findViewById(R.id.btnCal);
-        btnToday = layout.findViewById(R.id.btnToday);
-        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MODE_PRIVATE);
-//        mapFrag =(MapFragment) layout.findViewById(R.id.map);
-//        mapFrag.getMapAsync(this);
-
-
-        btnCal.setOnClickListener(new View.OnClickListener() {
+        //TODO 날짜 이동 버튼(하루 전)
+        btnYesterday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cal.add(Calendar.DATE, -1);
+                tvToday.setText(sdf.format(cal.getTime()));
+                Toast.makeText(getContext(), "어제 날짜로 이동합니다", Toast.LENGTH_SHORT).show();
             }
         });
 
-        btnToday.setOnClickListener(new View.OnClickListener() {
+        //TODO 날짜 이동 버튼(하루 후)
+        btnTomorrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cal.add(Calendar.DATE, +1);
+                tvToday.setText(sdf.format(cal.getTime()));
+                Toast.makeText(getContext(), "내일 날짜로 이동합니다", Toast.LENGTH_SHORT).show();
             }
-        });*/
-
+        });
+        map = layout.findViewById(R.id.map);
+        map.onCreate(savedInstanceState);
+        map.getMapAsync(this);
         return layout;
     }
 
     //TODO FloatingActionButton에 애니메이션 설정
     public void anim() {
-        if(isFabOpen){
+        if (isFabOpen) {
             fabCal.startAnimation(fab_close);
             fabSearch.startAnimation(fab_close);
             fabToday.startAnimation(fab_close);
             fabCal.setClickable(false);
             fabSearch.setClickable(false);
             fabToday.setClickable(false);
-            isFabOpen=false;
-        }else{
+            isFabOpen = false;
+        } else {
             fabCal.startAnimation(fab_open);
             fabSearch.startAnimation(fab_open);
             fabToday.startAnimation(fab_open);
             fabCal.setClickable(true);
             fabSearch.setClickable(true);
             fabToday.setClickable(true);
-            isFabOpen=true;
+            isFabOpen = true;
         }
     }
 
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        gMap = googleMap;
-//        gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-//        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584,126.925),15));
-//        gMap.getUiSettings().setZoomControlsEnabled(true);
-//        gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//            @Override
-//            public void onMapClick(LatLng latLng) {
-//                videoMark=new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.marker2)).position(latLng,100f,100f);
-//                gMap.addGroundOverlay(videoMark);
-//            }
-//        });
-//
-//    }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        gMap = googleMap;
+
+        gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584, 126.925), 15));
+        gMap.getUiSettings().setZoomControlsEnabled(true);
+        gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                videoMark = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.mark)).position(latLng, 100f, 100f);
+                gMap.addGroundOverlay(videoMark);
+            }
+        });
+//        if (gMap != null) {
+//            LatLng latLng = new LatLng(37.566643, 126.978279);
+//            CameraPosition position = new CameraPosition.Builder().target(latLng).zoom(16f).build();
+//            gMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
+//            MarkerOptions markerOptions = new MarkerOptions();
+//            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.mark));
+//            markerOptions.position(latLng);
+//            gMap.addMarker(markerOptions);
+//            MyGeocodingThread thread = new MyGeocodingThread(latLng);
+//            thread.start();
+//        }
+    }
+
+    class MyGeocodingThread extends Thread {
+        LatLng latLng;
+
+        public MyGeocodingThread(LatLng _latLng) {
+            latLng = _latLng;
+        }
+
+        @Override
+        public void run() {
+            Geocoder geocoder = new Geocoder(getContext());
+            List<Address> addresses = null;
+            String addressText ="";
+            try{
+                addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
+                Thread.sleep(500);
+                if(addresses!=null && addresses.size()>0){
+                    Address address = addresses.get(0);
+                    addressText = address.getAdminArea()+""+(address.getMaxAddressLineIndex()>0?address.getAddressLine(0):address.getLocality())+"";
+                    String txt = address.getSubLocality();
+                    if(txt!=null)addressText+=txt+"";
+                    addressText+=address.getThoroughfare()+""+address.getSubThoroughfare();
+
+                    Message msg = new Message();
+                    msg.what=100;
+                    msg.obj=addressText;
+                    handler.sendMessage(msg);
+                }
+            }catch(Exception e){}
+        }
+    }
+    Handler handler =new Handler(){
+      public void handleMessage(Message msg){
+          switch (msg.what){
+              case 100: Toast.makeText(getContext(),(String)msg.obj,Toast.LENGTH_SHORT).show();break;
+          }
+      }
+    };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        map.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        map.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        map.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        map.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        map.onPause();
+    }
 }
+
