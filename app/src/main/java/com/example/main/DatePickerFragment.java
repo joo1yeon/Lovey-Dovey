@@ -2,6 +2,7 @@ package com.example.main;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ public class DatePickerFragment extends DialogFragment {
     //Alert Dialog 가 DialogFragment 의 인스턴스에 포함되어 같이 동작
 
     public DatePicker mDatePicker;
+    OnDatePickerSetListener onDatePickerSetListener;
 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -36,10 +38,31 @@ public class DatePickerFragment extends DialogFragment {
                         int year = mDatePicker.getYear();
                         int month = mDatePicker.getMonth();
                         int day = mDatePicker.getDayOfMonth();
+                        onDatePickerSetListener.onDatePickerSet(year, month, day);
 
                         Log.d("test", String.valueOf(month));
                     }
                 })
                 .create();
+    }
+
+    public interface OnDatePickerSetListener {
+        void onDatePickerSet(int y, int m, int d);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnDatePickerSetListener) {
+            onDatePickerSetListener = (OnDatePickerSetListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement OnDatePickerListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onDatePickerSetListener = null;
     }
 }

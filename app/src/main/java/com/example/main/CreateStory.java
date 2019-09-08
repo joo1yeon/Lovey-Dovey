@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CreateStory extends AppCompatActivity {
+public class CreateStory extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
 
     Button btnConfirm,btnCancel;
     ImageView icCalendar;
@@ -28,6 +28,13 @@ public class CreateStory extends AppCompatActivity {
     private static final int REQUEST_DATE = 0; // DatePicker 에서 데이터 반환하기 위해 요청 코드 상수 정의
     DbOpenHelper mDbOpenHelper;
     int year, month, day;
+
+    @Override
+    public void onDatePickerSet(int y, int m, int d){
+        year = y;
+        month = m;
+        day = d;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,9 +79,9 @@ public class CreateStory extends AppCompatActivity {
                 Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
                 story.setTitle(etStoryTitle.getText().toString());
-                story.setYear(123);
-                story.setMonth(123);
-                story.setDay(123);
+                story.setYear(year);
+                story.setMonth(month);
+                story.setDay(day);
                 Album_singleton.get(getApplicationContext()).addStory(story);
                 mDbOpenHelper.close();
                 finish();
@@ -87,5 +94,7 @@ public class CreateStory extends AppCompatActivity {
                 finish();
             }
         });
+
     }
+
 }
