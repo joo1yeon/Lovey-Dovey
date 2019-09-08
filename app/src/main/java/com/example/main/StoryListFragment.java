@@ -111,8 +111,10 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            MenuItem Edit = contextMenu.add(Menu.NONE, 1001, 1, "수정");
-            MenuItem Delete = contextMenu.add(Menu.NONE, 1002, 2, "삭제");
+//            MenuItem Gotofootprint = contextMenu.add(Menu.NONE, 1001, 1, "발자국으로 이동");
+            MenuItem Edit = contextMenu.add(Menu.NONE, 1002, 2, "수정");
+            MenuItem Delete = contextMenu.add(Menu.NONE, 1003, 3, "삭제");
+
             Edit.setOnMenuItemClickListener(onEditMenu);
             Delete.setOnMenuItemClickListener(onEditMenu);
         }
@@ -122,11 +124,16 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
             public boolean onMenuItemClick(MenuItem menuItem) {
 
                 switch (menuItem.getItemId()) {
-                    case 1001: //수정 항목 선택시
-                    case 1002: //삭제 항목 선택시
+                    case 1002: //수정 항목 선택시
+                    case 1003: //삭제 항목 선택시
+                        Album_singleton album_singleton = Album_singleton.get(getActivity());
+                        List<Story> stories = album_singleton.getStories();
+                        stories.remove(getAdapterPosition());
+                        mAdapter.notifyItemRemoved(getAdapterPosition());
+                        mAdapter.notifyItemRangeChanged(getAdapterPosition(), stories.size());
+                        break;
 
                 }
-
                 return true;
             }
         };

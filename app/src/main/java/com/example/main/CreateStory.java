@@ -30,10 +30,13 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
     int year, month, day;
 
     @Override
-    public void onDatePickerSet(int y, int m, int d){
+    public void onDatePickerSet(int y, int m, int d){ //DatePickerFragment 로부터 날짜를 받아온다.
         year = y;
         month = m;
         day = d;
+        if (year != 0 && month != 0 && day != 0) {
+            tvPressIcon.setText(year + "년 " + month + "월 " + day + "일");
+        }
     }
 
     @Override
@@ -47,26 +50,14 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
         etStoryTitle = findViewById(R.id.et_story_title);
         tvPressIcon = findViewById(R.id.tv_press_icon);
 
-//        Intent intent
-//        year = intent.getIntExtra("Year", 0);
-//        month = intent.getIntExtra("Month", 0);
-//        day = intent.getIntExtra("Day", 0);
-
         icCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager manager = getSupportFragmentManager();
                 DatePickerFragment dialog = new DatePickerFragment();
                 dialog.show(manager, DIALOG_DATE); //DialogFragment 를 화면에 보여주기 위해 FragmentManager가 onCreateDialog 호출
-
-                //Log.d("test", "받아온 값" + String.valueOf(year));
             }
         });
-
-        Log.d("test", "캘린더 닫혔을 때 month 값" + String.valueOf(month));
-        if (year != 0 && month != 0 && day != 0) {
-            tvPressIcon.setText(year + "년 " + month + "월 " + day + "일");
-        }
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
