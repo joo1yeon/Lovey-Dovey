@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +10,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -71,13 +75,13 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
             mAdapter = new StoryAdapter(stories);
             mStoryRecyclerView.setAdapter(mAdapter);
         } else {
-//            mAdapter.notifyItemRangeInserted(stories.size(), );
+            mAdapter.notifyItemRangeInserted(stories.size(), stories.size()+1);
             mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
             Log.d("test", "리스트 다시 로드하기");
         }
     }
 
-    public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {
         public Story mStory;
         public ImageView mStoryMainImg;
         public TextView mStoryTitle;
@@ -104,10 +108,33 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
             mStoryTitle.setText(mStory.getTitle());
             mStoryDate.setText(mStory.getYear() + "년 " + mStory.getMonth() + "월 " + mStory.getDay() + "일");
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            MenuItem Edit = contextMenu.add(Menu.NONE, 1001, 1, "수정");
+            MenuItem Delete = contextMenu.add(Menu.NONE, 1002, 2, "삭제");
+            Edit.setOnMenuItemClickListener(onEditMenu);
+            Delete.setOnMenuItemClickListener(onEditMenu);
+        }
+
+        final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+                    case 1001: //수정 항목 선택시
+                    case 1002: //삭제 항목 선택시
+
+                }
+
+                return true;
+            }
+        };
     }
 
     public class StoryAdapter extends RecyclerView.Adapter<StoryHolder> { //Album_singleton에서 Story 리스트를 가져온다.
         private List<Story> mStories;
+        private Context mContext;
 
         public StoryAdapter(List<Story> stories) {
             mStories = stories;

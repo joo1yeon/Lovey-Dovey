@@ -43,8 +43,8 @@ public class Album_singleton { //Story 객체들을 저장하는 저장소
     }
     //TODO 새로운 story 객체를 리스트에 추가하는 메소드
     public void addStory(Story s) {
-        mStories.add(s);
-    }
+        mStories.add(0, s);
+    } // 첫번째 줄에 새로 추가됨
 
     //TODO 생성된 List를 반환하는 메서드
     public List<Story> getStories() {

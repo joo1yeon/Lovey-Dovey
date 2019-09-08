@@ -36,7 +36,7 @@ public class DatePickerFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         int year = mDatePicker.getYear();
-                        int month = mDatePicker.getMonth();
+                        int month = mDatePicker.getMonth() + 1;
                         int day = mDatePicker.getDayOfMonth();
                         onDatePickerSetListener.onDatePickerSet(year, month, day);
 
