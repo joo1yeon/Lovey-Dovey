@@ -71,10 +71,10 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
             mAdapter = new StoryAdapter(stories);
             mStoryRecyclerView.setAdapter(mAdapter);
         } else {
+//            mAdapter.notifyItemRangeInserted(stories.size(), );
             mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
             Log.d("test", "리스트 다시 로드하기");
         }
-        //mAdapter.notifyItemInserted(stories.size());
     }
 
     public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

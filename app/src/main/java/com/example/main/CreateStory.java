@@ -71,7 +71,7 @@ public class CreateStory extends AppCompatActivity {
                 //mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
                 Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
-                story.setTitle("테스트");
+                story.setTitle(etStoryTitle.getText().toString());
                 story.setYear(123);
                 story.setMonth(123);
                 story.setDay(123);
