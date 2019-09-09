@@ -94,6 +94,8 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
             mStoryMainImg = (ImageView) itemView.findViewById(R.id.story_mainImg1);
             mStoryTitle = (TextView) itemView.findViewById(R.id.story_title1);
             mStoryDate = (TextView) itemView.findViewById(R.id.story_date1);
+
+            itemView.setOnCreateContextMenuListener(this); //OnCreateContextMenuListener를 현재 클래스에서 구현한다고 설정
         }
 
         @Override
@@ -125,6 +127,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
                 switch (menuItem.getItemId()) {
                     case 1002: //수정 항목 선택시
+                        break;
                     case 1003: //삭제 항목 선택시
                         Album_singleton album_singleton = Album_singleton.get(getActivity());
                         List<Story> stories = album_singleton.getStories();
