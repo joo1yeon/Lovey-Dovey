@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -21,8 +20,7 @@ import java.util.Date;
 public class Main extends Fragment {
     ImageView gift_Btn, profile_Btn1, profile_Btn2, storage, close;
     TextView to_do_Btn, date;
-    View profileLayout1, profileLayout2;
-
+    View profileLayout1, profileLayout2;                                //하단 프로필 보여줄 레이아웃
     public Main(){}
 
     @Override
@@ -30,13 +28,13 @@ public class Main extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.main,container,false);
 
+        //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);
         gift_Btn = layout.findViewById(R.id.gift_Btn);
         date = layout.findViewById(R.id.date);
 
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);
         profile_Btn2 = layout.findViewById(R.id.profile_Btn2);
-
 
         //Date 날짜 계산 함수
         doDateSystem();
@@ -49,15 +47,6 @@ public class Main extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);
                 startActivity(intent);
-            }
-        });
-
-
-        //선물버튼 눌렀을 때 --> 선물화면 이동
-        gift_Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 
