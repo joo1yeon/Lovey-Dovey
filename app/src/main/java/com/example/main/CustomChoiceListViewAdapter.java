@@ -63,24 +63,16 @@ public class CustomChoiceListViewAdapter extends BaseAdapter {
     }
 
 
-          /*
-
-
         //아이템을 제거
         public void remove(int position){
-            listData.remove(position);
-            dataChange();
+            listViewItems.remove(position);
         }
-
+/*
         //아이템을 바르게 배열
         public void sort(){
             Collections.sort(listData, ListData.ALPHA_COMPARATOR);
-            dataChange();
-        }
 
-        //데이터를 변경한 후 호출해야 함
-        public void dataChange(){
-            mAdapter1.notifyDataSetChanged();
-            mAdapter2.notifyDataSetChanged();
-        }*/
+        }
+*/
+
 }

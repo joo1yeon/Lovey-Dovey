@@ -22,7 +22,7 @@
             android:background="#B8D9C0">
 
             <ImageButton
-                android:id="@+id/btnHome"
+                android:id="@+id/btnBack"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_margin="3dp"
@@ -67,7 +67,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="105dp"
+        android:layout_marginBottom="60dp"
         android:src="@drawable/pen"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,7 +84,7 @@
         <ImageView
             android:id="@+id/handle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:src="@drawable/handle"
             />
 
