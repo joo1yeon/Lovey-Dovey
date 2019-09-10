@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class StoryListFragment extends Fragment {
+public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 때 뜨는 화면
 
     public RecyclerView mStoryRecyclerView;
     public StoryAdapter mAdapter;
@@ -53,15 +53,27 @@ public class StoryListFragment extends Fragment {
 
         return view;
     }
-    public void updateUI() {
-        Album_singleton album_singleton = Album_singleton.get(getActivity());
-        List<Story> stories = Album_singleton.getStories();
 
-        mAdapter = new StoryAdapter(stories);
-        mStoryRecyclerView.setAdapter(mAdapter);
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI(); //리스트로 돌아오기 위해 뒤로가기 버튼 눌렀을 때 StoryListFragment 재실행
     }
 
-    public class StoryHolder extends RecyclerView.ViewHolder {
+    public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
+        Album_singleton album_singleton = Album_singleton.get(getActivity());
+        List<Story> stories = album_singleton.getStories();
+
+        if (mAdapter == null) {
+            mAdapter = new StoryAdapter(stories);
+            mStoryRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
+        }
+        //mAdapter.notifyItemInserted(stories.size());
+    }
+
+    public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public Story mStory;
         public ImageView mStoryMainImg;
         public TextView mStoryTitle;
@@ -69,21 +81,28 @@ public class StoryListFragment extends Fragment {
 
         public StoryHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
 
             mStoryMainImg = (ImageView) itemView.findViewById(R.id.story_mainImg1);
             mStoryTitle = (TextView) itemView.findViewById(R.id.story_title1);
             mStoryDate = (TextView) itemView.findViewById(R.id.story_date1);
         }
 
-        public void bindStory(Story story) {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), StoryActivity.class);
+            startActivity(intent); //스토리 대표사진을 누르면 액티비티 시작
+        }
+
+        public void bindStory(Story story) { //제목과 날짜를 화면에 출력
             mStory = story;
             //mStoryMainImg.setImageDrawable();
             mStoryTitle.setText(mStory.getTitle());
-            mStoryDate.setText(mStory.getDate().toString());
+            mStoryDate.setText(mStory.getYear() + "년 " + mStory.getMonth() + "월 " + mStory.getDay() + "일");
         }
     }
 
-    public class StoryAdapter extends RecyclerView.Adapter<StoryHolder> {
+    public class StoryAdapter extends RecyclerView.Adapter<StoryHolder> { //Album_singleton에서 Story 리스트를 가져온다.
         private List<Story> mStories;
 
         public StoryAdapter(List<Story> stories) {

@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-public class StoryFragment extends Fragment { //전체 스토리 정보를 보여줌, 컨트롤러 객체
-    public Story mStory; //인스턴스를 보존하기 위해 갖는 멤버변수
+public class StoryContentsFragment extends Fragment { //하루의 스토리(사진, 글)을 보여주는 컨트롤러 객체
+    private Story mStory;
+    private TextView mTitle;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -19,9 +21,11 @@ public class StoryFragment extends Fragment { //전체 스토리 정보를 보�
 
     @Nullable
     @Override
-    //fragment 생명주기 메서드는 public
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.album, container, false);
+        View v = inflater.inflate(R.layout.fragment_story, container, false);
+
+        mTitle = v.findViewById(R.id.story_title);
+        //mDate.setText(mStory.getYear());
         return v;
     }
 }

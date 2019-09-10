@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 //TODO 장소검색 어댑터 ViewHolder
-public class ContentHolder extends RecyclerView.ViewHolder {
+public class FootContentHolder extends RecyclerView.ViewHolder {
     ImageView imgView;
     TextView tvView;
-    public ContentHolder(@NonNull View itemView) {
+    public FootContentHolder(@NonNull View itemView) {
         super(itemView);
         imgView=itemView.findViewById(R.id.imgView);
         tvView=itemView.findViewById(R.id.tvView);

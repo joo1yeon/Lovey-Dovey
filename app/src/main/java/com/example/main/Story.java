@@ -6,11 +6,10 @@ import java.util.UUID;
 public class Story {
     private UUID mId;
     private String mTitle;
-    private Date mDate;
+    private int mYear, mMonth, mDay;
 
     public Story() {
         mId = UUID.randomUUID();
-        mDate = new Date();
     }
     public UUID getId(){
         return mId;
@@ -21,10 +20,22 @@ public class Story {
     public void setTitle(String title) {
         mTitle = title;
     }
-    public Date getDate() {
-        return mDate;
+    public int getYear() {
+        return mYear;
     }
-    public void setDate (Date date) {
-        mDate = date;
+    public void setYear (int year) {
+        mYear = year;
+    }
+    public int getMonth() {
+        return mMonth;
+    }
+    public void setMonth(int month) {
+        mMonth = month;
+    }
+    public int getDay() {
+        return mDay;
+    }
+    public void setDay(int day) {
+        mDay = day;
     }
 }
