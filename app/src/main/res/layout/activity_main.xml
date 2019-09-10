@@ -14,17 +14,6 @@
         android:layout_height="wrap_content"
         android:background="#B8D9C0">
 
-        <ImageButton
-            android:id="@+id/btnHome"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="3dp"
-            android:background="@drawable/ic_home"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_home"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="250dp"
