@@ -1,7 +1,6 @@
 package com.example.main;
 
 import android.graphics.drawable.Drawable;
-import android.widget.RatingBar;
 
 public class Datecourse_ListViewItem {
     public Drawable image;

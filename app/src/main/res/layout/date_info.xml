@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvPlace"
@@ -121,7 +120,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/netmarble_m"
-        android:breakStrategy="simple"
         android:text="잠실역 3번 출구(2,8호선)->석촌호수(도보 5분)"
         android:textSize="16dp"
         app:layout_constraintLeft_toRightOf="@id/tvSub"

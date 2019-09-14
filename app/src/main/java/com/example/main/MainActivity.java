@@ -1,6 +1,5 @@
 package com.example.main;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     FootPrint footFrag;
     StoryListFragment albumFrag;
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
