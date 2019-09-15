@@ -10,7 +10,7 @@ public class Story {
 
     public Story() {
         mId = UUID.randomUUID();
-    }
+    } //고유한 식별자 생성
     public UUID getId(){
         return mId;
     }
