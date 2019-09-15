@@ -46,6 +46,7 @@
         <activity android:name=".Datecourse_Fragment"/>
         <activity android:name=".DateImageClick"/>
         <activity android:name=".Datecourse_Search"/>
+        <activity android:name=".LocSearch"/>
         <activity android:name=".Gift_Main"/>
     </application>
 
