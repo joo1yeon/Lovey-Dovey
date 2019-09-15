@@ -24,8 +24,6 @@ public class StoryActivity extends FragmentActivity { //story Contents Fragment�
             fm.beginTransaction() //새로운 프래그먼트 트랜잭션 인스턴스 생성
                     .add(R.id.fragment_container, fragment) //인스턴스에 프래그먼트 객체 추가
                     .commit();
-
         }
     }
 }
-

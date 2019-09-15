@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,7 @@ public class Album extends Fragment {
 
     /*원래 자바 코드에서 전역변수 선언 부분*/
     Button addBtn;
-    FloatingActionButton searchBtn;
+    ImageView searchBtn;
     public Album(){}
     public Story mStory;
     public TextView storyTitle, storyDate;
@@ -32,11 +31,6 @@ public class Album extends Fragment {
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //ScrollView layout = (ScrollView) inflater.inflate(R.layout.album,container,false);
-        /*이 부분에 원래 자바 코드의 onCreate에 있는 부분 작성!!!
-            findViewByid 는 layout.findViewByID로 바꾸면 사용가능!!!!
-            MainActivity.this 이런거는 getContext()로 사용가능!!!
-        */
         LinearLayout layout =(LinearLayout) inflater.inflate(R.layout.fragment_album,container,false);
         storyTitle = layout.findViewById(R.id.story_title1);
         storyDate = layout.findViewById(R.id.story_date1);

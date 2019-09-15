@@ -5,30 +5,15 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/topPanel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#B8D9C0"
-        android:fontFamily="@font/netmarble_b"
-        android:padding="10dp"
-        android:text="스토리 검색하기"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/tv_date_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:fontFamily="@font/netmarble_b"
         android:text="날짜 검색"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topPanel" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ic_calendar"
@@ -38,7 +23,7 @@
         android:layout_marginTop="15dp"
         android:src="@drawable/ic_date_range"
         app:layout_constraintLeft_toRightOf="@+id/tv_date_search"
-        app:layout_constraintTop_toBottomOf="@id/topPanel" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_press_icon"
@@ -46,7 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
-        android:fontFamily="@font/netmarble_b"
         android:text="달력 아이콘을 눌러주세요."
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -58,7 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/netmarble_b"
         android:text="제목 검색"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -72,7 +55,6 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:ems="15"
-        android:fontFamily="@font/netmarble_b"
         android:hint="제목을 입력하세요."
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_search" />
@@ -84,7 +66,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/netmarble_b"
         android:text="작성자 검색"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -96,7 +77,6 @@
         android:id="@+id/rGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/netmarble_b"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_writer_search">
@@ -125,7 +105,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/netmarble_b"
         android:text="위치 검색"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -148,7 +127,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:backgroundTint="#B8D9C0"
-        android:fontFamily="@font/netmarble_b"
         android:text="취소"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_confirm"
@@ -160,7 +138,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:backgroundTint="#B8D9C0"
-        android:fontFamily="@font/netmarble_b"
         android:text="확인"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

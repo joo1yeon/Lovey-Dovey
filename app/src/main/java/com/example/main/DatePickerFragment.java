@@ -2,7 +2,6 @@ package com.example.main;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,10 +14,8 @@ import android.view.View;
 import android.widget.DatePicker;
 
 public class DatePickerFragment extends DialogFragment {
-    //Alert Dialog 가 DialogFragment 의 인스턴스에 포함되어 같이 동작
 
     public DatePicker mDatePicker;
-    OnDatePickerSetListener onDatePickerSetListener;
 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -30,37 +27,23 @@ public class DatePickerFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle("날짜 선택")
+                .setPositiveButton("선택", null)
                 .setPositiveButton("선택", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         int year = mDatePicker.getYear();
-                        int month = mDatePicker.getMonth() + 1;
+                        int month = mDatePicker.getMonth();
                         int day = mDatePicker.getDayOfMonth();
-                        onDatePickerSetListener.onDatePickerSet(year, month, day);
 
-                        Log.d("test", String.valueOf(month));
+                        Log.d("test", String.valueOf(year));
+
+                        Intent intent = new Intent(getContext(), CreateStory.class);
+                        intent.putExtra("Year", year);
+                        intent.putExtra("Month", month+1);
+                        intent.putExtra("Day", day);
+                        startActivity(intent);
                     }
                 })
                 .create();
-    }
-
-    public interface OnDatePickerSetListener {
-        void onDatePickerSet(int y, int m, int d);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnDatePickerSetListener) {
-            onDatePickerSetListener = (OnDatePickerSetListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnDatePickerListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        onDatePickerSetListener = null;
     }
 }
