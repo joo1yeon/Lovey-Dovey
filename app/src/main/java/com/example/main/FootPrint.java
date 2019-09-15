@@ -3,6 +3,8 @@ package com.example.main;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -10,8 +12,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -19,9 +24,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +42,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +68,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
+    ListView listView;
+    private BottomSheetDialog modalBottomSheet;
 
     public FootPrint() {
 
@@ -151,6 +163,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         map = layout.findViewById(R.id.map);
         map.onCreate(savedInstanceState);
         map.getMapAsync(this);
+
+
         return layout;
     }
 
@@ -181,64 +195,92 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
 
         gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584, 126.925), 15));
-        gMap.getUiSettings().setZoomControlsEnabled(true);
+        gMap.getUiSettings().setZoomControlsEnabled(false);
+        gMap.getUiSettings().isMyLocationButtonEnabled();
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                videoMark = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.mark)).position(latLng, 100f, 100f);
-                gMap.addGroundOverlay(videoMark);
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark",100,120)));
+                markerOptions.position(latLng);
+
+                gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(final Marker marker) {
+                        View view = getLayoutInflater().inflate(R.layout.bottom_sheet,null);
+                        Button  btnAddPicture,btnDelMark;
+                        btnAddPicture=view.findViewById(R.id.btnAddPicture);
+                        btnDelMark=view.findViewById(R.id.btnDelMark);
+                        btnAddPicture.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getContext(),"사진추가하기",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        btnDelMark.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                marker.remove();
+                                modalBottomSheet.dismiss();
+                            }
+                        });
+                        modalBottomSheet = new BottomSheetDialog(getContext());
+                        modalBottomSheet.setContentView(view);
+                        modalBottomSheet.show();
+                        return false;
+                    }
+                });
+                gMap.addMarker(markerOptions);
             }
         });
-//        if (gMap != null) {
-//            LatLng latLng = new LatLng(37.566643, 126.978279);
-//            CameraPosition position = new CameraPosition.Builder().target(latLng).zoom(16f).build();
-//            gMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
-//            MarkerOptions markerOptions = new MarkerOptions();
-//            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.mark));
-//            markerOptions.position(latLng);
-//            gMap.addMarker(markerOptions);
-//            MyGeocodingThread thread = new MyGeocodingThread(latLng);
-//            thread.start();
+    }
+    public Bitmap resizeMapIcons(String iconName, int width, int height){
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable", getActivity().getPackageName()));
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return resizedBitmap;
+    }
+//    class MyGeocodingThread extends Thread {
+//        LatLng latLng;
+//
+//        public MyGeocodingThread(LatLng _latLng) {
+//            latLng = _latLng;
 //        }
-    }
-
-    class MyGeocodingThread extends Thread {
-        LatLng latLng;
-
-        public MyGeocodingThread(LatLng _latLng) {
-            latLng = _latLng;
-        }
-
-        @Override
-        public void run() {
-            Geocoder geocoder = new Geocoder(getContext());
-            List<Address> addresses = null;
-            String addressText ="";
-            try{
-                addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
-                Thread.sleep(500);
-                if(addresses!=null && addresses.size()>0){
-                    Address address = addresses.get(0);
-                    addressText = address.getAdminArea()+""+(address.getMaxAddressLineIndex()>0?address.getAddressLine(0):address.getLocality())+"";
-                    String txt = address.getSubLocality();
-                    if(txt!=null)addressText+=txt+"";
-                    addressText+=address.getThoroughfare()+""+address.getSubThoroughfare();
-
-                    Message msg = new Message();
-                    msg.what=100;
-                    msg.obj=addressText;
-                    handler.sendMessage(msg);
-                }
-            }catch(Exception e){}
-        }
-    }
-    Handler handler =new Handler(){
-      public void handleMessage(Message msg){
-          switch (msg.what){
-              case 100: Toast.makeText(getContext(),(String)msg.obj,Toast.LENGTH_SHORT).show();break;
-          }
-      }
-    };
+//
+//        @Override
+//        public void run() {
+//            Geocoder geocoder = new Geocoder(getContext());
+//            List<Address> addresses = null;
+//            String addressText = "";
+//            try {
+//                addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+//                Thread.sleep(500);
+//                if (addresses != null && addresses.size() > 0) {
+//                    Address address = addresses.get(0);
+//                    addressText = address.getAdminArea() + "" + (address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : address.getLocality()) + "";
+//                    String txt = address.getSubLocality();
+//                    if (txt != null) addressText += txt + "";
+//                    addressText += address.getThoroughfare() + "" + address.getSubThoroughfare();
+//
+//                    Message msg = new Message();
+//                    msg.what = 100;
+//                    msg.obj = addressText;
+//                    handler.sendMessage(msg);
+//                }
+//            } catch (Exception e) {
+//            }
+//        }
+//    }
+//
+//    Handler handler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case 100:
+//                    Toast.makeText(getContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
+//                    break;
+//            }
+//        }
+//    };
+//
 
     @Override
     public void onStart() {
