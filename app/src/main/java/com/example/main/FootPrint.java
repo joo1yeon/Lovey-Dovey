@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -52,7 +55,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class FootPrint extends Fragment implements OnMapReadyCallback {
+    MarkerOptions markerOptions = new MarkerOptions();
+
     ImageButton btnTomorrow, btnYesterday;
     TextView tvToday;
     Date date = new Date();
@@ -82,7 +89,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
+        final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
 
@@ -120,8 +127,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 anim();
                 Intent intent = new Intent(getContext(), LocSearch.class);
-                startActivity(intent);
-                Toast.makeText(getContext(), "장소 검색하기", Toast.LENGTH_SHORT).show();
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -135,6 +141,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
+                        cal.set(year, month, dayOfMonth);
                     }
                 }, year, month, day);
                 dateDialog.show();
@@ -200,21 +207,20 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark",100,120)));
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark", 100, 120)));
                 markerOptions.position(latLng);
 
                 gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(final Marker marker) {
-                        View view = getLayoutInflater().inflate(R.layout.bottom_sheet,null);
-                        Button  btnAddPicture,btnDelMark;
-                        btnAddPicture=view.findViewById(R.id.btnAddPicture);
-                        btnDelMark=view.findViewById(R.id.btnDelMark);
+                        View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+                        Button btnAddPicture, btnDelMark;
+                        btnAddPicture = view.findViewById(R.id.btnAddPicture);
+                        btnDelMark = view.findViewById(R.id.btnDelMark);
                         btnAddPicture.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(),"사진추가하기",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "사진추가하기", Toast.LENGTH_SHORT).show();
                             }
                         });
                         btnDelMark.setOnClickListener(new View.OnClickListener() {
@@ -234,8 +240,56 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-    public Bitmap resizeMapIcons(String iconName, int width, int height){
-        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable", getActivity().getPackageName()));
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ( resultCode == RESULT_OK) {
+            Log.i("test","5번확인");
+
+            Double latitude =data.getDoubleExtra("latitude",0);
+            Double longitude=data.getDoubleExtra("longitude",0);
+            String address=data.getStringExtra("address");
+            Log.i("test","5-1"+address);
+
+            LatLng point = new LatLng(latitude,longitude);
+            markerOptions.snippet(address);
+            Log.i("test","6-1"+address);
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark", 100, 120)));
+            markerOptions.position(point);
+            gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(final Marker marker) {
+                    View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+                    Button btnAddPicture, btnDelMark;
+                    btnAddPicture = view.findViewById(R.id.btnAddPicture);
+                    btnDelMark = view.findViewById(R.id.btnDelMark);
+                    btnAddPicture.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getContext(), "사진추가하기", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    btnDelMark.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            marker.remove();
+                            modalBottomSheet.dismiss();
+                        }
+                    });
+                    modalBottomSheet = new BottomSheetDialog(getContext());
+                    modalBottomSheet.setContentView(view);
+                    modalBottomSheet.show();
+                    return false;
+                }
+            });
+            gMap.addMarker(markerOptions);
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
+        }
+    }
+
+    public Bitmap resizeMapIcons(String iconName, int width, int height) {
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(iconName, "drawable", getActivity().getPackageName()));
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return resizedBitmap;
     }
