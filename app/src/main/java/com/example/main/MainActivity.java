@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     FootPrint footFragment = new FootPrint();
                     return footFragment;
                 case 3:
-                    Album albumFragment = new Album();
+                    StoryListFragment albumFragment = new StoryListFragment(); // 여기서 Album() 말고 StoryListFragment() 로 변경!
                     return albumFragment;
                 default: return null;
             }
