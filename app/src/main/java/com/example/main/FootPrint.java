@@ -48,6 +48,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,7 +63,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
 
     ImageButton btnTomorrow, btnYesterday;
     TextView tvToday;
-    Date date = new Date();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
@@ -70,12 +70,10 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     int day = cal.get(Calendar.DATE);
     MapView map;
     Date today = cal.getTime();
-    GroundOverlayOptions videoMark;
     GoogleMap gMap;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
-    ListView listView;
     private BottomSheetDialog modalBottomSheet;
 
     public FootPrint() {
@@ -196,6 +194,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    //TODO OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
@@ -204,41 +203,64 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584, 126.925), 15));
         gMap.getUiSettings().setZoomControlsEnabled(false);
         gMap.getUiSettings().isMyLocationButtonEnabled();
+        //TODO 지도위에 마커 찍기
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                Geocoder geocoder = new Geocoder(getContext());
+                List<Address> list = null;
+                try{
+                    list=geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                Log.i("TTT",list.get(0).toString());
+                String []splitStr =list.get(0).toString().split(",");
+                String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2);
+                markerOptions.title(address);
+                markerOptions.snippet(address);
                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark", 100, 120)));
                 markerOptions.position(latLng);
 
-                gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(final Marker marker) {
-                        View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-                        Button btnAddPicture, btnDelMark;
-                        btnAddPicture = view.findViewById(R.id.btnAddPicture);
-                        btnDelMark = view.findViewById(R.id.btnDelMark);
-                        btnAddPicture.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(getContext(), "사진추가하기", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        btnDelMark.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                marker.remove();
-                                modalBottomSheet.dismiss();
-                            }
-                        });
-                        modalBottomSheet = new BottomSheetDialog(getContext());
-                        modalBottomSheet.setContentView(view);
-                        modalBottomSheet.show();
-                        return false;
-                    }
-                });
                 gMap.addMarker(markerOptions);
             }
         });
+        //TODO 마커 클릭 이벤트1
+        gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(final Marker marker) {
+                Log.i("tt","마커클릭이벤트 호출");
+                View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+                TextView placeName,placeAddress;
+                placeName=view.findViewById(R.id.placeName);
+                placeAddress=view.findViewById(R.id.placeAddress);
+                placeName.setText(marker.getTitle());
+                if(marker.getSnippet()!=null){
+                    placeAddress.setText(marker.getSnippet());
+                }else  placeAddress.setText("");
+                Button btnAddPicture, btnDelMark;
+                btnAddPicture = view.findViewById(R.id.btnAddPicture);
+                btnDelMark = view.findViewById(R.id.btnDelMark);
+                btnAddPicture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(), "사진추가하기", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btnDelMark.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        marker.remove();
+                        modalBottomSheet.dismiss();
+                    }
+                });
+                modalBottomSheet = new BottomSheetDialog(getContext());
+                modalBottomSheet.setContentView(view);
+                modalBottomSheet.show();
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -246,43 +268,51 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         super.onActivityResult(requestCode, resultCode, data);
         if ( resultCode == RESULT_OK) {
             Log.i("test","5번확인");
-
+            String name = data.getStringExtra("name");
             Double latitude =data.getDoubleExtra("latitude",0);
             Double longitude=data.getDoubleExtra("longitude",0);
             String address=data.getStringExtra("address");
             Log.i("test","5-1"+address);
 
             LatLng point = new LatLng(latitude,longitude);
+            markerOptions.title(name);
             markerOptions.snippet(address);
             Log.i("test","6-1"+address);
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark", 100, 120)));
             markerOptions.position(point);
-            gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(final Marker marker) {
-                    View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-                    Button btnAddPicture, btnDelMark;
-                    btnAddPicture = view.findViewById(R.id.btnAddPicture);
-                    btnDelMark = view.findViewById(R.id.btnDelMark);
-                    btnAddPicture.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(getContext(), "사진추가하기", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    btnDelMark.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            marker.remove();
-                            modalBottomSheet.dismiss();
-                        }
-                    });
-                    modalBottomSheet = new BottomSheetDialog(getContext());
-                    modalBottomSheet.setContentView(view);
-                    modalBottomSheet.show();
-                    return false;
-                }
-            });
+//            //TODO 마커 클릭 이벤트
+//            onMapReady에서 이미 정의했기 때문에 다시 정의할 필요가 없음(?)
+//            gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(final Marker marker) {
+//                    View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+//                    TextView placeName,placeAddress;
+//                    placeName=view.findViewById(R.id.placeName);
+//                    placeAddress=view.findViewById(R.id.placeAddress);
+//                    placeName.setText(marker.getTitle());
+//                    placeAddress.setText(marker.getSnippet());
+//                    Button btnAddPicture, btnDelMark;
+//                    btnAddPicture = view.findViewById(R.id.btnAddPicture);
+//                    btnDelMark = view.findViewById(R.id.btnDelMark);
+//                    btnAddPicture.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Toast.makeText(getContext(), "사진추가하기", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                    btnDelMark.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            marker.remove();
+//                            modalBottomSheet.dismiss();
+//                        }
+//                    });
+//                    modalBottomSheet = new BottomSheetDialog(getContext());
+//                    modalBottomSheet.setContentView(view);
+//                    modalBottomSheet.show();
+//                    return false;
+//                }
+//            });
             gMap.addMarker(markerOptions);
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
         }
@@ -293,48 +323,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return resizedBitmap;
     }
-//    class MyGeocodingThread extends Thread {
-//        LatLng latLng;
-//
-//        public MyGeocodingThread(LatLng _latLng) {
-//            latLng = _latLng;
-//        }
-//
-//        @Override
-//        public void run() {
-//            Geocoder geocoder = new Geocoder(getContext());
-//            List<Address> addresses = null;
-//            String addressText = "";
-//            try {
-//                addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-//                Thread.sleep(500);
-//                if (addresses != null && addresses.size() > 0) {
-//                    Address address = addresses.get(0);
-//                    addressText = address.getAdminArea() + "" + (address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : address.getLocality()) + "";
-//                    String txt = address.getSubLocality();
-//                    if (txt != null) addressText += txt + "";
-//                    addressText += address.getThoroughfare() + "" + address.getSubThoroughfare();
-//
-//                    Message msg = new Message();
-//                    msg.what = 100;
-//                    msg.obj = addressText;
-//                    handler.sendMessage(msg);
-//                }
-//            } catch (Exception e) {
-//            }
-//        }
-//    }
-//
-//    Handler handler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case 100:
-//                    Toast.makeText(getContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
-//                    break;
-//            }
-//        }
-//    };
-//
 
     @Override
     public void onStart() {
