@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -71,24 +72,28 @@ public class ToDoList extends AppCompatActivity {
         //adapter1.sort();
 
         //체크된 투두 아이템 추가
-        adapter2.addItem("시험끝나고 미친듯이 놀기", "2019년 05월 12일");
-        adapter2.addItem("PC방 가서 하루종일 게임하기", "2019년 04월 09일");
-        adapter2.addItem("오류같이 찾고 기뻐하기 ㅎㅎ", "2019년 04월 08일");
-        adapter2.addItem("웃으면서 같이 코딩하기", "2019년 03월 04일");
-        adapter2.addItem("누워서 맘편히 잠자기", "2019년 02월 28일");
+        adapter2.addItem("드디어", "2019년 05월 12일");
+        adapter2.addItem("뭔가 할수있겠다", "2019년 04월 09일");
+        adapter2.addItem("제바아아아알", "2019년 04월 08일");
+        adapter2.addItem("으어어어ㅓㅇ", "2019년 03월 04일");
+        adapter2.addItem("꺄", "2019년 02월 28일");
 
 
-        //TODO 1. 체크된 아이템 알아내기 2. 클릭 시 현재날짜 찍는 법 알아내기
-        /*
+        //TODO 클릭 시 현재날짜 찍는 함수 만들어서 변수에 저장 후 additem 추가할때 삽입
+
         //체크되지 않은 투두리스트 클릭했을 때
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //String listViewItem = adapter1.getItem(i).toString();
-                //Toast.makeText(ToDoList.this, listViewItem+"체크됨", Toast.LENGTH_SHORT).show();
-            }
-        });*/
+                ToDoList_ListItem listItem = adapter1.listViewItems.get(i);
+                String content = listItem.getContent();
 
+                adapter1.remove(i);                     //선택한 adapter1 내용을 지우기
+                adapter1.notifyDataSetChanged();        //변경한 내용
+                adapter2.addItem(content,"0000년 00월 00일");
+                adapter2.notifyDataSetChanged();
+            }
+        });
 
 
         //체크하지 않은 리스트를 길게 클릭했을 때
@@ -96,6 +101,7 @@ public class ToDoList extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 //final ListData mData = mAdapter1.listData.get(position);
+                final ToDoList_ListItem listItem = adapter1.listViewItems.get(position);
 
                 AlertDialog.Builder dlg2 = new AlertDialog.Builder(ToDoList.this);
                 final AlertDialog dl2 = dlg2.create();
@@ -126,7 +132,7 @@ public class ToDoList extends AppCompatActivity {
                         //TODO 데이터 베이스에서 가져온 내용 수정하는 내용 에디트텍스트에 출력
 
                         // 아이템 내 각 위젯에 데이터 반영
-                        //contents.setText(mData.content);
+                        contents.setText(listItem.getContent());
 
                         //수정
                         add.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +143,7 @@ public class ToDoList extends AppCompatActivity {
 
 
                                 //데이터 수정하는 코드
+                                listItem.setContent(text);
                                 adapter1.notifyDataSetChanged();
                                 dl.dismiss();
 

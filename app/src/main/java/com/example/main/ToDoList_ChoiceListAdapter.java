@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class ToDoList_ChoiceListAdapter extends BaseAdapter {
-    private ArrayList<ToDoList_ListItem> listViewItems = new ArrayList<ToDoList_ListItem>();
+    final ArrayList<ToDoList_ListItem> listViewItems = new ArrayList<ToDoList_ListItem>();
 
     //각 아이템에 들어 갈 데이터들의 전체 개수를 리턴
     @Override
