@@ -48,6 +48,12 @@
         <activity android:name=".Datecourse_Search"/>
         <activity android:name=".LocSearch"/>
         <activity android:name=".Gift_Main"/>
+
+        <provider
+            android:authorities="com.example.main.MyContentProvider"
+            android:name=".MyContentProvider"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

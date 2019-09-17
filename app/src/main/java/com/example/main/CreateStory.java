@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 public class CreateStory extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
 
-    Button btnConfirm,btnCancel;
-    ImageView icCalendar;
+    Button btnNext,btnCancel;
+    ImageView icCalendar, icSelectMainImg;
     EditText etStoryTitle;
     TextView tvPressIcon;
     public Story mStory;
@@ -45,8 +45,9 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
         setContentView(R.layout.create_story);
 
         btnCancel=findViewById(R.id.btn_cancel);
-        btnConfirm = findViewById(R.id.btn_confirm);
+        btnNext = findViewById(R.id.btn_confirm);
         icCalendar = findViewById(R.id.ic_calendar);
+        icSelectMainImg = findViewById(R.id.ic_select_main_img);
         etStoryTitle = findViewById(R.id.et_story_title);
         tvPressIcon = findViewById(R.id.tv_press_icon);
 
@@ -59,7 +60,7 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
             }
         });
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mDbOpenHelper = new DbOpenHelper(getApplicationContext());
