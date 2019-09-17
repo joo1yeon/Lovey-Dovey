@@ -48,6 +48,7 @@
         <activity android:name=".Datecourse_Search"/>
         <activity android:name=".LocSearch"/>
         <activity android:name=".Gift_Main"/>
+        <activity android:name=".ToDoList"/>
     </application>
 
 </manifest>
