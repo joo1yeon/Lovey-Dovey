@@ -74,8 +74,8 @@ public class ToDoList extends AppCompatActivity {
         adapter2.addItem("시험끝나고 미친듯이 놀기", "2019년 05월 12일");
         adapter2.addItem("PC방 가서 하루종일 게임하기", "2019년 04월 09일");
         adapter2.addItem("오류같이 찾고 기뻐하기 ㅎㅎ", "2019년 04월 08일");
-        adapter2.addItem("웃으면서 같이 코딩하기", "2019년 3월 4일");
-        adapter2.addItem("누워서 맘편히 잠자기", "2019년 2월 28일");
+        adapter2.addItem("웃으면서 같이 코딩하기", "2019년 03월 04일");
+        adapter2.addItem("누워서 맘편히 잠자기", "2019년 02월 28일");
 
 
         //TODO 1. 체크된 아이템 알아내기 2. 클릭 시 현재날짜 찍는 법 알아내기
