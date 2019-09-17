@@ -45,7 +45,8 @@
         </activity>
         <activity
             android:name=".LocSearch"
-            android:label="장소검색" />
+            android:label="장소검색"
+           />
         <activity
             android:name=".CreateStory"
             android:label="스토리 생성" />
