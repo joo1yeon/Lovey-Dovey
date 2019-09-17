@@ -76,7 +76,7 @@ public class ToDoList extends AppCompatActivity {
         adapter2.addItem("뭔가 할수있겠다", "2019년 04월 09일");
         adapter2.addItem("제바아아아알", "2019년 04월 08일");
         adapter2.addItem("으어어어ㅓㅇ", "2019년 03월 04일");
-        adapter2.addItem("꺄", "2019년 02월 28일");
+        adapter2.addItem("꺄아아아아되라 ㅠ", "2019년 02월 28일");
 
 
         //TODO 클릭 시 현재날짜 찍는 함수 만들어서 변수에 저장 후 additem 추가할때 삽입
@@ -88,12 +88,13 @@ public class ToDoList extends AppCompatActivity {
                 ToDoList_ListItem listItem = adapter1.listViewItems.get(i);
                 String content = listItem.getContent();
 
-                adapter1.remove(i);                     //선택한 adapter1 내용을 지우기
-                adapter1.notifyDataSetChanged();        //변경한 내용
-                adapter2.addItem(content,"0000년 00월 00일");
-                adapter2.notifyDataSetChanged();
+                adapter1.remove(i);                                       //선택한 adapter1 내용을 지우기
+                adapter1.notifyDataSetChanged();                          //변경한 데이터 반영
+                adapter2.addItem(content,"0000년 00월 00일");      //adapter2에 adapter1에 있던 내용 추가
+                adapter2.notifyDataSetChanged();                          //변경한 데이터 반영
             }
         });
+
 
 
         //체크하지 않은 리스트를 길게 클릭했을 때
