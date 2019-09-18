@@ -50,7 +50,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/gift_Btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -58,34 +58,35 @@
         android:src="@drawable/gift"
 
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
 
     <!--하얀배경 검은배경 고민중-->
     <ImageView
         android:id="@+id/to_Do_Ground"
-        android:layout_width="300dp"
+        android:layout_width="400dp"
         android:layout_height="60dp"
         android:layout_margin="5dp"
         android:scaleX="1.8"
 
         android:src="@drawable/tdground0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/gift_Btn"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/to_do_Btn"
         android:layout_width="300dp"
         android:layout_height="30dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="22dp"
         android:layout_marginLeft="30dp"
-        android:text="To do - 일단 임시 투두위치입니다."
+        android:text="To do - 일단 임시 투두"
         android:fontFamily="@font/netmarble_m"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="13sp"
 
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="@id/to_Do_Ground"
+        app:layout_constraintLeft_toLeftOf="@id/to_Do_Ground"
+        app:layout_constraintTop_toTopOf="@id/to_Do_Ground" />
 
     <ImageView
         android:id="@+id/profile_Ground"

@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Main extends Fragment {
-    ImageView gift_Btn, profile_Btn1, profile_Btn2, storage, close;
+    ImageView profile_Btn1, profile_Btn2, storage, close;
     TextView to_do_Btn, date;
     View profileLayout1, profileLayout2;
 
@@ -32,7 +32,6 @@ public class Main extends Fragment {
 
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼
-        gift_Btn = layout.findViewById(R.id.gift_Btn);                              //선물버튼
         date = layout.findViewById(R.id.date);                                      //메인화면 사귄날짜
 
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);                      //프로필사진1(나) 버튼
@@ -43,22 +42,11 @@ public class Main extends Fragment {
         doDateSystem();
 
 
-
         //to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
         to_do_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);
-                startActivity(intent);
-            }
-        });
-
-
-        //선물버튼 눌렀을 때 --> 선물화면 전환
-        gift_Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), Gift_Main.class);
                 startActivity(intent);
             }
         });
@@ -81,7 +69,7 @@ public class Main extends Fragment {
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //저장 클릭 시 수정된 내용을 저장하고 출력 구현할 부분
+                        //TODO# 저장 클릭 시 수정된 내용을 저장하고 출력 구현할 부분
                         dl.dismiss();
                     }
                 });
@@ -89,6 +77,7 @@ public class Main extends Fragment {
             }
         });
 
+        //TODO# 데이터 베이스로 상태방 정보 불러오기
         //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
         profile_Btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +104,8 @@ public class Main extends Fragment {
         return layout;
     }
 
+
+    //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
     public void doDateSystem(){
         String start = "2019-03-04";        // 사귄 날짜 입력
 
