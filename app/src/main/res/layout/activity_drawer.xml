@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
+    android:layout_width="260dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="#dcfdd5"
+    android:orientation="vertical"
+    >
+
+
+    <LinearLayout
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#D4F0CF"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:textColor="#000000"
+        android:background="#f2ffe8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="테스트 메뉴"
+
+        app:layout_constraintTop_toBottomOf="@id/back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/menu0"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+
+        app:layout_constraintTop_toBottomOf="@id/tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0\n발자국"
+            />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0\n선물"
+            />
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0\n코스"
+            />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/m0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/m2"
+            app:layout_constraintTop_toBottomOf="@id/menu0"
+            >
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/person"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textColor="#6c8e5e"
+                android:layout_margin="5dp"
+                android:text="개인정보"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/m1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/m3"
+            app:layout_constraintTop_toBottomOf="@id/m0">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/as"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textColor="#6c8e5e"
+                android:layout_margin="5dp"
+                android:text="공지사항"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/m2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/m0"
+            app:layout_constraintTop_toBottomOf="@id/menu0">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/background"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="#6c8e5e"
+            android:layout_margin="5dp"
+            android:text="배경변경"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/m3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/m1"
+            app:layout_constraintTop_toBottomOf="@id/m2"
+            >
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/hart"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="#6c8e5e"
+            android:layout_margin="5dp"
+            android:text="즐겨찾기"/>
+        </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
