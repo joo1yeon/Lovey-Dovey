@@ -2,6 +2,7 @@ package com.example.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase sqlDB;
     ViewGroup info, notice, background, bookmark;
     DrawerLayout drawerLayout;
-    String id=null;
+    String id;
     ViewPager viewPager;
     LinearLayout linearLayout,logout;
     ImageButton btnOverflow, btnBack;
@@ -43,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sqlDB=dbHelper.getWritableDatabase();
+        Cursor cursor = sqlDB.rawQuery("select * from info;",null);
+        if(cursor.getCount()!=0){
+            cursor.moveToFirst();
+            id=cursor.getString(0);
+        }
         btnBack = findViewById(R.id.btnBack);
         btnOverflow = findViewById(R.id.btnOverflow);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -122,10 +128,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sqlDB.execSQL("delete from info where id='"+id+"';");
+                Toast.makeText(MainActivity.this,id+"로그아웃",Toast.LENGTH_SHORT).show();
                 Intent logout = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(logout);
                 finish();

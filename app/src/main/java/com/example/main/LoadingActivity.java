@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 public class LoadingActivity extends Activity {
     MyDBHelper dbHelper = new MyDBHelper(this);
@@ -24,7 +25,11 @@ public class LoadingActivity extends Activity {
                 Cursor cursor = sqlDB.rawQuery("select * from info;",null);
                 Intent intent;
                 if(cursor.getCount()!=0){
+                    cursor.moveToFirst();
+                    String id=cursor.getString(0);
                     intent = new Intent(LoadingActivity.this,MainActivity.class);
+                    intent.putExtra("ID",id);
+                    Toast.makeText(LoadingActivity.this,id+"로 로그인",Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 }else{
                     intent = new Intent(LoadingActivity.this, LoginActivity.class);
