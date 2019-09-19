@@ -24,13 +24,14 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    ViewGroup info,notice,background,bookmark;
+    ViewGroup info, notice, background, bookmark;
     DrawerLayout drawerLayout;
     String color = "#B8D9C0";
     ViewPager viewPager;
     LinearLayout linearLayout;
-    ImageButton  btnOverflow,btnBack;
+    ImageButton btnOverflow, btnBack;
     Intent intent;
+    Toast toast;
 
 
     @SuppressLint("WrongViewCast")
@@ -39,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnBack=findViewById(R.id.btnBack);
-        btnOverflow=findViewById(R.id.btnOverflow);
-        drawerLayout=findViewById(R.id.drawer_layout);
-        info=findViewById(R.id.btnInfo);
-        notice=findViewById(R.id.btnNotice);
-        background=findViewById(R.id.btnBG);
-        bookmark=findViewById(R.id.btnBookMark);
+        btnBack = findViewById(R.id.btnBack);
+        btnOverflow = findViewById(R.id.btnOverflow);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        info = findViewById(R.id.btnInfo);
+        notice = findViewById(R.id.btnNotice);
+        background = findViewById(R.id.btnBG);
+        bookmark = findViewById(R.id.btnBookMark);
         linearLayout = findViewById(R.id.main_content);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent=new Intent(getApplicationContext(),Notice.class);
+                intent = new Intent(getApplicationContext(), Notice.class);
                 startActivity(intent);
                 Toast.makeText(MainActivity.this, "공지사항", Toast.LENGTH_SHORT).show();
             }
@@ -117,11 +118,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments = new ArrayList<Fragment>();
-        private String titles[] = new String[]{"홈","데이트코스", "발자국", "앨범"};
+        private String titles[] = new String[]{"홈", "데이트코스", "발자국", "앨범"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -146,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
                 case 3:
                     StoryListFragment albumFragment = new StoryListFragment(); // 여기서 Album() 말고 StoryListFragment() 로 변경!
                     return albumFragment;
-                default: return null;
+                default:
+                    return null;
             }
         }
 
@@ -159,6 +162,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return titles[position];
+        }
+    }
+    //앱종료시간체크
+    long backKeyPressedTime;    //앱종료 위한 백버튼 누른시간
+
+    //뒤로가기 2번하면 앱종료
+    @Override
+    public void onBackPressed () {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast = Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish();
+            toast.cancel();
         }
     }
 

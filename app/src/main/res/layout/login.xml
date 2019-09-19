@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B8D9C0"
+    tools:context=".LoginActivity">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.26" />
+
+    <TextView
+        android:id="@+id/tvMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/netmarble_b"
+        android:text="꽁냥꽁냥"
+        android:textColor="#ffffff"
+        android:textSize="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline1" />
+
+    <EditText
+        android:id="@+id/edtID"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:background="#FFFFFF"
+        android:hint="아이디"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMain"
+        android:fontFamily="@font/netmarble_m"/>
+
+    <EditText
+        android:id="@+id/edtPW"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="#FFFFFF"
+        android:hint="비밀번호"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtID"
+        android:fontFamily="@font/netmarble_m"/>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="100sp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="#ffffff"
+        android:text="LOGIN"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtPW" />
+
+    <TextView
+        android:id="@+id/btnMember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/netmarble_m"
+        android:text="회원가입하기"
+        app:layout_constraintRight_toLeftOf="@id/btnFindID"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        android:layout_marginRight="10dp"
+        />
+
+    <TextView
+        android:id="@+id/btnFindID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/netmarble_m"
+        android:text="아이디찾기"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:id="@+id/btnFindPW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/netmarble_m"
+        android:text="비밀번호찾기"
+        app:layout_constraintLeft_toRightOf="@id/btnFindID"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        android:layout_marginLeft="10dp"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/cat_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>
