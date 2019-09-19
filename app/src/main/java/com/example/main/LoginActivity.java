@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
                 String id = edtID.getText().toString();
                 String pw = edtPW.getText().toString();
                 if (!id.isEmpty() && !pw.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, id + "로 로그인", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                     intent.putExtra("ID",id);
                     startActivity(intent);
