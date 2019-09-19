@@ -2,6 +2,7 @@ package com.example.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -24,11 +25,13 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    MyDBHelper dbHelper = new MyDBHelper(this);
+    SQLiteDatabase sqlDB;
     ViewGroup info, notice, background, bookmark;
     DrawerLayout drawerLayout;
-    String color = "#B8D9C0";
+    String id=null;
     ViewPager viewPager;
-    LinearLayout linearLayout;
+    LinearLayout linearLayout,logout;
     ImageButton btnOverflow, btnBack;
     Intent intent;
     Toast toast;
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        sqlDB=dbHelper.getWritableDatabase();
         btnBack = findViewById(R.id.btnBack);
         btnOverflow = findViewById(R.id.btnOverflow);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = findViewById(R.id.tab);
+        logout=findViewById(R.id.btnLogout);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -118,7 +122,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqlDB.execSQL("delete from info where id='"+id+"';");
+                Intent logout = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(logout);
+                finish();
+            }
+        });
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        id=data.getStringExtra("ID");
     }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
