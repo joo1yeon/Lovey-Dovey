@@ -1,6 +1,7 @@
 package com.example.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     LinearLayout linearLayout;
     ImageButton  btnOverflow,btnBack;
+    Intent intent;
+
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -96,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                intent=new Intent(getApplicationContext(),Notice.class);
+                startActivity(intent);
                 Toast.makeText(MainActivity.this, "공지사항", Toast.LENGTH_SHORT).show();
             }
         });
