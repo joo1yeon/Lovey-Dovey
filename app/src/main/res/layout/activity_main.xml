@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/drawer_layout">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,9 +28,9 @@
                 android:textColor="#ffffff"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/btnOverflow"
@@ -41,7 +41,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_menu"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
@@ -65,6 +65,7 @@
             app:layout_constraintTop_toBottomOf="@id/tab"></android.support.v4.view.ViewPager>
 
     </LinearLayout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/drawer"
@@ -72,15 +73,13 @@
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:background="#dcfdd5"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
 
         <LinearLayout
             android:id="@+id/back"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="40dp"
             android:background="#D4F0CF"
             android:orientation="vertical"
 
@@ -89,56 +88,147 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/back"
                 android:id="@+id/btnBack"
-                android:background="@drawable/ic_menu"
-                />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#00000000"
+                android:src="@drawable/back" />
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="30"
+            android:layout_height="170dp"
             android:background="#f2ffe8"
             android:gravity="center"
             android:text="테스트 메뉴"
             android:textColor="#000000"
             android:textSize="20sp" />
 
-        <GridLayout
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="60"
+            android:layout_height="wrap_content"
             android:columnCount="2"
-            android:rowCount="2">
+            android:rowCount="2"
+            android:layout_marginTop="10dp"
+            >
 
-            <ListView android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:id="@+id/btnInfo"/>
-            <ListView android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:id="@+id/btnNotice"/>
-            <ListView android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:id="@+id/btnBG"/>
-            <ListView android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:id="@+id/btnBookMark"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/btnInfo">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/person"
+                        android:scaleType="fitXY"
+                    />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/netmarble_b"
+                        android:text="개인정보수정"
+                        android:textColor="#6c8e5e"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/btnNotice">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/notice"
+                        android:scaleType="fitCenter"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/netmarble_b"
+                        android:text="공지사항"
+                        android:textColor="#6c8e5e"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        />
+
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="30dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/btnBG">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/background"
+                        android:scaleType="fitCenter"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/netmarble_b"
+                        android:text="배경화면 설정"
+                        android:textColor="#6c8e5e"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/btnBookMark">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_star"
+                        android:scaleType="fitXY"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/netmarble_b"
+                        android:text="즐겨찾기"
+                        android:textColor="#6c8e5e"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        />
+
+                </LinearLayout>
+
+            </TableRow>
 
 
-        </GridLayout>
+        </TableLayout>
 
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

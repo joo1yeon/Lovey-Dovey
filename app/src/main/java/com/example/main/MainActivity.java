@@ -13,14 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    ViewGroup info,notice,background,bookmark;
     DrawerLayout drawerLayout;
     String color = "#B8D9C0";
     ViewPager viewPager;
@@ -36,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         btnBack=findViewById(R.id.btnBack);
         btnOverflow=findViewById(R.id.btnOverflow);
         drawerLayout=findViewById(R.id.drawer_layout);
+        info=findViewById(R.id.btnInfo);
+        notice=findViewById(R.id.btnNotice);
+        background=findViewById(R.id.btnBG);
+        bookmark=findViewById(R.id.btnBookMark);
         linearLayout = findViewById(R.id.main_content);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -79,6 +86,32 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(Gravity.RIGHT);
             }
         });
+
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "개인정보 수정", Toast.LENGTH_SHORT).show();
+            }
+        });
+        notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "공지사항", Toast.LENGTH_SHORT).show();
+            }
+        });
+        background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "배경화면 설정", Toast.LENGTH_SHORT).show();
+            }
+        });
+        bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "즐겨찾기", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
