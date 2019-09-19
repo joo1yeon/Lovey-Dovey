@@ -8,11 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -21,15 +21,11 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    DrawerLayout drawerLayout;
     String color = "#B8D9C0";
     ViewPager viewPager;
     LinearLayout linearLayout;
-    ImageButton btnHome, btnOverflow;
-    Button btnDate, btnFoot, btnGal;
-    Main mainFrag;
-    Datecourse dateFrag;
-    FootPrint footFrag;
-    StoryListFragment albumFrag;
+    ImageButton  btnOverflow,btnBack;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -37,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btnBack=findViewById(R.id.btnBack);
+        btnOverflow=findViewById(R.id.btnOverflow);
+        drawerLayout=findViewById(R.id.drawer_layout);
         linearLayout = findViewById(R.id.main_content);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -65,36 +64,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        viewPager = findViewById(R.id.mainFrame);
-//        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-//        viewPager.setCurrentItem(0);        //viewPager의 초기값을 0(메인화면)으로 설정
-//
-//        btnHome = findViewById(R.id.btnHome);
-//        btnOverflow = findViewById(R.id.btnOverflow);
-//        btnDate = findViewById(R.id.btnDate);
-//        btnFoot = findViewById(R.id.btnFoot);
-//        btnGal = findViewById(R.id.btnGallery);
-//
-//        mainFrag = new Main();
-//        dateFrag = new Datecourse();
-//        footFrag = new FootPrint();
-//        albumFrag = new StoryListFragment();
-//
-//        //TODO 버튼에 ViewPager 태그값 및 클릭 리스너 설정
-//        btnHome.setOnClickListener(movePageListener);
-//        btnHome.setTag(0);
-//        btnDate.setOnClickListener(movePageListener);
-//        btnDate.setTag(1);
-//        btnFoot.setOnClickListener(movePageListener);
-//        btnFoot.setTag(2);
-//        btnGal.setOnClickListener(movePageListener);
-//        btnGal.setTag(3);
+        //TODO 오버플로우버튼 클릭
+        btnOverflow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
 
+        //TODO 내비게이션뷰 닫기
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+            }
+        });
     }
-//    private View createTabView(String tabName){
-//        View tabView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.fragment_main,null);
-//        return tabView;
-//    }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments = new ArrayList<Fragment>();
