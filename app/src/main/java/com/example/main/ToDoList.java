@@ -2,6 +2,7 @@ package com.example.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -88,10 +89,14 @@ public class ToDoList extends AppCompatActivity {
                 ToDoList_ListItem listItem = adapter1.listViewItems.get(i);
                 String content = listItem.getContent();
 
+                listView1.setItemChecked(i,false);                  //선택한 인덱스의 체크 풀기
                 adapter1.remove(i);                                       //선택한 adapter1 내용을 지우기
                 adapter1.notifyDataSetChanged();                          //변경한 데이터 반영
                 adapter2.addItem(content,"0000년 00월 00일");      //adapter2에 adapter1에 있던 내용 추가
                 adapter2.notifyDataSetChanged();                          //변경한 데이터 반영
+
+
+
             }
         });
 
