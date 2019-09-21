@@ -83,6 +83,7 @@
         android:handle="@id/handle"
         android:content="@id/contents"
         android:orientation="vertical"
+        android:topOffset="45dp"
         >
         <ImageView
             android:id="@+id/handle"

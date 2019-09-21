@@ -32,7 +32,7 @@ public class Main extends Fragment {
     ImageView profile_Btn1, profile_Btn2, storage, close;
     TextView  date, textView;
     View profileLayout1, profileLayout2;
-    String[] todo = {"시험끝나고 미친듯이 놀기", "PC방 가서 하루종일 게임하기", "오류같이 찾고 기뻐하기 ㅎㅎ", "웃으면서 같이 코딩하기", "누워서 맘편히 잠자기"};
+    String[] todo = {"시험끝나고 미친듯이 놀기", "PC방 가서 하루종일 게임하기", "오류같이 찾고 기뻐하기 ㅎㅎ", "웃으면서 같이 코딩하기", "누워서 맘편히 잠자기", "종로가서 커플링 맞추기","커플 키링 만들어보기"};
     TextSwitcher to_do_Btn;
     Thread todoThread;
     EditText email, birthday, name;
@@ -192,10 +192,9 @@ public class Main extends Fragment {
         }
     }
 
-    //ToDoList 함수
+    //ToDoList 함수 TODO 탭 변경시 겹치는 오류 runOnUiThread 가 필요한가?
     class TodoThread extends Thread{
-
-        boolean running =false;
+        boolean running =false;     //시작과 종료에 필요한 변수
         int index = 0;
 
         @Override
@@ -203,7 +202,6 @@ public class Main extends Fragment {
             running=true;
 
             while (running){                            //무한루프, Todolist 계속 돌아가게 함
-
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -220,14 +218,12 @@ public class Main extends Fragment {
                 if(index >= todo.length){
                     index=0;
                 }
+
             }
         }
-
         //TODO# 스레드 멈추는 함수 필요할려나?
         public void halt(){
             running=false;
         }
-
-
     }
 }
