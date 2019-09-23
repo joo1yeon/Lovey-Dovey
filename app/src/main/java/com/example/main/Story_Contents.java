@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,7 +60,7 @@ public class Story_Contents extends AppCompatActivity { //하루의 스토리(�
     class StoryContentsHolder extends RecyclerView.ViewHolder {
         private ContentsOfStory mContentsOfStory;
         public ImageView contentsImg;
-        public TextView contentsText;
+        public EditText contentsText;
 
         public StoryContentsHolder(View itemView) {
             super(itemView);
@@ -87,7 +88,7 @@ public class Story_Contents extends AppCompatActivity { //하루의 스토리(�
 
         @NonNull
         @Override
-        public StoryContentsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+         public StoryContentsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getApplication());
             View view = layoutInflater.inflate(R.layout.list_item_story_contents, parent, false);
             Log.d("test", "storycontentholder oncreateviewholder 실행");

@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             fragments.add(new Main());
             fragments.add(new Datecourse());
             fragments.add(new FootPrint());
-            fragments.add(new Album());
+            fragments.add(new StoryListFragment()); //Ablum 대신 StoryListFragment로 변경
         }
 
         @Override

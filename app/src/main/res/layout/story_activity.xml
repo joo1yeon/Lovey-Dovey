@@ -5,6 +5,20 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B8D9C0"
+        android:fontFamily="@font/netmarble_b"
+        android:padding="10dp"
+        android:text="스토리 보기"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/story_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +28,7 @@
         android:textSize="35dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/topPanel" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/story_contents_rv"

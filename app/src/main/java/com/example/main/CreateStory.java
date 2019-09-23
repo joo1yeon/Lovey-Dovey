@@ -72,8 +72,8 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
                 mDbOpenHelper = new DbOpenHelper(getApplicationContext());
                 mDbOpenHelper.open();
                 mDbOpenHelper.create();
-                mDbOpenHelper.deleteAllColumns();
-                //mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
+//                mDbOpenHelper.deleteAllColumns();
+                mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
                 Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
                 story.setTitle(etStoryTitle.getText().toString());
