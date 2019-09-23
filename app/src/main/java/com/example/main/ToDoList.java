@@ -1,6 +1,8 @@
 package com.example.main;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -36,11 +38,19 @@ public class ToDoList extends AppCompatActivity {
     ToDoList_ChoiceListAdapter adapter1, adapter2;                     //선택한거, 안한거
     SlidingDrawer handle;
 
+    MyDBHelper todoDB;
+    SQLiteDatabase sqlDB;
+    Cursor cursor;
+    String strContent, strDate, strCoupleID = "couple0";
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
 
+        todoDB = new MyDBHelper(this);          //헬퍼클래스 객체 생성
 
         //뒤로가기 버튼 인플레이트
         btnBack = findViewById(R.id.btnBack);
@@ -66,23 +76,28 @@ public class ToDoList extends AppCompatActivity {
         listView2.setAdapter(adapter2);
 
 
-        //체크안된 투두 아이템 추가
+        //체크되지 않은 투두 아이템 추가
+        Item_show(adapter1, strCoupleID,false);
+
+        /*
         adapter1.addItem("시험끝나고 미친듯이 놀기", "");
         adapter1.addItem("PC방 가서 하루종일 게임하기", "");
         adapter1.addItem("오류같이 찾고 기뻐하기 ㅎㅎ", "");
         adapter1.addItem("웃으면서 같이 코딩하기", "");
         adapter1.addItem("누워서 맘편히 잠자기", "");
         adapter1.addItem("종로가서 커플링 맞추기", "");
-        adapter1.addItem("커플 키링 만들어보기", "");
-        //adapter1.sort();
+        adapter1.addItem("커플 키링 만들어보기", ""); */
+
 
         //체크된 투두 아이템 추가
-        adapter2.addItem("곱창 무한리필 먹기", "2019년 05월 12일");
+        Item_show(adapter2, strCoupleID,true);
+
+        /*adapter2.addItem("곱창 무한리필 먹기", "2019년 05월 12일");
         adapter2.addItem("바다가서 조개구이 먹기", "2019년 04월 09일");
         adapter2.addItem("해외여행 가기", "2019년 04월 08일");
         adapter2.addItem("동물카페 가서 놀기", "2019년 03월 04일");
         adapter2.addItem("찜질방 가서 하루 놀기", "2019년 03월 04일");
-        adapter2.addItem("커플신발 맞춰보기", "2019년 02월 28일");
+        adapter2.addItem("커플신발 맞춰보기", "2019년 02월 28일");*/
 
 
 
@@ -147,6 +162,7 @@ public class ToDoList extends AppCompatActivity {
                         add.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+
                                 String text = contents.getText().toString();
                                 //TODO 수정하는 부분 해야함 데이터베이스에서 검색 후 해당하는 내용 부분 수정하면 될 듯
 
@@ -154,6 +170,8 @@ public class ToDoList extends AppCompatActivity {
                                 //데이터 수정하는 코드
                                 listItem.setContent(text);
                                 adapter1.notifyDataSetChanged();
+                                //Item_modify(adapter1, "couple0",listItem.getContent());
+
                                 dl.dismiss();
 
                             }
@@ -230,10 +248,14 @@ public class ToDoList extends AppCompatActivity {
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         String text = contents.getText().toString();
+                        /*
                         adapter1.addItem(text, "");
                         contents.setText("");
-                        adapter1.notifyDataSetChanged();
+                        adapter1.notifyDataSetChanged();*/
+                        Item_add(adapter1,strCoupleID,text);
+                        //TODO 업데이트를 하는 방법...
                         dl.dismiss();
 
                     }
@@ -273,5 +295,45 @@ public class ToDoList extends AppCompatActivity {
         }*/
 
 
+
+
+       public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
+           sqlDB = todoDB.getReadableDatabase();
+
+            cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' and checked = '"+check+"';",null);
+
+            int count = cursor.getCount();
+
+            for(int i=0;i<count;i++) {
+                cursor.moveToNext();
+                strDate = cursor.getString(2);
+                strContent = cursor.getString(3);
+                adapter.addItem(strContent, strDate);
+            }
+
+            cursor.close();
+            sqlDB.close();
+       }
+
+       public void Item_add(ToDoList_ChoiceListAdapter adapter, String id, String content){
+           try{
+               sqlDB = todoDB.getWritableDatabase();
+               cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"';",null);
+               int count = cursor.getCount();
+               sqlDB.execSQL("INSERT INTO to_do_list VALUES( " + count + ",'" + id + "','','" + content + "','" + false + "');");
+           }catch (Exception e){
+           }
+           cursor.close();
+           sqlDB.close();
+
+       }
+       /*
+       public void Item_modify(ToDoList_ChoiceListAdapter adapter, String id, String content){
+           sqlDB = todoDB.getWritableDatabase();
+           sqlDB.execSQL("update to_do_list set content = " + contents.getText().toString() + " where couple_id = '" + id + "' and content = "+content+";");
+           sqlDB.close();
+          Item_add(adapter,id,false);
+           Toast.makeText(getApplicationContext(),"수정됨",Toast.LENGTH_SHORT).show();
+       }*/
 
 }

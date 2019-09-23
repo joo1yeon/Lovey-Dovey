@@ -58,6 +58,8 @@ public class Main extends Fragment {
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);                      //프로필사진1(나) 버튼
         profile_Btn2 = layout.findViewById(R.id.profile_Btn2);                      //프로필사진2(상대방) 버튼
 
+
+
         //텍스트 바꾸기
         to_do_Btn.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
