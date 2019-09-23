@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,15 +19,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
+
 public class CreateStory extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
 
     Button btnNext,btnCancel;
-    ImageView icCalendar, icSelectMainImg;
+    ImageView icCalendar, icSelectMainImg, ivStoryMainImg;
     EditText etStoryTitle;
     TextView tvPressIcon;
     public Story mStory;
     private static final String DIALOG_DATE = "DialogDate";
-    private static final int REQUEST_DATE = 0; // DatePicker 에서 데이터 반환하기 위해 요청 코드 상수 정의
+    private static final int REQUEST_CODE = 10;
+    //private static final int REQUEST_DATE = 0; // DatePicker 에서 데이터 반환하기 위해 요청 코드 상수 정의
     DbOpenHelper mDbOpenHelper;
     int year, month, day;
 
@@ -45,9 +50,10 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
         setContentView(R.layout.create_story);
 
         btnCancel=findViewById(R.id.btn_cancel);
-        btnNext = findViewById(R.id.btn_confirm);
+        btnNext = findViewById(R.id.btn_next);
         icCalendar = findViewById(R.id.ic_calendar);
         icSelectMainImg = findViewById(R.id.ic_select_main_img);
+        ivStoryMainImg = findViewById(R.id.story_main_img);
         etStoryTitle = findViewById(R.id.et_story_title);
         tvPressIcon = findViewById(R.id.tv_press_icon);
 
@@ -76,9 +82,23 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
                 story.setDay(day);
                 Album_singleton.get(getApplicationContext()).addStory(story);
                 mDbOpenHelper.close();
+                Intent intent = new Intent(CreateStory.this, Story_EditContents.class);
+                startActivity(intent);
                 finish();
             }
         });
+
+        icSelectMainImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, REQUEST_CODE);
+
+            }
+        });
+
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +107,26 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    Bitmap img = BitmapFactory.decodeStream(in);
+                    in.close();
+
+                    ivStoryMainImg.setImageBitmap(img);
+
+                } catch (Exception e) {
+
+                }
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }

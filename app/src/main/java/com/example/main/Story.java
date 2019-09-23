@@ -39,3 +39,8 @@ public class Story {
         mDay = day;
     }
 }
+
+class ContentsOfStory {
+    public String text;
+    public ContentsOfStory() { text = "test";}
+}
