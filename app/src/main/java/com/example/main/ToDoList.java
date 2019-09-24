@@ -41,7 +41,7 @@ public class ToDoList extends AppCompatActivity {
     MyDBHelper todoDB;
     SQLiteDatabase sqlDB;
     Cursor cursor;
-    String strContent, strDate, strCoupleID = "couple0";
+    String strContent, strDate, strCoupleID = "couple0", strcheck;
 
 
 
@@ -49,6 +49,7 @@ public class ToDoList extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
+
 
         todoDB = new MyDBHelper(this);          //헬퍼클래스 객체 생성
 
@@ -76,11 +77,10 @@ public class ToDoList extends AppCompatActivity {
         listView2.setAdapter(adapter2);
 
 
+
         //체크되지 않은 투두 아이템 추가
         Item_show(adapter1, strCoupleID,false);
-
-        /*
-        adapter1.addItem("시험끝나고 미친듯이 놀기", "");
+        /*adapter1.addItem("시험끝나고 미친듯이 놀기", "");
         adapter1.addItem("PC방 가서 하루종일 게임하기", "");
         adapter1.addItem("오류같이 찾고 기뻐하기 ㅎㅎ", "");
         adapter1.addItem("웃으면서 같이 코딩하기", "");
@@ -91,7 +91,6 @@ public class ToDoList extends AppCompatActivity {
 
         //체크된 투두 아이템 추가
         Item_show(adapter2, strCoupleID,true);
-
         /*adapter2.addItem("곱창 무한리필 먹기", "2019년 05월 12일");
         adapter2.addItem("바다가서 조개구이 먹기", "2019년 04월 09일");
         adapter2.addItem("해외여행 가기", "2019년 04월 08일");
@@ -108,6 +107,12 @@ public class ToDoList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ToDoList_ListItem listItem = adapter1.listViewItems.get(i);
                 String content = listItem.getContent();
+
+                /*Item_Click(adapter1,strCoupleID,"false", content,i);
+                adapter1.clearItem();
+                Item_show(adapter1, strCoupleID,false);
+                adapter2.clearItem();
+                Item_show(adapter2, strCoupleID,true);*/
 
                 listView1.setItemChecked(i,false);                 //선택한 인덱스의 체크 풀기
                 adapter1.remove(i);                                       //선택한 adapter1 내용을 지우기
@@ -154,24 +159,25 @@ public class ToDoList extends AppCompatActivity {
                         contents = addLayout.findViewById(R.id.content);
 
                         //TODO 데이터 베이스에서 가져온 내용 수정하는 내용 에디트텍스트에 출력
-
-                        // 아이템 내 각 위젯에 데이터 반영
-                        contents.setText(listItem.getContent());
+                        contents.setText(listItem.getContent());        // 수정할 아이템의 내용을 EditText에 보여줌
 
                         //수정
                         add.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
+
+
                                 String text = contents.getText().toString();
                                 //TODO 수정하는 부분 해야함 데이터베이스에서 검색 후 해당하는 내용 부분 수정하면 될 듯
 
 
                                 //데이터 수정하는 코드
-                                listItem.setContent(text);
-                                adapter1.notifyDataSetChanged();
-                                //Item_modify(adapter1, "couple0",listItem.getContent());
-
+                                /*listItem.setContent(text);
+                                adapter1.notifyDataSetChanged();*/
+                                Item_modify( adapter1, strCoupleID,text,listItem.getContent());
+                                adapter1.clearItem();                                           //리스트뷰 초기화
+                                Item_show(adapter1,strCoupleID,false);                   //데이터 베이스 검색 후 내용 받아옴
                                 dl.dismiss();
 
                             }
@@ -192,8 +198,13 @@ public class ToDoList extends AppCompatActivity {
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        adapter1.remove(position);
-                        adapter1.notifyDataSetChanged();
+
+                        /*adapter1.remove(position);
+                        adapter1.notifyDataSetChanged();*/
+
+                        Item_Delete(adapter1,strCoupleID,listItem.getContent());
+                        adapter1.clearItem();                                           //리스트뷰 초기화
+                        Item_show(adapter1,strCoupleID,false);                   //데이터 베이스 검색 후 내용 받아옴
                         dl2.dismiss();
                     }
                 });
@@ -209,6 +220,13 @@ public class ToDoList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ToDoList_ListItem listItem = adapter2.listViewItems.get(i);
                 String content = listItem.getContent();
+
+                /*Item_Click(adapter2,strCoupleID,"true",content,i);
+                adapter2.clearItem();
+                Item_show(adapter2, strCoupleID,false);
+                adapter1.clearItem();
+                Item_show(adapter1, strCoupleID,true);*/
+
 
                 listView2.setItemChecked(i,false);                  //선택한 인덱스의 체크 풀기
                 adapter2.remove(i);                                        //선택한 adapter2 내용을 지우기
@@ -254,8 +272,10 @@ public class ToDoList extends AppCompatActivity {
                         adapter1.addItem(text, "");
                         contents.setText("");
                         adapter1.notifyDataSetChanged();*/
+
                         Item_add(adapter1,strCoupleID,text);
-                        //TODO 업데이트를 하는 방법...
+                        adapter1.clearItem();                                           //리스트뷰 초기화
+                        Item_show(adapter1,strCoupleID,false);                   //데이터 베이스 검색 후 내용 받아옴
                         dl.dismiss();
 
                     }
@@ -296,16 +316,18 @@ public class ToDoList extends AppCompatActivity {
 
 
 
-
+       //To-Do-List 조회
        public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
            sqlDB = todoDB.getReadableDatabase();
 
-            cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' and checked = '"+check+"';",null);
-
+            cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+check+"';",null);
             int count = cursor.getCount();
 
             for(int i=0;i<count;i++) {
                 cursor.moveToNext();
+                if(cursor.getString(4) == "false")
+                strDate=" ";
+                else
                 strDate = cursor.getString(2);
                 strContent = cursor.getString(3);
                 adapter.addItem(strContent, strDate);
@@ -315,25 +337,46 @@ public class ToDoList extends AppCompatActivity {
             sqlDB.close();
        }
 
+        //To-Do-List 추가
        public void Item_add(ToDoList_ChoiceListAdapter adapter, String id, String content){
            try{
                sqlDB = todoDB.getWritableDatabase();
                cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"';",null);
                int count = cursor.getCount();
-               sqlDB.execSQL("INSERT INTO to_do_list VALUES( " + count + ",'" + id + "','','" + content + "','" + false + "');");
-           }catch (Exception e){
-           }
+               sqlDB.execSQL("INSERT INTO to_do_list VALUES (" + ++count + ",'" + id + "','','" + content + "','" + false + "');");
+           }catch (Exception e){ }
+
            cursor.close();
            sqlDB.close();
-
        }
-       /*
-       public void Item_modify(ToDoList_ChoiceListAdapter adapter, String id, String content){
+
+
+       //To-Do-List 수정
+    public void Item_modify(ToDoList_ChoiceListAdapter adapter,String id, String content, String content_){
+        sqlDB = todoDB.getWritableDatabase();
+        sqlDB.execSQL("update to_do_list set content='" + content + "' where couple_id='" + id + "' and content='"+ content_ +"';");
+        adapter.notifyDataSetChanged();
+        sqlDB.close();
+
+    }
+
+    //To-Do-List 클릭했을 때 넘어가기
+    public void Item_Click(ToDoList_ChoiceListAdapter adapter,String id, String b, String content, int i){
+           if(b=="false") b="true";
+           else b="false";
+        sqlDB = todoDB.getWritableDatabase();
+        sqlDB.execSQL("update to_do_list set checked='" + b + "', date_check='"+Date()+"' where couple_id='" + id + "' and content='"+ content +"';");
+        adapter.remove(i);
+        sqlDB.close();
+
+    }
+
+       //To-Do-List 삭제
+       public void Item_Delete(ToDoList_ChoiceListAdapter adapter,String id, String content){
            sqlDB = todoDB.getWritableDatabase();
-           sqlDB.execSQL("update to_do_list set content = " + contents.getText().toString() + " where couple_id = '" + id + "' and content = "+content+";");
+           sqlDB.execSQL("DELETE FROM to_do_list WHERE content='" + content + "' AND couple_id = '"+id+"';");
+           adapter.notifyDataSetChanged();
            sqlDB.close();
-          Item_add(adapter,id,false);
-           Toast.makeText(getApplicationContext(),"수정됨",Toast.LENGTH_SHORT).show();
-       }*/
+       }
 
 }

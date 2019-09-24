@@ -67,6 +67,9 @@ public class ToDoList_ChoiceListAdapter extends BaseAdapter {
         listViewItems.add(item);                                //listViewItems 에
     }
 
+    public void clearItem(){
+        listViewItems.clear();
+    }
 
     //아이템을 제거
     public void remove(int position){
