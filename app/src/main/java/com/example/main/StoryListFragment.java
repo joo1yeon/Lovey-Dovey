@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -100,7 +99,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(getActivity(), StoryActivity.class);
+            Intent intent = new Intent(getActivity(), Story_Contents.class);
             startActivity(intent); //스토리 대표사진을 누르면 액티비티 시작
         }
 

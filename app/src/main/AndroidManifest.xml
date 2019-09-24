@@ -63,14 +63,22 @@
         <activity
             android:name=".SearchStory"
             android:label="스토리 검색" />
-        <activity android:name=".AllReview" />
-        <activity android:name=".Datecourse_Fragment" />
-        <activity android:name=".DateImageClick" />
-        <activity android:name=".Datecourse_Search" />
-        <activity android:name=".LocSearch" />
-        <activity android:name=".Gift_Main" />
+        <activity android:name=".AllReview"/>
+        <activity android:name=".Datecourse_Fragment"/>
+        <activity android:name=".DateImageClick"/>
+        <activity android:name=".Datecourse_Search"/>
+        <activity android:name=".LocSearch"/>
+        <activity android:name=".Gift_Main"/>
+        <activity android:name=".Story_EditContents" />
+        <activity android:name=".Story_Contents" />
         <activity android:name=".ToDoList" />
         <activity android:name=".Notice" />
+
+        <provider
+            android:authorities="com.example.main.MyContentProvider"
+            android:name=".MyContentProvider"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
