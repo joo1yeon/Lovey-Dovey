@@ -29,7 +29,6 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     public Button addBtn;
     public FloatingActionButton searchBtn;
     DbOpenHelper mDbOpenHelper;
-    Album_singleton album_singleton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,8 +68,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     }
 
     public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
-//        Album_singleton album_singleton = Album_singleton.get(getActivity());
-        album_singleton = Album_singleton.get(getActivity());
+        Album_singleton album_singleton = Album_singleton.get(getActivity());
         List<Story> stories = album_singleton.getStories();
 
         if (mAdapter == null) {
@@ -115,7 +113,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-//            MenuItem Gotofootprint = contextMenu.add(Menu.NONE, 1001, 1, "발자국으로 이동");
+            MenuItem Gotofootprint = contextMenu.add(Menu.NONE, 1001, 1, "발자국으로 이동");
             MenuItem Edit = contextMenu.add(Menu.NONE, 1002, 2, "수정");
             MenuItem Delete = contextMenu.add(Menu.NONE, 1003, 3, "삭제");
 
@@ -129,6 +127,9 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
                 switch (menuItem.getItemId()) {
                     case 1002: //수정 항목 선택시
+                        Intent intent = new Intent(getActivity(), Story_EditMainListItem.class);
+                        startActivity(intent);
+
                         break;
                     case 1003: //삭제 항목 선택시
                         Album_singleton album_singleton = Album_singleton.get(getActivity());

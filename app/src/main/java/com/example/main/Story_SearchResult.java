@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Story_SearchResult extends AppCompatActivity {
     RecyclerView mRecyclerView;
-    
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

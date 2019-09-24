@@ -101,8 +101,9 @@
     <ImageView
         android:id="@+id/story_main_img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="350dp"
         android:layout_margin="15dp"
+        android:scaleType="fitCenter"
         app:layout_constraintTop_toBottomOf="@id/tv_select_main_img"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_next"
