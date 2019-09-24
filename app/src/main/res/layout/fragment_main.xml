@@ -65,7 +65,6 @@
         android:id="@+id/to_Do_Ground"
         android:layout_width="400dp"
         android:layout_height="60dp"
-        android:layout_margin="5dp"
         android:scaleX="1.8"
 
         android:src="@drawable/tdground0"
@@ -73,16 +72,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <TextSwitcher
         android:id="@+id/to_do_Btn"
         android:layout_width="300dp"
         android:layout_height="30dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginLeft="30dp"
-        android:text="To do - 일단 임시 투두"
-        android:fontFamily="@font/netmarble_m"
-        android:textColor="#FFFFFF"
-        android:textSize="13sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:inAnimation="@anim/up_down"
+        android:outAnimation="@anim/down_up"
 
         app:layout_constraintRight_toRightOf="@id/to_Do_Ground"
         app:layout_constraintLeft_toLeftOf="@id/to_Do_Ground"
