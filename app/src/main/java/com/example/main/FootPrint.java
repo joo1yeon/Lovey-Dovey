@@ -34,12 +34,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
+
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.api.Response;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -108,7 +106,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         btnTomorrow = layout.findViewById(R.id.btnTomorrow);
         btnYesterday = layout.findViewById(R.id.btnYesterday);
         tvToday.setText(sdf.format(cal.getTime()));
-        Response.Listener listener = new Response.Listener<String>() {
+        com.android.volley.Response.Listener listener = new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try{
