@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class Album extends Fragment {
@@ -41,7 +40,7 @@ public class Album extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), CreateStory.class);
+                Intent intent = new Intent(getContext(), Story_Create.class);
                 startActivity(intent);
             }
         });
@@ -49,7 +48,7 @@ public class Album extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent2 = new Intent(getContext(), SearchStory.class);
+                Intent intent2 = new Intent(getContext(), Story_Search.class);
                 startActivity(intent2);
             }
         });

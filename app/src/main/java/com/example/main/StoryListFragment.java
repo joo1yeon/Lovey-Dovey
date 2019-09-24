@@ -28,6 +28,8 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     public StoryAdapter mAdapter;
     public Button addBtn;
     public FloatingActionButton searchBtn;
+    DbOpenHelper mDbOpenHelper;
+    Album_singleton album_singleton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), CreateStory.class);
+                Intent intent = new Intent(getActivity(), Story_Create.class);
                 startActivity(intent);
             }
         });
@@ -51,7 +53,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SearchStory.class);
+                Intent intent = new Intent(getActivity(), Story_Search.class);
                 startActivity(intent);
             }
         });
@@ -67,7 +69,8 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     }
 
     public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
-        Album_singleton album_singleton = Album_singleton.get(getActivity());
+//        Album_singleton album_singleton = Album_singleton.get(getActivity());
+        album_singleton = Album_singleton.get(getActivity());
         List<Story> stories = album_singleton.getStories();
 
         if (mAdapter == null) {
@@ -133,6 +136,13 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
                         stories.remove(getAdapterPosition());
                         mAdapter.notifyItemRemoved(getAdapterPosition());
                         mAdapter.notifyItemRangeChanged(getAdapterPosition(), stories.size());
+                        //TODO DB에서 data 삭제
+                        mDbOpenHelper = new DbOpenHelper(getActivity());
+                        mDbOpenHelper.open();
+                        mDbOpenHelper.create();
+//                        mDbOpenHelper.deleteColumn();
+                        Log.d("test", "db에서 삭제");
+                        mDbOpenHelper.close();
                         break;
 
                 }

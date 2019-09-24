@@ -1,6 +1,7 @@
 package com.example.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
 public class Story_Contents extends AppCompatActivity { //하루의 스토리(사진, 글)을 보여주는 액티비티
     private Story mStory;
     private TextView mTitle;
+    private ImageView btnEdit;
     private RecyclerView mRecyclerView;
     public StoryContentsAdapter mAdapter;
 
@@ -31,11 +34,22 @@ public class Story_Contents extends AppCompatActivity { //하루의 스토리(�
         setContentView(R.layout.story_activity);
         Log.d("test", "setContentView 실행");
         mTitle = findViewById(R.id.story_title);
+        btnEdit = findViewById(R.id.btn_edit);
         mRecyclerView = findViewById(R.id.story_contents_rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
+        mTitle.setText("????이거 어떻게 하지?");
         Log.d("test", "setLayoutManager 실행");
 
         updateUI();
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Story_Contents.this, Story_EditContents.class);
+                startActivityForResult(intent, 0);
+
+            }
+        });
         Log.d("test", "updateUI 실행");
     }
 
@@ -60,7 +74,7 @@ public class Story_Contents extends AppCompatActivity { //하루의 스토리(�
     class StoryContentsHolder extends RecyclerView.ViewHolder {
         private ContentsOfStory mContentsOfStory;
         public ImageView contentsImg;
-        public EditText contentsText;
+        public TextView contentsText;
 
         public StoryContentsHolder(View itemView) {
             super(itemView);
@@ -105,6 +119,13 @@ public class Story_Contents extends AppCompatActivity { //하루의 스토리(�
         @Override
         public int getItemCount() {
             return mContentsOfStoryList.size();
+        }
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Toast.makeText(this, "수정되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 }

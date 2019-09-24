@@ -11,41 +11,32 @@
         android:background="#B8D9C0"
         android:fontFamily="@font/netmarble_b"
         android:padding="10dp"
-        android:text="스토리 보기"
+        android:text="스토리 검색 결과"
         android:textColor="#ffffff"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/btn_edit"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/text_result"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:src="@drawable/ic_edit"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/story_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/netmarble_m"
-        android:text="제목"
-        android:textSize="35dp"
+        android:fontFamily="@font/netmarble_b"
+        android:text="검색 결과 () 건"
+        android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topPanel" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/story_contents_rv"
-        android:layout_width="wrap_content"
+        android:id="@+id/story_search_result_rv"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/story_title" />
+        app:layout_constraintTop_toBottomOf="@id/text_result"
+        app:stackFromEnd="true" />
 
 </android.support.constraint.ConstraintLayout>

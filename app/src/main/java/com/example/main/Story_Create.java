@@ -1,14 +1,10 @@
 package com.example.main;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,7 +17,7 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 
-public class CreateStory extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
+public class Story_Create extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
 
     Button btnNext,btnCancel;
     ImageView icCalendar, icSelectMainImg, ivStoryMainImg;
@@ -47,7 +43,7 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_story);
+        setContentView(R.layout.story_create);
 
         btnCancel=findViewById(R.id.btn_cancel);
         btnNext = findViewById(R.id.btn_next);
@@ -82,7 +78,7 @@ public class CreateStory extends AppCompatActivity implements DatePickerFragment
                 story.setDay(day);
                 Album_singleton.get(getApplicationContext()).addStory(story);
                 mDbOpenHelper.close();
-                Intent intent = new Intent(CreateStory.this, Story_EditContents.class);
+                Intent intent = new Intent(Story_Create.this, Story_EditContents.class);
                 startActivity(intent);
                 finish();
             }

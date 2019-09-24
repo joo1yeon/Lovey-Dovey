@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -29,7 +30,8 @@ import java.util.List;
 
 public class Story_EditContents extends AppCompatActivity {
     final int GET_IMG_CODE = 30;
-    Button addImg;
+    Button addImg, btnConfirm, btnCancel;
+    ImageButton imgEdit;
     String imagePath1;
     private RecyclerView mRecyclerView;
     public Story_EditContents.EditContentsAdapter mAdapter;
@@ -43,6 +45,9 @@ public class Story_EditContents extends AppCompatActivity {
         setContentView(R.layout.story_edit_contents);
 
         addImg = findViewById(R.id.addImg_btn);
+        btnConfirm = findViewById(R.id.btn_confirm);
+        btnCancel = findViewById(R.id.btn_cancel);
+
 
         mRecyclerView = findViewById(R.id.story_contents_rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
@@ -54,6 +59,22 @@ public class Story_EditContents extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getImages();
+            }
+        });
+
+        Intent intent = getIntent();
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
@@ -109,7 +130,15 @@ public class Story_EditContents extends AppCompatActivity {
         @Override
         public Story_EditContents.EditContentsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getApplication());
-            View view = layoutInflater.inflate(R.layout.list_item_story_contents, parent, false);
+            View view = layoutInflater.inflate(R.layout.list_item_edit_contents, parent, false);
+
+//            imgEdit = findViewById(R.id.img_edit);
+//            imgEdit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    //getImages();
+//                }
+//            });
             Log.d("test", "storycontentholder oncreateviewholder 실행");
             return new Story_EditContents.EditContentsHolder(view);
         }
