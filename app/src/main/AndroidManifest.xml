@@ -28,7 +28,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB7fJgMea4_D6otROMwy70aCwNg1S7sB0U" />
@@ -72,9 +73,13 @@
         <activity android:name=".Story_Contents" />
         <activity android:name=".ToDoList" />
         <activity android:name=".Notice" />
+<<<<<<< HEAD
         <activity android:name=".Story_SearchResult" />
         <activity android:name=".Story_EditMainListItem" />
 
+=======
+        <activity android:name=".JoinActivity"/>
+>>>>>>> Foot
         <provider
             android:authorities="com.example.main.MyContentProvider"
             android:name=".MyContentProvider"
