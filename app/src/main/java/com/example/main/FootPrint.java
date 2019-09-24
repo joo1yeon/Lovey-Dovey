@@ -34,6 +34,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -47,6 +53,8 @@ import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -75,6 +83,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
     private BottomSheetDialog modalBottomSheet;
+    final static private String url = "http://10.0.2.2/teamProject/Marker.php";
 
     public FootPrint() {
 
@@ -99,6 +108,26 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         btnTomorrow = layout.findViewById(R.id.btnTomorrow);
         btnYesterday = layout.findViewById(R.id.btnYesterday);
         tvToday.setText(sdf.format(cal.getTime()));
+        Response.Listener listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject jResponse =new JSONObject(response);
+                    boolean success = jResponse.getBoolean("success");
+                    Log.i("Test","값 받아오기 성공");
+                    if(success){
+                        double latitude = jResponse.getDouble("latitude");
+                        double longitude = jResponse.getDouble("longitude");
+                        Log.i("TEST","위도: "+longitude+"    "+"경도: "+latitude);
+                    }
+                }catch (Exception e){
+                    Log.d("asdf","aaaa");
+                }
+            }
+        };
+        MarkerRequest request=new MarkerRequest(listener);
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        queue.add(request);
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
