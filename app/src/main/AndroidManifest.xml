@@ -73,7 +73,7 @@
         <activity android:name=".Story_Contents" />
         <activity android:name=".ToDoList" />
         <activity android:name=".Notice" />
-
+        <activity android:name=".JoinActivity"/>
         <provider
             android:authorities="com.example.main.MyContentProvider"
             android:name=".MyContentProvider"
