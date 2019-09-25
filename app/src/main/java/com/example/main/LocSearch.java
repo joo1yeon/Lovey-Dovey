@@ -103,20 +103,7 @@ public class LocSearch extends Activity {
         });
 
 
-//        footContentAdapter.setItemLongClick(new FootContentAdapter.ItemLongClick() {
-//            @Override
-//            public void onItemLongClick(View view, int position) {
-//                final int _which=position;
-//                AlertDialog.Builder dlg= new AlertDialog.Builder(getApplicationContext());
-//                dlg.setTitle("검색기록을 삭제하시겠습니까?");
-//                dlg.setPositiveButton("예", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(getApplicationContext(),"aaaa",Toast.LENGTH_SHORT).show();
-//                    }
-//                }).show();
-//            }
-//        });
+
         //TODO 검색버튼을 누르면 ArrayList에 검색 내역 추가
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +150,13 @@ public class LocSearch extends Activity {
         });
 
     }
+    @Override
+    public void onBackPressed () {
+        Intent outIntent = new Intent(getApplicationContext(), FootPrint.class);
+        setResult(RESULT_CANCELED, outIntent);
+        finish();
+    }
+
 //    public void getAddress(String location){
 //        List<Address> addressList = null;
 //        try{
