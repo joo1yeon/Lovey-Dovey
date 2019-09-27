@@ -52,6 +52,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -110,16 +111,19 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             @Override
             public void onResponse(String response) {
                 try{
-                    JSONObject jResponse =new JSONObject(response);
-                    boolean success = jResponse.getBoolean("success");
-                    Log.i("Test","값 받아오기 성공");
-                    if(success){
-                        double latitude = jResponse.getDouble("latitude");
-                        double longitude = jResponse.getDouble("longitude");
-                        Log.i("TEST","위도: "+longitude+"    "+"경도: "+latitude);
-                    }
+                    Log.i("Test",response.toString());
+
+                    //JSONObject jResponse =new JSONObject(response);
+//                    JSONArray jsonArray=jResponse.
+//                    boolean success = jResponse.getBoolean("success");
+//                    Log.i("Test","값 받아오기 성공");
+//                    if(success){
+//                        double latitude = jResponse.getDouble("latitude");
+//                        double longitude = jResponse.getDouble("longitude");
+//                        Log.i("TEST","위도: "+longitude+"    "+"경도: "+latitude);
+//                    }
                 }catch (Exception e){
-                    Log.d("asdf","aaaa");
+                    Log.d("asdf",e.toString());
                 }
             }
         };

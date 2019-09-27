@@ -88,12 +88,13 @@
         android:inputType="textPassword"
         android:layout_marginRight="10dp"
         />
+
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_percent="0.048661802" />
 
     <TextView
         android:id="@+id/gender"
@@ -196,13 +197,24 @@
         android:layout_marginTop="17dp"
         android:id="@+id/edtEmail"
         android:fontFamily="@font/netmarble_m"
-        app:layout_constraintRight_toLeftOf="@id/edtDomain"/>
+        app:layout_constraintRight_toLeftOf="@id/txt"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" @ "
+        android:id="@+id/txt"
+        app:layout_constraintRight_toLeftOf="@id/edtDomain"
+        app:layout_constraintLeft_toRightOf="@id/edtEmail"
+        app:layout_constraintBottom_toBottomOf="@id/edtEmail"
+        android:layout_margin="5dp"
+        android:textSize="20sp"
+        />
     <EditText
         android:layout_width="0dp"
         app:layout_constraintHorizontal_weight="10"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/btnDate"
-        app:layout_constraintLeft_toRightOf="@id/edtEmail"
+        app:layout_constraintLeft_toRightOf="@id/txt"
         android:layout_marginTop="17dp"
         android:id="@+id/edtDomain"
         android:fontFamily="@font/netmarble_m"
