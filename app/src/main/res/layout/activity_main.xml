@@ -96,28 +96,53 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="wrap_content"
             android:background="#f2ffe8"
-            android:gravity="center"
-            android:text="테스트 메뉴"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            android:orientation="vertical"
+            android:padding="20dp"
+            >
+
+            <ImageView
+                android:id="@+id/profile"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/basic" />
+
+            <TextView
+                android:id="@+id/nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/netmarble_m"
+                android:text="닉네임~~~~~~~~~~"
+                android:textColor="#8c8c8c"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/netmarble_m"
+                android:text="이메일~~~~~~~~~~~~~~~~~~~~"
+                android:textColor="#8c8c8c"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:columnCount="2"
-            android:rowCount="2"
             android:background="#D4F0CF"
-            >
+            android:columnCount="2"
+            android:rowCount="2">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="20dp">
 
                 <LinearLayout
@@ -155,7 +180,7 @@
                         android:layout_height="70dp"
                         android:layout_gravity="center_horizontal"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/notice" />
+                        android:src="@drawable/ic_notifications" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -172,7 +197,7 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="20dp">
 
@@ -230,18 +255,19 @@
         </TableLayout>
 
         <LinearLayout
+            android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/btnLogout"
             android:layout_marginTop="30dp"
             android:background="#f2ffe8"
-            >
+            android:orientation="horizontal">
+
             <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_logout"
-                android:background="#00000000"/>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="#00000000"
+                android:src="@drawable/ic_logout" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -249,7 +275,7 @@
                 android:fontFamily="@font/netmarble_b"
                 android:text="로그아웃"
                 android:textColor="#6c8e5e"
-                android:textSize="27sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
     </LinearLayout>
