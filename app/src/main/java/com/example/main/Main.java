@@ -9,9 +9,14 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import java.text.ParseException;
@@ -36,6 +42,9 @@ public class Main extends Fragment {
     TextSwitcher to_do_Btn;
     Thread todoThread;
     EditText email, birthday, name;
+    String em1, em2, bth1, bth2, nm1, nm2;
+
+
 
     Handler handler=new Handler(){
         @Override
@@ -88,6 +97,9 @@ public class Main extends Fragment {
         todoThread.start();
 
 
+
+
+
         //Date 날짜 계산 함수
         doDateSystem();
 
@@ -101,6 +113,10 @@ public class Main extends Fragment {
             }
         });
 
+
+        bth1 = "1998년 5월 19일";
+        nm1 =  "꽁순이";
+        em1 =  "abc123@maver.com";
 
         //왼쪽 프로필을 누를 때 -->  정보 변경 가능한 다이얼로그 창
         profile_Btn1.setOnClickListener(new View.OnClickListener() {
@@ -118,20 +134,25 @@ public class Main extends Fragment {
                 birthday = profileLayout1.findViewById(R.id.et_birthday);
                 name = profileLayout1.findViewById(R.id.name);
 
+                //저장된 값 보여주기
+                email.setText(em1);
+                birthday.setText(bth1);
+                name.setText(nm1);
+
                 //저장을 버튼을 클릭했을 때 수정된 내용을 저장한 후 다이얼로그 종료
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         //EditText에 변경한 값 받아오기
-                        String em = email.getText().toString();
-                        String bth = birthday.getText().toString();
-                        String nm = name.getText().toString();
-                        //TODO 생각보다 어려웟따고한다.
-                        //받아온 값으로 변경
-                        email.setText(em);
-                        birthday.setText(bth);
-                        name.setText(nm);
+                        bth1 = birthday.getText().toString();
+                        nm1 = name.getText().toString();
+                        em1 = email.getText().toString();
+
+                        //변경한 값 보여주기
+                        email.setText(em1);
+                        birthday.setText(bth1);
+                        name.setText(nm1);
 
                         dl.dismiss();                       //다이얼로그 닫기
                     }
@@ -139,6 +160,11 @@ public class Main extends Fragment {
 
             }
         });
+
+
+        bth2 = "2000년 07월 07일";
+        nm2 =  "꽉냥이";
+        em2 =  "qwerty15@naver.com";
 
         //TODO# 데이터 베이스로 상태방 정보 불러오기
         //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
@@ -153,6 +179,15 @@ public class Main extends Fragment {
 
                 //메인화면 다이얼로그에 들어가는 profile2의 뷰들 인플레이트
                 close = profileLayout2.findViewById(R.id.close);
+                email = profileLayout2.findViewById(R.id.et_email);
+                birthday = profileLayout2.findViewById(R.id.et_birthday);
+                name = profileLayout2.findViewById(R.id.name);
+
+                //저장된 값 보여주기
+                email.setText(em2);
+                birthday.setText(bth2);
+                name.setText(nm2);
+
 
                 //닫기 버튼 클릭했을 때 다이얼로그 종료
                 close.setOnClickListener(new View.OnClickListener() {
