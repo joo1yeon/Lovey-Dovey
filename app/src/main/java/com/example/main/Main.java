@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,6 +140,9 @@ public class Main extends Fragment {
                 email = profileLayout1.findViewById(R.id.et_email);
                 birthday = profileLayout1.findViewById(R.id.et_birthday);
                 name = profileLayout1.findViewById(R.id.name);
+
+                //입력 유형 이메일로 설정
+                email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
                 //저장된 값 보여주기
                 email.setText(em1);
