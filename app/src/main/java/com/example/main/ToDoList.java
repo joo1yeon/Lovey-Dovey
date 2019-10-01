@@ -226,15 +226,12 @@ public class ToDoList extends AppCompatActivity {
                 String content = listItem.getContent();
 
 
-                listView2.setItemChecked(i,false);
                 Item_Click(adapter2,strCoupleID,false,content,i);
                 adapter2.clearItem();
                 Item_show(adapter2, strCoupleID,true);
                 adapter1.clearItem();
                 Item_show(adapter1, strCoupleID,false);
                 adapter1.notifyDataSetChanged();
-
-
 
                 /*listView2.setItemChecked(i,false);                  //선택한 인덱스의 체크 풀기
                 adapter2.remove(i);                                        //선택한 adapter2 내용을 지우기
@@ -276,14 +273,15 @@ public class ToDoList extends AppCompatActivity {
                     public void onClick(View view) {
 
                         String text = contents.getText().toString();
-                        /*
-                        adapter1.addItem(text, "");
-                        contents.setText("");
-                        adapter1.notifyDataSetChanged();*/
 
                         Item_add(adapter1,strCoupleID,text);
                         adapter1.clearItem();                                           //리스트뷰 초기화
                         Item_show(adapter1,strCoupleID,false);                   //데이터 베이스 검색 후 내용 받아옴
+
+
+                        /*adapter1.addItem(text, "");
+                        contents.setText("");
+                        adapter1.notifyDataSetChanged();*/
                         dl.dismiss();
 
                     }
@@ -326,7 +324,7 @@ public class ToDoList extends AppCompatActivity {
 
        //To-Do-List 조회
        public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
-           sqlDB = todoDB.getWritableDatabase();
+           sqlDB = todoDB.getReadableDatabase();
 
             cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+check+"';",null);
             int count = cursor.getCount();
@@ -335,14 +333,7 @@ public class ToDoList extends AppCompatActivity {
             for(int i=0;i<count;i++) {
                 cursor.moveToNext();                                    //커서 넘기기
 
-                if(cursor.getString(4) == "false"){
-                    sqlDB.execSQL("update to_do_list set date_check='' where couple_id='" + id + "';");
-                    adapter.notifyDataSetChanged();
-                    strDate="";
-                }
-                else {
-                    strDate = cursor.getString(2);
-                }
+                strDate = cursor.getString(2);
                 strContent = cursor.getString(3);
                 adapter.addItem(strContent, strDate);
 
@@ -352,8 +343,6 @@ public class ToDoList extends AppCompatActivity {
                 else if(adapter == adapter2)
                     listView2.setItemChecked(i, true);
                 }
-
-
 
             cursor.close();
             sqlDB.close();
@@ -385,7 +374,12 @@ public class ToDoList extends AppCompatActivity {
     //To-Do-List 클릭했을 때 넘어가기
     public void Item_Click(ToDoList_ChoiceListAdapter adapter,String id, boolean b, String content, int i){
         sqlDB = todoDB.getWritableDatabase();
-        sqlDB.execSQL("update to_do_list set checked='" + b + "', date_check='"+Date()+"' where couple_id='" + id + "' and content='"+ content +"';");
+        String date;
+        if(b == true)
+            date = Date();
+        else
+            date = "";
+        sqlDB.execSQL("update to_do_list set checked='" + b + "', date_check='"+date+"' where couple_id='" + id + "' and content='"+ content +"';");
         adapter.remove(i);
         adapter.notifyDataSetChanged();
         sqlDB.close();

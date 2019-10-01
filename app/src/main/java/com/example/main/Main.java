@@ -1,6 +1,8 @@
 package com.example.main;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -38,11 +40,17 @@ public class Main extends Fragment {
     ImageView profile_Btn1, profile_Btn2, storage, close;
     TextView  date, textView;
     View profileLayout1, profileLayout2;
-    String[] todo = {"시험끝나고 미친듯이 놀기", "PC방 가서 하루종일 게임하기", "오류같이 찾고 기뻐하기 ㅎㅎ", "웃으면서 같이 코딩하기", "누워서 맘편히 잠자기", "종로가서 커플링 맞추기","커플 키링 만들어보기"};
+    String[] todo ={"시험끝나고 미친듯이 놀기", "PC방 가서 하루종일 게임하기", "오류같이 찾고 기뻐하기 ㅎㅎ", "웃으면서 같이 코딩하기", "누워서 맘편히 잠자기", "종로가서 커플링 맞추기","커플 키링 만들어보기"};;
     TextSwitcher to_do_Btn;
     Thread todoThread;
     EditText email, birthday, name;
     String em1, em2, bth1, bth2, nm1, nm2;
+    String strCoupleID = "couple0";
+
+    //sqlite 관련 변수
+    /*MyDBHelper mainDB;
+    SQLiteDatabase sqlDB;
+    Cursor cursor;*/
 
 
 
@@ -59,6 +67,8 @@ public class Main extends Fragment {
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main,container,false);
+
+        //mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
 
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼, To-do-list 보여주기
@@ -92,10 +102,11 @@ public class Main extends Fragment {
         to_do_Btn.setInAnimation(in);
         to_do_Btn.setOutAnimation(out);
 
+        //Item_Content(strCoupleID);
+
         //스레드 객체 생성 및 시작
         todoThread = new TodoThread();
         todoThread.start();
-
 
 
 
@@ -229,7 +240,23 @@ public class Main extends Fragment {
         }
     }
 
-    //ToDoList 함수 TODO 탭 변경시 겹치는 오류 runOnUiThread 가 필요한가?
+    /*//ToDoList Check false인 내용 순서대로 삽입
+    public void Item_Content(String id){
+        sqlDB = mainDB.getReadableDatabase();
+
+        cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+ false +"';",null);
+        int count = cursor.getCount();
+
+        for(int i=0;i<count;i++) {
+            cursor.moveToNext();                                    //커서 넘기기
+           todo[i] = cursor.getString(3);              //체크하지 않은 내용 넣기
+        }
+
+        cursor.close();
+        sqlDB.close();
+    }*/
+
+    //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
     class TodoThread extends Thread{
         boolean running =false;     //시작과 종료에 필요한 변수
         int index = 0;
@@ -247,6 +274,7 @@ public class Main extends Fragment {
                     }
                 });
 
+
                 try { Thread.sleep(2000); }
                 catch (InterruptedException e) {
                     e.printStackTrace();
@@ -258,7 +286,7 @@ public class Main extends Fragment {
 
             }
         }
-        //TODO# 스레드 멈추는 함수 필요할려나?
+
         public void halt(){
             running=false;
         }
