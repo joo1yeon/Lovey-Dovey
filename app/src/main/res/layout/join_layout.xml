@@ -31,7 +31,7 @@
         />
     <EditText
         android:layout_width="0dp"
-        android:layout_height="22sp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/name"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         android:layout_marginTop="20dp"
@@ -39,6 +39,7 @@
         android:fontFamily="@font/netmarble_m"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="10dp"
+        android:lines="1"
         />
     <TextView
         android:id="@+id/id"
@@ -53,13 +54,14 @@
        />
         <EditText
             android:layout_width="0dp"
-            android:layout_height="22sp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/id"
             app:layout_constraintLeft_toLeftOf="@id/guideline4"
             android:layout_marginTop="20dp"
             android:id="@+id/edtID"
             android:fontFamily="@font/netmarble_m"
-            app:layout_constraintRight_toLeftOf="@+id/btnCheck"/>
+            app:layout_constraintRight_toLeftOf="@+id/btnCheck"
+            android:lines="1"/>
     <Button
         android:layout_width="80dp"
         android:layout_height="wrap_content" 
@@ -87,7 +89,7 @@
         app:layout_constraintTop_toBottomOf="@+id/id" />
     <EditText
         android:layout_width="0dp"
-        android:layout_height="22sp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/pw"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         android:layout_marginTop="20dp"
@@ -96,10 +98,11 @@
         android:inputType="textPassword"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="10dp"
+        android:lines="1"
         />
     <EditText
         android:layout_width="0dp"
-        android:layout_height="22sp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/edtPW"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         app:layout_constraintRight_toRightOf="parent"
@@ -109,6 +112,7 @@
         android:fontFamily="@font/netmarble_m"
         android:inputType="textPassword"
         android:layout_marginRight="10dp"
+        android:lines="1"
         />
 
     <android.support.constraint.Guideline
@@ -143,7 +147,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/netmarble_m"
-            android:text="남성" />
+            android:text="남성"
+            android:checked="true"/>
 
         <RadioButton
             android:id="@+id/female"
@@ -167,7 +172,7 @@
         />
     <EditText
         android:layout_width="0dp"
-        android:layout_height="22sp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/nickname"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         android:layout_marginTop="20dp"
@@ -175,7 +180,7 @@
         android:fontFamily="@font/netmarble_m"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="10dp"
-
+        android:lines="1"
         />
 
     <TextView
@@ -213,13 +218,14 @@
     <EditText
         android:layout_width="0dp"
         app:layout_constraintHorizontal_weight="10"
-        android:layout_height="22sp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/email"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         android:layout_marginTop="17dp"
         android:id="@+id/edtEmail"
         android:fontFamily="@font/netmarble_m"
-        app:layout_constraintRight_toLeftOf="@id/txt"/>
+        app:layout_constraintRight_toLeftOf="@id/txt"
+        android:lines="1"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -234,7 +240,7 @@
     <EditText
         android:layout_width="0dp"
         app:layout_constraintHorizontal_weight="10"
-        android:layout_height="22sp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/email"
         app:layout_constraintLeft_toRightOf="@id/txt"
         android:layout_marginTop="17dp"
@@ -242,7 +248,7 @@
         android:fontFamily="@font/netmarble_m"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="10dp"
-
+        android:lines="1"
         />
 
 <Button

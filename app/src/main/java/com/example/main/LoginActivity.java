@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox btnAutoLogin;
     MyDBHelper dbHelper = new MyDBHelper(this);
     SQLiteDatabase sqlDB;
-    TextView btnJoin, btnFindID, btnFindPW;
+    TextView btnJoin, btnFindID, btnFindPW,txtAutoLogin;
     View findIDView, findPWView;
 
     @Override
@@ -37,6 +37,15 @@ public class LoginActivity extends AppCompatActivity {
         btnJoin = findViewById(R.id.btnJoin);
         btnFindID = findViewById(R.id.btnFindID);
         btnFindPW = findViewById(R.id.btnFindPW);
+        txtAutoLogin=findViewById(R.id.AutoLogin);
+        txtAutoLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(btnAutoLogin.isChecked()){
+                    btnAutoLogin.setChecked(false);
+                }else btnAutoLogin.setChecked(true);
+            }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
