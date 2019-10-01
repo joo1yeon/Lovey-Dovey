@@ -44,6 +44,8 @@ public class ToDoList extends AppCompatActivity {
     Cursor cursor;
     String strContent, strDate, strCoupleID = "couple0", strcheck;
 
+    Main m;
+
 
 
     @Override
@@ -62,6 +64,9 @@ public class ToDoList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                Toast.makeText(getApplication(),"살았다가 바로죽음",Toast.LENGTH_LONG).show();
+                //m.todo.clear(); 받아오고 , 뒤로가기 눌럿을 때 클리어 후 받아와야함..
+                //m.Item_Content(strCoupleID);
             }
         });
 

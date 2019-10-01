@@ -34,13 +34,15 @@ import android.widget.ViewSwitcher;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Main extends Fragment {
     ImageView profile_Btn1, profile_Btn2, storage, close;
     TextView  date, textView;
     View profileLayout1, profileLayout2;
-    String[] todo ={"시험끝나고 미친듯이 놀기", "PC방 가서 하루종일 게임하기", "오류같이 찾고 기뻐하기 ㅎㅎ", "웃으면서 같이 코딩하기", "누워서 맘편히 잠자기", "종로가서 커플링 맞추기","커플 키링 만들어보기"};;
+    ArrayList<String> todo = new ArrayList<String>();
+            //{"시험끝나고 미친듯이 놀기", "PC방 가서 하루종일 게임하기", "오류같이 찾고 기뻐하기 ㅎㅎ", "웃으면서 같이 코딩하기", "누워서 맘편히 잠자기", "종로가서 커플링 맞추기","커플 키링 만들어보기"};;
     TextSwitcher to_do_Btn;
     Thread todoThread;
     EditText email, birthday, name;
@@ -48,9 +50,9 @@ public class Main extends Fragment {
     String strCoupleID = "couple0";
 
     //sqlite 관련 변수
-    /*MyDBHelper mainDB;
+    MyDBHelper mainDB;
     SQLiteDatabase sqlDB;
-    Cursor cursor;*/
+    Cursor cursor;
 
 
 
@@ -68,7 +70,8 @@ public class Main extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main,container,false);
 
-        //mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
+        mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
+        Item_Content(strCoupleID);
 
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼, To-do-list 보여주기
@@ -102,8 +105,6 @@ public class Main extends Fragment {
         to_do_Btn.setInAnimation(in);
         to_do_Btn.setOutAnimation(out);
 
-        //Item_Content(strCoupleID);
-
         //스레드 객체 생성 및 시작
         todoThread = new TodoThread();
         todoThread.start();
@@ -121,6 +122,7 @@ public class Main extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);                                   //인텐트 선언 및 생성
                 startActivity(intent);
+
             }
         });
 
@@ -240,7 +242,7 @@ public class Main extends Fragment {
         }
     }
 
-    /*//ToDoList Check false인 내용 순서대로 삽입
+    //ToDoList Check false인 내용 순서대로 삽입
     public void Item_Content(String id){
         sqlDB = mainDB.getReadableDatabase();
 
@@ -249,12 +251,13 @@ public class Main extends Fragment {
 
         for(int i=0;i<count;i++) {
             cursor.moveToNext();                                    //커서 넘기기
-           todo[i] = cursor.getString(3);              //체크하지 않은 내용 넣기
+           todo.add(cursor.getString(3));   //체크하지 않은 내용 넣기
+            //String 배열 때 todo[i] = cursor.getString(3);
         }
 
         cursor.close();
         sqlDB.close();
-    }*/
+    }
 
     //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
     class TodoThread extends Thread{
@@ -269,7 +272,7 @@ public class Main extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        to_do_Btn.setText("•  " + todo[index]);
+                        to_do_Btn.setText("•  " + todo.get(index)); //String 배열 때 todo[index]
                         to_do_Btn.invalidate();
                     }
                 });
@@ -280,7 +283,7 @@ public class Main extends Fragment {
                     e.printStackTrace();
                 }
                 index++;
-                if(index >= todo.length){
+                if(index >= todo.size()){   //String 배열 때length
                     index=0;
                 }
 
