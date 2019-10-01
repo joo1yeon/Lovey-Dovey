@@ -19,6 +19,28 @@
         android:padding="10dp"/>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:text="이름"
+        android:layout_marginTop="22dp"
+        android:fontFamily="@font/netmarble_b"
+        />
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/name"
+        app:layout_constraintLeft_toLeftOf="@id/guideline4"
+        android:layout_marginTop="20dp"
+        android:id="@+id/edtName"
+        android:fontFamily="@font/netmarble_m"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="10dp"
+        />
+    <TextView
         android:id="@+id/id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,12 +49,12 @@
         android:text="아이디"
         android:textSize="22sp"
         app:layout_constraintLeft_toLeftOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/name"
        />
         <EditText
             android:layout_width="0dp"
-            android:layout_height="wrap_content" 
-            app:layout_constraintTop_toBottomOf="@id/title"
+            android:layout_height="22sp"
+            app:layout_constraintBottom_toBottomOf="@id/id"
             app:layout_constraintLeft_toLeftOf="@id/guideline4"
             android:layout_marginTop="20dp"
             android:id="@+id/edtID"
@@ -41,7 +63,7 @@
     <Button
         android:layout_width="80dp"
         android:layout_height="wrap_content" 
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="@id/id"
         app:layout_constraintLeft_toRightOf="@id/edtID"
         android:layout_marginTop="20dp"
         app:layout_constraintHorizontal_weight="1"
@@ -65,8 +87,8 @@
         app:layout_constraintTop_toBottomOf="@+id/id" />
     <EditText
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/id"
+        android:layout_height="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/pw"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         android:layout_marginTop="20dp"
         android:id="@+id/edtPW"
@@ -77,7 +99,7 @@
         />
     <EditText
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="22sp"
         app:layout_constraintTop_toBottomOf="@id/edtPW"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         app:layout_constraintRight_toRightOf="parent"
@@ -145,8 +167,8 @@
         />
     <EditText
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/rgGender"
+        android:layout_height="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/nickname"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         android:layout_marginTop="20dp"
         android:id="@+id/edtNickName"
@@ -191,8 +213,8 @@
     <EditText
         android:layout_width="0dp"
         app:layout_constraintHorizontal_weight="10"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btnDate"
+        android:layout_height="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/email"
         app:layout_constraintLeft_toLeftOf="@id/guideline4"
         android:layout_marginTop="17dp"
         android:id="@+id/edtEmail"
@@ -212,8 +234,8 @@
     <EditText
         android:layout_width="0dp"
         app:layout_constraintHorizontal_weight="10"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btnDate"
+        android:layout_height="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/email"
         app:layout_constraintLeft_toRightOf="@id/txt"
         android:layout_marginTop="17dp"
         android:id="@+id/edtDomain"
