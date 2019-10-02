@@ -48,7 +48,7 @@ public class Main extends Fragment {
     Cursor cursor;
 
 
-    //todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
+    //화면 보여주기 전에 todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
     @Override
     public void onStart() {
         super.onStart();
