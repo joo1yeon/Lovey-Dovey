@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,8 +111,8 @@ public class Main extends Fragment {
         to_do_Btn.setOutAnimation(out);
 
         //스레드 객체 생성 및 시작
-        todoThread = new TodoThread();
-        todoThread.start();
+        //todoThread = new TodoThread();
+        //todoThread.start();
 
 
         //Date 날짜 계산 함수
@@ -220,18 +221,18 @@ public class Main extends Fragment {
         return layout;
     }
 
-    /*@Override
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if(isVisibleToUser){
-            todo.clear();
             todoThread = null;
             todoThread = new TodoThread();
             todoThread.start();
             }
            else {
-            //todoThread.interrupt();
+               //스레드 멈추는 함수
+            Log.e("0123345","나 다른화면에 있다!?" );
            }
-    }*/
+    }
 
 
 
@@ -274,6 +275,7 @@ public class Main extends Fragment {
             //String 배열 때 todo[i] = cursor.getString(3);
         }
 
+        //todoArrayList 배열에 아무것도 들어있지 않을 때
         if (count==0){
             todo.add("TODO_LIST에 내용을 입력해주세요");
         }
@@ -283,7 +285,7 @@ public class Main extends Fragment {
     }
 
     //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
-    class TodoThread extends Thread{
+    public class TodoThread extends Thread{
         boolean running =false;     //시작과 종료에 필요한 변수
         int index = 0;
 
@@ -312,6 +314,9 @@ public class Main extends Fragment {
                     index=0;}
 
             }
+        }
+        public void halt(){
+            running=false;
         }
 
 
