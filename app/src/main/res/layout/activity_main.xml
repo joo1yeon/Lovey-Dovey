@@ -260,7 +260,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="#f2ffe8"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="bottom">
 
             <ImageButton
                 android:layout_width="30dp"
