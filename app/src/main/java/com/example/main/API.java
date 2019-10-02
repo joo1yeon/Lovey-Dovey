@@ -28,22 +28,8 @@ public interface API {
 
     @GET("Login.php")
     Call<ResponseLogin>getThird(@Query("ID") String id, @Query("PW") String pw);
-//
-//    @GET("/posts")
-//    Call<List<ResponseGet>> getSecond(@Query("userId") String id);
-//
-//    @FormUrlEncoded
-//    @POST("/posts")
-//    Call<ResponseGet> postFirst(@FieldMap HashMap<String, Object> parameters);
-//
-//    @PUT("/posts/1")
-//    Call<ResponseGet> putFirst(@Body RequestPut parameters);
-//
-//    @FormUrlEncoded
-//    @PATCH("/posts/1")
-//    Call<ResponseGet> patchFirst(@Field("title") String title);
-//
-//    @DELETE("/posts/1")
-//    Call<ResponseBody> deleteFirst();
+
+    @GET("RepeatCheck.php")
+    Call<ResponseRepeat> getRepeat(@Query("ID") String id);
 }
 
