@@ -39,10 +39,10 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 i++;
                 if (i % 2 != 0) {
-                    favorite.setBackgroundResource(R.drawable.ic_star_black_24dp);
+                    favorite.setSelected(true);
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 } else {
-                    favorite.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
+                    favorite.setSelected(false);
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 }
             }

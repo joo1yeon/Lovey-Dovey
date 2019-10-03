@@ -4,11 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/imageView"
         android:layout_width="300dp"
         android:layout_height="490dp"
-        android:src="@drawable/image1"
         android:scaleType="fitXY"
         android:layout_marginBottom="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
