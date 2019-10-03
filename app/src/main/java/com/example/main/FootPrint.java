@@ -35,8 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.Response;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -107,29 +105,29 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         btnTomorrow = layout.findViewById(R.id.btnTomorrow);
         btnYesterday = layout.findViewById(R.id.btnYesterday);
         tvToday.setText(sdf.format(cal.getTime()));
-        com.android.volley.Response.Listener listener = new com.android.volley.Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try{
-                    Log.i("Test",response.toString());
-
-                    //JSONObject jResponse =new JSONObject(response);
-//                    JSONArray jsonArray=jResponse.
-//                    boolean success = jResponse.getBoolean("success");
-//                    Log.i("Test","값 받아오기 성공");
-//                    if(success){
-//                        double latitude = jResponse.getDouble("latitude");
-//                        double longitude = jResponse.getDouble("longitude");
-//                        Log.i("TEST","위도: "+longitude+"    "+"경도: "+latitude);
-//                    }
-                }catch (Exception e){
-                    Log.d("asdf",e.toString());
-                }
-            }
-        };
-        MarkerRequest request=new MarkerRequest(listener);
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        queue.add(request);
+//        com.android.volley.Response.Listener listener = new com.android.volley.Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                try{
+//                    Log.i("Test",response.toString());
+//
+//                    //JSONObject jResponse =new JSONObject(response);
+////                    JSONArray jsonArray=jResponse.
+////                    boolean success = jResponse.getBoolean("success");
+////                    Log.i("Test","값 받아오기 성공");
+////                    if(success){
+////                        double latitude = jResponse.getDouble("latitude");
+////                        double longitude = jResponse.getDouble("longitude");
+////                        Log.i("TEST","위도: "+longitude+"    "+"경도: "+latitude);
+////                    }
+//                }catch (Exception e){
+//                    Log.d("asdf",e.toString());
+//                }
+//            }
+//        };
+//        MarkerRequest request=new MarkerRequest(listener);
+//        RequestQueue queue = Volley.newRequestQueue(getContext());
+//        queue.add(request);
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
