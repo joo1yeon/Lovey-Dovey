@@ -110,11 +110,6 @@ public class Main extends Fragment {
         to_do_Btn.setInAnimation(in);
         to_do_Btn.setOutAnimation(out);
 
-        //스레드 객체 생성 및 시작
-        //todoThread = new TodoThread();
-        //todoThread.start();
-
-
         //Date 날짜 계산 함수
         doDateSystem();
 
@@ -224,18 +219,18 @@ public class Main extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if(isVisibleToUser){
+            //스레드 객체 생성 및 시작
             todoThread=null;
             todoThread = new TodoThread();
             todoThread.start();
             Log.e("화면켜졌을 때", "나 켜졌어!");
             }
            else {
-               //스레드 멈추는 함수
             try
             {
                 Log.e("화면꺼졌을 때","나 다른화면에 있다!?" );
-                todoThread.interrupt();
-                Log.e("화면꺼졌을 때","잘 멈췄어!" );
+                todoThread.interrupt();             //스레드 멈추기
+                Log.e("화면 멈췄다면...","잘 멈췄어!" );
             }
             catch (Exception e)
             {
