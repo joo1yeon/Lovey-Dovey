@@ -38,11 +38,7 @@ public class Main extends Fragment {
     View profileLayout1, profileLayout2;                                //하단 프로필 보여줄 레이아웃
     TextView  textView;
     String[] todo = {"시험끝나고 미친듯이 놀기", "PC방 가서 하루종일 게임하기", "오류같이 찾고 기뻐하기 ㅎㅎ", "웃으면서 같이 코딩하기", "누워서 맘편히 잠자기", "종로가서 커플링 맞추기","커플 키링 만들어보기"};
-    ImageView profile_Btn1, profile_Btn2, storage, close;
-    TextView  date, textView;
-    View profileLayout1, profileLayout2;
-    ArrayList<String> todo = new ArrayList<String>();
-    TextSwitcher to_do_Btn;
+      ArrayList<String> todo = new ArrayList<String>();
     Thread todoThread;
     EditText email, birthday, name;
     String em1, em2, bth1, bth2, nm1, nm2;

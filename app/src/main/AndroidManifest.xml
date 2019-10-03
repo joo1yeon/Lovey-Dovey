@@ -29,10 +29,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        >
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB7fJgMea4_D6otROMwy70aCwNg1S7sB0U"/>
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
         android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -61,9 +57,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".Search" android:label="장소검색"/>
         <activity
             android:name=".Story_Create"
             android:label="스토리 생성" />
@@ -72,17 +65,10 @@
             android:label="스토리 검색" />
         <activity android:name=".AllReview"/>
         <activity android:name=".Datecourse_Fragment"/>
-
         <activity android:name=".DateImageClick"/>
         <activity android:name=".Datecourse_Search"/>
         <activity android:name=".LocSearch"/>
         <activity android:name=".Gift_Main"/>
-
-        <activity android:name=".ToDoList"/>
-
-
-        <activity android:name=".AllReview"/>
-
         <activity android:name=".Story_EditContents" />
         <activity android:name=".Story_Contents" />
         <activity android:name=".ToDoList" />
