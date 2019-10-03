@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -21,8 +20,7 @@ import java.util.Date;
 public class Main extends Fragment {
     ImageView gift_Btn, profile_Btn1, profile_Btn2, storage, close;
     TextView to_do_Btn, date;
-    View profileLayout1, profileLayout2;
-
+    View profileLayout1, profileLayout2;                                //하단 프로필 보여줄 레이아웃
     public Main(){}
 
     @Override
@@ -30,6 +28,7 @@ public class Main extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.main,container,false);
 
+        //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);
         gift_Btn = layout.findViewById(R.id.gift_Btn);
         date = layout.findViewById(R.id.date);
@@ -37,20 +36,20 @@ public class Main extends Fragment {
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);
         profile_Btn2 = layout.findViewById(R.id.profile_Btn2);
 
-
         //Date 날짜 계산 함수
         doDateSystem();
 
 
 
         //to_do_list 버튼 눌렀을 때 --> to_do 화면 이동
-        /*to_do_Btn.setOnClickListener(new View.OnClickListener() {
+        to_do_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);
                 startActivity(intent);
             }
-        });*/
+
+        });
 
 
         //선물버튼 눌렀을 때 --> 선물화면 이동
@@ -62,14 +61,14 @@ public class Main extends Fragment {
             }
         });
 
-/*
+
         //왼쪽 프로필을 누를 때 -->  정보 변경 가능한 다이얼로그 창
         profile_Btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder dlg = new AlertDialog.Builder(getContext());
                 final AlertDialog dl = dlg.create();
-                profileLayout1 = View.inflate(getContext(), R.layout.activity_profile1, null);
+                profileLayout1 = View.inflate(getContext(), R.layout.profile1, null);
                 dl.setView(profileLayout1);
                 dl.show();
 
@@ -90,7 +89,7 @@ public class Main extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder dlg = new AlertDialog.Builder(getContext());
                 final AlertDialog dl2 = dlg.create();
-                profileLayout2 = View.inflate(getContext(), R.layout.activity_profile2, null);
+                profileLayout2 = View.inflate(getContext(), R.layout.profile2, null);
                 dl2.setView(profileLayout2);
                 dl2.show();
 
@@ -103,7 +102,7 @@ public class Main extends Fragment {
                 });
 
             }
-        });*/
+        });
 
         return layout;
     }
@@ -122,7 +121,7 @@ public class Main extends Fragment {
             long coupleDays = diff / (24 * 60 * 60 * 1000);
 
             if(coupleDays > 1000) {
-                date.setTextSize(40);
+                date.setTextSize(30);
             }
             date.setText (coupleDays+" 일");
 

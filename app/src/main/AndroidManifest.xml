@@ -36,6 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".Search" android:label="장소검색"/>
         <activity
             android:name=".CreateStory"
@@ -48,6 +49,9 @@
         <activity android:name=".DateImageClick"/>
         <activity android:name=".Datecourse_Search"/>
         <activity android:name=".Gift_Main"/>
+
+        <activity android:name=".ToDoList"/>
+
     </application>
 
 </manifest>
