@@ -55,7 +55,6 @@ public class Datecourse extends Fragment {
             }
         });
 
-
         ArrayList<Integer> listImage = new ArrayList<>();
         listImage.add(R.drawable.image1);
         listImage.add(R.drawable.image2);
