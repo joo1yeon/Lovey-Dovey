@@ -14,17 +14,17 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.ArrayList;
 
 import retrofit2.http.HEAD;
 
-public class Datecourse extends Fragment {
+public class Datecourse extends Fragment implements ViewPager.PageTransformer {
     public Datecourse() {
     }
-
-    NetworkImageView imageView;
 
     @Override
     @Nullable
@@ -52,17 +52,30 @@ public class Datecourse extends Fragment {
         listImage.add(R.drawable.image3);
         listImage.add(R.drawable.image4);
 
-        ViewPager viewPager = layout.findViewById(R.id.viewPager);
+        final ViewPager viewPager = layout.findViewById(R.id.viewPager);
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager());
         // ViewPager와  FragmentAdapter 연결
         viewPager.setAdapter(fragmentAdapter);
 
+        viewPager.setPageMargin(20);
         viewPager.setClipToPadding(false);
-        int dpValue = 60;
-        float d = getResources().getDisplayMetrics().density;
-        int margin = (int) (dpValue * d);
-        viewPager.setPadding(margin, 0, margin, 0);
-        viewPager.setPageMargin(margin / 2);
+        viewPager.setPadding(120, 0, 120, 0);
+
+        viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View view, float v) {
+                int pageWidth = viewPager.getMeasuredWidth() - viewPager.getPaddingLeft() - viewPager.getPaddingRight(); //getMeasuredWidth()=>view의 부모의 크기를 가져온다.
+                int pageHeight = viewPager.getHeight();
+                int paddingLeft = viewPager.getPaddingLeft();
+                float transformPos = (float) (view.getLeft() - (viewPager.getScrollX() + paddingLeft)) / pageWidth;
+
+                if (transformPos < -1 || transformPos > 1) {
+                    view.setScaleY(0.7f);
+                } else {
+                    view.setScaleY(1f);
+                }
+            }
+        });
 
         // FragmentAdapter에 Fragment 추가, Image 개수만큼 추가
         for (int i = 0; i < listImage.size(); i++) {
@@ -74,6 +87,11 @@ public class Datecourse extends Fragment {
         }
         fragmentAdapter.notifyDataSetChanged();
         return layout;
+    }
+
+    @Override
+    public void transformPage(@NonNull View view, float v) {
+
     }
 
     class FragmentAdapter extends FragmentPagerAdapter {

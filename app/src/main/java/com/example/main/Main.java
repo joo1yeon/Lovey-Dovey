@@ -1,8 +1,6 @@
 package com.example.main;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,11 +8,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,35 +26,16 @@ import android.widget.ViewSwitcher;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Main extends Fragment {
-    ImageView gift_Btn, profile_Btn1, profile_Btn2, storage, close;
-    TextView to_do_Btn, date;
-    View profileLayout1, profileLayout2;                                //하단 프로필 보여줄 레이아웃
-    TextView  textView;
+    ImageView profile_Btn1, profile_Btn2, storage, close;
+    TextView  date, textView;
+    View profileLayout1, profileLayout2;
     String[] todo = {"시험끝나고 미친듯이 놀기", "PC방 가서 하루종일 게임하기", "오류같이 찾고 기뻐하기 ㅎㅎ", "웃으면서 같이 코딩하기", "누워서 맘편히 잠자기", "종로가서 커플링 맞추기","커플 키링 만들어보기"};
-      ArrayList<String> todo = new ArrayList<String>();
+    TextSwitcher to_do_Btn;
     Thread todoThread;
     EditText email, birthday, name;
-    String em1, em2, bth1, bth2, nm1, nm2;
-    String strCoupleID = "couple0";
-
-    //sqlite 관련 변수
-    MyDBHelper mainDB;
-    SQLiteDatabase sqlDB;
-    Cursor cursor;
-
-
-    //화면 보여주기 전에 todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
-    @Override
-    public void onStart() {
-        super.onStart();
-        todo.clear();
-        Item_Content(strCoupleID);
-    }
-
 
     Handler handler=new Handler(){
         @Override
@@ -71,33 +49,19 @@ public class Main extends Fragment {
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       // ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.main,container,false);
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main,container,false);
-
-
-        mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
-        todo.clear();
-        Item_Content(strCoupleID);
-
-
-        //인플레이트
-        to_do_Btn = layout.findViewById(R.id.to_do_Btn);
-        gift_Btn = layout.findViewById(R.id.gift_Btn);
-        date = layout.findViewById(R.id.date);
 
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼, To-do-list 보여주기
         date = layout.findViewById(R.id.date);                                      //메인화면 사귄날짜
 
-        //Date 날짜 계산 함수
-        doDateSystem();
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);                      //프로필사진1(나) 버튼
         profile_Btn2 = layout.findViewById(R.id.profile_Btn2);                      //프로필사진2(상대방) 버튼
 
 
 
         //텍스트 바꾸기
-       /* to_do_Btn.setFactory(new ViewSwitcher.ViewFactory() {
+        to_do_Btn.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
                 textView = new TextView(getContext());
@@ -109,20 +73,19 @@ public class Main extends Fragment {
                 textView.setTextSize(15);   //폰트사이즈 설정
                 return textView;
             }
-
-        });*/
+        });
 
         //애니메이션 객체 생성 및 액션 정보 로딩
         Animation in = AnimationUtils.loadAnimation(getContext(), R.anim.up_down);
         Animation out = AnimationUtils.loadAnimation(getContext(), R.anim.down_up);
 
         //애니메이션 할당
-      /*  to_do_Btn.setInAnimation(in);
+        to_do_Btn.setInAnimation(in);
         to_do_Btn.setOutAnimation(out);
-*/
+
         //스레드 객체 생성 및 시작
-        //todoThread = new TodoThread();
-        //todoThread.start();
+        todoThread = new TodoThread();
+        todoThread.start();
 
 
         //Date 날짜 계산 함수
@@ -135,14 +98,9 @@ public class Main extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);                                   //인텐트 선언 및 생성
                 startActivity(intent);
-
             }
         });
 
-
-        bth1 = "1998년 5월 19일";
-        nm1 =  "꽁순이";
-        em1 =  "abc123@maver.com";
 
         //왼쪽 프로필을 누를 때 -->  정보 변경 가능한 다이얼로그 창
         profile_Btn1.setOnClickListener(new View.OnClickListener() {
@@ -160,28 +118,20 @@ public class Main extends Fragment {
                 birthday = profileLayout1.findViewById(R.id.et_birthday);
                 name = profileLayout1.findViewById(R.id.name);
 
-                //입력 유형 이메일로 설정
-                email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-
-                //저장된 값 보여주기
-                email.setText(em1);
-                birthday.setText(bth1);
-                name.setText(nm1);
-
                 //저장을 버튼을 클릭했을 때 수정된 내용을 저장한 후 다이얼로그 종료
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         //EditText에 변경한 값 받아오기
-                        bth1 = birthday.getText().toString();
-                        nm1 = name.getText().toString();
-                        em1 = email.getText().toString();
-
-                        //변경한 값 보여주기
-                        email.setText(em1);
-                        birthday.setText(bth1);
-                        name.setText(nm1);
+                        String em = email.getText().toString();
+                        String bth = birthday.getText().toString();
+                        String nm = name.getText().toString();
+                        //TODO 생각보다 어려웟따고한다.
+                        //받아온 값으로 변경
+                        email.setText(em);
+                        birthday.setText(bth);
+                        name.setText(nm);
 
                         dl.dismiss();                       //다이얼로그 닫기
                     }
@@ -189,11 +139,6 @@ public class Main extends Fragment {
 
             }
         });
-
-
-        bth2 = "2000년 07월 07일";
-        nm2 =  "꽉냥이";
-        em2 =  "qwerty15@naver.com";
 
         //TODO# 데이터 베이스로 상태방 정보 불러오기
         //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
@@ -208,15 +153,6 @@ public class Main extends Fragment {
 
                 //메인화면 다이얼로그에 들어가는 profile2의 뷰들 인플레이트
                 close = profileLayout2.findViewById(R.id.close);
-                email = profileLayout2.findViewById(R.id.et_email);
-                birthday = profileLayout2.findViewById(R.id.et_birthday);
-                name = profileLayout2.findViewById(R.id.name);
-
-                //저장된 값 보여주기
-                email.setText(em2);
-                birthday.setText(bth2);
-                name.setText(nm2);
-
 
                 //닫기 버튼 클릭했을 때 다이얼로그 종료
                 close.setOnClickListener(new View.OnClickListener() {
@@ -230,31 +166,6 @@ public class Main extends Fragment {
 
         return layout;
     }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if(isVisibleToUser){
-            todoThread=null;
-            todoThread = new TodoThread();
-            todoThread.start();
-            Log.e("화면켜졌을 때", "나 켜졌어!");
-            }
-           else {
-               //스레드 멈추는 함수
-            try
-            {
-                Log.e("화면꺼졌을 때","나 다른화면에 있다!?" );
-                todoThread.interrupt();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-
-           }
-    }
-
 
 
     //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
@@ -283,30 +194,8 @@ public class Main extends Fragment {
         }
     }
 
-    //ToDoList Check false인 내용 순서대로 삽입
-    public void Item_Content(String id){
-        sqlDB = mainDB.getReadableDatabase();
-
-        cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+ false +"';",null);
-        int count = cursor.getCount();
-
-        for(int i=0;i<count;i++) {
-            cursor.moveToNext();                                    //커서 넘기기
-            todo.add(cursor.getString(3));   //체크하지 않은 내용 넣기
-            //String 배열 때 todo[i] = cursor.getString(3);
-        }
-
-        //todoArrayList 배열에 아무것도 들어있지 않을 때
-        if (count==0){
-            todo.add("TODO_LIST에 내용을 입력해주세요");
-        }
-
-        cursor.close();
-        sqlDB.close();
-    }
-
-    //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
-    public class TodoThread extends Thread{
+    //ToDoList 함수 TODO 탭 변경시 겹치는 오류 runOnUiThread 가 필요한가?
+    class TodoThread extends Thread{
         boolean running =false;     //시작과 종료에 필요한 변수
         int index = 0;
 
@@ -318,28 +207,25 @@ public class Main extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        to_do_Btn.setText("•  " + todo.get(index)); //String 배열 때 todo[index]
+                        to_do_Btn.setText("•  " + todo[index]);
                         to_do_Btn.invalidate();
                     }
                 });
 
-                try {
-
-                    Thread.sleep(3000);
-                }
+                try { Thread.sleep(2000); }
                 catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 index++;
-                if(index >= todo.size()){   //String 배열 때length
-                    index=0;}
+                if(index >= todo.length){
+                    index=0;
+                }
 
             }
         }
+        //TODO# 스레드 멈추는 함수 필요할려나?
         public void halt(){
             running=false;
         }
-
-
     }
 }

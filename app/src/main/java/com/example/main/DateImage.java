@@ -30,8 +30,7 @@ import java.util.Queue;
 
 public class DateImage extends Fragment {
     @Nullable
-    NetworkImageView imageView;
-    Queue queue;
+    ImageView imageView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

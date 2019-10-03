@@ -13,8 +13,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table location (num integer primary key autoincrement, content char(150) not null ); ");
         db.execSQL("create table info(id varchar(50) not null, passwd varchar(50) not null);");
-        db.execSQL("create table  to_do_list(num integer primary key, couple_id char(20) not null, date_check char(15), content char(50) not null, checked char(5) not null);");
-        db.execSQL("create table  to_do_list(num integer primary key, couple_id char(20) not null, date_check char(15), content char(100) not null, checked char(5) not null);");
+               db.execSQL("create table  to_do_list(num integer primary key, couple_id char(20) not null, date_check char(15), content char(100) not null, checked char(5) not null);");
 
         //TODO_LIST 내용
         db.execSQL("INSERT INTO to_do_list VALUES( 0,'couple0',' ','인형뽑기에서 원하는 인형 뽑아주기','false');");
@@ -28,10 +27,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO to_do_list VALUES( 8,'couple0','','웃으면서 같이 코딩하기','false');");
         db.execSQL("INSERT INTO to_do_list VALUES( 9,'couple0','','종로가서 커플링 맞추기','false');");
         db.execSQL("INSERT INTO to_do_list VALUES( 10,'couple0','','커플 키링 만들어보기','false');");
-
-
-
-
     }
 
     @Override
