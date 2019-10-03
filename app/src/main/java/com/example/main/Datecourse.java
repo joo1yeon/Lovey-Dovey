@@ -1,6 +1,7 @@
 package com.example.main;
 
 import android.content.Intent;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.android.volley.Request;
@@ -25,7 +27,9 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+
 import com.bumptech.glide.Glide;
+
 
 import org.json.JSONObject;
 
@@ -36,6 +40,9 @@ public class Datecourse extends Fragment {
     }
 
     RequestQueue queue;
+
+    RequestQueue queue;
+    NetworkImageView imageView;
 
     @Override
     @Nullable
@@ -56,16 +63,50 @@ public class Datecourse extends Fragment {
         });
 
         ArrayList<Integer> listImage = new ArrayList<>();
+
+        //ArrayList에 해당 image를 넣는다.
+        final ArrayList<Integer> listImage = new ArrayList<>();
         listImage.add(R.drawable.image1);
         listImage.add(R.drawable.image2);
         listImage.add(R.drawable.image3);
         listImage.add(R.drawable.image4);
+
+      /* imageView=layout.findViewById(R.id.imageView);
+
+        JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET, "http://10.0.2.2/teamProject/test.json", null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String imgFile = response.getString("file");
+                            if (imgFile != null && !imgFile.equals("")) {
+                                ImageLoader imageLoader = new ImageLoader(queue, new ImageLoader.ImageCache() {
+                                    @Override
+                                    public Bitmap getBitmap(String url) {
+                                        return null; }
+                                    @Override
+                                    public void putBitmap(String url, Bitmap bitmap) { }
+                                });
+                                imageView.setImageUrl("http://10.0.2.2/teamProject/" + imgFile, imageLoader);
+                            }
+                        } catch (Exception e) { }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("test", error.toString());
+            }
+        });
+        
+        queue = (RequestQueue) Volley.newRequestQueue(getContext());
+        queue.add(jsonRequest);*/
 
         ViewPager viewPager = layout.findViewById(R.id.viewPager);
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager());
         // ViewPager와  FragmentAdapter 연결
         viewPager.setAdapter(fragmentAdapter);
 
+        //뷰페이저 양옆에 다음 사진이 보일 수 있게 위치 설정
         viewPager.setClipToPadding(false);
         int dpValue = 60;
         float d = getResources().getDisplayMetrics().density;
@@ -74,13 +115,13 @@ public class Datecourse extends Fragment {
         viewPager.setPageMargin(margin / 2);
 
         // FragmentAdapter에 Fragment 추가, Image 개수만큼 추가
-        for (int i = 0; i < listImage.size(); i++) {
+       /* for (int i = 0; i < listImage.size(); i++) {
             DateImage imageFragment = new DateImage();
             Bundle bundle = new Bundle();
             bundle.putInt("imgRes", listImage.get(i));
             imageFragment.setArguments(bundle);
             fragmentAdapter.addItem(imageFragment);
-        }
+        }*/
         fragmentAdapter.notifyDataSetChanged();
         return layout;
     }

@@ -18,8 +18,15 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
 
     TextView dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
+
     ImageView favorite;
     int i = 0;
+
+   /* ViewPager viewPager;
+    Date_Info InfoFrag;
+    Date_Review ReviewFrag;
+    FragmentManager fm;
+    FragmentTransaction tran;*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +37,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         dateReview = findViewById(R.id.dateReview);
         infoLine = findViewById(R.id.infoLine);
         reviewLine = findViewById(R.id.reviewLine);
+
         favorite = findViewById(R.id.favorite);
         date_info = new Date_Info();
 
@@ -48,6 +56,9 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
             }
         });
 
+
+        date_info = new Date_Info();
+
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -57,7 +68,6 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         dateInfo.setOnClickListener(this);
         dateReview.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

@@ -1,6 +1,7 @@
 package com.example.main;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,29 @@ public class Album_singleton { //싱글톤 만들기
 
     private Album_singleton(Context context) {
         mStories = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        /*for (int i = 0; i < 5; i++) {
             Story story = new Story();
             story.setTitle("제목");
             mStories.add(story);
+        }*/
+        DbOpenHelper mDbOpenHelper = new DbOpenHelper(context);
+        mDbOpenHelper.open();
+        mDbOpenHelper.create();
+
+        Cursor cursor = mDbOpenHelper.selectColumns();
+        while (cursor.moveToNext()) {
+            String tempTitle = cursor.getString(cursor.getColumnIndex("title"));
+            int tempYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int tempMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int tempDay = cursor.getInt(cursor.getColumnIndex("day"));
+            Story story = new Story();
+            story.setTitle(tempTitle);
+            story.setYear(tempYear);
+            story.setMonth(tempMonth);
+            story.setDay(tempDay);
+            mStories.add(story);
         }
+        
     }
 
     public static List<Story> getStories() {
