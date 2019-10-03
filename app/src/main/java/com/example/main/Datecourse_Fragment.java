@@ -14,19 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import retrofit2.http.HEAD;
+
 public class Datecourse_Fragment extends AppCompatActivity implements View.OnClickListener {
 
     TextView dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
 
-    ImageView favorite;
-    int i = 0;
-
    /* ViewPager viewPager;
-    Date_Info InfoFrag;
-    Date_Review ReviewFrag;
+    Date_Info InfoFrag;   Date_Review ReviewFrag;
     FragmentManager fm;
     FragmentTransaction tran;*/
+    ImageView favorite;
+    int i = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         dateReview = findViewById(R.id.dateReview);
         infoLine = findViewById(R.id.infoLine);
         reviewLine = findViewById(R.id.reviewLine);
+        date_info = new Date_Info();
 
         favorite = findViewById(R.id.favorite);
         date_info = new Date_Info();

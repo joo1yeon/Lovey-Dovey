@@ -1,20 +1,19 @@
 package com.example.main;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,8 +23,10 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 public class ToDoList extends AppCompatActivity {
 
@@ -37,11 +38,18 @@ public class ToDoList extends AppCompatActivity {
     CustomChoiceListViewAdapter adapter1, adapter2;                     //선택한거, 안한거
     SlidingDrawer handle;
 
+    MyDBHelper todoDB;
+    SQLiteDatabase sqlDB;
+    Cursor cursor;
+    String strContent, strDate, strCoupleID = "couple0";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
 
+        todoDB = new MyDBHelper(this);          //헬퍼클래스 객체 생성
 
         //뒤로가기 버튼 인플레이트
         btnBack = findViewById(R.id.btnBack);
@@ -68,6 +76,10 @@ public class ToDoList extends AppCompatActivity {
 
 
         //체크안된 투두 아이템 추가
+        //체크되지 않은 투두 아이템 추가
+        Item_show(adapter1, strCoupleID,false);
+
+        /*
         adapter1.addItem("시험끝나고 미친듯이 놀기", "");
         adapter1.addItem("PC방 가서 하루종일 게임하기", "");
         adapter1.addItem("오류같이 찾고 기뻐하기 ㅎㅎ", "");
@@ -85,22 +97,47 @@ public class ToDoList extends AppCompatActivity {
 
         //TODO 1. 체크된 아이템 알아내기 2. 클릭 시 현재날짜 찍는 법 알아내기
         /*
+        adapter1.addItem("종로가서 커플링 맞추기", "");
+        adapter1.addItem("커플 키링 만들어보기", ""); */
+
+
+        //체크된 투두 아이템 추가
+        Item_show( adapter2, strCoupleID,true);
+
+        /*adapter2.addItem("곱창 무한리필 먹기", "2019년 05월 12일");
+        adapter2.addItem("바다가서 조개구이 먹기", "2019년 04월 09일");
+        adapter2.addItem("해외여행 가기", "2019년 04월 08일");
+        adapter2.addItem("동물카페 가서 놀기", "2019년 03월 04일");
+        adapter2.addItem("찜질방 가서 하루 놀기", "2019년 03월 04일");
+        adapter2.addItem("커플신발 맞춰보기", "2019년 02월 28일");*/
+
+
+
+        //TODO 보충 : 전부 다 체크해제 상태여야 함, 체크했을 때 아래꺼까지 체크 안되는 방법
         //체크되지 않은 투두리스트 클릭했을 때
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //String listViewItem = adapter1.getItem(i).toString();
                 //Toast.makeText(ToDoList.this, listViewItem+"체크됨", Toast.LENGTH_SHORT).show();
+                ToDoList_ListItem listItem = adapter1.listViewItems.get(i);
+                String content = listItem.getContent();
+
+                listView1.setItemChecked(i,false);                 //선택한 인덱스의 체크 풀기
+                adapter1.remove(i);                                       //선택한 adapter1 내용을 지우기
+                adapter1.notifyDataSetChanged();                          //변경한 데이터 반영
+                adapter2.addItem(content,Date());                         //adapter2에 adapter1에 있던 내용 추가
+                adapter2.notifyDataSetChanged();                          //변경한 데이터 반영
+
             }
-        });*/
-
-
+        });
 
         //체크하지 않은 리스트를 길게 클릭했을 때
         listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 //final ListData mData = mAdapter1.listData.get(position);
+                final ToDoList_ListItem listItem = adapter1.listViewItems.get(position);
 
                 AlertDialog.Builder dlg2 = new AlertDialog.Builder(ToDoList.this);
                 final AlertDialog dl2 = dlg2.create();
@@ -133,16 +170,25 @@ public class ToDoList extends AppCompatActivity {
                         // 아이템 내 각 위젯에 데이터 반영
                         //contents.setText(mData.content);
 
+
+                        // 아이템 내 각 위젯에 데이터 반영
+                        contents.setText(listItem.getContent());
+
                         //수정
                         add.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+
                                 String text = contents.getText().toString();
                                 //TODO 수정하는 부분 해야함 데이터베이스에서 검색 후 해당하는 내용 부분 수정하면 될 듯
 
 
                                 //데이터 수정하는 코드
+                               adapter1.notifyDataSetChanged();
+                                listItem.setContent(text);
                                 adapter1.notifyDataSetChanged();
+                                //Item_modify(adapter1, "couple0",listItem.getContent());
+
                                 dl.dismiss();
 
                             }
@@ -176,10 +222,19 @@ public class ToDoList extends AppCompatActivity {
         //TODO 1. 체크된 아이템 알아내기 2. 클릭 시 현재날짜 찍는 법 알아내기
         /*//체크된 투두리스트 클릭했을 때
         mListView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //TODO 보충 : 전부 다 체크 상태여야 함, 체크했을 때 아래꺼까지 체크 안되는 방법
+        //체크된 투두리스트 클릭했을 때
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ListData mData = mAdapter2.listData.get(i);
-                //Toast.makeText(MainActivity.this, mData.content, Toast.LENGTH_SHORT).show();
+                ToDoList_ListItem listItem = adapter2.listViewItems.get(i);
+                String content = listItem.getContent();
+
+                listView2.setItemChecked(i,false);                  //선택한 인덱스의 체크 풀기
+                adapter2.remove(i);                                        //선택한 adapter2 내용을 지우기
+                adapter2.notifyDataSetChanged();                           //변경한 데이터 반영
+                adapter1.addItem(content,"");                       //adapter1에 adapter2에 있던 내용 추가
+                adapter1.notifyDataSetChanged();                          //변경한 데이터 반영
             }
         });*/
 
@@ -213,10 +268,17 @@ public class ToDoList extends AppCompatActivity {
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         String text = contents.getText().toString();
                         adapter1.addItem(text, "");
                         contents.setText("");
                         adapter1.notifyDataSetChanged();
+                        /*
+                        adapter1.addItem(text, "");
+                        contents.setText("");
+                        adapter1.notifyDataSetChanged();*/
+                        Item_add(adapter1,strCoupleID,text);
+                        //TODO 업데이트를 하는 방법...
                         dl.dismiss();
 
                     }
@@ -234,6 +296,13 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
+    //현재 날짜 찍기
+    public String Date(){
+        SimpleDateFormat format = new SimpleDateFormat ( "yyyy년 MM월 dd일");
+        Date date = new Date();
+        String date_ = format.format(date);
+        return date_;
+    }
 
        /* public void checkedConfirm(int position) {
             ListData check = listData.get(position);
@@ -248,5 +317,44 @@ public class ToDoList extends AppCompatActivity {
             }
         }*/
 
+
+       public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
+           sqlDB = todoDB.getReadableDatabase();
+
+            cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' and checked = '"+check+"';",null);
+
+            int count = cursor.getCount();
+
+            for(int i=0;i<count;i++) {
+                cursor.moveToNext();
+                strDate = cursor.getString(2);
+                strContent = cursor.getString(3);
+                adapter.addItem(strContent, strDate);
+            }
+
+            cursor.close();
+            sqlDB.close();
+       }
+
+       public void Item_add(ToDoList_ChoiceListAdapter adapter, String id, String content){
+           try{
+               sqlDB = todoDB.getWritableDatabase();
+               cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"';",null);
+               int count = cursor.getCount();
+               sqlDB.execSQL("INSERT INTO to_do_list VALUES( " + count + ",'" + id + "','','" + content + "','" + false + "');");
+           }catch (Exception e){
+           }
+           cursor.close();
+           sqlDB.close();
+
+       }
+       /*
+       public void Item_modify(ToDoList_ChoiceListAdapter adapter, String id, String content){
+           sqlDB = todoDB.getWritableDatabase();
+           sqlDB.execSQL("update to_do_list set content = " + contents.getText().toString() + " where couple_id = '" + id + "' and content = "+content+";");
+           sqlDB.close();
+          Item_add(adapter,id,false);
+           Toast.makeText(getApplicationContext(),"수정됨",Toast.LENGTH_SHORT).show();
+       }*/
 
 }

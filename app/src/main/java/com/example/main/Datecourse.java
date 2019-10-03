@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.graphics.Bitmap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,8 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.toolbox.NetworkImageView;
-
 import java.util.ArrayList;
+
+import retrofit2.http.HEAD;
 
 public class Datecourse extends Fragment {
     public Datecourse() {
@@ -30,6 +32,7 @@ public class Datecourse extends Fragment {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse, container, false);
         // Fragment로 넘길 Image Resource
 
+        //ArrayList에 해당 image를 넣는다.
         FloatingActionButton search;
 
         search = layout.findViewById(R.id.search);
@@ -54,7 +57,6 @@ public class Datecourse extends Fragment {
         // ViewPager와  FragmentAdapter 연결
         viewPager.setAdapter(fragmentAdapter);
 
-        //뷰페이저 양옆에 다음 사진이 보일 수 있게 위치 설정
         viewPager.setClipToPadding(false);
         int dpValue = 60;
         float d = getResources().getDisplayMetrics().density;

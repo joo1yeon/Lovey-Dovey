@@ -27,7 +27,6 @@ public class DateImageClick extends AppCompatActivity {
         listView = findViewById(R.id.imagelist);
         listView.setAdapter(adapter);
 
-
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.dateimage1), "석촌 호수");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.dateimage2), "수원 경기도청");
         adapter.addItem(ContextCompat.getDrawable(this, R.drawable.dateimage3), "서울 어린이 대공원");
@@ -43,6 +42,7 @@ public class DateImageClick extends AppCompatActivity {
 
 
         //화면에 보여진 listView 클릭시 발생되는 이벤트 리스너
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
