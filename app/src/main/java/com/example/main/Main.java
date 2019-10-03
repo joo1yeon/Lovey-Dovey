@@ -235,6 +235,7 @@ public class Main extends Fragment {
             {
                 Log.e("화면꺼졌을 때","나 다른화면에 있다!?" );
                 todoThread.interrupt();
+                Log.e("화면꺼졌을 때","잘 멈췄어!" );
             }
             catch (Exception e)
             {
@@ -318,6 +319,7 @@ public class Main extends Fragment {
                     Thread.sleep(3000);
                 }
                 catch (InterruptedException e) {
+                    halt();
                     e.printStackTrace();
                 }
                 index++;
