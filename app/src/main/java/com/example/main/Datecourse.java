@@ -1,10 +1,7 @@
 package com.example.main;
 
-<<<<<<< HEAD
 import android.graphics.Bitmap;
-=======
 import android.content.Intent;
->>>>>>> cd8d76e6f6a7c178ecfcbd7c5a393cd021d99b03
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +31,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import retrofit2.http.HEAD;
+
 public class Datecourse extends Fragment {
     Main mainFrag;
 
@@ -48,10 +47,7 @@ public class Datecourse extends Fragment {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse,container,false);
         // Fragment로 넘길 Image Resource
 
-<<<<<<< HEAD
         //ArrayList에 해당 image를 넣는다.
-        final ArrayList<Integer> listImage = new ArrayList<>();
-=======
         FloatingActionButton search;
 
         search=layout.findViewById(R.id.search);
@@ -65,7 +61,6 @@ public class Datecourse extends Fragment {
         });
 
         ArrayList<Integer> listImage = new ArrayList<>();
->>>>>>> cd8d76e6f6a7c178ecfcbd7c5a393cd021d99b03
         listImage.add(R.drawable.image1);
         listImage.add(R.drawable.image2);
         listImage.add(R.drawable.image3);
@@ -114,13 +109,13 @@ public class Datecourse extends Fragment {
         viewPager.setPageMargin(margin/2);
 
         // FragmentAdapter에 Fragment 추가, Image 개수만큼 추가
-       /* for (int i = 0; i < listImage.size(); i++) {
+        for (int i = 0; i < listImage.size(); i++) {
             DateImage imageFragment = new DateImage();
             Bundle bundle = new Bundle();
             bundle.putInt("imgRes", listImage.get(i));
             imageFragment.setArguments(bundle);
             fragmentAdapter.addItem(imageFragment);
-        }*/
+        }
         fragmentAdapter.notifyDataSetChanged();
         return layout;
     }
