@@ -64,9 +64,12 @@ public class ToDoList_ChoiceListAdapter extends BaseAdapter {
         item.setContent(content);                               //내용할당
         item.setDate(date);                                     //시간할당
 
-        listViewItems.add(item);                                //listViewItems 에
+        listViewItems.add(item);                                //listViewItems 에 추가
     }
 
+    public void clearItem(){
+        listViewItems.clear();
+    }
 
     //아이템을 제거
     public void remove(int position){
