@@ -224,13 +224,24 @@ public class Main extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if(isVisibleToUser){
-            todoThread = null;
+            todoThread=null;
             todoThread = new TodoThread();
             todoThread.start();
+            Log.e("화면켜졌을 때", "나 켜졌어!");
             }
            else {
                //스레드 멈추는 함수
-            Log.e("0123345","나 다른화면에 있다!?" );
+            try
+            {
+                Log.e("화면꺼졌을 때","나 다른화면에 있다!?" );
+                todoThread.interrupt();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+
            }
     }
 
