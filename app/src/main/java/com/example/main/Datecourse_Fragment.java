@@ -10,17 +10,24 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Datecourse_Fragment extends AppCompatActivity implements View.OnClickListener {
 
     TextView dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
+<<<<<<< HEAD
    /* ViewPager viewPager;
     Date_Info InfoFrag;
     Date_Review ReviewFrag;
     FragmentManager fm;
     FragmentTransaction tran;*/
+=======
+    ImageView favorite;
+    int i = 0;
+>>>>>>> cd8d76e6f6a7c178ecfcbd7c5a393cd021d99b03
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,8 +38,29 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         dateReview = findViewById(R.id.dateReview);
         infoLine = findViewById(R.id.infoLine);
         reviewLine = findViewById(R.id.reviewLine);
+<<<<<<< HEAD
         date_info = new Date_Info();
 
+=======
+        favorite = findViewById(R.id.favorite);
+        date_info = new Date_Info();
+
+
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i++;
+                if (i % 2 != 0) {
+                    favorite.setBackgroundResource(R.drawable.ic_star_black_24dp);
+                    Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    favorite.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
+                    Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+>>>>>>> cd8d76e6f6a7c178ecfcbd7c5a393cd021d99b03
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()

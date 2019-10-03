@@ -10,7 +10,7 @@ public class Story {
 
     public Story() {
         mId = UUID.randomUUID();
-    }
+    } //고유한 식별자 생성
     public UUID getId(){
         return mId;
     }
@@ -38,4 +38,9 @@ public class Story {
     public void setDay(int day) {
         mDay = day;
     }
+}
+
+class ContentsOfStory {
+    public String text;
+    public ContentsOfStory() { text = "test";}
 }

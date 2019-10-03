@@ -1,93 +1,212 @@
 package com.example.main;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    String color = "#B8D9C0";
+    MyDBHelper dbHelper = new MyDBHelper(this);
+    SQLiteDatabase sqlDB;
+    ViewGroup info, notice, background, bookmark;
+    DrawerLayout drawerLayout;
+    String id;
     ViewPager viewPager;
-    ImageButton btnHome, btnOverflow;
-    Button btnDate, btnFoot, btnGal;
-    Main mainFrag;
-    Datecourse dateFrag;
-    FootPrint footFrag;
-    StoryListFragment albumFrag;
+    LinearLayout linearLayout,logout;
+    ImageButton btnOverflow, btnBack;
+    Intent intent;
+    Toast toast;
 
+
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        viewPager = findViewById(R.id.mainFrame);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        viewPager.setCurrentItem(0);        //viewPager의 초기값을 0(메인화면)으로 설정
-
-        btnHome = findViewById(R.id.btnHome);
+        sqlDB=dbHelper.getWritableDatabase();
+        Cursor cursor = sqlDB.rawQuery("select * from info;",null);
+        if(cursor.getCount()!=0){
+            cursor.moveToFirst();
+            id=cursor.getString(0);
+        }
+        btnBack = findViewById(R.id.btnBack);
         btnOverflow = findViewById(R.id.btnOverflow);
-        btnDate = findViewById(R.id.btnDate);
-        btnFoot = findViewById(R.id.btnFoot);
-        btnGal = findViewById(R.id.btnGallery);
-
-        mainFrag = new Main();
-        dateFrag = new Datecourse();
-        footFrag = new FootPrint();
-        albumFrag = new StoryListFragment();
-
-        //TODO 버튼에 ViewPager 태그값 및 클릭 리스너 설정
-        btnHome.setOnClickListener(movePageListener);
-        btnHome.setTag(0);
-        btnDate.setOnClickListener(movePageListener);
-        btnDate.setTag(1);
-        btnFoot.setOnClickListener(movePageListener);
-        btnFoot.setTag(2);
-        btnGal.setOnClickListener(movePageListener);
-        btnGal.setTag(3);
-
-    }
-
-    //TODO 버튼을 클릭하면 해당 태그의 fragment로 이동
-    View.OnClickListener movePageListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int tag = (int) v.getTag();
-            viewPager.setCurrentItem(tag);
-        }
-    };
-
-    //TODO 각 태그값에 해당하는 fragment 설정
-    private class PagerAdapter extends FragmentStatePagerAdapter {
-
-        public PagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-        @Override
-        public Fragment getItem(int i) {
-            switch (i) {
-                case 0: return mainFrag;
-                case 1: return dateFrag;
-                case 2: return footFrag;
-                case 3: return albumFrag;
-                default: return null;
+        drawerLayout = findViewById(R.id.drawer_layout);
+        info = findViewById(R.id.btnInfo);
+        notice = findViewById(R.id.btnNotice);
+        background = findViewById(R.id.btnBG);
+        bookmark = findViewById(R.id.btnBookMark);
+        linearLayout = findViewById(R.id.main_content);
+        viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        TabLayout tabLayout = findViewById(R.id.tab);
+        logout=findViewById(R.id.btnLogout);
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
             }
-        }
-        @Override
-        public int getCount() {
-            return 4;
-        }
+        });
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        //TODO 오버플로우버튼 클릭
+        btnOverflow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.RIGHT);
+            }
+        });
+
+        //TODO 내비게이션뷰 닫기
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+            }
+        });
+
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "개인정보 수정", Toast.LENGTH_SHORT).show();
+            }
+        });
+        notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), Notice.class);
+                startActivity(intent);
+                Toast.makeText(MainActivity.this, "공지사항", Toast.LENGTH_SHORT).show();
+            }
+        });
+        background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "배경화면 설정", Toast.LENGTH_SHORT).show();
+            }
+        });
+        bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "즐겨찾기", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sqlDB.execSQL("delete from info where id='"+id+"';");
+                Toast.makeText(MainActivity.this,id+"로그아웃",Toast.LENGTH_SHORT).show();
+                Intent logout = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(logout);
+                finish();
+            }
+        });
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        id=data.getStringExtra("ID");
     }
+
+    class MyPagerAdapter extends FragmentPagerAdapter {
+        List<Fragment> fragments = new ArrayList<Fragment>();
+        private String titles[] = new String[]{"홈", "데이트코스", "발자국", "앨범"};
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+            fragments.add(new Main());
+            fragments.add(new Datecourse());
+            fragments.add(new FootPrint());
+            fragments.add(new StoryListFragment()); //Ablum 대신 StoryListFragment로 변경
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            switch (i) {
+                case 0:
+                    Main mainFragment = new Main();
+                    return mainFragment;
+                case 1:
+                    Datecourse dateFragment = new Datecourse();
+                    return dateFragment;
+                case 2:
+                    FootPrint footFragment = new FootPrint();
+                    return footFragment;
+                case 3:
+                    StoryListFragment albumFragment = new StoryListFragment(); // 여기서 Album() 말고 StoryListFragment() 로 변경!
+                    return albumFragment;
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return this.fragments.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
+        }
+    }
+    //앱종료시간체크
+    long backKeyPressedTime;    //앱종료 위한 백버튼 누른시간
+
+    //뒤로가기 2번하면 앱종료
+    @Override
+    public void onBackPressed () {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast = Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish();
+            toast.cancel();
+        }
+    }
+
 }
 

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/v1"
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="wrap_content"
         android:background="@drawable/date_review_line"
         android:padding="5dp"
@@ -89,6 +91,14 @@
             app:layout_constraintTop_toBottomOf="@+id/tv5" />
 
     </android.support.constraint.ConstraintLayout>
+=======
+        android:layout_height="0dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/review"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp" />
+>>>>>>> cd8d76e6f6a7c178ecfcbd7c5a393cd021d99b03
 
     <Button
         android:id="@+id/review"

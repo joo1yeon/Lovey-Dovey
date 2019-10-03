@@ -1,10 +1,15 @@
 package com.example.main;
 
+<<<<<<< HEAD
 import android.graphics.Bitmap;
+=======
+import android.content.Intent;
+>>>>>>> cd8d76e6f6a7c178ecfcbd7c5a393cd021d99b03
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -30,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Datecourse extends Fragment {
+    Main mainFrag;
 
     public Datecourse(){}
 
@@ -42,8 +48,24 @@ public class Datecourse extends Fragment {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse,container,false);
         // Fragment로 넘길 Image Resource
 
+<<<<<<< HEAD
         //ArrayList에 해당 image를 넣는다.
         final ArrayList<Integer> listImage = new ArrayList<>();
+=======
+        FloatingActionButton search;
+
+        search=layout.findViewById(R.id.search);
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(),Datecourse_Search.class);
+                startActivity(intent);
+            }
+        });
+
+        ArrayList<Integer> listImage = new ArrayList<>();
+>>>>>>> cd8d76e6f6a7c178ecfcbd7c5a393cd021d99b03
         listImage.add(R.drawable.image1);
         listImage.add(R.drawable.image2);
         listImage.add(R.drawable.image3);
@@ -84,7 +106,6 @@ public class Datecourse extends Fragment {
         // ViewPager와  FragmentAdapter 연결
         viewPager.setAdapter(fragmentAdapter);
 
-        //뷰페이저 양옆에 다음 사진이 보일 수 있게 위치 설정
         viewPager.setClipToPadding(false);
         int dpValue = 60;
         float d = getResources().getDisplayMetrics().density;

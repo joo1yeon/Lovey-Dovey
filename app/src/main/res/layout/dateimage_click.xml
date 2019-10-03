@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="#B8D9C0"
         android:id="@+id/cons"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btnHome"
@@ -39,16 +39,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btnOverflow"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/ic_menu"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_menu"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
     <ListView
