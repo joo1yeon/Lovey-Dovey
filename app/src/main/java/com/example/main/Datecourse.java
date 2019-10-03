@@ -39,9 +39,6 @@ public class Datecourse extends Fragment {
     public Datecourse() {
     }
 
-    RequestQueue queue;
-
-    RequestQueue queue;
     NetworkImageView imageView;
 
     @Override
@@ -65,41 +62,13 @@ public class Datecourse extends Fragment {
         ArrayList<Integer> listImage = new ArrayList<>();
 
         //ArrayList에 해당 image를 넣는다.
-        final ArrayList<Integer> listImage = new ArrayList<>();
+        ArrayList<Integer> listImage = new ArrayList<>();
         listImage.add(R.drawable.image1);
         listImage.add(R.drawable.image2);
         listImage.add(R.drawable.image3);
         listImage.add(R.drawable.image4);
 
-      /* imageView=layout.findViewById(R.id.imageView);
 
-        JsonObjectRequest jsonRequest=new JsonObjectRequest(Request.Method.GET, "http://10.0.2.2/teamProject/test.json", null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String imgFile = response.getString("file");
-                            if (imgFile != null && !imgFile.equals("")) {
-                                ImageLoader imageLoader = new ImageLoader(queue, new ImageLoader.ImageCache() {
-                                    @Override
-                                    public Bitmap getBitmap(String url) {
-                                        return null; }
-                                    @Override
-                                    public void putBitmap(String url, Bitmap bitmap) { }
-                                });
-                                imageView.setImageUrl("http://10.0.2.2/teamProject/" + imgFile, imageLoader);
-                            }
-                        } catch (Exception e) { }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("test", error.toString());
-            }
-        });
-        
-        queue = (RequestQueue) Volley.newRequestQueue(getContext());
-        queue.add(jsonRequest);*/
 
         ViewPager viewPager = layout.findViewById(R.id.viewPager);
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager());
@@ -115,13 +84,13 @@ public class Datecourse extends Fragment {
         viewPager.setPageMargin(margin / 2);
 
         // FragmentAdapter에 Fragment 추가, Image 개수만큼 추가
-       /* for (int i = 0; i < listImage.size(); i++) {
+        for (int i = 0; i < listImage.size(); i++) {
             DateImage imageFragment = new DateImage();
             Bundle bundle = new Bundle();
             bundle.putInt("imgRes", listImage.get(i));
             imageFragment.setArguments(bundle);
             fragmentAdapter.addItem(imageFragment);
-        }*/
+        }
         fragmentAdapter.notifyDataSetChanged();
         return layout;
     }
