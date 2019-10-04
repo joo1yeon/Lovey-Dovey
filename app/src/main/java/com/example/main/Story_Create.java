@@ -24,7 +24,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 
     Button btnNext,btnCancel;
     ImageView icCalendar, icSelectMainImg, ivStoryMainImg;
-    EditText etStoryTitle, etWriteText;
+    EditText etStoryTitle;
     TextView tvPressIcon;
     public Story mStory;
     private static final String DIALOG_DATE = "DialogDate";
@@ -32,7 +32,6 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
     //private static final int REQUEST_DATE = 0; // DatePicker 에서 데이터 반환하기 위해 요청 코드 상수 정의
     DbOpenHelper mDbOpenHelper;
     int year, month, day;
-    Uri mUri;
 
     @Override
     public void onDatePickerSet(int y, int m, int d){ //DatePickerFragment 로부터 날짜를 받아온다.
@@ -55,7 +54,6 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
         icSelectMainImg = findViewById(R.id.ic_select_main_img);
         ivStoryMainImg = findViewById(R.id.story_main_img);
         etStoryTitle = findViewById(R.id.et_story_title);
-        etWriteText = findViewById(R.id.et_write_text);
         tvPressIcon = findViewById(R.id.tv_press_icon);
 
         icCalendar.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +71,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 mDbOpenHelper = new DbOpenHelper(getApplicationContext());
                 mDbOpenHelper.open();
                 mDbOpenHelper.create();
-                mDbOpenHelper.deleteAllColumns();
+//                mDbOpenHelper.deleteAllColumns();
                 mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
                 Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
@@ -81,12 +79,10 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 story.setYear(year);
                 story.setMonth(month);
                 story.setDay(day);
-                story.setContents_text(etWriteText.getText().toString());
-                story.setMainImg(mUri);
                 Album_singleton.get(getApplicationContext()).addStory(story);
                 mDbOpenHelper.close();
-//                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
-//                startActivity(intent);
+                Intent intent = new Intent(Story_Create.this, Story_EditContents.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -106,7 +102,6 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Story_Create.this, "취소되었습니다.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -125,8 +120,6 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 //                    ivStoryMainImg.setImageBitmap(img);
                     Uri uri = data.getData();
                     Glide.with(this).load(uri).into(ivStoryMainImg);
-                    Log.d("test", uri.toString());
-                    mUri = uri;
 
                 } catch (Exception e) {
 

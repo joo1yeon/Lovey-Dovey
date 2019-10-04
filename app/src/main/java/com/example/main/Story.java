@@ -1,15 +1,12 @@
 package com.example.main;
 
-import android.net.Uri;
-
 import java.util.Date;
 import java.util.UUID;
 
 public class Story {
     private UUID mId;
-    private String mTitle, mContents_text;
+    private String mTitle;
     private int mYear, mMonth, mDay;
-    private Uri mMainImg;
 
     public Story() {
         mId = UUID.randomUUID();
@@ -22,12 +19,6 @@ public class Story {
     }
     public void setTitle(String title) {
         mTitle = title;
-    }
-    public String getContents_text() {
-        return mContents_text;
-    }
-    public void setContents_text(String contents_text) {
-        mContents_text = contents_text;
     }
     public int getYear() {
         return mYear;
@@ -46,12 +37,6 @@ public class Story {
     }
     public void setDay(int day) {
         mDay = day;
-    }
-    public Uri getMainImg() {
-        return mMainImg;
-    }
-    public void setMainImg(Uri mainImg) {
-        mMainImg = mainImg;
     }
 }
 
