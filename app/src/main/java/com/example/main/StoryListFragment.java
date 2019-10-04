@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,13 +23,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
+@SuppressLint("ValidFragment")
 public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 때 뜨는 화면
-
+    String id;
     public RecyclerView mStoryRecyclerView;
     public StoryAdapter mAdapter;
     public Button addBtn;
     public FloatingActionButton searchBtn;
     DbOpenHelper mDbOpenHelper;
+
+    public StoryListFragment(String _id){id=_id;}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,7 +79,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
             mAdapter = new StoryAdapter(stories);
             mStoryRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.notifyItemRangeInserted(stories.size(), stories.size()+1);
+            mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
             mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
             Log.d("test", "리스트 다시 로드하기");
         }
