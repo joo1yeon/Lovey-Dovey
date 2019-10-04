@@ -1,6 +1,7 @@
 package com.example.main;
 
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -63,7 +64,9 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
+@SuppressLint("ValidFragment")
 public class FootPrint extends Fragment implements OnMapReadyCallback {
+    String id;
     MarkerOptions markerOptions = new MarkerOptions();
 
     ImageButton btnTomorrow, btnYesterday;
@@ -82,8 +85,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     private BottomSheetDialog modalBottomSheet;
     final static private String url = "http://10.0.2.2/teamProject/Marker.php";
 
-    public FootPrint() {
-
+    public FootPrint(String _id) {
+        id=_id;
     }
 
     @Override
@@ -105,29 +108,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         btnTomorrow = layout.findViewById(R.id.btnTomorrow);
         btnYesterday = layout.findViewById(R.id.btnYesterday);
         tvToday.setText(sdf.format(cal.getTime()));
-//        com.android.volley.Response.Listener listener = new com.android.volley.Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                try{
-//                    Log.i("Test",response.toString());
-//
-//                    //JSONObject jResponse =new JSONObject(response);
-////                    JSONArray jsonArray=jResponse.
-////                    boolean success = jResponse.getBoolean("success");
-////                    Log.i("Test","값 받아오기 성공");
-////                    if(success){
-////                        double latitude = jResponse.getDouble("latitude");
-////                        double longitude = jResponse.getDouble("longitude");
-////                        Log.i("TEST","위도: "+longitude+"    "+"경도: "+latitude);
-////                    }
-//                }catch (Exception e){
-//                    Log.d("asdf",e.toString());
-//                }
-//            }
-//        };
-//        MarkerRequest request=new MarkerRequest(listener);
-//        RequestQueue queue = Volley.newRequestQueue(getContext());
-//        queue.add(request);
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +155,21 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        tvToday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
+                        Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
+                        cal.set(year, month, dayOfMonth);
+                    }
+                }, year, month, day);
+                dateDialog.show();
+
+            }
+        });
         //TODO 날짜 이동 버튼(하루 전)
         btnYesterday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -381,6 +376,10 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     public void onPause() {
         super.onPause();
         map.onPause();
+    }
+
+    public void printMarker(int year, int month, int day){
+
     }
 }
 

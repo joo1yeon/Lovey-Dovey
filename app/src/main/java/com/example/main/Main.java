@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -29,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Main extends Fragment {
+    String id;
     ImageView profile_Btn1, profile_Btn2, storage, close;
     TextView  date, textView;
     View profileLayout1, profileLayout2;
@@ -44,7 +46,8 @@ public class Main extends Fragment {
         }
     };
 
-    public Main(){}
+    @SuppressLint("ValidFragment")
+    public Main(String _id){id=_id;}
 
     @Override
     @Nullable

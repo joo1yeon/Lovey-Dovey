@@ -42,13 +42,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent1=getIntent();
+        id=intent1.getStringExtra("ID");
+
         setContentView(R.layout.activity_main);
         sqlDB=dbHelper.getWritableDatabase();
-        Cursor cursor = sqlDB.rawQuery("select * from info;",null);
-        if(cursor.getCount()!=0){
-            cursor.moveToFirst();
-            id=cursor.getString(0);
-        }
+//        Cursor cursor = sqlDB.rawQuery("select * from info;",null);
+//        if(cursor.getCount()!=0){
+//            cursor.moveToFirst();
+//            id=cursor.getString(0);
+//        }
         btnBack = findViewById(R.id.btnBack);
         btnOverflow = findViewById(R.id.btnOverflow);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -153,26 +156,26 @@ public class MainActivity extends AppCompatActivity {
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
-            fragments.add(new Main());
-            fragments.add(new Datecourse());
-            fragments.add(new FootPrint());
-            fragments.add(new StoryListFragment()); //Ablum 대신 StoryListFragment로 변경
+            fragments.add(new Main(id));
+            fragments.add(new Datecourse(id));
+            fragments.add(new FootPrint(id));
+            fragments.add(new StoryListFragment(id)); //Ablum 대신 StoryListFragment로 변경
         }
 
         @Override
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    Main mainFragment = new Main();
+                    Main mainFragment = new Main(id);
                     return mainFragment;
                 case 1:
-                    Datecourse dateFragment = new Datecourse();
+                    Datecourse dateFragment = new Datecourse(id);
                     return dateFragment;
                 case 2:
-                    FootPrint footFragment = new FootPrint();
+                    FootPrint footFragment = new FootPrint(id);
                     return footFragment;
                 case 3:
-                    StoryListFragment albumFragment = new StoryListFragment(); // 여기서 Album() 말고 StoryListFragment() 로 변경!
+                    StoryListFragment albumFragment = new StoryListFragment(id); // 여기서 Album() 말고 StoryListFragment() 로 변경!
                     return albumFragment;
                 default:
                     return null;
@@ -193,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     //앱종료시간체크
     long backKeyPressedTime;    //앱종료 위한 백버튼 누른시간
 
-    //뒤로가기 2번하면 앱종료
+    //TODO 뒤로가기 2번하면 앱종료
     @Override
     public void onBackPressed () {
         if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
