@@ -31,5 +31,8 @@ public interface API {
 
     @GET("RepeatCheck.php")
     Call<ResponseRepeat> getRepeat(@Query("ID") String id);
+
+    @GET("addMarker.php")
+    Call<ResponseMarker> getMarker(@Query("coupleID") String id,@Query("year") int year, @Query("month") int month, @Query("day")int day);
 }
 
