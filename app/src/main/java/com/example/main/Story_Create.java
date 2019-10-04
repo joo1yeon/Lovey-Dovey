@@ -3,7 +3,6 @@ package com.example.main;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -15,8 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 
 import java.io.InputStream;
 
@@ -113,13 +110,11 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
-//                    InputStream in = getContentResolver().openInputStream(data.getData());
-//                    Bitmap img = BitmapFactory.decodeStream(in);
-//                    in.close();
-//
-//                    ivStoryMainImg.setImageBitmap(img);
-                    Uri uri = data.getData();
-                    Glide.with(this).load(uri).into(ivStoryMainImg);
+                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    Bitmap img = BitmapFactory.decodeStream(in);
+                    in.close();
+
+                    ivStoryMainImg.setImageBitmap(img);
 
                 } catch (Exception e) {
 
