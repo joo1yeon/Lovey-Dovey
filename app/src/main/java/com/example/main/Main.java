@@ -1,10 +1,13 @@
 package com.example.main;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,15 +28,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import com.bumptech.glide.Glide;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
 public class Main extends Fragment {
-    ImageView profile_Btn1, profile_Btn2, storage, close;
+
+    private static int REQUEST_CODE = 1;
+    private Context context;
+
+    ImageView profile_Btn1, profile_Btn2, storage, close, profile_img;
     TextView  date, textView;
     View profileLayout1, profileLayout2;
     ArrayList<String> todo = new ArrayList<String>();
@@ -48,6 +60,7 @@ public class Main extends Fragment {
     SQLiteDatabase sqlDB;
     Cursor cursor;
 
+    Uri uri_;
 
     //화면 보여주기 전에 todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
     @Override
@@ -74,6 +87,7 @@ public class Main extends Fragment {
 
 
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
+        context = getContext();
         todo.clear();
         Item_Content(strCoupleID);
 
@@ -141,6 +155,7 @@ public class Main extends Fragment {
 
                 //메인화면 다이얼로그에 들어가는 profile1의 뷰들 인플레이트
                 storage = profileLayout1.findViewById(R.id.storage);
+                profile_img = profileLayout1.findViewById(R.id.profile_img);
                 email = profileLayout1.findViewById(R.id.et_email);
                 birthday = profileLayout1.findViewById(R.id.et_birthday);
                 name = profileLayout1.findViewById(R.id.name);
@@ -152,6 +167,16 @@ public class Main extends Fragment {
                 email.setText(em1);
                 birthday.setText(bth1);
                 name.setText(nm1);
+
+                profile_img.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "사진 선택"), REQUEST_CODE);
+                    }
+                });
 
                 //저장을 버튼을 클릭했을 때 수정된 내용을 저장한 후 다이얼로그 종료
                 storage.setOnClickListener(new View.OnClickListener() {
@@ -216,6 +241,9 @@ public class Main extends Fragment {
         return layout;
     }
 
+
+
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if(isVisibleToUser){
@@ -240,6 +268,7 @@ public class Main extends Fragment {
 
            }
     }
+
 
 
 
@@ -328,5 +357,33 @@ public class Main extends Fragment {
         }
 
 
+    }
+
+    //앨범들어가서 사진 크롭하기
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+
+            try {
+                Uri uri = data.getData();
+
+                profile_img = profileLayout1.findViewById(R.id.profile_img);
+                Glide.with(context)
+                        .load(uri)
+                        .centerCrop()
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(context))
+                        .override(70, 70)
+                        .into(profile_img);
+
+                uri_ = uri;
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }
