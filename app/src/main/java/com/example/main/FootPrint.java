@@ -36,7 +36,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.google.android.gms.common.api.Response;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -61,6 +60,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -108,6 +111,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         btnTomorrow = layout.findViewById(R.id.btnTomorrow);
         btnYesterday = layout.findViewById(R.id.btnYesterday);
         tvToday.setText(sdf.format(cal.getTime()));
+
+        printMarker(year,month,day);
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +128,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
                 cal.set(year, month, day);
+                printMarker(year,month,day);
                 tvToday.setText(sdf.format(today));
 
             }
@@ -147,6 +153,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
+                        printMarker(year,month+1,dayOfMonth);
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
                         cal.set(year, month, dayOfMonth);
                     }
@@ -162,6 +169,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
+                        printMarker(year,month+1,dayOfMonth);
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
                         cal.set(year, month, dayOfMonth);
                     }
@@ -379,7 +387,30 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     }
 
     public void printMarker(int year, int month, int day){
+        Call<ResponseMarker> res = Net.getInstance().getApi().getMarker(id,year,month,day);
+        res.enqueue(new Callback<ResponseMarker>() {
+            @Override
+            public void onResponse(Call<ResponseMarker> call, Response<ResponseMarker> response) {
+                if(response.isSuccessful()){
+                    ResponseMarker responseGet = response.body();
+                    if(responseGet.getLng()!=0){
+                        LatLng point= new LatLng(responseGet.getLat(),responseGet.getLng());
+                        markerOptions.title(responseGet.getName());
+                        markerOptions.snippet(responseGet.getAddress());
+                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark", 100, 120)));
+                        markerOptions.position(point);
+                        gMap.addMarker(markerOptions);
+                        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
 
+                    }else {}
+                }else Toast.makeText(getContext(),"통신1 에러",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseMarker> call, Throwable t) {
+                Toast.makeText(getContext(),"통신3 에러",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 
