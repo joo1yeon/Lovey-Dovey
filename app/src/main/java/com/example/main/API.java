@@ -1,5 +1,6 @@
 package com.example.main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public interface API {
     @GET("RepeatCheck.php")
     Call<ResponseRepeat> getRepeat(@Query("ID") String id);
 
-    @GET("addMarker.php")
-    Call<ResponseMarker> getMarker(@Query("coupleID") String id,@Query("year") int year, @Query("month") int month, @Query("day")int day);
+    @GET("printMarker.php")
+    Call<List<ResponseMarker>> getMarker(@Query("coupleID") String id, @Query("year") int year, @Query("month") int month, @Query("day")int day);
 }
 

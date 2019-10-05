@@ -54,6 +54,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -102,6 +104,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
+        Log.d("date",year+""+month+1+""+day);
 
         btnFab = layout.findViewById(R.id.btnFab);
         fabToday = layout.findViewById(R.id.fabToday);
@@ -112,7 +115,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         btnYesterday = layout.findViewById(R.id.btnYesterday);
         tvToday.setText(sdf.format(cal.getTime()));
 
-        printMarker(year,month,day);
         //TODO 버튼을 클릭하면 FloatingActionButton 애니메이션 실행
         btnFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +130,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
                 cal.set(year, month, day);
-                printMarker(year,month,day);
+                printMarker(gMap,year,month,day);
                 tvToday.setText(sdf.format(today));
 
             }
@@ -153,7 +155,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
-                        printMarker(year,month+1,dayOfMonth);
+                        printMarker(gMap,year,month+1,dayOfMonth);
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
                         cal.set(year, month, dayOfMonth);
                     }
@@ -169,7 +171,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
-                        printMarker(year,month+1,dayOfMonth);
+                        printMarker(gMap,year,month+1,dayOfMonth);
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
                         cal.set(year, month, dayOfMonth);
                     }
@@ -230,6 +232,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
+
+        printMarker(gMap,year,month+1,day);
 
         gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584, 126.925), 15));
@@ -312,39 +316,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             Log.i("test","6-1"+address);
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark", 100, 120)));
             markerOptions.position(point);
-//            //TODO 마커 클릭 이벤트
-//            onMapReady에서 이미 정의했기 때문에 다시 정의할 필요가 없음(?)
-//            gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//                public boolean onMarkerClick(final Marker marker) {
-//                    View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-//                    TextView placeName,placeAddress;
-//                    placeName=view.findViewById(R.id.placeName);
-//                    placeAddress=view.findViewById(R.id.placeAddress);
-//                    placeName.setText(marker.getTitle());
-//                    placeAddress.setText(marker.getSnippet());
-//                    Button btnAddPicture, btnDelMark;
-//                    btnAddPicture = view.findViewById(R.id.btnAddPicture);
-//                    btnDelMark = view.findViewById(R.id.btnDelMark);
-//                    btnAddPicture.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            Toast.makeText(getContext(), "사진추가하기", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                    btnDelMark.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            marker.remove();
-//                            modalBottomSheet.dismiss();
-//                        }
-//                    });
-//                    modalBottomSheet = new BottomSheetDialog(getContext());
-//                    modalBottomSheet.setContentView(view);
-//                    modalBottomSheet.show();
-//                    return false;
-//                }
-//            });
             gMap.addMarker(markerOptions);
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
         }
@@ -386,29 +357,35 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         map.onPause();
     }
 
-    public void printMarker(int year, int month, int day){
-        Call<ResponseMarker> res = Net.getInstance().getApi().getMarker(id,year,month,day);
-        res.enqueue(new Callback<ResponseMarker>() {
+    public void printMarker(GoogleMap _gMap,int year, int month, int day){
+       final GoogleMap gMap=_gMap;
+        Call<List<ResponseMarker>> res = Net.getInstance().getApi().getMarker("c1",year,month,day);
+        res.enqueue(new Callback<List<ResponseMarker>>() {
             @Override
-            public void onResponse(Call<ResponseMarker> call, Response<ResponseMarker> response) {
+            public void onResponse(Call<List<ResponseMarker>> call, Response<List<ResponseMarker>> response) {
                 if(response.isSuccessful()){
-                    ResponseMarker responseGet = response.body();
-                    if(responseGet.getLng()!=0){
-                        LatLng point= new LatLng(responseGet.getLat(),responseGet.getLng());
-                        markerOptions.title(responseGet.getName());
-                        markerOptions.snippet(responseGet.getAddress());
-                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark", 100, 120)));
-                        markerOptions.position(point);
-                        gMap.addMarker(markerOptions);
-                        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
+                    List<ResponseMarker> responseGet = response.body();
+                    for(ResponseMarker responseMarker:responseGet){
+                        if (responseMarker.getName() != null && responseMarker.getAddress() != null && responseMarker.getLng() != 0 && responseMarker.getLat() != 0) {
+                            LatLng point = new LatLng(responseMarker.getLat(), responseMarker.getLng());
+                            markerOptions.title(responseMarker.getName());
+                            markerOptions.snippet(responseMarker.getAddress());
+                            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("mark", 100, 120)));
+                            markerOptions.position(point);
+                            gMap.addMarker(markerOptions);
+                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
 
-                    }else {}
+                        } else {
+                        }
+
+                    }
                 }else Toast.makeText(getContext(),"통신1 에러",Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseMarker> call, Throwable t) {
-                Toast.makeText(getContext(),"통신3 에러",Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<ResponseMarker>> call, Throwable t) {
+                Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Log.d("TTT",t.getMessage());
             }
         });
     }
