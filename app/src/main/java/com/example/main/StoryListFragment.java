@@ -3,6 +3,7 @@ package com.example.main;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -88,8 +91,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {
         public Story mStory;
         public ImageView mStoryMainImg;
-        public TextView mStoryTitle;
-        public TextView mStoryDate;
+        public TextView mStoryTitle, mStoryDate, mContentsText;
 
         public StoryHolder(View itemView) {
             super(itemView);
@@ -98,6 +100,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
             mStoryMainImg = (ImageView) itemView.findViewById(R.id.story_mainImg1);
             mStoryTitle = (TextView) itemView.findViewById(R.id.story_title1);
             mStoryDate = (TextView) itemView.findViewById(R.id.story_date1);
+            mContentsText = itemView.findViewById(R.id.contents_text);
 
             itemView.setOnCreateContextMenuListener(this); //OnCreateContextMenuListener를 현재 클래스에서 구현한다고 설정
         }
@@ -113,6 +116,10 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
             //mStoryMainImg.setImageDrawable();
             mStoryTitle.setText(mStory.getTitle());
             mStoryDate.setText(mStory.getYear() + "년 " + mStory.getMonth() + "월 " + mStory.getDay() + "일");
+            mContentsText.setText(mStory.getContents_text());
+            Uri uri = mStory.getMainImg();
+//            Log.d("test", uri.toString());
+            Glide.with(getContext()).load(uri).into(mStoryMainImg);
         }
 
         @Override
