@@ -1,7 +1,9 @@
 package com.example.main;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -25,7 +28,8 @@ import retrofit2.http.HEAD;
 public class Datecourse extends Fragment implements ViewPager.PageTransformer {
     public Datecourse() {
     }
-
+    public String[] image={"http://mjckjs.gabia.io//whispering/image/datecourse/date_bloosom1.jpg",
+            "http://mjckjs.gabia.io//whispering/image/datecourse/date_bar1.jpg"};
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,11 +50,11 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
         });
 
         //ArrayList에 해당 image를 넣는다.
-        ArrayList<Integer> listImage = new ArrayList<>();
-        listImage.add(R.drawable.image1);
+        //ArrayList<Integer> listImage = new ArrayList<>();
+        /*listImage.add(R.drawable.image1);
         listImage.add(R.drawable.image2);
         listImage.add(R.drawable.image3);
-        listImage.add(R.drawable.image4);
+        listImage.add(R.drawable.image4);*/
 
         final ViewPager viewPager = layout.findViewById(R.id.viewPager);
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getChildFragmentManager());
@@ -78,14 +82,14 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
         });
 
         // FragmentAdapter에 Fragment 추가, Image 개수만큼 추가
-        for (int i = 0; i < listImage.size(); i++) {
+       /* for (int i = 0; i <image.length; i++) {
             DateImage imageFragment = new DateImage();
             Bundle bundle = new Bundle();
             bundle.putInt("imgRes", listImage.get(i));
             imageFragment.setArguments(bundle);
             fragmentAdapter.addItem(imageFragment);
         }
-        fragmentAdapter.notifyDataSetChanged();
+        fragmentAdapter.notifyDataSetChanged();*/
         return layout;
     }
 
@@ -98,6 +102,9 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
 
         // ViewPager에 들어갈 Fragment들을 담을 리스트
         private ArrayList<Fragment> fragments = new ArrayList<>();
+        private Context context;
+        /*public String[] image={"http://mjckjs.gabia.io//whispering/image/datecourse/date_bloosom1.jpg",
+                "http://mjckjs.gabia.io//whispering/image/datecourse/date_bar1.jpg"};*/
 
         // 필수 생성자
         FragmentAdapter(FragmentManager fm) {
@@ -111,12 +118,27 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
 
         @Override
         public int getCount() {
-            return fragments.size();
+           return image.length;
         }
 
         // List에 Fragment를 담을 함수
         void addItem(Fragment fragment) {
             fragments.add(fragment);
+        }
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            View view=LayoutInflater.from(context).inflate(R.layout.date_image,container,false);
+
+            ImageView imageView=view.findViewById(R.id.imageView);
+            Glide.with(context).load(image[position]).into(imageView);
+            container.addView(view);
+            return  view;
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            container.removeView((View) object);
         }
     }
 }
