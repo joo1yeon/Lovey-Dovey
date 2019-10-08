@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,10 +18,13 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+
 public class Datecourse extends Fragment {
     Main mainFrag;
+    String id;
 
-    public Datecourse(){}
+
+    public Datecourse(String _id){id=_id;}
 
     @Override
     @Nullable

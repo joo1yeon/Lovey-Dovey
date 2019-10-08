@@ -43,6 +43,9 @@
         android:textSize="15dp"
         android:layout_margin="5dp"
         android:fontFamily="@font/netmarble_m"
+        android:singleLine="true"
+        android:hint="내용을 입력해주세요"
+        android:textColorHint="#B8D9C0"
 
 
         app:layout_constraintRight_toRightOf="parent"
