@@ -44,6 +44,7 @@ import java.util.Date;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
+@SuppressLint("ValidFragment")
 public class Main extends Fragment {
 
     String id;
