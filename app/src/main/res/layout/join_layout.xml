@@ -52,16 +52,16 @@
         app:layout_constraintLeft_toLeftOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/name"
        />
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/id"
-            app:layout_constraintLeft_toLeftOf="@id/guideline4"
-            android:layout_marginTop="20dp"
-            android:id="@+id/edtID"
-            android:fontFamily="@font/netmarble_m"
-            app:layout_constraintRight_toLeftOf="@+id/btnCheck"
-            android:lines="1"/>
+
+    <EditText
+        android:id="@+id/edtID"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:fontFamily="@font/netmarble_m"
+        android:lines="1"
+        app:layout_constraintBottom_toBottomOf="@id/id"
+        app:layout_constraintLeft_toLeftOf="@id/guideline4"
+        app:layout_constraintRight_toLeftOf="@+id/btnCheck" />
     <Button
         android:layout_width="80dp"
         android:layout_height="wrap_content" 
@@ -100,6 +100,16 @@
         android:layout_marginRight="10dp"
         android:lines="1"
         />
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_error"
+        app:layout_constraintBottom_toBottomOf="@id/edtPWCheck"
+        app:layout_constraintRight_toLeftOf="@id/edtPWCheck"
+        app:layout_constraintTop_toTopOf="@id/edtPWCheck"
+        android:layout_marginRight="10dp"
+        android:visibility="invisible"
+        android:id="@+id/imgError"/>
     <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
