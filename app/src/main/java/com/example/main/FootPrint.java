@@ -263,7 +263,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2);
                 markerOptions.title(address);
                 markerOptions.snippet(address);
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker", 100, 120)));
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
                 markerOptions.position(latLng);
 
                 gMap.addMarker(markerOptions);
@@ -319,7 +319,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             LatLng point = new LatLng(latitude, longitude);
             markerOptions.title(name);
             markerOptions.snippet(address);
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker", 100, 120)));
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
             markerOptions.position(point);
             gMap.addMarker(markerOptions);
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
@@ -378,7 +378,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
 
                             markerOptions.title(responseMarker.getName());
                             markerOptions.snippet(responseMarker.getAddress());
-                            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker", 100, 120)));
+                            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
                             markerOptions.position(point);
                             gMap.addMarker(markerOptions);
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
