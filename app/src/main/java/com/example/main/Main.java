@@ -223,7 +223,6 @@ public class Main extends Fragment {
 
             }
         }
-        //TODO# 스레드 멈추는 함수 필요할려나?
         public void halt(){
             running=false;
         }
