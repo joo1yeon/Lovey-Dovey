@@ -11,34 +11,33 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class DateImageClick extends AppCompatActivity {
+
+    ListView listView;
+    Datecourse_ListViewAdapter adapter;
+    ArrayList<Datecourse_ListViewItem> date_listItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dateimage_click);
 
-        ListView listView;
-        Datecourse_ListViewAdapter adapter;
-
         ImageButton btnHome=findViewById(R.id.btnHome);
-        adapter = new Datecourse_ListViewAdapter();
+        final String[] PlaceUrl={"http://mjckjs.gabia.io//whispering/image/datecourse/date_seok.jpg", "http://mjckjs.gabia.io//whispering/image/datecourse/date_child.jpg",
+                "http://mjckjs.gabia.io//whispering/image/datecourse/date_incheon.jpg", "http://mjckjs.gabia.io//whispering/image/datecourse/date_suwon.jpg",
+                "http://mjckjs.gabia.io//whispering/image/datecourse/date_yeouido.jpg", "http://mjckjs.gabia.io//whispering/image/datecourse/date_gyeongpo.jpg"};
+        final String[] PlaceN={"석촌호수","어린이 대공원","인천대공원","수원 경기도청","여의도","경포호수"};
 
         listView = findViewById(R.id.imagelist);
+        date_listItem=new ArrayList<Datecourse_ListViewItem>();
+        adapter = new Datecourse_ListViewAdapter(this,date_listItem);
+
+        for(int i=0;i<PlaceN.length;i++){
+        date_listItem.add(new Datecourse_ListViewItem( PlaceUrl[i],PlaceN[i]));
         listView.setAdapter(adapter);
-
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.dateimage1), "석촌 호수");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.dateimage2), "수원 경기도청");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.dateimage3), "서울 어린이 대공원");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.dateimage4), "여의도");
-        adapter.addItem(ContextCompat.getDrawable(this, R.drawable.dateimage5), "인천 대공원");
-
-        //어댑터에 setter로 받아온 이미지와 textView 추가
-        adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage1),"석촌 호수");
-        adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage2),"수원 경기도청");
-        adapter.addItem(ContextCompat.getDrawable(this,R.drawable.dateimage3),"서울 어린이 대공원");
-        adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage4),"여의도");
-        adapter.addItem( ContextCompat.getDrawable(this,R.drawable.dateimage5),"인천 대공원");
+        }
 
 
         //화면에 보여진 listView 클릭시 발생되는 이벤트 리스너
@@ -47,6 +46,8 @@ public class DateImageClick extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(DateImageClick.this, Datecourse_Fragment.class);
+                intent.putExtra("PlaceN",PlaceN[position]);
+                intent.putExtra("PlaceUrl",PlaceUrl[position]);
                 startActivity(intent);
             }
         });

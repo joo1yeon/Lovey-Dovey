@@ -1,6 +1,8 @@
 package com.example.main;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,14 +21,10 @@ import retrofit2.http.HEAD;
 
 public class Datecourse_Fragment extends AppCompatActivity implements View.OnClickListener {
 
-    TextView dateInfo, dateReview, infoLine, reviewLine;
+    TextView placeN, dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
 
-   /* ViewPager viewPager;
-    Date_Info InfoFrag;   Date_Review ReviewFrag;
-    FragmentManager fm;
-    FragmentTransaction tran;*/
-    ImageView favorite;
+    ImageView favorite,place;
     int i = 0;
 
     @Override
@@ -33,6 +32,8 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_imageclick);
 
+        placeN=findViewById(R.id.plaveN);
+        place=findViewById(R.id.place);
         dateInfo = findViewById(R.id.dateInfo);
         dateReview = findViewById(R.id.dateReview);
         infoLine = findViewById(R.id.infoLine);
@@ -42,6 +43,14 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         favorite = findViewById(R.id.favorite);
         date_info = new Date_Info();
 
+        Intent intent = getIntent();
+        String PlaceName=intent.getStringExtra("PlaceN");
+
+/*
+        Intent intent2=getIntent();
+        String PlaceUrl=intent2.getParcelableExtra("PlaceUrl");
+*/
+        placeN.setText(PlaceName);
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +65,6 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
                 }
             }
         });
-
 
         date_info = new Date_Info();
 
