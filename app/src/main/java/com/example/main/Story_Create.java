@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.main.networking.ServerResponse;
 
+import java.io.File;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Story_Create extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
 
@@ -33,6 +44,8 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
     DbOpenHelper mDbOpenHelper;
     int year, month, day;
     Uri mUri;
+    String imgPath;
+    String imgFileLocation = "";
 
     @Override
     public void onDatePickerSet(int y, int m, int d){ //DatePickerFragment 로부터 날짜를 받아온다.
@@ -87,6 +100,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 mDbOpenHelper.close();
 //                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
 //                startActivity(intent);
+//                uploadFile(); //서버에 이미지 업로드
                 finish();
             }
         });
@@ -125,8 +139,10 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 //                    ivStoryMainImg.setImageBitmap(img);
                     Uri uri = data.getData();
                     Glide.with(this).load(uri).into(ivStoryMainImg);
-                    Log.d("test", uri.toString());
+                    Log.d("test", "파일 경로" + uri.getPath());
                     mUri = uri;
+                    imgPath = uri.getPath();
+                    uploadFile(); //서버에 이미지 업로드
 
                 } catch (Exception e) {
 
@@ -134,6 +150,62 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    void uploadFile() {
+        if (imgPath == null || imgPath.equals("")) { //선택된 이미지가 없는 경우
+            Toast.makeText(this, "이미지를 선택하세요", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            //showpDialog();
+
+            Map<String, RequestBody> map = new HashMap<>();
+            File file = new File(imgPath);
+
+
+            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file); //File 형태로 변환(parsing)
+            Log.d("test", "서버연동1");
+            map.put("file\"; filename=\"" + file.getName() + "\"", requestBody);
+            Log.d("test", "서버연동2");
+            API getResponse = Net.getInstance().getApi();
+            Log.d("test", "서버연동3");
+            Call<ServerResponse> call = getResponse.upload("token", map);
+            Log.d("test", "서버연동4");
+            call.enqueue(new Callback<ServerResponse>() {
+                @Override
+                public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            //hidepDialog();
+                            ServerResponse serverResponse = response.body();
+                            Log.d("test", "서버연동4");
+                            Toast.makeText(Story_Create.this, "호롤로"+serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("test", "서버연동6");
+                        }
+                    } else {
+                        //hidepDialog();
+                        Log.d("test", "서버연동5");
+                        Toast.makeText(Story_Create.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResponse> call, Throwable t) {
+                    //hidepDialog();
+                    Log.d("test", t.getMessage());
+                }
+            });
+        }
+    }
+
+    private boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

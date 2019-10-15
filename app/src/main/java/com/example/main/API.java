@@ -1,8 +1,12 @@
 package com.example.main;
 
+import com.example.main.networking.ServerResponse;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -11,9 +15,12 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -45,5 +52,12 @@ public interface API {
 //
 //    @DELETE("/posts/1")
 //    Call<ResponseBody> deleteFirst();
+
+    @Multipart
+    @POST("upload_img.php")
+    Call<ServerResponse> upload(
+            @Header("Authorization") String authorization,
+            @PartMap Map<String, RequestBody> map
+    );
 }
 
