@@ -1,7 +1,9 @@
 package com.example.main;
 
+
 import com.example.main.networking.ServerResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,24 +36,13 @@ public interface API {
     Call<ResponsePW> getSecond(@Query("NAME") String name, @Query("EMAIL") String email, @Query("ID") String id);
 
     @GET("Login.php")
-    Call<ResponseLogin>getThird(@Query("ID") String id, @Query("PW") String pw);
-//
-//    @GET("/posts")
-//    Call<List<ResponseGet>> getSecond(@Query("userId") String id);
-//
-//    @FormUrlEncoded
-//    @POST("/posts")
-//    Call<ResponseGet> postFirst(@FieldMap HashMap<String, Object> parameters);
-//
-//    @PUT("/posts/1")
-//    Call<ResponseGet> putFirst(@Body RequestPut parameters);
-//
-//    @FormUrlEncoded
-//    @PATCH("/posts/1")
-//    Call<ResponseGet> patchFirst(@Field("title") String title);
-//
-//    @DELETE("/posts/1")
-//    Call<ResponseBody> deleteFirst();
+    Call<ResponseLogin> getThird(@Query("ID") String id, @Query("PW") String pw);
+
+    @GET("RepeatCheck.php")
+    Call<ResponseRepeat> getRepeat(@Query("ID") String id);
+
+    @GET("printMarker.php")
+    Call<List<ResponseMarker>> getMarker(@Query("coupleID") String id, @Query("year") int year, @Query("month") int month, @Query("day") int day);
 
     @Multipart
     @POST("upload_img.php")

@@ -132,6 +132,13 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
+
+                    InputStream in = getContentResolver().openInputStream(data.getData());
+                    Bitmap img = BitmapFactory.decodeStream(in);
+                    in.close();
+
+                    ivStoryMainImg.setImageBitmap(img);
+
 //                    InputStream in = getContentResolver().openInputStream(data.getData());
 //                    Bitmap img = BitmapFactory.decodeStream(in);
 //                    in.close();
@@ -143,6 +150,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                     mUri = uri;
                     imgPath = uri.getPath();
                     uploadFile(); //서버에 이미지 업로드
+
 
                 } catch (Exception e) {
 
