@@ -69,7 +69,7 @@ public class Main extends Fragment {
     SQLiteDatabase sqlDB;
     Cursor cursor;
 
-    Uri uri_;
+    Uri uri_=Uri.parse("android.resource://com.example.main/drawable/basic");
 
     //화면 보여주기 전에 todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
     @Override
@@ -174,6 +174,14 @@ public class Main extends Fragment {
                 email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
                 //저장된 값 보여주기
+                Glide.with(context)
+                        .load(uri_)
+                        .centerCrop()
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(context))
+                        .override(70, 70)
+                        .into(profile_img);
+
                 email.setText(em1);
                 birthday.setText(bth1);
                 name.setText(nm1);
