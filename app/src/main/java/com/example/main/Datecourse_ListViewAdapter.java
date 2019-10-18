@@ -9,10 +9,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class Datecourse_ListViewAdapter extends BaseAdapter {
+    Context context;
     ArrayList<Datecourse_ListViewItem> date_listItem = new ArrayList<Datecourse_ListViewItem>();
+    ViewHolder viewHolder;
+
+    public Datecourse_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem>date_listItem){
+        this.context=context;
+        this.date_listItem=date_listItem;
+    }
 
     @Override
     public int getCount() {
@@ -36,25 +45,21 @@ public class Datecourse_ListViewAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.dateimage_listview, parent, false);
+            viewHolder = new ViewHolder();
+
+            viewHolder.image = convertView.findViewById(R.id.image);
+            viewHolder.placeName = convertView.findViewById(R.id.placeName);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ImageView image = convertView.findViewById(R.id.image);
-        TextView placeName = convertView.findViewById(R.id.placeName);
-
-        Datecourse_ListViewItem listItem = date_listItem.get(position);
-
-        image.setImageDrawable(listItem.getImage());
-        placeName.setText(listItem.getTitle());
-
+        viewHolder.placeName.setText(date_listItem.get(position).getTitle());
+        Glide.with(context).load(date_listItem.get(position).getImage()).into(viewHolder.image);
         return convertView;
     }
-
-    public void addItem(Drawable image,String title) {
-        Datecourse_ListViewItem item = new Datecourse_ListViewItem();
-
-        item.setImage(image);
-        item.setTitle(title);
-
-        date_listItem.add(item);
+    class ViewHolder {
+        ImageView image;
+        TextView placeName;
     }
 }
