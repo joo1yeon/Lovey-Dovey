@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DateReview_listViewAdapter extends BaseAdapter {
 
@@ -48,20 +50,23 @@ public class DateReview_listViewAdapter extends BaseAdapter {
 
         TextView context = convertView.findViewById(R.id.context);
         ratingbar = convertView.findViewById(R.id.ratingBar);
+        TextView date = convertView.findViewById(R.id.date);
 
         DateReview_listViewItem listItem = review_listItem.get(position);
 
         context.setText(listItem.getContext());
         ratingbar.setRating(listItem.getRating());
+        date.setText(listItem.getDate());
 
         return convertView;
     }
 
-    public void addItem(float rating, String context) {
+    public void addItem(float rating, String context, String date) {
         DateReview_listViewItem item = new DateReview_listViewItem();
 
         item.setContext(context);
         item.setRating(rating);
+        item.setDate(date);
 
         review_listItem.add(item);
     }
