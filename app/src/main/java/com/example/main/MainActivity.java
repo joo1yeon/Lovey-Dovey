@@ -2,7 +2,6 @@ package com.example.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,11 +17,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnOverflow, btnBack;
     Intent intent;
     Toast toast;
+    ImageView profile;
 
 
     @SuppressLint("WrongViewCast")
@@ -52,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 //            cursor.moveToFirst();
 //            id=cursor.getString(0);
 //        }
+
+        profile = findViewById(R.id.profile);
+
         btnBack = findViewById(R.id.btnBack);
         btnOverflow = findViewById(R.id.btnOverflow);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -93,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(Gravity.RIGHT);
+
+                //저장된 프로필 보여주기
+                Glide.with(getApplicationContext())
+                        .load(Main.uri_)
+                        .centerCrop()
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(getApplicationContext()))
+                        .override(70, 70)
+                        .into(profile);
             }
         });
 
@@ -108,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "개인정보 수정", Toast.LENGTH_SHORT).show();
+
             }
         });
         notice.setOnClickListener(new View.OnClickListener() {

@@ -5,16 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/photo_change"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     <ImageView
         android:id="@+id/profile_img"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/basic"
         android:layout_margin="10dp"
 
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/cbg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/photo_camera"
+            app:layout_constraintRight_toRightOf="@id/photo_change"
+            app:layout_constraintBottom_toBottomOf="@id/photo_change"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/name_change"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photo_change">
 
 
         <EditText
@@ -27,10 +53,21 @@
             android:ems="5"
             android:fontFamily="@font/netmarble_m"
 
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_img"
+            app:layout_constraintBottom_toBottomOf="@id/name_change"
+            app:layout_constraintRight_toRightOf="@id/name_change"
+            app:layout_constraintLeft_toLeftOf="@id/name_change"
+
             />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/pen"
+
+            app:layout_constraintTop_toTopOf="@id/name"
+            app:layout_constraintRight_toRightOf="@id/name_change"
+            app:layout_constraintBottom_toBottomOf="@id/name"/>
+    </android.support.constraint.ConstraintLayout>
 
 
 
@@ -44,7 +81,7 @@
         android:layout_margin="20dp"
 
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintTop_toBottomOf="@id/name_change"
         />
 
     <EditText
@@ -60,7 +97,7 @@
 
 
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintTop_toBottomOf="@id/name_change"
         />
 
     <TextView

@@ -51,6 +51,7 @@
 
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
@@ -58,9 +59,11 @@
         android:choiceMode="multipleChoice"
 
         app:layout_constraintTop_toBottomOf="@id/main_content"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        ></ListView>
+        app:layout_constraintLeft_toLeftOf="parent"
+        >
+
+    </ListView>
 
     <ImageView
     android:id="@+id/btnAdd"
