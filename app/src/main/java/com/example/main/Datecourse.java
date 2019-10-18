@@ -14,11 +14,19 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.LinearLayout;
+
+import android.widget.ImageView;
+
+
+import com.bumptech.glide.Glide;
+
 
 import java.util.ArrayList;
 
 
+@SuppressLint("ValidFragment")
 public class Datecourse extends Fragment {
     Main mainFrag;
     String id;
