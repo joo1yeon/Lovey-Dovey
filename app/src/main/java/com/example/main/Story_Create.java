@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.main.networking.ServerResponse;
 
 import java.io.File;
 import java.io.InputStream;
@@ -44,7 +43,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
     DbOpenHelper mDbOpenHelper;
     int year, month, day;
     Uri mUri;
-    String mTitle, imgPath;
+    String mTitle, story_id, contents, imgPath;
     String imgFileLocation = "";
 
     @Override
@@ -97,12 +96,14 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 story.setDay(day);
                 story.setContents_text(etWriteText.getText().toString());
                 story.setMainImg(mUri);
+                story_id = story.getId().toString();
+                contents = etWriteText.getText().toString();
                 Album_singleton.get(getApplicationContext()).addStory(story);
                 mDbOpenHelper.close();
 //                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
 //                startActivity(intent);
 //                uploadFile(); //서버에 이미지 업로드
-                saveStoryData();
+                saveStoryData(); //서버에 story data 저장
                 finish();
             }
         });
@@ -163,6 +164,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
         }
     }
 
+    //TODO 서버에 이미지 저장하기
     void uploadFile() {
         if (imgPath == null || imgPath.equals("")) { //선택된 이미지가 없는 경우
             Toast.makeText(this, "이미지를 선택하세요", Toast.LENGTH_SHORT).show();
@@ -175,22 +177,18 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file); //File 형태로 변환(parsing)
-            Log.d("test", "서버연동1");
             map.put("file\"; filename=\"" + file.getName() + "\"", requestBody);
-            Log.d("test", "서버연동2");
             API getResponse = Net.getInstance().getApi();
-            Log.d("test", "서버연동3");
-            Call<ServerResponse> call = getResponse.upload("token", map);
-            Log.d("test", "서버연동4");
-            call.enqueue(new Callback<ServerResponse>() {
+            Call<ResponseImgUpload> call = getResponse.upload("token", map);
+            call.enqueue(new Callback<ResponseImgUpload>() {
                 @Override
-                public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                public void onResponse(Call<ResponseImgUpload> call, Response<ResponseImgUpload> response) {
                     if (response.isSuccessful()) {
-                        if (response.body() != null) {
+                        if (response.body().getSuccess()) {
                             //hidepDialog();
-                            ServerResponse serverResponse = response.body();
+                            ResponseImgUpload responseImgUpload = response.body();
                             Log.d("test", "서버연동4");
-                            Toast.makeText(Story_Create.this, "호롤로"+serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Story_Create.this, "호롤로"+ responseImgUpload.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("test", "서버연동6");
                         }
                     } else {
@@ -201,7 +199,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 }
 
                 @Override
-                public void onFailure(Call<ServerResponse> call, Throwable t) {
+                public void onFailure(Call<ResponseImgUpload> call, Throwable t) {
                     //hidepDialog();
                     Log.d("test", t.getMessage());
                 }
@@ -223,8 +221,9 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 
     }
 
-    public void saveStoryData() {
-        final Call<ResponseSaveStory> res = Net.getInstance().getApi().setStoryData(mTitle);
+    //TODO 서버에 story data 저장하기
+    public void saveStoryData() { //서버에 저장은 되는데 통신3에러가 뜬다.
+        final Call<ResponseSaveStory> res = Net.getInstance().getApi().setStoryData(story_id, year, month, day, mTitle, contents);
         res.enqueue(new Callback<ResponseSaveStory>() {
             @Override
             public void onResponse(Call<ResponseSaveStory> call, Response<ResponseSaveStory> response) {

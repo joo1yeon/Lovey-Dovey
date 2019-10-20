@@ -1,29 +1,16 @@
 package com.example.main;
 
 
-import com.example.main.networking.ServerResponse;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.DELETE;
-import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
-import retrofit2.http.PATCH;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.PartMap;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface API {
@@ -45,11 +32,11 @@ public interface API {
     Call<List<ResponseMarker>> getMarker(@Query("coupleID") String id, @Query("year") int year, @Query("month") int month, @Query("day") int day);
 
     @GET("save_storyData.php")
-    Call<ResponseSaveStory> setStoryData(@Query("storyTitle") String mTitle);
+    Call<ResponseSaveStory> setStoryData(@Query("storyID") String story_id, @Query("year") int year, @Query("month") int month, @Query("day") int day, @Query("storyTitle") String mTitle, @Query("contents") String contents);
 
     @Multipart
     @POST("upload_img.php")
-    Call<ServerResponse> upload(
+    Call<ResponseImgUpload> upload(
             @Header("Authorization") String authorization,
             @PartMap Map<String, RequestBody> map
     );

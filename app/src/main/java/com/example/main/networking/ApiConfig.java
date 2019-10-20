@@ -1,5 +1,7 @@
 package com.example.main.networking;
 
+import com.example.main.ResponseImgUpload;
+
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -13,7 +15,7 @@ public interface ApiConfig {
 
     @Multipart
     @POST("images/upload_image.php")
-    Call<ServerResponse> upload(
+    Call<ResponseImgUpload> upload(
             @Header("Authorization") String authorization,
             @PartMap Map<String, RequestBody> map
             );
