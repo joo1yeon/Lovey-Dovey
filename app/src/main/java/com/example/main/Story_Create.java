@@ -44,7 +44,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
     DbOpenHelper mDbOpenHelper;
     int year, month, day;
     Uri mUri;
-    String imgPath;
+    String mTitle, imgPath;
     String imgFileLocation = "";
 
     @Override
@@ -90,7 +90,8 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
                 Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
-                story.setTitle(etStoryTitle.getText().toString());
+                mTitle = etStoryTitle.getText().toString();
+                story.setTitle(mTitle);
                 story.setYear(year);
                 story.setMonth(month);
                 story.setDay(day);
@@ -101,6 +102,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 //                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
 //                startActivity(intent);
 //                uploadFile(); //서버에 이미지 업로드
+
                 finish();
             }
         });
@@ -215,6 +217,30 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
         else {
             return false;
         }
+    }
+
+    public void saveDataInServer() {
+
+    }
+
+    public void saveStoryData() {
+        final Call<ResponseSaveStory> res = Net.getInstance().getApi().setStoryData(mTitle);
+        res.enqueue(new Callback<ResponseSaveStory>() {
+            @Override
+            public void onResponse(Call<ResponseSaveStory> call, Response<ResponseSaveStory> response) {
+                if (response.isSuccessful()) {
+                    ResponseSaveStory responseGet = response.body();
+                    if (responseGet.setStoryData() == true ) {
+                        Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } else Toast.makeText(Story_Create.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseSaveStory> call, Throwable t) {
+                Toast.makeText(Story_Create.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

@@ -44,6 +44,9 @@ public interface API {
     @GET("printMarker.php")
     Call<List<ResponseMarker>> getMarker(@Query("coupleID") String id, @Query("year") int year, @Query("month") int month, @Query("day") int day);
 
+    @GET("save_storyData.php")
+    Call<ResponseSaveStory> setStoryData(@Query("storyTitle") String mTitle);
+
     @Multipart
     @POST("upload_img.php")
     Call<ServerResponse> upload(
