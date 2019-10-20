@@ -106,6 +106,7 @@
             android:background="#f2ffe8"
             android:orientation="vertical"
             android:padding="20dp"
+            android:gravity="center"
             app:layout_constraintTop_toBottomOf="@+id/back"
            >
 
@@ -113,7 +114,7 @@
                 android:id="@+id/profile"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/basic" />
+                />
 
             <TextView
                 android:id="@+id/nickname"
@@ -121,9 +122,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/netmarble_m"
-                android:text="닉네임~~~~~~~~~~"
+                android:text="닉네임"
                 android:textColor="#8c8c8c"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                />
 
             <TextView
                 android:id="@+id/email"
@@ -131,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/netmarble_m"
-                android:text="이메일~~~~~~~~~~~~~~~~~~~~"
+                android:text="이메일@naver.com"
                 android:textColor="#8c8c8c"
                 android:textSize="15sp" />
         </LinearLayout>

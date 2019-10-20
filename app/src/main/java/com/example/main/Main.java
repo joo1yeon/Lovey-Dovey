@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
@@ -53,8 +54,8 @@ public class Main extends Fragment {
     private static int REQUEST_CODE = 1;
     private Context context;
 
+    ConstraintLayout photo_change;
     ImageView profile_Btn1, profile_Btn2, storage, close, profile_img;
-
     TextView  date, textView;
     View profileLayout1, profileLayout2;
     ArrayList<String> todo = new ArrayList<String>();
@@ -69,7 +70,7 @@ public class Main extends Fragment {
     SQLiteDatabase sqlDB;
     Cursor cursor;
 
-    Uri uri_;
+    static Uri uri_=Uri.parse("android.resource://com.example.main/drawable/basic");
 
     //화면 보여주기 전에 todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
     @Override
@@ -93,7 +94,7 @@ public class Main extends Fragment {
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main,container,false);
+        final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main,container,false);
 
 
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
@@ -170,15 +171,25 @@ public class Main extends Fragment {
                 birthday = profileLayout1.findViewById(R.id.et_birthday);
                 name = profileLayout1.findViewById(R.id.name);
 
+                photo_change = profileLayout1.findViewById(R.id.photo_change);
+
                 //입력 유형 이메일로 설정
                 email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
                 //저장된 값 보여주기
+                Glide.with(context)
+                        .load(uri_)
+                        .centerCrop()
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(context))
+                        .override(70, 70)
+                        .into(profile_img);
+
                 email.setText(em1);
                 birthday.setText(bth1);
                 name.setText(nm1);
 
-                profile_img.setOnClickListener(new View.OnClickListener() {
+                photo_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();

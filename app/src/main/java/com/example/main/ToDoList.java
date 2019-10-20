@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ public class ToDoList extends AppCompatActivity {
     TextView change, delete;
     ListView listView1, listView2;                                      //선택한거, 안한거
     ToDoList_ChoiceListAdapter adapter1, adapter2;                     //선택한거, 안한거
+    SlidingDrawer slidingDrawer;
 
     MyDBHelper todoDB;
     SQLiteDatabase sqlDB;
@@ -36,6 +38,8 @@ public class ToDoList extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
+
+
 
 
         todoDB = new MyDBHelper(this);          //헬퍼클래스 객체 생성
@@ -51,6 +55,10 @@ public class ToDoList extends AppCompatActivity {
             }
         });
 
+
+        //슬라이드 드로어 인플레이트
+        slidingDrawer = findViewById(R.id.slidingdrawer);
+
         //리스트뷰 인플레이트
         listView1 = findViewById(R.id.list);
         listView2 = findViewById(R.id.checked_list);
@@ -63,7 +71,21 @@ public class ToDoList extends AppCompatActivity {
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
 
+        //슬라이딩 드로우가 닫혔을 때
+        slidingDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
+            @Override
+            public void onDrawerOpened() {
 
+            }
+        });
+
+        //슬라이딩 드로우가 열렸을 때
+        slidingDrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener() {
+            @Override
+            public void onDrawerClosed() {
+
+            }
+        });
 
         //체크되지 않은 투두 아이템 추가
         Item_show(adapter1, strCoupleID,false);
@@ -326,9 +348,13 @@ public class ToDoList extends AppCompatActivity {
                 //Check박스가 adapter1에서는 체크 X , adapter2 에서는 체크 O
                 if(adapter == adapter1)
                     listView1.setItemChecked(i,false);
-                else if(adapter == adapter2)
+                else if(adapter == adapter2) {
                     listView2.setItemChecked(i, true);
                 }
+
+                }
+
+
 
             cursor.close();
             sqlDB.close();

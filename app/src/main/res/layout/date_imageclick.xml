@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="12">
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2" />
-
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="0dp"
+            android:id="@+id/plaveN"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_weight="8"
+            android:layout_marginLeft="150dp"
             android:fontFamily="@font/netmarble_m"
-            android:gravity="center"
-            android:text="석촌호수"
             android:textSize="35dp" />
 
         <ImageView
             android:id="@+id/favorite"
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_weight="2"
-            android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_star_border_black_24dp" />
+            android:layout_marginLeft="75dp"
+            android:layout_gravity="center"
+            android:src="@drawable/star_click" />
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/place"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/dateimage1" />
+        android:scaleType="fitXY"/>
 
     <LinearLayout
         android:layout_width="match_parent"
