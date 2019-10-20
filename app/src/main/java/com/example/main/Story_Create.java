@@ -102,7 +102,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 //                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
 //                startActivity(intent);
 //                uploadFile(); //서버에 이미지 업로드
-
+                saveStoryData();
                 finish();
             }
         });
