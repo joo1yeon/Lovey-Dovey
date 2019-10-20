@@ -13,7 +13,7 @@
         android:fontFamily="@font/netmarble_b"
         android:gravity="center_horizontal"
         android:text="회원가입"
-        android:textColor="#8c8c8c"
+        android:textColor="#6c8e5e"
         android:textSize="35dp"
         app:layout_constraintTop_toTopOf="parent"
         android:padding="10dp"/>
@@ -218,10 +218,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@id/btnDate"
         app:layout_constraintBottom_toBottomOf="@id/btnDate"
-        android:text="(진지)날짜가 표시될 자리입니다."
         app:layout_constraintTop_toTopOf="@id/btnDate"
         android:layout_marginRight="5dp"
         android:id="@+id/txtDate"
+        app:layout_constraintRight_toRightOf="parent"
         />
 
     <TextView
@@ -282,6 +282,8 @@
     android:fontFamily="@font/netmarble_m"
     android:background="#70B8D9C0"
     android:textColor="#6c8e5e"
+    android:layout_marginBottom="20dp"
+    android:id="@+id/btnJoin"
     />
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"

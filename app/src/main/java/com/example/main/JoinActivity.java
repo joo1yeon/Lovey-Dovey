@@ -32,10 +32,10 @@ public class JoinActivity extends AppCompatActivity {
     int month = cal.get(Calendar.MONTH);
     int day = cal.get(Calendar.DATE);
     EditText edtName, edtID, edtPW, edtPWCheck, edtNickName, edtEmail, edtDomain;
-    Button btnCheck;
+    Button btnCheck,btnJoin;
     TextView txtDate;
     String name, id, pw, nickname, date, email, gender;
-    boolean login = false;
+    boolean bool_id=false,bool_pw=false;
     RadioGroup rgGender;
     RadioButton rgMale, rgFemale;
     ImageView imgError;
@@ -60,6 +60,7 @@ public class JoinActivity extends AppCompatActivity {
         rgFemale = findViewById(R.id.rgFemale);
         imgError = findViewById(R.id.imgError);
         name = edtName.getText().toString();
+        btnJoin=findViewById(R.id.btnJoin);
 
 
         edtPWCheck.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -69,9 +70,10 @@ public class JoinActivity extends AppCompatActivity {
 
                 if (!hasFocus) {
                     if (pw == edtPWCheck.getText().toString()) {
-                        login = true;
+                        bool_pw = true;
                         imgError.setVisibility(View.INVISIBLE);
                     } else {
+                        bool_pw=false;
                         edtPWCheck.setHint("비밀번호를 입력해주세요");
                         edtPWCheck.setHintTextColor(Color.rgb(204, 61, 61));
                         imgError.setVisibility(View.VISIBLE);
@@ -88,22 +90,15 @@ public class JoinActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 pw = edtPW.getText().toString();
-                boolean pwcheck=false;
                 if (pw .equals( edtPWCheck.getText().toString())) {
-                    login = true;
-                    pwcheck=true;
-                    Log.d("PPP", "비밀번호1 : " + pw);
-                    Log.d("PPP", "비밀번호 확인1 : " + edtPWCheck.getText().toString());
+                    bool_pw = true;
 
                 } else {
                     edtPWCheck.setHint("비밀번호를 입력해주세요");
                     edtPWCheck.setHintTextColor(Color.rgb(204, 61, 61));
-                    pwcheck=false;
-                    Log.d("PPP", "비밀번호 2: " + pw);
-                    Log.d("PPP", "비밀번호 확인 2: " + edtPWCheck.getText().toString());
-
+                    bool_pw=false;
                 }
-                if(pwcheck)imgError.setVisibility(View.INVISIBLE);
+                if(bool_pw)imgError.setVisibility(View.INVISIBLE);
                 else imgError.setVisibility(View.VISIBLE);
             }
 
@@ -111,9 +106,10 @@ public class JoinActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 pw = edtPW.getText().toString();
                 if (pw == edtPWCheck.getText().toString()) {
-                    login = true;
+                    bool_pw = true;
                     imgError.setVisibility(View.INVISIBLE);
                 } else {
+                    bool_pw=false;
                     edtPWCheck.setHint("비밀번호를 입력해주세요");
                     edtPWCheck.setHintTextColor(Color.rgb(204, 61, 61));
                     imgError.setVisibility(View.VISIBLE);
@@ -147,7 +143,7 @@ public class JoinActivity extends AppCompatActivity {
                             if (responseGet.getRepeat() == false) {
                                 Toast.makeText(JoinActivity.this, "중복된 아이디입니다.", Toast.LENGTH_LONG).show();
                             } else {
-                                login = true;
+                                bool_id = true;
                                 Toast.makeText(JoinActivity.this, "사용가능한 아이디입니다.", Toast.LENGTH_LONG).show();
                             }
                         } else
@@ -172,10 +168,19 @@ public class JoinActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Toast.makeText(JoinActivity.this, year + "/" + (month + 1) + "/" + dayOfMonth, Toast.LENGTH_SHORT).show();
                         cal.set(year, month, dayOfMonth);
-                        txtDate.setText(year + "/" + (month + 1) + "/" + dayOfMonth);
+                        txtDate.setText(year + "/" + (month + 1) + "/" + dayOfMonth+" ~ ing♥");
                     }
                 }, year, month, day);
                 dateDialog.show();
+            }
+        });
+
+        btnJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(bool_id&&bool_pw&&!edtName.equals(null)&&!edtEmail.equals(null)&&!edtDomain.equals(null)){
+
+                }
             }
         });
     }
