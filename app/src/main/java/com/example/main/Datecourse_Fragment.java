@@ -24,7 +24,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
     TextView placeN, dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
 
-    ImageView favorite, place;
+    ImageView favorite,place;
     int i = 0;
 
     @Override
@@ -32,6 +32,8 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_imageclick);
 
+        placeN=findViewById(R.id.plaveN);
+        place=findViewById(R.id.place);
         placeN = findViewById(R.id.placeName);
 //        place=findViewById(R.id.place);
         dateInfo = findViewById(R.id.dateInfo);
@@ -44,13 +46,17 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         date_info = new Date_Info();
 
         Intent intent = getIntent();
-        String PlaceName = intent.getStringExtra("PlaceN");
+        String PlaceName=intent.getStringExtra("PlaceN");
 
 /*
         Intent intent2=getIntent();
         String PlaceUrl=intent2.getParcelableExtra("PlaceUrl");
 */
+
+        placeN.setText(PlaceName);
+
 //        placeN.setText(PlaceName);
+
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
