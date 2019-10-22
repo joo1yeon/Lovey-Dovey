@@ -18,7 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Date_Review extends Fragment {
 
@@ -29,7 +33,7 @@ public class Date_Review extends Fragment {
     EditText addText;
     RatingBar _ratingbar;
     ImageView add;
-    ListView listView;
+     ListView listView;
     public DateReview_listViewAdapter adapter;
     public static Date_Review context;
 
@@ -48,6 +52,11 @@ public class Date_Review extends Fragment {
 
         review = layout.findViewById(R.id.review);
         add = layout.findViewById(R.id.add);
+
+        long now = System.currentTimeMillis();
+        Date ndate=new Date(now);
+        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
+        final String Date=mFormat.format(ndate);
 
         //전체리뷰 보기 클릭시 발생하는 이벤트 리스러
         review.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +96,7 @@ public class Date_Review extends Fragment {
                     public void onClick(View v) {
                         addText = digView.findViewById(R.id.addText);
                         String text = addText.getText().toString();
-                        adapter.addItem(_ratingbar.getRating(),text);
+                        adapter.addItem(_ratingbar.getRating(),text,Date);
                         Toast.makeText(getContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show();
                         _dig.dismiss();
                     }

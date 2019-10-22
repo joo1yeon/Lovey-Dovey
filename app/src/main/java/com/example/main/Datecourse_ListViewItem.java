@@ -4,10 +4,14 @@ import android.graphics.drawable.Drawable;
 import android.widget.RatingBar;
 
 public class Datecourse_ListViewItem {
-    public Drawable image;
+    public String image;
     public String title;
 
-    public void setImage(Drawable image) {
+    public Datecourse_ListViewItem(String image, String title){
+        this.image=image;
+        this.title=title;
+    }
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -15,7 +19,7 @@ public class Datecourse_ListViewItem {
         this.title = title;
     }
 
-    public Drawable getImage() {
+    public String getImage() {
         return this.image;
     }
 

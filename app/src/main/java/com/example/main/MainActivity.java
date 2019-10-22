@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import retrofit2.Call;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase sqlDB;
     ViewGroup info, notice, background, bookmark;
     DrawerLayout drawerLayout;
-    String id;
+    String id,nickname,email;
     ViewPager viewPager;
     LinearLayout linearLayout,logout;
     ImageButton btnOverflow, btnBack;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent1=getIntent();
         id=intent1.getStringExtra("ID");
+        nickname=intent1.getStringExtra("NICK");
+        email=intent1.getStringExtra("EMAIL");
 
         setContentView(R.layout.activity_main);
         sqlDB=dbHelper.getWritableDatabase();
@@ -110,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
                         .bitmapTransform(new CropCircleTransformation(getApplicationContext()))
                         .override(70, 70)
                         .into(profile);
+                TextView tvNick = drawerLayout.findViewById(R.id.nickname);
+                TextView tvEmail = drawerLayout.findViewById(R.id.email);
+                tvNick.setText(nickname);
+                tvEmail.setText(email);
             }
         });
 

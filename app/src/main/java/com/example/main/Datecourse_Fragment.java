@@ -1,6 +1,8 @@
 package com.example.main;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,16 +11,20 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import retrofit2.http.HEAD;
+
 public class Datecourse_Fragment extends AppCompatActivity implements View.OnClickListener {
 
-    TextView dateInfo, dateReview, infoLine, reviewLine;
+    TextView placeN, dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
-    ImageView favorite;
+
+    ImageView favorite,place;
     int i = 0;
 
     @Override
@@ -26,12 +32,30 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_imageclick);
 
+        placeN=findViewById(R.id.plaveN);
+        place=findViewById(R.id.place);
+        placeN = findViewById(R.id.placeName);
+//        place=findViewById(R.id.place);
         dateInfo = findViewById(R.id.dateInfo);
         dateReview = findViewById(R.id.dateReview);
         infoLine = findViewById(R.id.infoLine);
         reviewLine = findViewById(R.id.reviewLine);
+        date_info = new Date_Info();
+
         favorite = findViewById(R.id.favorite);
         date_info = new Date_Info();
+
+        Intent intent = getIntent();
+        String PlaceName=intent.getStringExtra("PlaceN");
+
+/*
+        Intent intent2=getIntent();
+        String PlaceUrl=intent2.getParcelableExtra("PlaceUrl");
+*/
+
+        placeN.setText(PlaceName);
+
+//        placeN.setText(PlaceName);
 
 
         favorite.setOnClickListener(new View.OnClickListener() {
@@ -39,14 +63,16 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 i++;
                 if (i % 2 != 0) {
-                    favorite.setBackgroundResource(R.drawable.ic_star_black_24dp);
+                    favorite.setSelected(true);
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 } else {
-                    favorite.setBackgroundResource(R.drawable.ic_star_border_black_24dp);
+                    favorite.setSelected(false);
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        date_info = new Date_Info();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()

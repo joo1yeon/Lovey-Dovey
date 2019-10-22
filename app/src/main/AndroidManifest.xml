@@ -69,7 +69,6 @@
         <activity android:name=".DateImageClick"/>
         <activity android:name=".Datecourse_Search"/>
         <activity android:name=".LocSearch"/>
-        <activity android:name=".Gift_Main"/>
         <activity android:name=".Story_EditContents" />
         <activity android:name=".Story_Contents" />
         <activity android:name=".ToDoList" />
