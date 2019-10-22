@@ -114,6 +114,7 @@ public class LocSearch extends Activity {
                 List<Address> addressList = null;
                 try {
                     addressList = geocoder.getFromLocationName(str, 1);
+                    addressList = geocoder.getFromLocationName(str, 20);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -145,6 +146,8 @@ public class LocSearch extends Activity {
                     }
                 }
 
+//                Intent intent = new Intent(LocSearch.this, LocResult.class);
+//                startActivity(intent);
 //                getAddress(edtLocation.getText().toString());
             }
         });
