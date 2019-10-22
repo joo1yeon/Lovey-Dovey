@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.content.Intent;
@@ -19,8 +20,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 
+@SuppressLint("ValidFragment")
 public class Datecourse extends Fragment implements ViewPager.PageTransformer {
-    public Datecourse() {
+    String id;
+    public Datecourse(String _id) {
+        id=_id;
     }
 
     @Override

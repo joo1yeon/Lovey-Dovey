@@ -70,9 +70,13 @@ public class LoginActivity extends AppCompatActivity {
                             if(response.isSuccessful()){
                                 ResponseLogin responseGet = response.body();
                                 if(responseGet.getLogin()){
+                                    String nickname=responseGet.getNickname();
+                                    String email=responseGet.getEmail();
                                     Toast.makeText(LoginActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra("ID", id);
+                                    intent.putExtra("NICK",nickname);
+                                    intent.putExtra("EMAIL",email);
                                     startActivity(intent);
                                     finish();
                                 }else Toast.makeText(LoginActivity.this,"일치하는 아이디 또는 비밀번호가 없습니다.",Toast.LENGTH_SHORT).show();

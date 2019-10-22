@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,9 +12,9 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical"
 
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintRight_toRightOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -50,59 +51,74 @@
 
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:choiceMode="multipleChoice"
 
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_content"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_content"></ListView>
+        app:layout_constraintLeft_toLeftOf="parent"
+        >
+
+    </ListView>
 
     <ImageView
-        android:id="@+id/btnAdd"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="60dp"
-        android:src="@drawable/pen"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+    android:id="@+id/btnAdd"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="15dp"
+    android:src="@drawable/pen"
+
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintRight_toRightOf="parent"/>
+
+
 
     <SlidingDrawer
         android:id="@+id/slidingdrawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:content="@id/contents"
+        android:layout_height="wrap_content"
         android:handle="@id/handle"
+        android:content="@id/contents"
         android:orientation="vertical"
-        android:topOffset="45dp">
+        android:topOffset="45dp"
 
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        >
         <ImageView
             android:id="@+id/handle"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:src="@drawable/handle" />
+            android:src="@drawable/handle"
+            />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/contents"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#B8D9C0"
             android:layout_margin="20dp"
-            android:background="#B8D9C0">
+            >
 
             <ListView
                 android:id="@+id/checked_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="#FFFFFF"
                 android:choiceMode="multipleChoice"
+                android:background="#FFFFFF"
+                android:layout_margin="15dp"
 
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ListView>
+                app:layout_constraintTop_toTopOf="parent"
+                ></ListView>
 
 
         </android.support.constraint.ConstraintLayout>

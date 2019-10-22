@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ public class ToDoList extends AppCompatActivity {
     TextView change, delete;
     ListView listView1, listView2;                                      //선택한거, 안한거
     ToDoList_ChoiceListAdapter adapter1, adapter2;                     //선택한거, 안한거
+    SlidingDrawer slidingDrawer;
 
     MyDBHelper todoDB;
     SQLiteDatabase sqlDB;
@@ -36,6 +38,8 @@ public class ToDoList extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
+
+
 
 
         todoDB = new MyDBHelper(this);          //헬퍼클래스 객체 생성
@@ -51,6 +55,10 @@ public class ToDoList extends AppCompatActivity {
             }
         });
 
+
+        //슬라이드 드로어 인플레이트
+        slidingDrawer = findViewById(R.id.slidingdrawer);
+
         //리스트뷰 인플레이트
         listView1 = findViewById(R.id.list);
         listView2 = findViewById(R.id.checked_list);
@@ -63,7 +71,21 @@ public class ToDoList extends AppCompatActivity {
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
 
+        //슬라이딩 드로우가 닫혔을 때
+        slidingDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
+            @Override
+            public void onDrawerOpened() {
 
+            }
+        });
+
+        //슬라이딩 드로우가 열렸을 때
+        slidingDrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener() {
+            @Override
+            public void onDrawerClosed() {
+
+            }
+        });
 
         //체크되지 않은 투두 아이템 추가
         Item_show(adapter1, strCoupleID,false);
@@ -308,47 +330,51 @@ public class ToDoList extends AppCompatActivity {
 
 
 
-    //To-Do-List 조회
-    public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
-        sqlDB = todoDB.getReadableDatabase();
+       //To-Do-List 조회
+       public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
+           sqlDB = todoDB.getReadableDatabase();
 
-        cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+check+"';",null);
-        int count = cursor.getCount();
-
-
-        for(int i=0;i<count;i++) {
-            cursor.moveToNext();                                    //커서 넘기기
-
-            strDate = cursor.getString(2);
-            strContent = cursor.getString(3);
-            adapter.addItem(strContent, strDate);
-
-            //Check박스가 adapter1에서는 체크 X , adapter2 에서는 체크 O
-            if(adapter == adapter1)
-                listView1.setItemChecked(i,false);
-            else if(adapter == adapter2)
-                listView2.setItemChecked(i, true);
-        }
-
-        cursor.close();
-        sqlDB.close();
-    }
-
-    //To-Do-List 추가
-    public void Item_add(ToDoList_ChoiceListAdapter adapter, String id, String content){
-        try{
-            sqlDB = todoDB.getWritableDatabase();
-            cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"';",null);
+            cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+check+"';",null);
             int count = cursor.getCount();
-            sqlDB.execSQL("INSERT INTO to_do_list VALUES (" + ++count + ",'" + id + "','','" + content + "','" + false + "');");
-        }catch (Exception e){ }
-
-        cursor.close();
-        sqlDB.close();
-    }
 
 
-    //To-Do-List 수정
+            for(int i=0;i<count;i++) {
+                cursor.moveToNext();                                    //커서 넘기기
+
+                strDate = cursor.getString(2);
+                strContent = cursor.getString(3);
+                adapter.addItem(strContent, strDate);
+
+                //Check박스가 adapter1에서는 체크 X , adapter2 에서는 체크 O
+                if(adapter == adapter1)
+                    listView1.setItemChecked(i,false);
+                else if(adapter == adapter2) {
+                    listView2.setItemChecked(i, true);
+                }
+
+                }
+
+
+
+            cursor.close();
+            sqlDB.close();
+       }
+
+        //To-Do-List 추가
+       public void Item_add(ToDoList_ChoiceListAdapter adapter, String id, String content){
+           try{
+               sqlDB = todoDB.getWritableDatabase();
+               cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"';",null);
+               int count = cursor.getCount();
+               sqlDB.execSQL("INSERT INTO to_do_list VALUES (" + ++count + ",'" + id + "','','" + content + "','" + false + "');");
+           }catch (Exception e){ }
+
+           cursor.close();
+           sqlDB.close();
+       }
+
+
+       //To-Do-List 수정
     public void Item_modify(ToDoList_ChoiceListAdapter adapter,String id, String content, String content_){
         sqlDB = todoDB.getWritableDatabase();
         sqlDB.execSQL("update to_do_list set content='" + content + "' where couple_id='" + id + "' and content='"+ content_ +"';");
@@ -372,12 +398,12 @@ public class ToDoList extends AppCompatActivity {
 
     }
 
-    //To-Do-List 삭제
-    public void Item_Delete(ToDoList_ChoiceListAdapter adapter,String id, String content){
-        sqlDB = todoDB.getWritableDatabase();
-        sqlDB.execSQL("DELETE FROM to_do_list WHERE content='" + content + "' AND couple_id = '"+id+"';");
-        adapter.notifyDataSetChanged();
-        sqlDB.close();
-    }
+       //To-Do-List 삭제
+       public void Item_Delete(ToDoList_ChoiceListAdapter adapter,String id, String content){
+           sqlDB = todoDB.getWritableDatabase();
+           sqlDB.execSQL("DELETE FROM to_do_list WHERE content='" + content + "' AND couple_id = '"+id+"';");
+           adapter.notifyDataSetChanged();
+           sqlDB.close();
+       }
 
 }
