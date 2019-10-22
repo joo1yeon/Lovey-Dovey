@@ -39,7 +39,7 @@ public class LocSearch extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
 
-        btnHome=findViewById(R.id.btnHome);
+        btnHome = findViewById(R.id.btnHome);
         geocoder = new Geocoder(this);
         edtLocation = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
@@ -59,7 +59,7 @@ public class LocSearch extends Activity {
         if (cursor.getCount() > 0) {
             Cursor cursor1 = sqlDB.rawQuery("select * from location ;", null);
             while (cursor1.moveToNext()) {
-                locList.add(new FootContentList(cursor1.getInt(0),cursor1.getString(1)));
+                locList.add(new FootContentList(cursor1.getInt(0), cursor1.getString(1)));
             }
             footContentAdapter.notifyDataSetChanged();
             cursor1.close();
@@ -69,7 +69,7 @@ public class LocSearch extends Activity {
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -103,55 +103,56 @@ public class LocSearch extends Activity {
         });
 
 
-
         //TODO 검색버튼을 누르면 ArrayList에 검색 내역 추가
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Log.i("test","1번확인");
-
-                String str = edtLocation.getText().toString();
-                List<Address> addressList = null;
-                try {
-                    addressList = geocoder.getFromLocationName(str, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-//                Log.i("test","3번확인");
-                if(addressList!=null){
-                    if(addressList.size()==0){
-                        Toast.makeText(getApplicationContext(),"해당하는 주소 정보가 없습니다.",Toast.LENGTH_SHORT).show();
-                    }else{
-                        if (edtLocation.getText().toString() != null) {
-                            locList.clear();
-//                    Log.i("test","2번확인");
-                            sqlDB.execSQL("insert into location values (null,'" + edtLocation.getText().toString() + "');");
-                            sqlDB.close();
-                        }
-
-                        String[] splitStr = addressList.get(0).toString().split(",");
-                        String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2);
-                        double latitude = addressList.get(0).getLatitude();
-                        double longitude = addressList.get(0).getLongitude();
-                        Intent outIntent = new Intent(getApplicationContext(), FootPrint.class);
-                        outIntent.putExtra("name", edtLocation.getText().toString());
-                        outIntent.putExtra("latitude", latitude);
-                        outIntent.putExtra("longitude", longitude);
-                        outIntent.putExtra("address", address);
-
-                        setResult(RESULT_OK, outIntent);
-                        finish();
-
-                    }
-                }
-
+////                Log.i("test","1번확인");
+//
+//                String str = edtLocation.getText().toString();
+//                List<Address> addressList = null;
+//                try {
+//                    addressList = geocoder.getFromLocationName(str, 20);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+////                Log.i("test","3번확인");
+//                if(addressList!=null){
+//                    if(addressList.size()==0){
+//                        Toast.makeText(getApplicationContext(),"해당하는 주소 정보가 없습니다.",Toast.LENGTH_SHORT).show();
+//                    }else{
+//                        if (edtLocation.getText().toString() != null) {
+//                            locList.clear();
+////                    Log.i("test","2번확인");
+//                            sqlDB.execSQL("insert into location values (null,'" + edtLocation.getText().toString() + "');");
+//                            sqlDB.close();
+//                        }
+//
+//                        String[] splitStr = addressList.get(0).toString().split(",");
+//                        String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2);
+//                        double latitude = addressList.get(0).getLatitude();
+//                        double longitude = addressList.get(0).getLongitude();
+//                        Intent outIntent = new Intent(getApplicationContext(), FootPrint.class);
+//                        outIntent.putExtra("name", edtLocation.getText().toString());
+//                        outIntent.putExtra("latitude", latitude);
+//                        outIntent.putExtra("longitude", longitude);
+//                        outIntent.putExtra("address", address);
+//
+//                        setResult(RESULT_OK, outIntent);
+//                        finish();
+//
+//                    }
+//                }
+                Intent intent = new Intent(LocSearch.this, LocResult.class);
+                startActivity(intent);
 //                getAddress(edtLocation.getText().toString());
             }
         });
 
     }
+
     @Override
-    public void onBackPressed () {
+    public void onBackPressed() {
         Intent outIntent = new Intent(getApplicationContext(), FootPrint.class);
         setResult(RESULT_CANCELED, outIntent);
         finish();
