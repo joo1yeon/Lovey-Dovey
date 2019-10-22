@@ -144,7 +144,9 @@ public class LocSearch extends Activity {
 //                    }
 //                }
                 Intent intent = new Intent(LocSearch.this, LocResult.class);
+                intent.putExtra("Location",edtLocation.getText().toString());
                 startActivity(intent);
+                finish();
 //                getAddress(edtLocation.getText().toString());
             }
         });

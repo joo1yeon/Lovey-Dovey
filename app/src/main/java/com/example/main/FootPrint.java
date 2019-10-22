@@ -88,8 +88,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday;
     private BottomSheetDialog modalBottomSheet;
 
-    public FootPrint(String _id) {
-        id = _id;
+    public FootPrint() {
+
     }
 
     @Override
@@ -98,8 +98,32 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     }
 
     @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,  Bundle savedInstanceState) {
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
+
+        if(getArguments()!=null){
+            Toast.makeText(getContext(),"값있음",Toast.LENGTH_SHORT).show();
+
+            Log.d("LLL",getArguments().toString());
+
+            String name=getArguments().getString("name");
+            String address=getArguments().getString("address");
+            double latitude = getArguments().getDouble("latitude");
+            double longitude=getArguments().getDouble("longitude");
+            Log.d("LLL",name);
+            Log.d("LLL",address);
+            Log.d("LLL",latitude+"");
+            Log.d("LLL",longitude+"");
+            LatLng point = new LatLng(latitude, longitude);
+            markerOptions.title(name);
+            markerOptions.snippet(address);
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
+            markerOptions.position(point);
+            gMap.addMarker(markerOptions);
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+        }else{
+            Toast.makeText(getContext(),"null값",Toast.LENGTH_SHORT).show();
+        }
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
         Log.d("date", year + "" + month + 1 + "" + day);
@@ -315,14 +339,14 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             Double latitude = data.getDoubleExtra("latitude", 0);
             Double longitude = data.getDoubleExtra("longitude", 0);
             String address = data.getStringExtra("address");
-
-            LatLng point = new LatLng(latitude, longitude);
+            LatLng point= new LatLng(latitude,longitude);
             markerOptions.title(name);
             markerOptions.snippet(address);
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
             markerOptions.position(point);
             gMap.addMarker(markerOptions);
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+
         }
     }
 

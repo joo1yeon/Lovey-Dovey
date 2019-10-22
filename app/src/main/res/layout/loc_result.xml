@@ -34,5 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/txtSearch"
-        android:layout_margin="10dp"></ListView>
+        android:layout_margin="10dp"
+        android:id="@+id/locList"></ListView>
 </android.support.constraint.ConstraintLayout>

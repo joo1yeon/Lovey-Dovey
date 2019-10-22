@@ -7,20 +7,30 @@
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="장소명"
+    android:text="장소주소"
     android:textSize="18sp"
     android:fontFamily="@font/netmarble_b"
     android:textColor="#000000"
-    android:id="@+id/LocName"
+    android:id="@+id/LocAddress"
     />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="장소주소"
+        android:text="위도"
         android:textSize="15sp"
         android:fontFamily="@font/netmarble_m"
         android:textColor="#000000"
-        android:id="@+id/LocAddress"
+        android:id="@+id/Latitude"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="경도"
+        android:textSize="15sp"
+        android:fontFamily="@font/netmarble_m"
+        android:textColor="#000000"
+        android:id="@+id/Longitude"
         />
 
 </LinearLayout>

@@ -35,7 +35,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     public FloatingActionButton searchBtn;
     DbOpenHelper mDbOpenHelper;
 
-    public StoryListFragment(String _id){id=_id;}
+    public StoryListFragment(){}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

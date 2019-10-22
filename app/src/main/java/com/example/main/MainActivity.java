@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase sqlDB;
     ViewGroup info, notice, background, bookmark;
     DrawerLayout drawerLayout;
-    String id,nickname,email;
+    String id;
+    String nickname,email;
     ViewPager viewPager;
     LinearLayout linearLayout,logout;
     ImageButton btnOverflow, btnBack;
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        id=data.getStringExtra("ID");
+//        id=data.getStringExtra("ID");
     }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
@@ -182,26 +183,26 @@ public class MainActivity extends AppCompatActivity {
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
-            fragments.add(new Main(id));
-            fragments.add(new Datecourse(id));
-            fragments.add(new FootPrint(id));
-            fragments.add(new StoryListFragment(id)); //Ablum 대신 StoryListFragment로 변경
+            fragments.add(new Main());
+            fragments.add(new Datecourse());
+            fragments.add(new FootPrint());
+            fragments.add(new StoryListFragment()); //Ablum 대신 StoryListFragment로 변경
         }
 
         @Override
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
-                    Main mainFragment = new Main(id);
+                    Main mainFragment = new Main();
                     return mainFragment;
                 case 1:
-                    Datecourse dateFragment = new Datecourse(id);
+                    Datecourse dateFragment = new Datecourse();
                     return dateFragment;
                 case 2:
-                    FootPrint footFragment = new FootPrint(id);
+                    FootPrint footFragment = new FootPrint();
                     return footFragment;
                 case 3:
-                    StoryListFragment albumFragment = new StoryListFragment(id); // 여기서 Album() 말고 StoryListFragment() 로 변경!
+                    StoryListFragment albumFragment = new StoryListFragment(); // 여기서 Album() 말고 StoryListFragment() 로 변경!
                     return albumFragment;
                 default:
                     return null;

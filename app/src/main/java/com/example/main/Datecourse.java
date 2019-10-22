@@ -23,8 +23,8 @@ import com.bumptech.glide.Glide;
 @SuppressLint("ValidFragment")
 public class Datecourse extends Fragment implements ViewPager.PageTransformer {
     String id;
-    public Datecourse(String _id) {
-        id=_id;
+    public Datecourse() {
+
     }
 
     @Override
