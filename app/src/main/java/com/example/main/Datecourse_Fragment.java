@@ -47,9 +47,10 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
 
         Intent intent = getIntent();
         String PlaceName=intent.getStringExtra("PlaceN");
+        String PlaceUrl=intent.getStringExtra("PlaceUrl");
 
         placeN.setText(PlaceName);
-        //Glide.with(this).load(Pla)
+        Glide.with(this).load(PlaceUrl).into(place);
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
