@@ -2,6 +2,7 @@ package com.example.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,34 +30,81 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity<insertDB> extends AppCompatActivity implements InsertDB {
     MyDBHelper dbHelper = new MyDBHelper(this);
     SQLiteDatabase sqlDB;
     ViewGroup info, notice, background, bookmark;
     DrawerLayout drawerLayout;
     String id;
-    String nickname,email;
+    String nickname, email;
     ViewPager viewPager;
-    LinearLayout linearLayout,logout;
+    LinearLayout linearLayout, logout;
     ImageButton btnOverflow, btnBack;
     Intent intent;
     Toast toast;
     ImageView profile;
 
 
+    @Override
+    public void insert(String name, String address, double latitude, double longitude, int year,int month,int date) {
+        sqlDB = dbHelper.getWritableDatabase();
+        sqlDB.execSQL("insert into marker values('" + address + "','" + address + "'," + latitude + "," + longitude + "," + year + ","+month+","+date+");");
+        sqlDB.close();
+    }
+
+    @Override
+    public void delete(double latitude, double longitude, int year,int month,int date) {
+        sqlDB = dbHelper.getWritableDatabase();
+        sqlDB.execSQL("delete from marker where latitude=" + latitude + " and longitude=" + longitude + " and year =" + year + " and month="+month+" and date ="+date+";");
+        sqlDB.close();
+    }
+
+    @Override
+    public void save(int _year,int _month,int _date) {
+        sqlDB=dbHelper.getReadableDatabase();
+        Cursor cursor = sqlDB.rawQuery("select * from marker ;",null);
+        while(cursor.moveToNext()){
+            String name=cursor.getString(0);
+            String address=cursor.getString(1);
+            double latitude=cursor.getDouble(2);
+            double longitude=cursor.getDouble(3);
+            int year=cursor.getInt(4);
+            int month=cursor.getInt(5);
+            int date=cursor.getInt(6);
+            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name,address,latitude,longitude,year,month,date);
+            res.enqueue(new Callback<ResAddMarker>() {
+                @Override
+                public void onResponse(Call<ResAddMarker> call, Response<ResAddMarker> response) {
+                    if(response.isSuccessful()){
+                        ResAddMarker responseGet = response.body();
+
+                    }else Toast.makeText(MainActivity.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<ResAddMarker> call, Throwable t) {
+                    Toast.makeText(MainActivity.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+    }
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent1=getIntent();
-        id=intent1.getStringExtra("ID");
-        nickname=intent1.getStringExtra("NICK");
-        email=intent1.getStringExtra("EMAIL");
+        Intent intent1 = getIntent();
+        id = intent1.getStringExtra("ID");
+        nickname = intent1.getStringExtra("NICK");
+        email = intent1.getStringExtra("EMAIL");
 
         setContentView(R.layout.activity_main);
-        sqlDB=dbHelper.getWritableDatabase();
+        sqlDB = dbHelper.getWritableDatabase();
 //        Cursor cursor = sqlDB.rawQuery("select * from info;",null);
 //        if(cursor.getCount()!=0){
 //            cursor.moveToFirst();
@@ -76,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = findViewById(R.id.tab);
-        logout=findViewById(R.id.btnLogout);
+        logout = findViewById(R.id.btnLogout);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -162,13 +210,15 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqlDB.execSQL("delete from info where id='"+id+"';");
-                Toast.makeText(MainActivity.this,id+"로그아웃",Toast.LENGTH_SHORT).show();
-                Intent logout = new Intent(MainActivity.this,LoginActivity.class);
+                sqlDB.execSQL("delete from info where id='" + id + "';");
+                Toast.makeText(MainActivity.this, id + "로그아웃", Toast.LENGTH_SHORT).show();
+                Intent logout = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(logout);
                 finish();
             }
         });
+
+
     }
 
     @Override
@@ -220,12 +270,13 @@ public class MainActivity extends AppCompatActivity {
             return titles[position];
         }
     }
+
     //앱종료시간체크
     long backKeyPressedTime;    //앱종료 위한 백버튼 누른시간
 
     //TODO 뒤로가기 2번하면 앱종료
     @Override
-    public void onBackPressed () {
+    public void onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
             backKeyPressedTime = System.currentTimeMillis();
             toast = Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
@@ -238,7 +289,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    
 
 }
 

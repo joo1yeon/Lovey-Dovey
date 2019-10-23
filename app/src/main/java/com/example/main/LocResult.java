@@ -89,7 +89,7 @@ public class LocResult extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FootPrint fragment = new FootPrint().getInstance(str,listItem.get(position).getLocAddress(),listItem.get(position).getLocLatitude(),listItem.get(position).getLocLongitude());
+//                FootPrint fragment = new FootPrint().getInstance(str,listItem.get(position).getLocAddress(),listItem.get(position).getLocLatitude(),listItem.get(position).getLocLongitude());
 //                Bundle bundle = new Bundle();
 //                bundle.putString("name",str);
 //                bundle.putDouble("latitude",listItem.get(position).getLocLatitude());
