@@ -76,7 +76,7 @@
 
         <activity android:name=".Story_SearchResult" />
         <activity android:name=".Story_EditMainListItem" />
-
+        <activity android:name=".CoupleConnect"/>
 
         <activity android:name=".JoinActivity"/>
 

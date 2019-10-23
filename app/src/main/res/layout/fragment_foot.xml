@@ -125,7 +125,7 @@
             android:background="#B8D9C0"
             android:backgroundTint="#ffffff"
             android:scaleType="center"
-            android:src="@drawable/today"
+            android:src="@drawable/today2"
             android:textAlignment="center"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/fabCal"

@@ -36,6 +36,7 @@ import retrofit2.Response;
 
 
 public class MainActivity<insertDB> extends AppCompatActivity implements InsertDB {
+    LinearLayout layout;
     MyDBHelper dbHelper = new MyDBHelper(this);
     SQLiteDatabase sqlDB;
     ViewGroup info, notice, background, bookmark;
@@ -43,7 +44,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     String id;
     String nickname, email;
     ViewPager viewPager;
-    LinearLayout linearLayout, logout;
+    LinearLayout logout;
     ImageButton btnOverflow, btnBack;
     Intent intent;
     Toast toast;
@@ -114,6 +115,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        layout=findViewById(R.id.layout);
         Intent intent1 = getIntent();
         id = intent1.getStringExtra("ID");
         nickname = intent1.getStringExtra("NICK");
@@ -136,7 +138,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         notice = findViewById(R.id.btnNotice);
         background = findViewById(R.id.btnBG);
         bookmark = findViewById(R.id.btnBookMark);
-        linearLayout = findViewById(R.id.main_content);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = findViewById(R.id.tab);
@@ -169,8 +170,15 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         btnOverflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                layout.setClickable(false);
                 drawerLayout.openDrawer(Gravity.RIGHT);
-
+                Cursor cursor =sqlDB.rawQuery("select nickname, email from info where id='"+id+"';",null);
+                if(cursor.getCount()>=1){
+                    cursor.moveToFirst();
+                    nickname=cursor.getString(0);
+                    email=cursor.getString(1);
+                }
+                cursor.close();
                 //저장된 프로필 보여주기
                 Glide.with(getApplicationContext())
                         .load(Main.uri_)
