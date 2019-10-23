@@ -41,5 +41,8 @@ public interface API {
 
     @GET("addMarker.php")
     Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date);
+
+    @GET("resetTable.php")
+    Call<ResReset> getReset();
 }
 

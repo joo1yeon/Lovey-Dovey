@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -64,34 +65,49 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     }
 
     @Override
-    public void save(int _year,int _month,int _date) {
+    public void save() {
         sqlDB=dbHelper.getReadableDatabase();
-        Cursor cursor = sqlDB.rawQuery("select * from marker ;",null);
-        while(cursor.moveToNext()){
-            String name=cursor.getString(0);
-            String address=cursor.getString(1);
-            double latitude=cursor.getDouble(2);
-            double longitude=cursor.getDouble(3);
-            int year=cursor.getInt(4);
-            int month=cursor.getInt(5);
-            int date=cursor.getInt(6);
-            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name,address,latitude,longitude,year,month,date);
-            res.enqueue(new Callback<ResAddMarker>() {
-                @Override
-                public void onResponse(Call<ResAddMarker> call, Response<ResAddMarker> response) {
-                    if(response.isSuccessful()){
-                        ResAddMarker responseGet = response.body();
+        Call<ResReset> r=Net.getInstance().getApi().getReset();
+        r.enqueue(new Callback<ResReset>() {
+            @Override
+            public void onResponse(Call<ResReset> call, Response<ResReset> response) {
+                if(response.body().getReset()){
+                    Cursor cursor = sqlDB.rawQuery("select * from marker ;",null);
+                    while(cursor.moveToNext()){
+                        String name=cursor.getString(0);
+                        String address=cursor.getString(1);
+                        double latitude=cursor.getDouble(2);
+                        double longitude=cursor.getDouble(3);
+                        int year=cursor.getInt(4);
+                        int month=cursor.getInt(5);
+                        int date=cursor.getInt(6);
+                        Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name,address,latitude,longitude,year,month,date);
+                        Log.d("III","이름"+name);
+                        res.enqueue(new Callback<ResAddMarker>() {
+                            @Override
+                            public void onResponse(Call<ResAddMarker> call, Response<ResAddMarker> response) {
+                                if(response.isSuccessful()){
+                                    ResAddMarker responseGet = response.body();
 
-                    }else Toast.makeText(MainActivity.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+                                }else Toast.makeText(MainActivity.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResAddMarker> call, Throwable t) {
+                                Toast.makeText(MainActivity.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
                 }
 
-                @Override
-                public void onFailure(Call<ResAddMarker> call, Throwable t) {
-                    Toast.makeText(MainActivity.this,"통신3 에러",Toast.LENGTH_SHORT).show();
-                }
-            });
+            }
 
-        }
+            @Override
+            public void onFailure(Call<ResReset> call, Throwable t) {
+
+            }
+        });
     }
 
     @SuppressLint("WrongViewCast")
