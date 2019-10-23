@@ -19,6 +19,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 @SuppressLint("ValidFragment")
 public class Datecourse extends Fragment implements ViewPager.PageTransformer {
@@ -43,6 +47,24 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Datecourse_Search.class);
                 startActivity(intent);
+            }
+        });
+
+        Call<ResponseDate_image> res= (Call<ResponseDate_image>) Net.getInstance().getApi().getDate_image(id);
+        res.enqueue(new Callback<ResponseDate_image>() {
+            @Override
+            public void onResponse(Call<ResponseDate_image> call, Response<ResponseDate_image> response) {
+                if(response.isSuccessful()){
+                    ResponseDate_image responseGet=response.body();
+                 if(id){
+
+                 }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDate_image> call, Throwable t) {
+
             }
         });
 
