@@ -73,7 +73,7 @@
         <activity android:name=".Story_Contents" />
         <activity android:name=".ToDoList" />
         <activity android:name=".Notice" />
-        <activity android:name=".LocResult"/>
+
         <activity android:name=".Story_SearchResult" />
         <activity android:name=".Story_EditMainListItem" />
 

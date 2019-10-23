@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import retrofit2.http.HEAD;
 
 public class Datecourse_Fragment extends AppCompatActivity implements View.OnClickListener {
@@ -34,8 +36,6 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
 
         placeN=findViewById(R.id.plaveN);
         place=findViewById(R.id.place);
-        placeN = findViewById(R.id.placeName);
-//        place=findViewById(R.id.place);
         dateInfo = findViewById(R.id.dateInfo);
         dateReview = findViewById(R.id.dateReview);
         infoLine = findViewById(R.id.infoLine);
@@ -47,16 +47,10 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
 
         Intent intent = getIntent();
         String PlaceName=intent.getStringExtra("PlaceN");
-
-/*
-        Intent intent2=getIntent();
-        String PlaceUrl=intent2.getParcelableExtra("PlaceUrl");
-*/
+        String PlaceUrl=intent.getStringExtra("PlaceUrl");
 
         placeN.setText(PlaceName);
-
-//        placeN.setText(PlaceName);
-
+        Glide.with(this).load(PlaceUrl).into(place);
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override

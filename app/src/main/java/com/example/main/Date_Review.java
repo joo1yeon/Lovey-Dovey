@@ -46,10 +46,6 @@ public class Date_Review extends Fragment {
         listView = layout.findViewById(R.id.listView);
         adapter = new DateReview_listViewAdapter();
         listView.setAdapter(adapter);
-
-        // adapter.addItem( "밤에 가도 벚꽃이 너무 예뻐요!");
-        // adapter.addItem("벚꽃을 보러간건지 사람을 보러 간건지..");
-
         review = layout.findViewById(R.id.review);
         add = layout.findViewById(R.id.add);
 

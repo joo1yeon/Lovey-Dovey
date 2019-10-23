@@ -39,7 +39,7 @@ public class LocSearch extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
 
-        btnHome = findViewById(R.id.btnHome);
+        btnHome=findViewById(R.id.btnHome);
         geocoder = new Geocoder(this);
         edtLocation = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
@@ -59,7 +59,7 @@ public class LocSearch extends Activity {
         if (cursor.getCount() > 0) {
             Cursor cursor1 = sqlDB.rawQuery("select * from location ;", null);
             while (cursor1.moveToNext()) {
-                locList.add(new FootContentList(cursor1.getInt(0), cursor1.getString(1)));
+                locList.add(new FootContentList(cursor1.getInt(0),cursor1.getString(1)));
             }
             footContentAdapter.notifyDataSetChanged();
             cursor1.close();
@@ -69,7 +69,7 @@ public class LocSearch extends Activity {
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -104,6 +104,7 @@ public class LocSearch extends Activity {
         });
 
 
+
         //TODO 검색버튼을 누르면 ArrayList에 검색 내역 추가
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +114,7 @@ public class LocSearch extends Activity {
                 String str = edtLocation.getText().toString();
                 List<Address> addressList = null;
                 try {
-                    addressList = geocoder.getFromLocationName(str, 20);
+                    addressList = geocoder.getFromLocationName(str, 1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -138,7 +139,6 @@ public class LocSearch extends Activity {
                         outIntent.putExtra("latitude", latitude);
                         outIntent.putExtra("longitude", longitude);
                         outIntent.putExtra("address", address);
-                        Log.d("TITLE2",edtLocation.getText().toString());
 
                         setResult(RESULT_OK, outIntent);
                         finish();
@@ -149,14 +149,16 @@ public class LocSearch extends Activity {
 //                intent.putExtra("Location",edtLocation.getText().toString());
 //                startActivity(intent);
 //                finish();
+
+//                Intent intent = new Intent(LocSearch.this, LocResult.class);
+//                startActivity(intent);
 //                getAddress(edtLocation.getText().toString());
             }
         });
 
     }
-
     @Override
-    public void onBackPressed() {
+    public void onBackPressed () {
         Intent outIntent = new Intent(getApplicationContext(), FootPrint.class);
         setResult(RESULT_CANCELED, outIntent);
         finish();

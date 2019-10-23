@@ -39,7 +39,6 @@ public class DateImageClick extends AppCompatActivity {
         listView.setAdapter(adapter);
         }
 
-
         //화면에 보여진 listView 클릭시 발생되는 이벤트 리스너
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
