@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -52,7 +53,7 @@ public class LocResult extends Activity {
         tvSearch.setText(str);
         List<Address> addressList = null;
         try {
-            addressList = geocoder.getFromLocationName(str, 20);
+            addressList = geocoder.getFromLocationName(str, 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,20 +89,20 @@ public class LocResult extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment fragment = new FootPrint();
-                Bundle bundle = new Bundle();
-                bundle.putString("name",str);
-                bundle.putDouble("latitude",listItem.get(position).getLocLatitude());
-                bundle.putDouble("longitude",listItem.get(position).getLocLongitude());
-                bundle.putString("address",listItem.get(position).getLocAddress());
-                Log.d("LLL",str);
-                Log.d("LLL",listItem.get(position).getLocAddress());
-                Log.d("LLL",listItem.get(position).getLocLatitude()+"");
-                Log.d("LLL",listItem.get(position).getLocLongitude()+"");
-
-                fragment.setArguments(bundle);
-                Log.d("LLL",bundle.toString());
-
+                FootPrint fragment = new FootPrint().getInstance(str,listItem.get(position).getLocAddress(),listItem.get(position).getLocLatitude(),listItem.get(position).getLocLongitude());
+//                Bundle bundle = new Bundle();
+//                bundle.putString("name",str);
+//                bundle.putDouble("latitude",listItem.get(position).getLocLatitude());
+//                bundle.putDouble("longitude",listItem.get(position).getLocLongitude());
+//                bundle.putString("address",listItem.get(position).getLocAddress());
+//                Log.d("LLL",str);
+//                Log.d("LLL",listItem.get(position).getLocAddress());
+//                Log.d("LLL",listItem.get(position).getLocLatitude()+"");
+//                Log.d("LLL",listItem.get(position).getLocLongitude()+"");
+//
+//                fragment.setArguments(bundle);
+//                Log.d("LLL",bundle.toString());
+//                adapter.addFragment(fragment);
                 finish();
             }
         });

@@ -97,33 +97,48 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState);
     }
 
+//    public static FootPrint getInstance(String name,String address,double latitude,double longitude){
+//        FootPrint f = new FootPrint();
+//        Bundle args = new Bundle();
+//        args.putString("name",name);
+//        args.putString("address",address);
+//        args.putDouble("latitude",latitude);
+//        args.putDouble("longitude",longitude);
+//        f.setArguments(args);
+//        return f;
+//    }
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,  Bundle savedInstanceState) {
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
+//        Bundle bundle = this.getArguments();
+////        savedInstanceState=this.getArguments();
+//        if(bundle!=null){
+//            Log.d("AAA","제발...");
+//
+//            bundle=getArguments();
+//            Toast.makeText(getContext(),"값있음",Toast.LENGTH_SHORT).show();
+//
+//            Log.d("AAA",bundle.toString());
+//
+//            String name=bundle.getString("name");
+//            String address=bundle.getString("address");
+//            double latitude = bundle.getDouble("latitude",0);
+//            double longitude=bundle.getDouble("longitude",0);
+//            Log.d("AAA",name);
+//            Log.d("AAA",address);
+//            Log.d("AAA",latitude+"");
+//            Log.d("AAA",longitude+"");
+//            LatLng point = new LatLng(latitude, longitude);
+//            markerOptions.title(name);
+//            markerOptions.snippet(address);
+//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
+//            markerOptions.position(point);
+//            gMap.addMarker(markerOptions);
+//            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+//        }else{
+//            Toast.makeText(getContext(),"null값",Toast.LENGTH_SHORT).show();
+//        }
 
-        if(getArguments()!=null){
-            Toast.makeText(getContext(),"값있음",Toast.LENGTH_SHORT).show();
-
-            Log.d("LLL",getArguments().toString());
-
-            String name=getArguments().getString("name");
-            String address=getArguments().getString("address");
-            double latitude = getArguments().getDouble("latitude");
-            double longitude=getArguments().getDouble("longitude");
-            Log.d("LLL",name);
-            Log.d("LLL",address);
-            Log.d("LLL",latitude+"");
-            Log.d("LLL",longitude+"");
-            LatLng point = new LatLng(latitude, longitude);
-            markerOptions.title(name);
-            markerOptions.snippet(address);
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
-            markerOptions.position(point);
-            gMap.addMarker(markerOptions);
-            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
-        }else{
-            Toast.makeText(getContext(),"null값",Toast.LENGTH_SHORT).show();
-        }
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
         Log.d("date", year + "" + month + 1 + "" + day);
