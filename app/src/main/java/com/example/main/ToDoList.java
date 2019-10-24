@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.app.ActionBar;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -9,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -128,10 +131,21 @@ public class ToDoList extends AppCompatActivity {
                 final ToDoList_ListItem listItem = adapter1.listViewItems.get(position);
                 AlertDialog.Builder dlg2 = new AlertDialog.Builder(ToDoList.this);
                 final AlertDialog dl2 = dlg2.create();
-                dl2.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));       //다이얼로그 배경 투명설정
+
+
+                dl2.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));//다이얼로그 배경 투명설정
+
                 menuLayout = View.inflate(ToDoList.this, R.layout.list_menu, null);
                 dl2.setView(menuLayout);
                 dl2.show();
+
+                WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+                params.copyFrom(dl2.getWindow().getAttributes());
+                params.width = 550;
+                params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                dl2.getWindow().setAttributes(params);
+
+
                 change = menuLayout.findViewById(R.id.change);
                 delete = menuLayout.findViewById(R.id.delete);
 

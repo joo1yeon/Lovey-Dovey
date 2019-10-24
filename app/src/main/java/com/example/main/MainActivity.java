@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         .bitmapTransform(new CropCircleTransformation(getApplicationContext()))
                         .override(70, 70)
                         .into(profile);
+
                 TextView tvNick = drawerLayout.findViewById(R.id.nickname);
                 TextView tvEmail = drawerLayout.findViewById(R.id.email);
                 tvNick.setText(nickname);
