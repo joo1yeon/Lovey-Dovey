@@ -116,10 +116,13 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         layout=findViewById(R.id.layout);
+
         Intent intent1 = getIntent();
         id = intent1.getStringExtra("ID");
         nickname = intent1.getStringExtra("NICK");
         email = intent1.getStringExtra("EMAIL");
+        Toast.makeText(MainActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
+
 
         setContentView(R.layout.activity_main);
         sqlDB = dbHelper.getWritableDatabase();
@@ -248,7 +251,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        id=data.getStringExtra("ID");
     }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
