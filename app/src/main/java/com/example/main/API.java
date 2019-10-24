@@ -39,7 +39,7 @@ public interface API {
     @GET("Join.php")
     Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("NUM") int num,@Query("EMAIL") String email);
 
-    @GET("Date_image.php")
-    Call<ResponseDate_image> getDate_image(@Query("ID") String id);
+    @GET("date_img.php")
+    Call<List<ResponseDate_image>> getDate_image();
 }
 
