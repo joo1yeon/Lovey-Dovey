@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,6 +38,7 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Key;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -423,8 +425,7 @@ public class Main extends Fragment {
                     //Intent i = new Intent(getActivity(),MainActivity.class);
                     //i.putExtra("ID","0");
                     //Main main = new Main(id);
-
-
+                    //Intent intent = Intent.getIntent();
                     Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
                 }
             }
