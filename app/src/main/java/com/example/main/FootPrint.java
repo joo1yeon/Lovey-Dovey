@@ -406,7 +406,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
 
         final GoogleMap gMap = _gMap;
         gMap.clear();
-        Call<List<ResponseMarker>> res = Net.getInstance().getApi().getMarker("c1", year, month, day);
+        Call<List<ResponseMarker>> res = Net.getInstance().getApi().getMarker(1, year, month, day);
         res.enqueue(new Callback<List<ResponseMarker>>() {
             @Override
             public void onResponse(Call<List<ResponseMarker>> call, Response<List<ResponseMarker>> response) {

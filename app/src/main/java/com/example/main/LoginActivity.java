@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("ID", id);
                                         intent.putExtra("NICK", nickname);
                                         intent.putExtra("EMAIL", email);
-                                        intent.putExtra("NUM",responseGet.getNum());
                                         startActivity(intent);
                                         finish();
                                     }

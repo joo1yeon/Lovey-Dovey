@@ -34,15 +34,24 @@ public interface API {
     Call<ResponseRepeat> getRepeat(@Query("ID") String id);
 
     @GET("printMarker.php")
-    Call<List<ResponseMarker>> getMarker(@Query("coupleID") String id, @Query("year") int year, @Query("month") int month, @Query("day")int day);
+    Call<List<ResponseMarker>> getMarker(@Query("coupleID") int id, @Query("year") int year, @Query("month") int month, @Query("day")int day);
 
     @GET("Join.php")
-    Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("NUM") int num,@Query("EMAIL") String email);
+    Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("EMAIL") String email);
 
     @GET("addMarker.php")
     Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date);
 
     @GET("resetTable.php")
     Call<ResReset> getReset();
+
+    @GET("checkID.php")
+    Call<ResponseID> getID(@Query("ID") String id);
+
+    @GET("updateOppoID.php")
+    Call<UpdateOppoID> getUpdate(@Query("ID") String id, @Query("OPPO") String oppo);
+
+    @GET("connectCouple.php")
+    Call<responseConnect> getConnect(@Query("ID") String id, @Query("OPPO") String oppo);
 }
 
