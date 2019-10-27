@@ -75,23 +75,10 @@ public class ToDoList extends AppCompatActivity {
 
         //체크되지 않은 투두 아이템 추가
         Item_show(adapter1, strCoupleID,false);
-        /*adapter1.addItem("시험끝나고 미친듯이 놀기", "");
-        adapter1.addItem("PC방 가서 하루종일 게임하기", "");
-        adapter1.addItem("오류같이 찾고 기뻐하기 ㅎㅎ", "");
-        adapter1.addItem("웃으면서 같이 코딩하기", "");
-        adapter1.addItem("누워서 맘편히 잠자기", "");
-        adapter1.addItem("종로가서 커플링 맞추기", "");
-        adapter1.addItem("커플 키링 만들어보기", ""); */
 
 
         //체크된 투두 아이템 추가
         Item_show(adapter2, strCoupleID,true);
-        /*adapter2.addItem("곱창 무한리필 먹기", "2019년 05월 12일");
-        adapter2.addItem("바다가서 조개구이 먹기", "2019년 04월 09일");
-        adapter2.addItem("해외여행 가기", "2019년 04월 08일");
-        adapter2.addItem("동물카페 가서 놀기", "2019년 03월 04일");
-        adapter2.addItem("찜질방 가서 하루 놀기", "2019년 03월 04일");
-        adapter2.addItem("커플신발 맞춰보기", "2019년 02월 28일");*/
 
 
 
