@@ -11,13 +11,16 @@ public class ResponseLogin {
     private String email;
     @SerializedName("oppo")
     private boolean oppo;
+    @SerializedName("coupleID")
+    private int coupleID;
 
 
-    public ResponseLogin(boolean _login, String _nickname, String _email,boolean _oppo) {
+    public ResponseLogin(boolean _login, String _nickname, String _email,boolean _oppo,int _coupleID) {
         login = _login;
         nickname = _nickname;
         email = _email;
         oppo=_oppo;
+        coupleID=_coupleID;
     }
 
     public boolean getLogin() {
@@ -32,4 +35,5 @@ public class ResponseLogin {
         return email;
     }
     public boolean getCouple(){return oppo;}
+    public int getCoupleID(){return coupleID;}
 }

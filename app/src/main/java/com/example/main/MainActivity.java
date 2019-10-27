@@ -41,7 +41,8 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     SQLiteDatabase sqlDB;
     ViewGroup info, notice, background, bookmark;
     DrawerLayout drawerLayout;
-    String id;
+    static String id;
+    static int coupleID;
     String nickname, email;
     ViewPager viewPager;
     LinearLayout logout;
@@ -52,63 +53,66 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
 
 
     @Override
-    public void insert(String name, String address, double latitude, double longitude, int year,int month,int date) {
+    public void insert(String name, String address, double latitude, double longitude, int year, int month, int date) {
         sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("insert into marker values('" + address + "','" + address + "'," + latitude + "," + longitude + "," + year + ","+month+","+date+");");
+        sqlDB.execSQL("insert into marker values('" + address + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ");");
         sqlDB.close();
     }
 
     @Override
-    public void delete(double latitude, double longitude, int year,int month,int date) {
+    public void delete(double latitude, double longitude, int year, int month, int date) {
         sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("delete from marker where latitude=" + latitude + " and longitude=" + longitude + " and year =" + year + " and month="+month+" and date ="+date+";");
+        sqlDB.execSQL("delete from marker where latitude=" + latitude + " and longitude=" + longitude + " and year =" + year + " and month=" + month + " and date =" + date + ";");
         sqlDB.close();
     }
 
     @Override
     public void save() {
-        Toast.makeText(this,"서버 저장",Toast.LENGTH_SHORT).show();
-        sqlDB=dbHelper.getReadableDatabase();
-        Cursor cursor = sqlDB.rawQuery("select * from marker ;",null);
-        while(cursor.moveToNext()){
-            String name=cursor.getString(0);
-            String address=cursor.getString(1);
-            double latitude=cursor.getDouble(2);
-            double longitude=cursor.getDouble(3);
-            int year=cursor.getInt(4);
-            int month=cursor.getInt(5);
-            int date=cursor.getInt(6);
-            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name,address,latitude,longitude,year,month,date);
-            Log.d("III","이름"+name);
+        Toast.makeText(this, "서버 저장", Toast.LENGTH_SHORT).show();
+        sqlDB = dbHelper.getReadableDatabase();
+        Cursor cursor = sqlDB.rawQuery("select * from marker ;", null);
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(0);
+            String address = cursor.getString(1);
+            double latitude = cursor.getDouble(2);
+            double longitude = cursor.getDouble(3);
+            int year = cursor.getInt(4);
+            int month = cursor.getInt(5);
+            int date = cursor.getInt(6);
+            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name, address, latitude, longitude, year, month, date,coupleID);
+            Log.d("III", "이름" + name);
             res.enqueue(new Callback<ResAddMarker>() {
                 @Override
                 public void onResponse(Call<ResAddMarker> call, Response<ResAddMarker> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         ResAddMarker responseGet = response.body();
 
-                    }else Toast.makeText(MainActivity.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+                    } else Toast.makeText(MainActivity.this, "통신1 에러", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Call<ResAddMarker> call, Throwable t) {
-                    Toast.makeText(MainActivity.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "통신3 에러", Toast.LENGTH_SHORT).show();
                 }
             });
 
         }
         sqlDB.execSQL("delete from marker;");
-        sqlDB.close();    }
+        sqlDB.close();
+    }
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        layout=findViewById(R.id.layout);
+        layout = findViewById(R.id.layout);
 
         Intent intent1 = getIntent();
         id = intent1.getStringExtra("ID");
         nickname = intent1.getStringExtra("NICK");
         email = intent1.getStringExtra("EMAIL");
+        coupleID=intent1.getIntExtra("C_ID",0);
+        Log.d("C_ID","커플아이디:"+coupleID);
         Toast.makeText(MainActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
 
 
@@ -163,11 +167,11 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             public void onClick(View v) {
 //                layout.setClickable(false);
                 drawerLayout.openDrawer(Gravity.RIGHT);
-                Cursor cursor =sqlDB.rawQuery("select nickname, email from info where id='"+id+"';",null);
-                if(cursor.getCount()>=1){
+                Cursor cursor = sqlDB.rawQuery("select nickname, email from info where id='" + id + "';", null);
+                if (cursor.getCount() >= 1) {
                     cursor.moveToFirst();
-                    nickname=cursor.getString(0);
-                    email=cursor.getString(1);
+                    nickname = cursor.getString(0);
+                    email = cursor.getString(1);
                 }
                 cursor.close();
                 //저장된 프로필 보여주기

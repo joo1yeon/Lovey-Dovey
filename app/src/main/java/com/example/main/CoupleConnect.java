@@ -53,6 +53,7 @@ public class CoupleConnect extends Activity {
                                             public void onResponse(Call<responseConnect> call, Response<responseConnect> response) {
                                                 Log.d("CCC","connect : "+response.body().getConnect());
                                                 if(response.body().getConnect()){
+                                                    Toast.makeText(CoupleConnect.this,"connect : "+response.body().getConnect(),Toast.LENGTH_SHORT).show();
                                                     Intent intent1 = new Intent(CoupleConnect.this, MainActivity.class);
                                                     intent1.putExtra("ID", id);
                                                     intent1.putExtra("NICK", nickname);

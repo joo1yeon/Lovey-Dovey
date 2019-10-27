@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                                     if(responseGet.getCouple()){
                                         String nickname = responseGet.getNickname();
                                         String email = responseGet.getEmail();
+                                        int coupleID=responseGet.getCoupleID();
                                         if (btnAutoLogin.isChecked()) {
                                             sqlDB.execSQL("insert into info values('" + id + "','" + pw + "','"+nickname+"','"+email+"')");
                                         }
@@ -77,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("ID", id);
                                         intent.putExtra("NICK", nickname);
                                         intent.putExtra("EMAIL", email);
+                                        intent.putExtra("C_ID",coupleID);
                                         startActivity(intent);
                                         finish();
                                     }else{
