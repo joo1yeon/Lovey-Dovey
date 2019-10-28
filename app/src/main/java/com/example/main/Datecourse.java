@@ -37,9 +37,6 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
 
     public Datecourse(String _id) {
         id = _id;
-    public Datecourse() {
-
-        }
 
         @Override
         @Nullable
@@ -86,12 +83,7 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
         });*/
             return layout;
         }
-
-        @Override
-        public void transformPage (@NonNull View view,float v){
-        }
-
-        public class FragmentAdapter extends PagerAdapter {
+        class FragmentAdapter extends PagerAdapter {
             private Context context;
             String date_image[] = new String[5];
 
@@ -154,5 +146,10 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
                 return view == o;
             }
         }
+    }
+
+    @Override
+    public void transformPage(@NonNull View view, float v) {
+
     }
 }
