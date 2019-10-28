@@ -89,7 +89,7 @@ public class Main extends Fragment {
     };
 
     @SuppressLint("ValidFragment")
-    public Main(String _id){id=_id;}
+    public Main(){}
 
     @Override
     @Nullable

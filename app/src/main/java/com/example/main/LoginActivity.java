@@ -23,7 +23,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
-    private Retrofit retrofit;
     EditText edtID;
     EditText edtPW;
     Button btnLogin;
@@ -60,32 +59,47 @@ public class LoginActivity extends AppCompatActivity {
                 final String id = edtID.getText().toString();
                 final String pw = edtPW.getText().toString();
                 if (!id.isEmpty() && !pw.isEmpty()) {
-                    if (btnAutoLogin.isChecked()) {
-                        sqlDB.execSQL("insert into info values('" + id + "','" + pw + "')");
-                    }
-                    Call<ResponseLogin> res = Net.getInstance().getApi().getThird(id,pw);
+                    Call<ResponseLogin> res = Net.getInstance().getApi().getThird(id, pw);
                     res.enqueue(new Callback<ResponseLogin>() {
                         @Override
                         public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
-                            if(response.isSuccessful()){
+                            if (response.isSuccessful()) {
                                 ResponseLogin responseGet = response.body();
-                                if(responseGet.getLogin()){
-                                    String nickname=responseGet.getNickname();
-                                    String email=responseGet.getEmail();
-                                    Toast.makeText(LoginActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    intent.putExtra("ID", id);
-                                    intent.putExtra("NICK",nickname);
-                                    intent.putExtra("EMAIL",email);
-                                    startActivity(intent);
-                                    finish();
-                                }else Toast.makeText(LoginActivity.this,"일치하는 아이디 또는 비밀번호가 없습니다.",Toast.LENGTH_SHORT).show();
-                            }else Toast.makeText(LoginActivity.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+                                if (responseGet.getLogin()) {
+                                    if(responseGet.getCouple()){
+                                        String nickname = responseGet.getNickname();
+                                        String email = responseGet.getEmail();
+                                        int coupleID=responseGet.getCoupleID();
+                                        if (btnAutoLogin.isChecked()) {
+                                            sqlDB.execSQL("insert into info values('" + id + "','" + pw + "','"+nickname+"','"+email+"')");
+                                        }
+
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("ID", id);
+                                        intent.putExtra("NICK", nickname);
+                                        intent.putExtra("EMAIL", email);
+                                        intent.putExtra("C_ID",coupleID);
+                                        startActivity(intent);
+                                        finish();
+                                    }else{
+                                        String nickname = responseGet.getNickname();
+                                        String email = responseGet.getEmail();
+                                        Intent intent = new Intent(LoginActivity.this, CoupleConnect.class);
+                                        intent.putExtra("ID", id);
+                                        intent.putExtra("NICK", nickname);
+                                        intent.putExtra("EMAIL", email);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } else
+                                    Toast.makeText(LoginActivity.this, "일치하는 아이디 또는 비밀번호가 없습니다.", Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(LoginActivity.this, "통신1 에러", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(Call<ResponseLogin> call, Throwable t) {
-                            Toast.makeText(LoginActivity.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "통신3 에러", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -126,16 +140,17 @@ public class LoginActivity extends AppCompatActivity {
                             res.enqueue(new Callback<ResponseGet>() {
                                 @Override
                                 public void onResponse(Call<ResponseGet> call, Response<ResponseGet> response) {
-                                    if(response.isSuccessful()){
+                                    if (response.isSuccessful()) {
                                         ResponseGet responseGet = response.body();
-                                        Toast.makeText(LoginActivity.this,"ID : "+responseGet.getId(),Toast.LENGTH_LONG).show();
+                                        Toast.makeText(LoginActivity.this, "ID : " + responseGet.getId(), Toast.LENGTH_LONG).show();
 
-                                    }else Toast.makeText(LoginActivity.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+                                    } else
+                                        Toast.makeText(LoginActivity.this, "통신1 에러", Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResponseGet> call, Throwable t) {
-                                    Toast.makeText(LoginActivity.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "통신3 에러", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -155,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                 dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText edtName,edtEmail,edtDomain,edtId;
+                        EditText edtName, edtEmail, edtDomain, edtId;
                         edtName = findPWView.findViewById(R.id.edtName);
                         edtEmail = findPWView.findViewById(R.id.edtEmail);
                         edtDomain = findPWView.findViewById(R.id.edtDomain);
@@ -163,24 +178,25 @@ public class LoginActivity extends AppCompatActivity {
                         String name = edtName.getText().toString();
                         String email = edtEmail.getText().toString();
                         String domain = edtDomain.getText().toString();
-                        String id=edtId.getText().toString();
-                         String eml = email + '@' + domain;
+                        String id = edtId.getText().toString();
+                        String eml = email + '@' + domain;
 
                         if (!name.isEmpty() && !email.isEmpty() && !domain.isEmpty() && !id.isEmpty()) {
-                            Call<ResponsePW> res = Net.getInstance().getApi().getSecond(name, eml,id);
+                            Call<ResponsePW> res = Net.getInstance().getApi().getSecond(name, eml, id);
                             res.enqueue(new Callback<ResponsePW>() {
                                 @Override
                                 public void onResponse(Call<ResponsePW> call, Response<ResponsePW> response) {
-                                    if(response.isSuccessful()){
-                                       ResponsePW responsePW=response.body();
-                                        Toast.makeText(LoginActivity.this,"PW : "+responsePW.getPw(),Toast.LENGTH_LONG).show();
+                                    if (response.isSuccessful()) {
+                                        ResponsePW responsePW = response.body();
+                                        Toast.makeText(LoginActivity.this, "PW : " + responsePW.getPw(), Toast.LENGTH_LONG).show();
 
-                                    }else Toast.makeText(LoginActivity.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+                                    } else
+                                        Toast.makeText(LoginActivity.this, "통신1 에러", Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResponsePW> call, Throwable t) {
-                                    Toast.makeText(LoginActivity.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "통신3 에러", Toast.LENGTH_SHORT).show();
                                 }
                             });
 

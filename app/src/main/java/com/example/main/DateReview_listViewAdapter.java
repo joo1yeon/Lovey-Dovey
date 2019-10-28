@@ -3,9 +3,11 @@ package com.example.main;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.media.Rating;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.ExtractedTextRequest;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -18,7 +20,6 @@ import java.util.Date;
 public class DateReview_listViewAdapter extends BaseAdapter {
 
     public static Object context;
-    public RatingBar ratingbar;
     ArrayList<DateReview_listViewItem> review_listItem = new ArrayList<DateReview_listViewItem>();
 
     public DateReview_listViewAdapter(){
@@ -49,7 +50,8 @@ public class DateReview_listViewAdapter extends BaseAdapter {
         }
 
         TextView context = convertView.findViewById(R.id.context);
-        ratingbar = convertView.findViewById(R.id.ratingBar);
+        TextView id = convertView.findViewById(R.id.name);
+        RatingBar ratingbar = convertView.findViewById(R.id.ratingBar);
         TextView date = convertView.findViewById(R.id.date);
 
         DateReview_listViewItem listItem = review_listItem.get(position);
@@ -57,16 +59,18 @@ public class DateReview_listViewAdapter extends BaseAdapter {
         context.setText(listItem.getContext());
         ratingbar.setRating(listItem.getRating());
         date.setText(listItem.getDate());
+        id.setText(listItem.getID());
 
         return convertView;
     }
 
-    public void addItem(float rating, String context, String date) {
+    public void addItem(float rating, String context, String date,String id) {
         DateReview_listViewItem item = new DateReview_listViewItem();
-
         item.setContext(context);
         item.setRating(rating);
         item.setDate(date);
+        item.setId(id);
+        Log.d("PPPPP","별점:"+item.getRating());
 
         review_listItem.add(item);
     }

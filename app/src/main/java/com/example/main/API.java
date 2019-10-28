@@ -34,7 +34,7 @@ public interface API {
     Call<ResponseRepeat> getRepeat(@Query("ID") String id);
 
     @GET("printMarker.php")
-    Call<List<ResponseMarker>> getMarker(@Query("coupleID") String id, @Query("year") int year, @Query("month") int month, @Query("day")int day);
+    Call<List<ResponseMarker>> getMarker(@Query("coupleID") int id, @Query("year") int year, @Query("month") int month, @Query("day")int day);
 
     @GET("Join.php")
     Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("NUM") int num,@Query("EMAIL") String email);
@@ -44,5 +44,27 @@ public interface API {
 
     @GET("date_img2.php")
     Call<List<ResponseDate_image2>> getDate_image2();
+    Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("EMAIL") String email);
+
+    @GET("addMarker.php")
+    Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date,@Query("COUPLE") int couple);
+
+    @GET("resetTable.php")
+    Call<ResReset> getReset();
+
+    @GET("checkID.php")
+    Call<ResponseID> getID(@Query("ID") String id);
+
+    @GET("updateOppoID.php")
+    Call<UpdateOppoID> getUpdate(@Query("ID") String id, @Query("OPPO") String oppo);
+
+    @GET("connectCouple.php")
+    Call<responseConnect> getConnect(@Query("ID") String id, @Query("OPPO") String oppo);
+
+    @GET("addReview.php")
+    Call<ResponseReview> getReview(@Query("PLACE") String place, @Query("RATE") float rate, @Query("ID") String id, @Query("CONTENT") String content, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY")int day);
+
+    @GET("printReview.php")
+    Call<List<ResponseGetReview>> getPrintReview(@Query("PLACE") String place);
 }
 

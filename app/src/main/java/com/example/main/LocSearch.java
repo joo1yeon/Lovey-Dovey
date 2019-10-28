@@ -92,6 +92,7 @@ public class LocSearch extends Activity {
                 double longitude = addressList.get(0).getLongitude();
                 Intent outIntent = new Intent(getApplicationContext(), FootPrint.class);
                 outIntent.putExtra("name", location);
+                Log.d("TITLE2",location);
                 outIntent.putExtra("latitude", latitude);
                 outIntent.putExtra("longitude", longitude);
                 outIntent.putExtra("address", address);
@@ -144,7 +145,13 @@ public class LocSearch extends Activity {
 
                     }
                 }
+//                Intent intent = new Intent(LocSearch.this, LocResult.class);
+//                intent.putExtra("Location",edtLocation.getText().toString());
+//                startActivity(intent);
+//                finish();
 
+//                Intent intent = new Intent(LocSearch.this, LocResult.class);
+//                startActivity(intent);
 //                getAddress(edtLocation.getText().toString());
             }
         });
