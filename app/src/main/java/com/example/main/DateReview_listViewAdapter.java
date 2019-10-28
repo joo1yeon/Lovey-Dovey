@@ -3,9 +3,11 @@ package com.example.main;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.media.Rating;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.ExtractedTextRequest;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -49,6 +51,7 @@ public class DateReview_listViewAdapter extends BaseAdapter {
         }
 
         TextView context = convertView.findViewById(R.id.context);
+        TextView id = convertView.findViewById(R.id.name);
         ratingbar = convertView.findViewById(R.id.ratingBar);
         TextView date = convertView.findViewById(R.id.date);
 
@@ -57,16 +60,19 @@ public class DateReview_listViewAdapter extends BaseAdapter {
         context.setText(listItem.getContext());
         ratingbar.setRating(listItem.getRating());
         date.setText(listItem.getDate());
+        id.setText(listItem.getID());
 
         return convertView;
     }
 
-    public void addItem(float rating, String context, String date) {
+    public void addItem(float rating, String context, String date,String id) {
         DateReview_listViewItem item = new DateReview_listViewItem();
 
         item.setContext(context);
         item.setRating(rating);
         item.setDate(date);
+        item.setId(id);
+        Log.d("PPPPP",item.getContext());
 
         review_listItem.add(item);
     }
