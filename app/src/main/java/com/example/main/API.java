@@ -44,5 +44,8 @@ public interface API {
 
     @GET("resetTable.php")
     Call<ResReset> getReset();
+
+    /*@GET(".php")
+    Call<자바이름> get자바쪽에 사용한이름(@Query(""), @Query("") );*/
 }
 
