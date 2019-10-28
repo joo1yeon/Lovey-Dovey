@@ -137,6 +137,7 @@ public class Date_Review extends Fragment {
             @Override
             public void onResponse(Call<List<ResponseGetReview>> call, Response<List<ResponseGetReview>> response) {
                 List<ResponseGetReview> responseGet = response.body();
+                adapter.review_listItem.clear();
                 for (ResponseGetReview responseReview : responseGet) {
                    adapter.addItem(responseReview.getRate(),responseReview.getContent(),responseReview.getYear()+"/"+responseReview.getMonth()+"/"+responseReview.getDay(),responseReview.getID());
                    adapter.notifyDataSetChanged();

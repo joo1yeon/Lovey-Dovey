@@ -66,7 +66,6 @@ public class DateReview_listViewAdapter extends BaseAdapter {
 
     public void addItem(float rating, String context, String date,String id) {
         DateReview_listViewItem item = new DateReview_listViewItem();
-
         item.setContext(context);
         item.setRating(rating);
         item.setDate(date);
