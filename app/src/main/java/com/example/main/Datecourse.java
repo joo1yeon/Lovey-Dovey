@@ -35,9 +35,6 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
     String id;
     ViewPager viewPager;
 
-    public Datecourse(String _id) {
-        id = _id;
-    }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse, container, false);
             // Fragment로 넘길 Image Resource
