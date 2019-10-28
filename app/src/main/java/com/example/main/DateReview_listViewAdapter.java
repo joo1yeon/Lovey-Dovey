@@ -20,7 +20,6 @@ import java.util.Date;
 public class DateReview_listViewAdapter extends BaseAdapter {
 
     public static Object context;
-    public RatingBar ratingbar;
     ArrayList<DateReview_listViewItem> review_listItem = new ArrayList<DateReview_listViewItem>();
 
     public DateReview_listViewAdapter(){
@@ -52,7 +51,7 @@ public class DateReview_listViewAdapter extends BaseAdapter {
 
         TextView context = convertView.findViewById(R.id.context);
         TextView id = convertView.findViewById(R.id.name);
-        ratingbar = convertView.findViewById(R.id.ratingBar);
+        RatingBar ratingbar = convertView.findViewById(R.id.ratingBar);
         TextView date = convertView.findViewById(R.id.date);
 
         DateReview_listViewItem listItem = review_listItem.get(position);
@@ -72,7 +71,7 @@ public class DateReview_listViewAdapter extends BaseAdapter {
         item.setRating(rating);
         item.setDate(date);
         item.setId(id);
-        Log.d("PPPPP",item.getContext());
+        Log.d("PPPPP","별점:"+item.getRating());
 
         review_listItem.add(item);
     }
