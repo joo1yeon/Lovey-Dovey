@@ -37,11 +37,8 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
 
     public Datecourse(String _id) {
         id = _id;
-
-        @Override
-        @Nullable
-        public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup
-        container, @Nullable Bundle savedInstanceState){
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.datecourse, container, false);
             // Fragment로 넘길 Image Resource
 
@@ -62,11 +59,13 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
             FragmentAdapter fragmentAdapter = new FragmentAdapter(getContext());
             // ViewPager와  FragmentAdapter 연결
             viewPager.setAdapter(fragmentAdapter);
+
             viewPager.setPageMargin(20);
             viewPager.setClipToPadding(false);
             viewPager.setPadding(120, 0, 120, 0);
-
-        /*viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            viewPager.setOffscreenPageLimit(10);
+        /*
+        viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(@NonNull View view, float v) {
                 int pageWidth = viewPager.getMeasuredWidth() - viewPager.getPaddingLeft() - viewPager.getPaddingRight(); //getMeasuredWidth()=>view의 부모의 크기를 가져온다.
@@ -80,7 +79,8 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
                     view.setScaleY(1f);
                 }
             }
-        });*/
+        });
+        */
             return layout;
         }
         class FragmentAdapter extends PagerAdapter {
@@ -146,7 +146,6 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
                 return view == o;
             }
         }
-    }
 
     @Override
     public void transformPage(@NonNull View view, float v) {
