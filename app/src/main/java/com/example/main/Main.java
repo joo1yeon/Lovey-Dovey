@@ -422,10 +422,6 @@ public class Main extends Fragment {
                         e.printStackTrace();
                     }
                 } else if (resultCode == Activity.RESULT_CANCELED) {
-                    //Intent i = new Intent(getActivity(),MainActivity.class);
-                    //i.putExtra("ID","0");
-                    //Main main = new Main(id);
-                    //Intent intent = Intent.getIntent();
                     Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
                 }
             }
