@@ -5,7 +5,7 @@ import android.widget.RatingBar;
 
 public class DateReview_listViewItem {
     public String context;
-    public static float rating;
+    public float rating;
     public String date;
 
 

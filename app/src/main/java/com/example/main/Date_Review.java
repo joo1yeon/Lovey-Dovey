@@ -31,8 +31,8 @@ public class Date_Review extends Fragment {
 
     Button review, OK, cancel;
     EditText addText;
-    RatingBar _ratingbar;
     ImageView add;
+    RatingBar _ratingbar;
      ListView listView;
     public DateReview_listViewAdapter adapter;
     public static Date_Review context;

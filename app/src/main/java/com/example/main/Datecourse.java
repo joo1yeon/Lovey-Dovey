@@ -33,6 +33,7 @@ import retrofit2.Response;
 @SuppressLint("ValidFragment")
 public class Datecourse extends Fragment implements ViewPager.PageTransformer {
     String id;
+    ViewPager viewPager;
 
     public Datecourse(String _id) {
         id = _id;
@@ -90,11 +91,6 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
     public class FragmentAdapter extends PagerAdapter {
         private Context context;
         String date_image[] = new String[5];
-    /*    private String[] image={"http://mjckjs.gabia.io//whispering/image/datecourse/date_bloosom1.jpg",
-                "http://mjckjs.gabia.io//whispering/image/datecourse/date_bar1.jpg",
-                "http://mjckjs.gabia.io//whispering/image/datecourse/date_park1.jpg",
-                "http://mjckjs.gabia.io//whispering/image/datecourse/date_rooftop1.jpg",
-                "http://mjckjs.gabia.io//whispering/image/datecourse/date_view1.jpg"};*/
 
         public FragmentAdapter(Context context) {
             this.context = context;
@@ -123,6 +119,7 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
                         for (ResponseDate_image responseImage : responseGet) {
                             date_image[i++] = responseImage.getDate_image();
                         }
+                        Log.d("PPP",date_image[0]);
                         Glide.with(getContext()).load(date_image[position]).into(imageView);
                     }
                 }

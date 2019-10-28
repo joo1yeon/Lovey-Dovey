@@ -41,5 +41,8 @@ public interface API {
 
     @GET("date_img.php")
     Call<List<ResponseDate_image>> getDate_image();
+
+    @GET("date_img2.php")
+    Call<List<ResponseDate_image2>> getDate_image2();
 }
 
