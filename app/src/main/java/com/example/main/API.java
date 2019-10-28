@@ -46,6 +46,6 @@ public interface API {
     Call<ResReset> getReset();
 
     /*@GET(".php")
-    Call<자바이름> get자바쪽에 사용한이름(@Query(""), @Query("") );*/
+    Call<ResponseTODO> get(@Query("todoID") int id, @Query("coupleID") String c_id, @Query("DATE") String date, @Query("CONTENT") String content, @Query("CHECKED") String checked );*/
 }
 
