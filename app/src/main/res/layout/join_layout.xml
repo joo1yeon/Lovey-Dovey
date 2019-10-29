@@ -104,8 +104,8 @@
         android:lines="1"
         />
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:src="@drawable/ic_error"
         app:layout_constraintBottom_toBottomOf="@id/edtPWCheck"
         app:layout_constraintRight_toLeftOf="@id/edtPWCheck"

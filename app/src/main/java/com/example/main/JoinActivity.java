@@ -84,41 +84,41 @@ public class JoinActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
-//        edtPWCheck.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                pw = edtPW.getText().toString();
-//                if (pw.equals(edtPWCheck.getText().toString())) {
-//                    bool_pw = true;
-//
-//                } else {
-//                    edtPWCheck.setHint("비밀번호를 입력해주세요");
-//                    edtPWCheck.setHintTextColor(Color.rgb(204, 61, 61));
-//                    bool_pw = false;
-//                }
-//                if (bool_pw) imgError.setVisibility(View.INVISIBLE);
-//                else imgError.setVisibility(View.VISIBLE);
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                pw = edtPW.getText().toString();
-//                if (pw == edtPWCheck.getText().toString()) {
-//                    bool_pw = true;
-//                    imgError.setVisibility(View.INVISIBLE);
-//                } else {
-//                    bool_pw = false;
-//                    edtPWCheck.setHint("비밀번호를 입력해주세요");
-//                    edtPWCheck.setHintTextColor(Color.rgb(204, 61, 61));
-//                    imgError.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
+        edtPWCheck.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                pw = edtPW.getText().toString();
+                if (pw.equals(edtPWCheck.getText().toString())) {
+                    bool_pw = true;
+
+                } else {
+                    edtPWCheck.setHint("비밀번호를 입력해주세요");
+                    edtPWCheck.setHintTextColor(Color.rgb(204, 61, 61));
+                    bool_pw = false;
+                }
+                if (bool_pw) imgError.setVisibility(View.INVISIBLE);
+                else imgError.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                pw = edtPW.getText().toString();
+                if (pw.equals( edtPWCheck.getText().toString())) {
+                    bool_pw = true;
+                    imgError.setVisibility(View.INVISIBLE);
+                } else {
+                    bool_pw = false;
+                    edtPWCheck.setHint("비밀번호를 입력해주세요");
+                    edtPWCheck.setHintTextColor(Color.rgb(204, 61, 61));
+                    imgError.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         //TODO 성별선택
         rgGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

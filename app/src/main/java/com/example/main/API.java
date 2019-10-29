@@ -52,7 +52,7 @@ public interface API {
     Call<UpdateOppoID> getUpdate(@Query("ID") String id, @Query("OPPO") String oppo);
 
     @GET("connectCouple.php")
-    Call<responseConnect> getConnect(@Query("ID") String id, @Query("OPPO") String oppo);
+    Call<responseConnect> getConn(@Query("ID") String id, @Query("OPPO") String oppo);
 
     @GET("addReview.php")
     Call<ResponseReview> getReview(@Query("PLACE") String place, @Query("RATE") float rate, @Query("ID") String id, @Query("CONTENT") String content, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY")int day);

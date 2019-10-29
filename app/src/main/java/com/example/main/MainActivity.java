@@ -43,7 +43,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     DrawerLayout drawerLayout;
     static String id;
     static int coupleID;
-    String nickname, email;
+    static String nickname, email;
     ViewPager viewPager;
     LinearLayout logout;
     ImageButton btnOverflow, btnBack;
