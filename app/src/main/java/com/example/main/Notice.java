@@ -12,6 +12,10 @@ public class Notice extends AppCompatActivity {
     ImageButton btnBack;
     ListView listView;
     Overflow_Notice_Adapter adapter;
+    String id;
+    String nickname;
+    String email;
+    int couple;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +24,10 @@ public class Notice extends AppCompatActivity {
         btnBack=findViewById(R.id.btnBack);
         adapter = new Overflow_Notice_Adapter();
         listView.setAdapter(adapter);
+        id=MainActivity.id;
+        nickname=MainActivity.nickname;
+        couple=MainActivity.coupleID;
+        email=MainActivity.email;
 
         for(int i=0;i<10;i++){
             adapter.addItem("공지사항제목"+i,"공지사항내용"+i);
@@ -29,6 +37,10 @@ public class Notice extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(Notice.this,MainActivity.class);
+                intent.putExtra("ID",id);
+                intent.putExtra("NICK",nickname);
+                intent.putExtra("EMAIL",email);
+                intent.putExtra("COUPLE",couple);
                 startActivity(intent);
                 finish();
             }

@@ -89,7 +89,7 @@ public class Main extends Fragment {
     };
 
     @SuppressLint("ValidFragment")
-    public Main(String _id){id=_id;}
+    public Main(){}
 
     @Override
     @Nullable
@@ -110,7 +110,14 @@ public class Main extends Fragment {
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);                      //프로필사진1(나) 버튼
         profile_Btn2 = layout.findViewById(R.id.profile_Btn2);                      //프로필사진2(상대방) 버튼
 
-
+        //profile1 저장된 사진 보여주기
+        Glide.with(context)
+                .load(uri_)
+                .centerCrop()
+                .crossFade()
+                .bitmapTransform(new CropCircleTransformation(context))
+                .override(70, 70)
+                .into(profile_Btn1);
 
         //텍스트 바꾸기
         to_do_Btn.setFactory(new ViewSwitcher.ViewFactory() {
@@ -145,7 +152,6 @@ public class Main extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);                                   //인텐트 선언 및 생성
                 startActivity(intent);
-
             }
         });
 
@@ -203,6 +209,15 @@ public class Main extends Fragment {
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        //메인화면 프로필 변경
+                        Glide.with(context)
+                                .load(uri_)
+                                .centerCrop()
+                                .crossFade()
+                                .bitmapTransform(new CropCircleTransformation(context))
+                                .override(70, 70)
+                                .into(profile_Btn1);
 
                         //EditText에 변경한 값 받아오기
                         bth1 = birthday.getText().toString();
@@ -279,7 +294,7 @@ public class Main extends Fragment {
             {
                 Log.e("화면꺼졌을 때","나 다른화면에 있다!?" );
                 todoThread.interrupt();             //스레드 멈추기
-                Log.e("화면 멈췄다면...","잘 멈췄어!" );
+                Log.e("화면 멈췄다면...","스레드는 잘 멈췄어!" );
             }
             catch (Exception e)
             {
@@ -384,27 +399,25 @@ public class Main extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            if (requestCode == REQUEST_CODE&&resultCode == Activity.RESULT_OK&& data != null && data.getData() != null) {
 
-            try {
-                Uri uri = data.getData();
+                try {
+                    Uri uri = data.getData();
 
-                profile_img = profileLayout1.findViewById(R.id.profile_img);
-                Glide.with(context)
-                        .load(uri)
-                        .centerCrop()
-                        .crossFade()
-                        .bitmapTransform(new CropCircleTransformation(context))
-                        .override(70, 70)
-                        .into(profile_img);
+                    profile_img = profileLayout1.findViewById(R.id.profile_img);
+                    Glide.with(context)
+                            .load(uri)
+                            .centerCrop()
+                            .crossFade()
+                            .bitmapTransform(new CropCircleTransformation(context))
+                            .override(70, 70)
+                            .into(profile_img);
 
-                uri_ = uri;
+                    uri_ = uri;
 
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
     }
 }

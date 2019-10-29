@@ -2,6 +2,8 @@ package com.example.main;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +27,6 @@ public class ToDoList extends AppCompatActivity {
     TextView change, delete;
     ListView listView1, listView2;                                      //선택한거, 안한거
     ToDoList_ChoiceListAdapter adapter1, adapter2;                     //선택한거, 안한거
-    SlidingDrawer slidingDrawer;
 
     MyDBHelper todoDB;
     SQLiteDatabase sqlDB;
@@ -56,9 +57,6 @@ public class ToDoList extends AppCompatActivity {
         });
 
 
-        //슬라이드 드로어 인플레이트
-        slidingDrawer = findViewById(R.id.slidingdrawer);
-
         //리스트뷰 인플레이트
         listView1 = findViewById(R.id.list);
         listView2 = findViewById(R.id.checked_list);
@@ -71,21 +69,6 @@ public class ToDoList extends AppCompatActivity {
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
 
-        //슬라이딩 드로우가 닫혔을 때
-        slidingDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
-            @Override
-            public void onDrawerOpened() {
-
-            }
-        });
-
-        //슬라이딩 드로우가 열렸을 때
-        slidingDrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener() {
-            @Override
-            public void onDrawerClosed() {
-
-            }
-        });
 
         //체크되지 않은 투두 아이템 추가
         Item_show(adapter1, strCoupleID,false);
@@ -143,13 +126,12 @@ public class ToDoList extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 //final ListData mData = mAdapter1.listData.get(position);
                 final ToDoList_ListItem listItem = adapter1.listViewItems.get(position);
-
                 AlertDialog.Builder dlg2 = new AlertDialog.Builder(ToDoList.this);
                 final AlertDialog dl2 = dlg2.create();
+                dl2.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));       //다이얼로그 배경 투명설정
                 menuLayout = View.inflate(ToDoList.this, R.layout.list_menu, null);
                 dl2.setView(menuLayout);
                 dl2.show();
-
                 change = menuLayout.findViewById(R.id.change);
                 delete = menuLayout.findViewById(R.id.delete);
 

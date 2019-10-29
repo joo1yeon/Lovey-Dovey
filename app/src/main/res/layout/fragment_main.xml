@@ -104,7 +104,6 @@
         android:layout_height="60dp"
         android:layout_marginLeft="50dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/basic"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

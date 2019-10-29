@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -14,22 +14,23 @@
             android:id="@+id/plaveN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="150dp"
             android:fontFamily="@font/netmarble_m"
-            android:textSize="35dp" />
+            android:textSize="35dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
             android:id="@+id/favorite"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="75dp"
-            android:layout_gravity="center"
-            android:src="@drawable/star_click" />
-    </LinearLayout>
+            android:src="@drawable/star_click"
+            android:layout_marginRight="10dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
 
     <ImageView
         android:id="@+id/place"
