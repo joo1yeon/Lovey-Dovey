@@ -37,6 +37,13 @@ public interface API {
     Call<List<ResponseMarker>> getMarker(@Query("coupleID") int id, @Query("year") int year, @Query("month") int month, @Query("day")int day);
 
     @GET("Join.php")
+    Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("NUM") int num,@Query("EMAIL") String email);
+
+    @GET("date_img.php")
+    Call<List<ResponseDate_image>> getDate_image();
+
+    @GET("date_img2.php")
+    Call<List<ResponseDate_image2>> getDate_image2();
     Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("EMAIL") String email);
 
     @GET("addMarker.php")
