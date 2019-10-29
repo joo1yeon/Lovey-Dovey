@@ -9,13 +9,13 @@ public class ResponseTODO {
     @SerializedName("coupleID")
     private int coupleID;
 
-    @SerializedName("DATE")
+    @SerializedName("Date")
     private String date;
 
-    @SerializedName("CONTENT")
+    @SerializedName("Content")
     private String content;
 
-    @SerializedName("CHECKED")
+    @SerializedName("Checked")
     private String checked;
 
     public ResponseTODO(int _todoID, int _coupleID, String _date, String _content, String _checked){

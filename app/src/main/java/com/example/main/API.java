@@ -45,7 +45,7 @@ public interface API {
     @GET("resetTable.php")
     Call<ResReset> getReset();
 
-    /*@GET(".php")
-    Call<ResponseTODO> get(@Query("todoID") int id, @Query("coupleID") String c_id, @Query("DATE") String date, @Query("CONTENT") String content, @Query("CHECKED") String checked );*/
+    @GET("todo_select.php")
+    Call<ResponseTODO> getInquiry(@Query("todo_id") int id, @Query("coupleID") String c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked );
 }
 

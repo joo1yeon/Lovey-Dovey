@@ -46,6 +46,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @SuppressLint("ValidFragment")
 public class Main extends Fragment {
@@ -154,7 +157,30 @@ public class Main extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);                                   //인텐트 선언 및 생성
                 startActivity(intent);
+
+               /* if (id.isEmpty()) {
+                    Call<ResponseTODO> res = Net.getInstance().getApi().get();
+                    res.enqueue(new Callback<ResponseTODO>() {
+                        @Override
+                        public void onResponse(Call<ResponseTODO> call, Response<ResponseTODO> response) {
+                            if (response.isSuccessful()) {
+                                ResponseTODO responseTODO = response.body();
+                                Toast.makeText(getContext(), "num : " + responseTODO.getID(), Toast.LENGTH_LONG).show();
+
+                            } else
+                                Toast.makeText(getContext(), "통신1 에러", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseTODO> call, Throwable t) {
+                            Toast.makeText(getContext(), "통신3 에러", Toast.LENGTH_SHORT).show();
+                        }
+
+                }else Toast.makeText(getContext(), "입력되지 않은 정보가 있습니다.", Toast.LENGTH_SHORT).show();
+
+                }*/
             }
+
         });
 
 
