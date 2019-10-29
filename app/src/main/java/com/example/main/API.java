@@ -63,7 +63,10 @@ public interface API {
     Call<List<ResponseGetReview>> getPrintReview(@Query("PLACE") String place);
 
     @GET("save_storyData.php")
-    Call<ResponseSaveStory> setStoryData(@Query("storyID") String story_id, @Query("year") int year, @Query("month") int month, @Query("day") int day, @Query("storyTitle") String mTitle, @Query("contents") String contents);
+    Call<ResponseSaveStory> setStoryData(@Query("STORY_ID") String story_id, @Query("WRITER") String writer, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title,@Query("IMG_PATH") String img_path, @Query("CONTENTS") String contents);
+
+    @GET("printStoryData.php")
+    Call<List<ResponseStory>> getStoryData();
 
     @Multipart
     @POST("upload_img.php")

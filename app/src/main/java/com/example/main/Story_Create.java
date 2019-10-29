@@ -223,7 +223,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 
     //TODO 서버에 story data 저장하기
     public void saveStoryData() { //서버에 저장은 되는데 통신3에러가 뜬다.
-        final Call<ResponseSaveStory> res = Net.getInstance().getApi().setStoryData(story_id, year, month, day, mTitle, contents);
+        final Call<ResponseSaveStory> res = Net.getInstance().getApi().setStoryData(story_id, MainActivity.id, year, month, day, mTitle, imgPath, contents);
         res.enqueue(new Callback<ResponseSaveStory>() {
             @Override
             public void onResponse(Call<ResponseSaveStory> call, Response<ResponseSaveStory> response) {

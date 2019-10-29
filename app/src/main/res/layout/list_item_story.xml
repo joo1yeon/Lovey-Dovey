@@ -22,18 +22,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/netmarble_m"
-        android:gravity="right"
-        android:padding="5dp"
+        android:gravity="left"
+        android:padding="10dp"
         android:text="날짜"
         android:textColor="#8C8C8C"
         android:textSize="15sp"
-        app:layout_constraintTop_toBottomOf="@id/story_title1"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/story_title1" />
 
     <ImageView
         android:id="@+id/story_mainImg1"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:background="#eff6f1"
         android:src="@drawable/album_eximg1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/story_date1" />
@@ -42,11 +43,18 @@
         android:id="@+id/contents_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="10dp"
         android:text="test test test"
         android:textColor="#5D5D5D"
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/story_mainImg1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#EAEAEA"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contents_text" />
 
 </android.support.constraint.ConstraintLayout>
