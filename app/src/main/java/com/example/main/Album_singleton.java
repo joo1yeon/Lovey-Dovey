@@ -30,23 +30,23 @@ public class Album_singleton { //Story 객체들을 저장하는 저장소
         mStories = new ArrayList<>(); //Story 객체를 저장하는 비어있는 List 생성
 
 
-        DbOpenHelper mDbOpenHelper = new DbOpenHelper(context);
-        mDbOpenHelper.open();
-        mDbOpenHelper.create();
-
-        Cursor cursor = mDbOpenHelper.selectColumns();
-        while (cursor.moveToNext()) {
-            String tempTitle = cursor.getString(cursor.getColumnIndex("title"));
-            int tempYear = cursor.getInt(cursor.getColumnIndex("year"));
-            int tempMonth = cursor.getInt(cursor.getColumnIndex("month"));
-            int tempDay = cursor.getInt(cursor.getColumnIndex("day"));
-            Story story = new Story();
-            story.setTitle(tempTitle);
-            story.setYear(tempYear);
-            story.setMonth(tempMonth);
-            story.setDay(tempDay);
-            mStories.add(story);
-        }
+//        DbOpenHelper mDbOpenHelper = new DbOpenHelper(context);
+//        mDbOpenHelper.open();
+//        mDbOpenHelper.create();
+//
+//        Cursor cursor = mDbOpenHelper.selectColumns();
+//        while (cursor.moveToNext()) {
+//            String tempTitle = cursor.getString(cursor.getColumnIndex("title"));
+//            int tempYear = cursor.getInt(cursor.getColumnIndex("year"));
+//            int tempMonth = cursor.getInt(cursor.getColumnIndex("month"));
+//            int tempDay = cursor.getInt(cursor.getColumnIndex("day"));
+//            Story story = new Story();
+//            story.setTitle(tempTitle);
+//            story.setYear(tempYear);
+//            story.setMonth(tempMonth);
+//            story.setDay(tempDay);
+//            mStories.add(story);
+//        }
 
         Call<List<ResponseStory>> res = Net.getInstance().getApi().getStoryData();
         res.enqueue(new Callback<List<ResponseStory>>() {

@@ -35,7 +35,8 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     public FloatingActionButton searchBtn;
     DbOpenHelper mDbOpenHelper;
 
-    public StoryListFragment(){}
+    public StoryListFragment(){
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,8 +108,8 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(getActivity(), Story_Contents.class);
-            startActivity(intent); //스토리 대표사진을 누르면 액티비티 시작
+//            Intent intent = new Intent(getActivity(), Story_Contents.class);
+//            startActivity(intent); //스토리 대표사진을 누르면 액티비티 시작
         }
 
         public void bindStory(Story story) { //제목과 날짜를 화면에 출력
