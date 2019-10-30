@@ -84,5 +84,9 @@ public interface API {
     @GET("todoData.php")
     Call<List<ResponseTODO>> getInquiry(@Query("coupleID") int couple_id);
 
+    @GET("todoAdd.php")
+    Call<ResponseTD_Insert> getTD_Add(@Query("todoID") int id, @Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked);
+    //@Query("todo_id") int id, @Query("coupleID") String c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked
+
 }
 

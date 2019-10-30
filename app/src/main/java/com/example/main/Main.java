@@ -284,19 +284,6 @@ public class Main extends Fragment {
                 final TextView name = profileLayout2.findViewById(R.id.name);
 
                 //저장된 값 보여주기
-                Call<ResponseProfile> res = Net.getInstance().getApi().getProfile(MainActivity.id);
-                res.enqueue(new Callback<ResponseProfile>() {
-                    @Override
-                    public void onResponse(Call<ResponseProfile> call, Response<ResponseProfile> response) {
-                        name.setText(response.body().getName());
-                        email.setText(response.body().getEmail());
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseProfile> call, Throwable t) {
-
-                    }
-                });
 
                 //닫기 버튼 클릭했을 때 다이얼로그 종료
                 close.setOnClickListener(new View.OnClickListener() {
@@ -312,18 +299,18 @@ public class Main extends Fragment {
     }
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
+   /* @Override
+   public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             //스레드 객체 생성 및 시작
-            //todoThread = null;
-            //todoThread = new TodoThread();
-            //todoThread.start();
+            todoThread = null;
+            todoThread = new TodoThread();
+            todoThread.start();
             Log.e("화면켜졌을 때", "나 켜졌어!");
         } else {
             try {
                 Log.e("화면꺼졌을 때", "나 다른화면에 있다!?");
-                //todoThread.interrupt();             //스레드 멈추기
+                todoThread.interrupt();             //스레드 멈추기
                 Log.e("화면 멈췄다면...", "스레드는 잘 멈췄어!");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -331,7 +318,7 @@ public class Main extends Fragment {
 
 
         }
-    }
+    }*/
 
 
     //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기

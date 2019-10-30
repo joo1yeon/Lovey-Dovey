@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class ToDoList extends AppCompatActivity {
     Cursor cursor;
     String strContent, strDate, strCoupleID = "couple0", strcheck;
 
-    int i = 0;
+    int i1, i2;
 
 
     @Override
@@ -77,58 +78,8 @@ public class ToDoList extends AppCompatActivity {
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
 
-
-        Log.e("test", "야아아아0");
-
-        Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
-        res.enqueue(new Callback<List<ResponseTODO>>() {
-            @Override
-            public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
-                Log.e("test", "야아아아123");
-                if(response.isSuccessful()){
-                    List<ResponseTODO> responseTodo = response.body();
-                    Log.e("test", "야아아아123455");
-                    for (ResponseTODO responseTodo_ : responseTodo){
-
-                        Log.e("test", "야아아아1");
-                        if(false == Boolean.valueOf(responseTodo_.getChecked())) {
-                            adapter1.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
-                            listView1.setItemChecked(i,false);
-                            i++;
-
-                            Log.e("test", "야아아아2");
-                        } else {
-                            Log.e("test", "야아아아3");
-                            adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
-                            listView1.setItemChecked(i,true);
-                            i++;
-                        }
-
-                        adapter1.notifyDataSetChanged();
-                        adapter2.notifyDataSetChanged();
-                        Log.e("test", "555555");
-                    }
-
-                }
-                else Log.d("test", "통신 1 에러");
-            }
-
-            @Override
-            public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
-                Log.d("test", "통신3 에러" + t.getMessage());
-            }
-        });
-
-
-
-        //체크되지 않은 투두 아이템 추가
-        //Item_show(adapter1, strCoupleID,false);
-
-
-        //체크된 투두 아이템 추가
-        //Item_show(adapter2, strCoupleID,true);
-
-
+        //todolist 조회
+        Item_show();
 
         //TODO 보충 : 전부 다 체크해제 상태여야 함, 체크했을 때 아래꺼까지 체크 안되는 방법
         //체크되지 않은 투두리스트 클릭했을 때
@@ -138,20 +89,12 @@ public class ToDoList extends AppCompatActivity {
                 ToDoList_ListItem listItem = adapter1.listViewItems.get(i);
                 String content = listItem.getContent();
 
-
                 Item_Click(adapter1,strCoupleID,true, content,i);
                 adapter1.clearItem();
                 Item_show(adapter1, strCoupleID,false);
                 adapter2.clearItem();
                 Item_show(adapter2, strCoupleID,true);
                 adapter2.notifyDataSetChanged();
-
-
-                /*listView1.setItemChecked(i,false);                     //선택한 인덱스의 체크 풀기
-                adapter1.remove(i);                                       //선택한 adapter1 내용을 지우기
-                adapter1.notifyDataSetChanged();                          //변경한 데이터 반영
-                adapter2.addItem(content,Date());                         //adapter2에 adapter1에 있던 내용 추가
-                adapter2.notifyDataSetChanged();                          //변경한 데이터 반영*/
 
             }
         });
@@ -242,9 +185,6 @@ public class ToDoList extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        /*adapter1.remove(position);
-                        adapter1.notifyDataSetChanged();*/
-
                         Item_Delete(adapter1,strCoupleID,listItem.getContent());
                         adapter1.clearItem();                                           //리스트뷰 초기화
                         Item_show(adapter1,strCoupleID,false);                   //데이터 베이스 검색 후 내용 받아옴
@@ -264,7 +204,6 @@ public class ToDoList extends AppCompatActivity {
                 ToDoList_ListItem listItem = adapter2.listViewItems.get(i);
                 String content = listItem.getContent();
 
-
                 Item_Click(adapter2,strCoupleID,false,content,i);
                 adapter2.clearItem();
                 Item_show(adapter2, strCoupleID,true);
@@ -272,11 +211,6 @@ public class ToDoList extends AppCompatActivity {
                 Item_show(adapter1, strCoupleID,false);
                 adapter1.notifyDataSetChanged();
 
-                /*listView2.setItemChecked(i,false);                  //선택한 인덱스의 체크 풀기
-                adapter2.remove(i);                                        //선택한 adapter2 내용을 지우기
-                adapter2.notifyDataSetChanged();                           //변경한 데이터 반영
-                adapter1.addItem(content,"");                              //adapter1에 adapter2에 있던 내용 추가
-                adapter1.notifyDataSetChanged();                          //변경한 데이터 반영*/
             }
         });
 
@@ -308,14 +242,13 @@ public class ToDoList extends AppCompatActivity {
 
                         String text = contents.getText().toString();
 
-                        Item_add(adapter1,strCoupleID,text);
+                        /*Item_add(adapter1,strCoupleID,text);
                         adapter1.clearItem();                                           //리스트뷰 초기화
-                        Item_show(adapter1,strCoupleID,false);                   //데이터 베이스 검색 후 내용 받아옴
+                        Item_show(adapter1,strCoupleID,false);                   //데이터 베이스 검색 후 내용 받아옴*/
 
+                        Item_add(i1+i2,MainActivity.coupleID,text);
+                        Item_show();
 
-                        /*adapter1.addItem(text, "");
-                        contents.setText("");
-                        adapter1.notifyDataSetChanged();*/
                         dl.dismiss();
 
                     }
@@ -341,22 +274,44 @@ public class ToDoList extends AppCompatActivity {
         return date_;
     }
 
-       /* public void checkedConfirm(int position) {
-            ListData check = listData.get(position);
-            // 체크된 아이템인지 판단할 boolean 변수
-            for (int i = 0; i < listData.size(); i++) {
-                if (check.checkBox.isChecked()==true) {
-                    check.checkBox.setChecked(true);
-                } else {
-                    check.checkBox.setChecked(false);
+    //To-Do-List 조회
+    public void Item_show(){
+        Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
+        res.enqueue(new Callback<List<ResponseTODO>>() {
+            @Override
+            public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
+                if(response.isSuccessful()){
+                    adapter1.clearItem();
+                    adapter2.clearItem();
+                    i1 = 0;
+                    i2 = 0;
+
+                    List<ResponseTODO> responseTodo = response.body();
+
+                    for (ResponseTODO responseTodo_ : responseTodo){
+
+                        if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
+                            adapter1.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
+                            listView1.setItemChecked(i1++,false);
+                            adapter1.notifyDataSetChanged();
+                        } else {
+                            adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
+                            listView2.setItemChecked(i2++,true);
+                            adapter2.notifyDataSetChanged();
+                        }
+                    }
                 }
-                notifyDataSetChanged();
+                else Log.d("test", "통신 1 에러");
             }
-        }*/
+            @Override
+            public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
+                Log.d("test", "통신3 에러" + t.getMessage());
+            }
+        });
 
+    }
 
-
-       //To-Do-List 조회
+      //To-Do-List 조회
        public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
            sqlDB = todoDB.getReadableDatabase();
 
@@ -385,6 +340,28 @@ public class ToDoList extends AppCompatActivity {
             cursor.close();
             sqlDB.close();
        }
+
+    //To-Do-List 추가
+    public void Item_add(int todoID, int coupleID, String content){
+
+        Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(todoID, coupleID," ", content,"false");
+        res.enqueue(new Callback<ResponseTD_Insert>() {
+            @Override
+            public void onResponse(Call<ResponseTD_Insert> call, Response<ResponseTD_Insert> response) {
+                if(response.isSuccessful()){
+                    ResponseTD_Insert responseGet = response.body();
+                    if (responseGet.setTDInsert() == true ) {
+                    }
+                }
+                else Log.e("test", "통신1 에러");
+            }
+            @Override
+            public void onFailure(Call<ResponseTD_Insert> call, Throwable t) {
+                Log.e("test", "통신3 에러" + t.getMessage());
+            }
+        });
+
+    }
 
         //To-Do-List 추가
        public void Item_add(ToDoList_ChoiceListAdapter adapter, String id, String content){
