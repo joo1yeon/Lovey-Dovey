@@ -86,6 +86,15 @@ public interface API {
 
     @GET("todoAdd.php")
     Call<ResponseTD_Insert> getTD_Add(@Query("todoID") int id, @Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked);
+
+    /*@GET("todo.php")
+    Call<ResponseTD_update> getTD_Modify(@Query("Content") String content);
+    @GET("todo.php")
+    Call<ResponseTD_delete> getTD_Delt(@Query("coupleID") String c_id, @Query("Content") String content);
+    @GET("todo.php")
+    Call<ResponseTD_click> getTD_Click(@Query("coupleID") String c_id, @Query("Date") String date, @Query("Checked") String checked);
+    */
+
     //@Query("todo_id") int id, @Query("coupleID") String c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked
 
 }
