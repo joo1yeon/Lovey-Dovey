@@ -7,10 +7,10 @@ public class Datecourse_ListViewItem {
     public String image;
     public String title;
 
-    public Datecourse_ListViewItem(String image, String title){
-        this.image=image;
+    public Datecourse_ListViewItem(String title){
         this.title=title;
     }
+
     public void setImage(String image) {
         this.image = image;
     }
