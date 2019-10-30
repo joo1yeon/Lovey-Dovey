@@ -298,36 +298,6 @@ public class ToDoList extends AppCompatActivity {
 
     }
 
-      //To-Do-List 조회
-      /* public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
-           sqlDB = todoDB.getReadableDatabase();
-
-            cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+check+"';",null);
-            int count = cursor.getCount();
-
-
-            for(int i=0;i<count;i++) {
-                cursor.moveToNext();                                    //커서 넘기기
-
-                strDate = cursor.getString(2);
-                strContent = cursor.getString(3);
-                adapter.addItem(strContent, strDate);
-
-                //Check박스가 adapter1에서는 체크 X , adapter2 에서는 체크 O
-                if(adapter == adapter1)
-                    listView1.setItemChecked(i,false);
-                else if(adapter == adapter2) {
-                    listView2.setItemChecked(i, true);
-                }
-
-                }
-
-
-
-            cursor.close();
-            sqlDB.close();
-       }*/
-
     //To-Do-List 추가
     public void Item_add(int todoID, int coupleID, String content){
 
