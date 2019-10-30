@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvPlace"
@@ -23,9 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/netmarble_m"
-        android:textSize="20dp"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
         app:layout_constraintLeft_toRightOf="@id/tvPlace"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,9 +45,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/netmarble_m"
-        android:textSize="20dp"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
         app:layout_constraintLeft_toRightOf="@id/tvTime"
         app:layout_constraintTop_toBottomOf="@+id/place" />
 
@@ -69,33 +69,61 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/netmarble_m"
-        android:textSize="20dp"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
         app:layout_constraintLeft_toRightOf="@id/tvTel"
         app:layout_constraintTop_toBottomOf="@+id/time" />
 
     <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
+        android:id="@+id/tvContent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
-        android:autoLink="web"
         android:fontFamily="@font/netmarble_m"
+        android:text="입장료 : "
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tel" />
 
     <TextView
-        android:id="@+id/content2"
-        android:layout_width="match_parent"
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="18dp"
+        android:autoLink="web"
+        android:fontFamily="@font/netmarble_m"
+        android:textColorLink="#000fff"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
+        app:layout_constraintLeft_toRightOf="@+id/tvContent"
+        app:layout_constraintTop_toBottomOf="@+id/tel" />
+
+    <TextView
+        android:id="@+id/tvContent2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/netmarble_m"
+        android:text="역 정보 : "
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content" />
+
+    <TextView
+        android:id="@+id/content2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="18dp"
+        android:fontFamily="@font/netmarble_m"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
+        app:layout_constraintLeft_toRightOf="@+id/tvContent2"
         app:layout_constraintTop_toBottomOf="@+id/content" />
 
 </android.support.constraint.ConstraintLayout>

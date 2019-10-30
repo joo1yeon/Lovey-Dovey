@@ -124,8 +124,6 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
             });
             container.addView(view);
 
-
-
                imageView.setOnClickListener(
                         new View.OnClickListener() {
                     @Override

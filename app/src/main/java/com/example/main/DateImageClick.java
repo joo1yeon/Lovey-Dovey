@@ -30,12 +30,7 @@ public class DateImageClick extends AppCompatActivity {
     ArrayList<Datecourse_ListViewItem> date_listItem;
     String[] PlaceN = new String[6];
     String[] Placeimage = new String[6];
-    String[] Placeimage2 = new String[6];
-    String[] PlaceTime = new String[6];
-    String[] PlaceTel = new String[6];
-    String[] PlaceC = new String[6];
-    String[] PlaceC2 = new String[6];
-    String[] PlaceP = new String[6];
+    String[] place_id=new String[6];
     int position;
 
     @Override
@@ -47,8 +42,6 @@ public class DateImageClick extends AppCompatActivity {
 
         Intent intent = getIntent();
         final int id = intent.getIntExtra("ID", 0);
-
-         Log.d("EEE",id+"");
 
         listView = findViewById(R.id.imagelist);
         date_listItem = new ArrayList<Datecourse_ListViewItem>();
@@ -64,13 +57,7 @@ public class DateImageClick extends AppCompatActivity {
                     for (ResponseDate_image2 responseDate_Image2 : responseGet) {
                         PlaceN[i] = responseDate_Image2.getname();
                         Placeimage[i] = responseDate_Image2.getimage();
-                        Placeimage2[i]=responseDate_Image2.getimage2();
-                        PlaceTime[i] = responseDate_Image2.gettime();
-                        PlaceTel[i] = responseDate_Image2.gettel();
-                        PlaceC[i] = responseDate_Image2.getcontent();
-                        PlaceC2[i]=responseDate_Image2.getcontent2();
-                        PlaceP[i] = responseDate_Image2.getplace();
-                        Log.d("QQQ",Placeimage2[i]);
+                        place_id[i]=responseDate_Image2.getPlace_id();
                         ++i;
                     }
                 }
@@ -94,12 +81,7 @@ public class DateImageClick extends AppCompatActivity {
                 Intent intent = new Intent(DateImageClick.this, Datecourse_Fragment.class);
                 intent.putExtra("PlaceN", PlaceN[position]);
                 intent.putExtra("Placeimage", Placeimage[position]);
-                intent.putExtra("Placeimage2", Placeimage2[position]);
-                intent.putExtra("PlaceTime", PlaceTime[position]);
-                intent.putExtra("PlaceTel", PlaceTel[position]);
-                intent.putExtra("PlaceC", PlaceC[position]);
-                intent.putExtra("PlaceC2", PlaceC2[position]);
-                intent.putExtra("PlaceP", PlaceP[position]);
+                intent.putExtra("Placeid", place_id[position]);
                 intent.putExtra("id",id);
                 startActivity(intent);
             }

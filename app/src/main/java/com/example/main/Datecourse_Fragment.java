@@ -20,7 +20,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
     Date_Info date_info;
     ImageView place,favorite;
     int i = 0;
-    String PlaceName,Placeimage,Placeimage2,PlaceTime,PlaceTel,PlaceC,PlaceC2,PlaceP;
+    String PlaceName,Placeimage,place_id;
     int id;
 
     @Override
@@ -39,18 +39,13 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         Intent intent = getIntent();
         PlaceName = intent.getStringExtra("PlaceN");
         Placeimage = intent.getStringExtra("Placeimage");
-        Placeimage2 = intent.getStringExtra("Placeimage2");
-        PlaceTime = intent.getStringExtra("PlaceTime");
-        PlaceTel = intent.getStringExtra("PlaceTel");
-        PlaceC = intent.getStringExtra("PlaceC");
-        PlaceC2 = intent.getStringExtra("PlaceC2");
-        PlaceP = intent.getStringExtra("PlaceP");
+        place_id = intent.getStringExtra("Placeid");
         id = intent.getIntExtra("id", 0);
 
         placeN.setText(PlaceName);
         Glide.with(this).load(Placeimage).into(place);
 
-        date_info = new Date_Info(PlaceP, PlaceTime, PlaceTel, PlaceC, PlaceC2,id);
+        date_info = new Date_Info(place_id,id);
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +64,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.mainFrag, new Date_Info(PlaceP, PlaceTime, PlaceTel, PlaceC, PlaceC2,id))
+                    .replace(R.id.mainFrag, new Date_Info(place_id,id))
                     .commit();
         }
         dateInfo.setOnClickListener(this);
@@ -86,7 +81,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
                 reviewLine.setBackgroundColor(Color.rgb(140, 140, 140));
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.mainFrag, new Date_Info(PlaceP, PlaceTime, PlaceTel, PlaceC, PlaceC2,id))
+                        .replace(R.id.mainFrag, new Date_Info(place_id,id))
                         .commit();
                 break;
             case R.id.dateReview:
