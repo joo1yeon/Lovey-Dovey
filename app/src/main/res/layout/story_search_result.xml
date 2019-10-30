@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:fontFamily="@font/netmarble_b"
+        android:fontFamily="@font/netmarble_m"
         android:text="검색 결과 () 건"
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"
