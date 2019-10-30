@@ -191,7 +191,6 @@ public class JoinActivity extends AppCompatActivity {
                     String api_gender = gender;
                     String api_nick = edtNickName.getText().toString();
                     String api_email = edtEmail.getText().toString() + "@" + edtDomain.getText().toString();
-                    Random rmd = new Random();
 
                     if(!api_name.equals(null)&&!api_id.equals(null)&&!api_pw.equals(null)&&!api_date.equals(null)&&!api_gender.equals(null)&&!api_nick.equals(null)&&!api_email.equals(null)){
                         Call<ResponseJoin> res = Net.getInstance().getApi().getJoin(api_name, api_id, api_pw,api_nick,api_date, api_gender ,  api_email);

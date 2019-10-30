@@ -167,13 +167,13 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             public void onClick(View v) {
 //                layout.setClickable(false);
                 drawerLayout.openDrawer(Gravity.RIGHT);
-                Cursor cursor = sqlDB.rawQuery("select nickname, email from info where id='" + id + "';", null);
-                if (cursor.getCount() >= 1) {
-                    cursor.moveToFirst();
-                    nickname = cursor.getString(0);
-                    email = cursor.getString(1);
-                }
-                cursor.close();
+//                Cursor cursor = sqlDB.rawQuery("select nickname, email from info where id='" + id + "';", null);
+//                if (cursor.getCount() >= 1) {
+//                    cursor.moveToFirst();
+//                    nickname = cursor.getString(0);
+//                    email = cursor.getString(1);
+//                }
+//                cursor.close();
                 //저장된 프로필 보여주기
                 Glide.with(getApplicationContext())
                         .load(Main.uri_)

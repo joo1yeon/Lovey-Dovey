@@ -77,5 +77,8 @@ public interface API {
             @Header("Authorization") String authorization,
             @PartMap Map<String, RequestBody> map
     );
+
+    @GET("updateProfile.php")
+    Call<ResponseInfoUpdate> getInfoUpdate(@Query("ID") String id, @Query("NICK") String nickname, @Query("EMAIL") String email);
 }
 

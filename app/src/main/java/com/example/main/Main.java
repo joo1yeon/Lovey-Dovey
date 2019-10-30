@@ -205,7 +205,6 @@ public class Main extends Fragment {
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         //메인화면 프로필 변경
                         Glide.with(context)
                                 .load(uri_)
@@ -216,8 +215,26 @@ public class Main extends Fragment {
                                 .into(profile_Btn1);
 
                         //EditText에 변경한 값 받아오기
+                        Call<ResponseInfoUpdate> res = Net.getInstance().getApi().getInfoUpdate(MainActivity.id, name.getText().toString(), email.getText().toString());
+                        res.enqueue(new Callback<ResponseInfoUpdate>() {
+                            @Override
+                            public void onResponse(Call<ResponseInfoUpdate> call, Response<ResponseInfoUpdate> response) {
+                                if (response.body().getUpdate()){
+                                    Toast.makeText(getContext(),"정보가 저장되었습니다.",Toast.LENGTH_SHORT).show();
+                                    MainActivity.email=email.getText().toString();
+                                    MainActivity.nickname=name.getText().toString();
+                                    dl.dismiss();
+                                }
+                                else {
+                                    Toast.makeText(getContext(), "정보가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-                        dl.dismiss();                       //다이얼로그 닫기
+                            @Override
+                            public void onFailure(Call<ResponseInfoUpdate> call, Throwable t) {
+
+                            }
+                        });
                     }
                 });
 
