@@ -66,5 +66,8 @@ public interface API {
 
     @GET("printReview.php")
     Call<List<ResponseGetReview>> getPrintReview(@Query("PLACE") String place);
+
+    @GET("profile.php")
+    Call<ResponseProfile> getProfile(@Query("ID") String id);
 }
 
