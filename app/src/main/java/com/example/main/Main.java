@@ -44,6 +44,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import retrofit2.Call;
@@ -71,6 +72,7 @@ public class Main extends Fragment {
     MyDBHelper mainDB;
     SQLiteDatabase sqlDB;
     Cursor cursor;
+    int i;
 
     static Uri uri_ = Uri.parse("android.resource://com.example.main/drawable/basic");
 
@@ -79,7 +81,7 @@ public class Main extends Fragment {
     public void onStart() {
         super.onStart();
         todo.clear();
-        Item_Content(MainActivity.coupleID);
+        Item_Content();
     }
 
 
@@ -103,7 +105,7 @@ public class Main extends Fragment {
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
         context = getContext();
         todo.clear();
-        Item_Content(MainActivity.coupleID);
+        Item_Content();
 
 
         //인플레이트
@@ -155,28 +157,6 @@ public class Main extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);                                   //인텐트 선언 및 생성
                 startActivity(intent);
-
-               /* if (id.isEmpty()) {
-                    Call<ResponseTODO> res = Net.getInstance().getApi().get();
-                    res.enqueue(new Callback<ResponseTODO>() {
-                        @Override
-                        public void onResponse(Call<ResponseTODO> call, Response<ResponseTODO> response) {
-                            if (response.isSuccessful()) {
-                                ResponseTODO responseTODO = response.body();
-                                Toast.makeText(getContext(), "num : " + responseTODO.getID(), Toast.LENGTH_LONG).show();
-
-                            } else
-                                Toast.makeText(getContext(), "통신1 에러", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseTODO> call, Throwable t) {
-                            Toast.makeText(getContext(), "통신3 에러", Toast.LENGTH_SHORT).show();
-                        }
-
-                }else Toast.makeText(getContext(), "입력되지 않은 정보가 있습니다.", Toast.LENGTH_SHORT).show();
-
-                }*/
             }
 
         });
@@ -299,7 +279,7 @@ public class Main extends Fragment {
     }
 
 
-   /* @Override
+   @Override
    public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             //스레드 객체 생성 및 시작
@@ -318,7 +298,7 @@ public class Main extends Fragment {
 
 
         }
-    }*/
+    }
 
 
     //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
@@ -348,26 +328,37 @@ public class Main extends Fragment {
     }
 
     //ToDoList Check false인 내용 순서대로 삽입
-    public void Item_Content(int id) {
-        sqlDB = mainDB.getReadableDatabase();
-
-        cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='" + id + "' AND checked = '" + false + "';", null);
-        int count = cursor.getCount();
-
-        for (int i = 0; i < count; i++) {
-            cursor.moveToNext();                                    //커서 넘기기
-            todo.add(cursor.getString(3));   //체크하지 않은 내용 넣기
-            //String 배열 때 todo[i] = cursor.getString(3);
-        }
+    public void Item_Content() {
+        i=0;
+        Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
+        res.enqueue(new Callback<List<ResponseTODO>>() {
+            @Override
+            public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
+                if(response.isSuccessful()){
+                    List<ResponseTODO> responseTodo = response.body();
+                    for (ResponseTODO responseTodo_ : responseTodo){
+                        if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
+                            todo.add(responseTodo_.getContent_td());
+                            i++;
+                        }
+                    }
+                }
+                else Log.d("test", "통신 1 에러");
+            }
+            @Override
+            public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
+                Log.d("test", "통신3 에러" + t.getMessage());
+            }
+        });
 
         //todoArrayList 배열에 아무것도 들어있지 않을 때
-        if (count == -1) {
+        if (todo.isEmpty()) {
             todo.add("TODO_LIST에 내용을 입력해주세요");
         }
 
-        cursor.close();
-        sqlDB.close();
     }
+
+
 
     //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
     public class TodoThread extends Thread {
