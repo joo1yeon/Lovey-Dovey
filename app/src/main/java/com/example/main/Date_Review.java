@@ -2,9 +2,7 @@ package com.example.main;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.media.Rating;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -37,12 +34,13 @@ public class Date_Review extends Fragment {
     ImageView add;
     RatingBar _ratingbar;
     ListView listView;
-    String place_id;
+    String place_id, placeN;
     public DateReview_listViewAdapter adapter;
     public static Date_Review context;
 
-    public Date_Review(String place_id) {
+    public Date_Review(String place_id, String placeN) {
         this.place_id = place_id;
+        this.placeN = placeN;
     }
 
 
@@ -53,7 +51,7 @@ public class Date_Review extends Fragment {
         context = this;
         printReview();
 
-        Log.d("EWQ",place_id);
+        Log.d("EWQ", place_id);
         listView = layout.findViewById(R.id.listView);
         adapter = new DateReview_listViewAdapter();
         listView.setAdapter(adapter);
@@ -122,6 +120,7 @@ public class Date_Review extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AllReview.class);
+                intent.putExtra("placeN", placeN);
                 startActivity(intent);
             }
         });

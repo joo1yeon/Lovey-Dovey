@@ -10,6 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +24,21 @@ import retrofit2.Response;
 public class AllReview extends AppCompatActivity {
 
     ListView listView;
+    TextView name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_reviewcheck);
+
+        Intent intent=getIntent();
+        String placeName=intent.getStringExtra("placeN");
+
+        Log.d("!!",placeName);
+
+        name=findViewById(R.id.name);
+
+        name.setText(placeName);
 
         //리뷰 정렬하는 요소를 넣는 ArrayList 선언 및 생성, 어댑터
         ArrayList<String> reviewList;
@@ -43,7 +56,7 @@ public class AllReview extends AppCompatActivity {
         spinner.setAdapter(reviewAdapter);
 
         listView = findViewById(R.id.listView);
-        listView.setAdapter(reviewAdapter);
+        listView.setAdapter(((Date_Review) Date_Review.context).adapter);
 
       /*  spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

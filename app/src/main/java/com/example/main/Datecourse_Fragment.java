@@ -47,7 +47,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         Glide.with(this).load(Placeimage).into(place);
 
         date_info = new Date_Info(place_id,id);
-        date_review=new Date_Review(place_id);
+        date_review=new Date_Review(place_id,PlaceName);
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +93,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
                 reviewLine.setBackgroundColor(Color.rgb(184, 217, 192));
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.mainFrag, new Date_Review(place_id))
+                        .replace(R.id.mainFrag, new Date_Review(place_id,PlaceName))
                         .commit();
                 break;
         }
