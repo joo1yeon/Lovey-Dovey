@@ -1,6 +1,7 @@
 package com.example.main;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,6 +23,11 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ToDoList extends AppCompatActivity {
 
@@ -36,15 +43,13 @@ public class ToDoList extends AppCompatActivity {
     Cursor cursor;
     String strContent, strDate, strCoupleID = "couple0", strcheck;
 
+    int i = 0;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
-
-
-
 
         todoDB = new MyDBHelper(this);          //헬퍼클래스 객체 생성
 
@@ -73,12 +78,55 @@ public class ToDoList extends AppCompatActivity {
         listView2.setAdapter(adapter2);
 
 
+        Log.e("test", "야아아아0");
+
+        Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
+        res.enqueue(new Callback<List<ResponseTODO>>() {
+            @Override
+            public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
+                Log.e("test", "야아아아123");
+                if(response.isSuccessful()){
+                    List<ResponseTODO> responseTodo = response.body();
+                    Log.e("test", "야아아아123455");
+                    for (ResponseTODO responseTodo_ : responseTodo){
+
+                        Log.e("test", "야아아아1");
+                        if(false == Boolean.valueOf(responseTodo_.getChecked())) {
+                            adapter1.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
+                            listView1.setItemChecked(i,false);
+                            i++;
+
+                            Log.e("test", "야아아아2");
+                        } else {
+                            Log.e("test", "야아아아3");
+                            adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
+                            listView1.setItemChecked(i,true);
+                            i++;
+                        }
+
+                        adapter1.notifyDataSetChanged();
+                        adapter2.notifyDataSetChanged();
+                        Log.e("test", "555555");
+                    }
+
+                }
+                else Log.d("test", "통신 1 에러");
+            }
+
+            @Override
+            public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
+                Log.d("test", "통신3 에러" + t.getMessage());
+            }
+        });
+
+
+
         //체크되지 않은 투두 아이템 추가
-        Item_show(adapter1, strCoupleID,false);
+        //Item_show(adapter1, strCoupleID,false);
 
 
         //체크된 투두 아이템 추가
-        Item_show(adapter2, strCoupleID,true);
+        //Item_show(adapter2, strCoupleID,true);
 
 
 
@@ -231,11 +279,6 @@ public class ToDoList extends AppCompatActivity {
                 adapter1.notifyDataSetChanged();                          //변경한 데이터 반영*/
             }
         });
-
-
-        //취소선하는법
-        //textView.setPaintFlags(textView.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-        //textView.setPaintFlags(0);
 
 
         //추가버튼 인플레이트

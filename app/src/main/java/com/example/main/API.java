@@ -47,9 +47,6 @@ public interface API {
     @GET("resetTable.php")
     Call<ResReset> getReset();
 
-    /*@GET("todo_select.php")
-    Call<ResponseTODO> getInquiry(@Query("todo_id") int id, @Query("coupleID") String c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked );*/
-
     @GET("checkID.php")
     Call<ResponseID> getID(@Query("ID") String id);
 
@@ -83,5 +80,9 @@ public interface API {
 
     @GET("updateProfile.php")
     Call<ResponseInfoUpdate> getInfoUpdate(@Query("ID") String id, @Query("NICK") String nickname, @Query("EMAIL") String email);
+
+    @GET("todoData.php")
+    Call<List<ResponseTODO>> getInquiry(@Query("coupleID") int couple_id);
+
 }
 

@@ -316,14 +316,14 @@ public class Main extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             //스레드 객체 생성 및 시작
-            todoThread = null;
-            todoThread = new TodoThread();
-            todoThread.start();
+            //todoThread = null;
+            //todoThread = new TodoThread();
+            //todoThread.start();
             Log.e("화면켜졌을 때", "나 켜졌어!");
         } else {
             try {
                 Log.e("화면꺼졌을 때", "나 다른화면에 있다!?");
-                todoThread.interrupt();             //스레드 멈추기
+                //todoThread.interrupt();             //스레드 멈추기
                 Log.e("화면 멈췄다면...", "스레드는 잘 멈췄어!");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -374,7 +374,7 @@ public class Main extends Fragment {
         }
 
         //todoArrayList 배열에 아무것도 들어있지 않을 때
-        if (count == 0) {
+        if (count == -1) {
             todo.add("TODO_LIST에 내용을 입력해주세요");
         }
 
