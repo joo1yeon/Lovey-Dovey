@@ -18,6 +18,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
 
     TextView placeN, dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
+    Date_Review date_review;
     ImageView place,favorite;
     int i = 0;
     String PlaceName,Placeimage,place_id;
@@ -46,6 +47,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         Glide.with(this).load(Placeimage).into(place);
 
         date_info = new Date_Info(place_id,id);
+        date_review=new Date_Review(place_id);
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +93,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
                 reviewLine.setBackgroundColor(Color.rgb(184, 217, 192));
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.mainFrag, new Date_Review())
+                        .replace(R.id.mainFrag, new Date_Review(place_id))
                         .commit();
                 break;
         }

@@ -35,7 +35,6 @@ public class Date_Info extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.date_info, container, false);
 
-        Log.d("QWE", place_id);
 
         place = layout.findViewById(R.id.place);
         time = layout.findViewById(R.id.time);

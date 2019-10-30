@@ -65,9 +65,10 @@ public interface API {
     Call<responseConnect> getConnect(@Query("ID") String id, @Query("OPPO") String oppo);
 
     @GET("addReview.php")
-    Call<ResponseReview> getReview(@Query("PLACE") String place, @Query("RATE") float rate, @Query("ID") String id, @Query("CONTENT") String content, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY")int day);
+    Call<ResponseReview> getReview(@Query("Place_id") String place_id, @Query("RATE") float rate, @Query("ID") String id, @Query("CONTENT") String content, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY")int day);
 
     @GET("printReview.php")
-    Call<List<ResponseGetReview>> getPrintReview(@Query("ID") String id);
+    Call<List<ResponseGetReview>> getPrintReview(@Query("Place_id") String place_id);
+
 }
 

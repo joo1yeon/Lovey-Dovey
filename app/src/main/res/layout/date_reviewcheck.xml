@@ -11,7 +11,6 @@
         android:layout_marginTop="10dp"
         android:fontFamily="@font/netmarble_m"
         android:gravity="center"
-        android:text="석촌호수"
         android:textSize="35dp"
         android:paddingBottom="5dp"
         android:background="@drawable/cutom_textview_undrline"

@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AllReview extends AppCompatActivity {
 
@@ -37,7 +43,7 @@ public class AllReview extends AppCompatActivity {
         spinner.setAdapter(reviewAdapter);
 
         listView = findViewById(R.id.listView);
-        listView.setAdapter(((Date_Review)Date_Review.context).adapter);
+        listView.setAdapter(reviewAdapter);
 
       /*  spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
