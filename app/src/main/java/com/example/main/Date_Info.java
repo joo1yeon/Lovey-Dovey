@@ -15,7 +15,6 @@ public class Date_Info extends Fragment {
     public Date_Info() {
     }
 
-
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

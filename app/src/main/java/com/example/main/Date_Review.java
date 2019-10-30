@@ -82,13 +82,6 @@ public class Date_Review extends Fragment {
                 cancel = digView.findViewById(R.id.cancel);
                 _ratingbar = digView.findViewById(R.id._ratingBar);
 
-               /* _ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                    @Override
-                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                        ratingNum = _ratingbar.getRating();
-
-                    }
-                });*/
                 _dig.setCancelable(false);
                 _dig.setView(digView);
                 _dig.show();

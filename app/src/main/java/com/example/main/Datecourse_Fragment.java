@@ -40,14 +40,14 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         dateReview = findViewById(R.id.dateReview);
         infoLine = findViewById(R.id.infoLine);
         reviewLine = findViewById(R.id.reviewLine);
-        date_info = new Date_Info();
-
         favorite = findViewById(R.id.favorite);
-        date_info = new Date_Info();
 
         Intent intent = getIntent();
         String PlaceName=intent.getStringExtra("PlaceN");
         String PlaceUrl=intent.getStringExtra("PlaceUrl");
+        int position=intent.getIntExtra("Position",0);
+
+        Log.d("position",position+"");
 
         placeN.setText(PlaceName);
         Glide.with(this).load(PlaceUrl).into(place);
