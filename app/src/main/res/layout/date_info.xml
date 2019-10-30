@@ -76,53 +76,26 @@
         app:layout_constraintTop_toBottomOf="@+id/time" />
 
     <TextView
-        android:id="@+id/tvPrice"
-        android:layout_width="wrap_content"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
+        android:autoLink="web"
         android:fontFamily="@font/netmarble_m"
-        android:text="입장료 : "
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tel" />
 
     <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/netmarble_m"
-        android:text=""
-        android:textSize="20dp"
-        android:maxWidth="300dp"
-        app:layout_constraintLeft_toRightOf="@id/tvPrice"
-        app:layout_constraintTop_toBottomOf="@+id/tel" />
-
-    <TextView
-        android:id="@+id/tvSub"
-        android:layout_width="wrap_content"
+        android:id="@+id/content2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/netmarble_m"
-        android:text="역 정보 : "
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/price" />
-
-    <TextView
-        android:id="@+id/sub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/netmarble_m"
-        android:breakStrategy="simple"
-        android:textSize="20dp"
-        android:maxWidth="300dp"
-        app:layout_constraintLeft_toRightOf="@id/tvSub"
-        app:layout_constraintTop_toBottomOf="@+id/price" />
+        app:layout_constraintTop_toBottomOf="@+id/content" />
 
 </android.support.constraint.ConstraintLayout>

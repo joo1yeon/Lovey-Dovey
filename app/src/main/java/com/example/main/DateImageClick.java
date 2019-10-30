@@ -29,10 +29,12 @@ public class DateImageClick extends AppCompatActivity {
     Datecourse_ListViewAdapter adapter;
     ArrayList<Datecourse_ListViewItem> date_listItem;
     String[] PlaceN = new String[6];
-    String[] PlaceUrl = new String[6];
+    String[] Placeimage = new String[6];
+    String[] Placeimage2 = new String[6];
     String[] PlaceTime = new String[6];
     String[] PlaceTel = new String[6];
     String[] PlaceC = new String[6];
+    String[] PlaceC2 = new String[6];
     String[] PlaceP = new String[6];
     int position;
 
@@ -44,7 +46,9 @@ public class DateImageClick extends AppCompatActivity {
         ImageButton btnHome = findViewById(R.id.btnHome);
 
         Intent intent = getIntent();
-        int id = intent.getIntExtra("ID", 0);
+        final int id = intent.getIntExtra("ID", 0);
+
+         Log.d("EEE",id+"");
 
         listView = findViewById(R.id.imagelist);
         date_listItem = new ArrayList<Datecourse_ListViewItem>();
@@ -59,20 +63,16 @@ public class DateImageClick extends AppCompatActivity {
                     int i = 0;
                     for (ResponseDate_image2 responseDate_Image2 : responseGet) {
                         PlaceN[i] = responseDate_Image2.getname();
-                        PlaceUrl[i] = responseDate_Image2.getDate_image();
+                        Placeimage[i] = responseDate_Image2.getimage();
+                        Placeimage2[i]=responseDate_Image2.getimage2();
                         PlaceTime[i] = responseDate_Image2.gettime();
                         PlaceTel[i] = responseDate_Image2.gettel();
                         PlaceC[i] = responseDate_Image2.getcontent();
+                        PlaceC2[i]=responseDate_Image2.getcontent2();
                         PlaceP[i] = responseDate_Image2.getplace();
+                        Log.d("QQQ",Placeimage2[i]);
                         ++i;
                     }
-                    for (i = 0; i < PlaceN.length; i++) {
-                        Log.d("time", PlaceTime[i]);
-                        Log.d("tel", PlaceTel[i]);
-                        Log.d("content", PlaceC[i]);
-                        Log.d("place", PlaceP[i]);
-                    }
-
                 }
                 for (int i = 0; i < PlaceN.length; i++) {
                     date_listItem.add(new Datecourse_ListViewItem(PlaceN[i]));
@@ -90,11 +90,17 @@ public class DateImageClick extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id2) {
                 Intent intent = new Intent(DateImageClick.this, Datecourse_Fragment.class);
                 intent.putExtra("PlaceN", PlaceN[position]);
-                intent.putExtra("PlaceUrl", PlaceUrl[position]);
-                intent.putExtra("Position", position);
+                intent.putExtra("Placeimage", Placeimage[position]);
+                intent.putExtra("Placeimage2", Placeimage2[position]);
+                intent.putExtra("PlaceTime", PlaceTime[position]);
+                intent.putExtra("PlaceTel", PlaceTel[position]);
+                intent.putExtra("PlaceC", PlaceC[position]);
+                intent.putExtra("PlaceC2", PlaceC2[position]);
+                intent.putExtra("PlaceP", PlaceP[position]);
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });

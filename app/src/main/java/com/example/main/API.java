@@ -43,7 +43,7 @@ public interface API {
     Call<List<ResponseDate_image>> getDate_image();
 
     @GET("date_img2.php")
-    Call<List<ResponseDate_image2>> getDate_image2();
+    Call<List<ResponseDate_image2>> getDate_image2(@Query("ID") int id);
     Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("EMAIL") String email);
 
     @GET("addMarker.php")

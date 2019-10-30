@@ -2,40 +2,34 @@ package com.example.main;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
-
-import retrofit2.http.HEAD;
 
 public class Datecourse_Fragment extends AppCompatActivity implements View.OnClickListener {
 
     TextView placeN, dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
-
-    ImageView favorite,place;
+    ImageView place,favorite;
     int i = 0;
+    String PlaceName,Placeimage,Placeimage2,PlaceTime,PlaceTel,PlaceC,PlaceC2,PlaceP;
+    int id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_imageclick);
 
-        placeN=findViewById(R.id.plaveN);
-        place=findViewById(R.id.place);
+        placeN = findViewById(R.id.plaveN);
+        place = findViewById(R.id.place);
         dateInfo = findViewById(R.id.dateInfo);
         dateReview = findViewById(R.id.dateReview);
         infoLine = findViewById(R.id.infoLine);
@@ -43,14 +37,20 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         favorite = findViewById(R.id.favorite);
 
         Intent intent = getIntent();
-        String PlaceName=intent.getStringExtra("PlaceN");
-        String PlaceUrl=intent.getStringExtra("PlaceUrl");
-        int position=intent.getIntExtra("Position",0);
-
-        Log.d("position",position+"");
+        PlaceName = intent.getStringExtra("PlaceN");
+        Placeimage = intent.getStringExtra("Placeimage");
+        Placeimage2 = intent.getStringExtra("Placeimage2");
+        PlaceTime = intent.getStringExtra("PlaceTime");
+        PlaceTel = intent.getStringExtra("PlaceTel");
+        PlaceC = intent.getStringExtra("PlaceC");
+        PlaceC2 = intent.getStringExtra("PlaceC2");
+        PlaceP = intent.getStringExtra("PlaceP");
+        id = intent.getIntExtra("id", 0);
 
         placeN.setText(PlaceName);
-        Glide.with(this).load(PlaceUrl).into(place);
+        Glide.with(this).load(Placeimage).into(place);
+
+        date_info = new Date_Info(PlaceP, PlaceTime, PlaceTel, PlaceC, PlaceC2,id);
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,12 +66,10 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
             }
         });
 
-        date_info = new Date_Info();
-
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.mainFrag, new Date_Info())
+                    .replace(R.id.mainFrag, new Date_Info(PlaceP, PlaceTime, PlaceTel, PlaceC, PlaceC2,id))
                     .commit();
         }
         dateInfo.setOnClickListener(this);
@@ -88,7 +86,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
                 reviewLine.setBackgroundColor(Color.rgb(140, 140, 140));
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.mainFrag, new Date_Info())
+                        .replace(R.id.mainFrag, new Date_Info(PlaceP, PlaceTime, PlaceTel, PlaceC, PlaceC2,id))
                         .commit();
                 break;
             case R.id.dateReview:

@@ -11,18 +11,24 @@ public class ResponseDate_image2 {
     private String tel;
     @SerializedName("content")
     private String content;
+    @SerializedName("content2")
+    private String content2;
     @SerializedName("place")
     private String place;
     @SerializedName("image")
-    private String date_image;
+    private String image;
+    @SerializedName("image2")
+    private String image2;
 
-    public ResponseDate_image2(String _name, String _time, String _tel, String _content, String _place, String _date_image) {
+    public ResponseDate_image2(String _name, String _time, String _tel, String _content, String _content2,String _place, String _image,String _image2) {
         name = _name;
         time=_time;
         tel=_tel;
         content=_content;
+        content2=_content2;
         place=_place;
-        date_image = _date_image;
+        image = _image;
+        image2 = _image2;
     }
 
     public String getname() {
@@ -37,10 +43,16 @@ public class ResponseDate_image2 {
     public String getcontent() {
         return content;
     }
+    public String getcontent2() {
+        return content2;
+    }
     public String getplace() {
         return place;
     }
-    public String getDate_image() {
-        return date_image;
+    public String getimage() {
+        return image;
+    }
+    public String getimage2() {
+        return image2;
     }
 }

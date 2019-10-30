@@ -22,7 +22,7 @@ import retrofit2.Response;
 public class Datecourse_ListViewAdapter extends BaseAdapter {
     Context context;
     ArrayList<Datecourse_ListViewItem> date_listItem = new ArrayList<Datecourse_ListViewItem>();
-    String[] PlaceUrl = new String[6];
+    String[] Placeimage = new String[6];
     int id;
     int position;
 
@@ -69,11 +69,12 @@ public class Datecourse_ListViewAdapter extends BaseAdapter {
                     List<ResponseDate_image2> responseGet = response.body();
                     int i = 0;
                     for (ResponseDate_image2 responseDate_Image2 : responseGet) {
-                        PlaceUrl[i] = responseDate_Image2.getDate_image();
-                        Log.d("OKK", PlaceUrl[i]);
+                        Placeimage[i] = responseDate_Image2.getimage();
+                        Log.d("OKK", Placeimage[i]);
                         ++i;
                     }
-                    Glide.with(context).load(PlaceUrl[position]).into(image);
+                    Glide.with(context).load(Placeimage[position]).into(image);
+                    Log.d("WWW",id+"");
                 }
             }
 
