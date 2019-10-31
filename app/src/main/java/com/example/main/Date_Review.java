@@ -114,17 +114,6 @@ public class Date_Review extends Fragment {
                 });
             }
         });
-
-        //전체리뷰 보기 클릭시 발생하는 이벤트 리스러
-        review.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AllReview.class);
-                intent.putExtra("placeN", placeN);
-                startActivity(intent);
-            }
-        });
-
         return layout;
     }
 
@@ -134,17 +123,26 @@ public class Date_Review extends Fragment {
         res.enqueue(new Callback<List<ResponseGetReview>>() {
             @Override
             public void onResponse(Call<List<ResponseGetReview>> call, Response<List<ResponseGetReview>> response) {
-                List<ResponseGetReview> responseGet = response.body();
+                final List<ResponseGetReview> responseGet = response.body();
                 adapter.review_listItem.clear();
                 for (ResponseGetReview responseReview : responseGet) {
                     adapter.addItem(responseReview.getRate(), responseReview.getContent(), responseReview.getYear() + "/" + responseReview.getMonth() + "/" + responseReview.getDay(), responseReview.getID());
                     adapter.notifyDataSetChanged();
                 }
+                //전체리뷰 보기 클릭시 발생하는 이벤트 리스러
+                review.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), AllReview.class);
+                        intent.putExtra("placeN", placeN);
+                        intent.putExtra("place_id",place_id);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
             public void onFailure(Call<List<ResponseGetReview>> call, Throwable t) {
-
             }
         });
     }

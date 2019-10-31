@@ -11,10 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,22 +28,21 @@ public class AllReview extends AppCompatActivity {
     ListView listView;
     TextView name;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_reviewcheck);
 
-        Intent intent=getIntent();
-        String placeName=intent.getStringExtra("placeN");
+        Intent intent = getIntent();
+        String placeName = intent.getStringExtra("placeN");
+        final String place_id = intent.getStringExtra("place_id");
 
-        Log.d("!!",placeName);
-
-        name=findViewById(R.id.name);
-
+        name = findViewById(R.id.name);
         name.setText(placeName);
 
         //리뷰 정렬하는 요소를 넣는 ArrayList 선언 및 생성, 어댑터
-        ArrayList<String> reviewList;
+        final ArrayList<String> reviewList;
         ArrayAdapter reviewAdapter;
         String[] review = {"최신순", "별점 높은 순 ", "별점 낮은 순"};
 
@@ -50,21 +51,40 @@ public class AllReview extends AppCompatActivity {
         for (int i = 0; i < review.length; i++) {
             reviewList.add(review[i]);
         }
-        Spinner spinner = findViewById(R.id.spinner);
+        final Spinner spinner = findViewById(R.id.spinner);
 
         reviewAdapter = new ArrayAdapter(AllReview.this, android.R.layout.simple_spinner_dropdown_item, reviewList);
         spinner.setAdapter(reviewAdapter);
 
+        final DateReview_listViewAdapter adapter = new DateReview_listViewAdapter();
         listView = findViewById(R.id.listView);
         listView.setAdapter(((Date_Review) Date_Review.context).adapter);
 
-      /*  spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==1){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int tag = position;
+                Log.d("spinner", position + "");
+                Call<List<ResponseAllReview>> res = Net.getInstance().getApi().getAllReview(tag, place_id);
+                res.enqueue(new Callback<List<ResponseAllReview>>() {
+                    @Override
+                    public void onResponse(Call<List<ResponseAllReview>> call, Response<List<ResponseAllReview>> response) {
+                        List<ResponseAllReview> responseGet = response.body();
+                        for (ResponseAllReview responseAllReview : responseGet) {
+                            adapter.addItem(responseAllReview.getRate());
+                        }
+                }
+
+                @Override
+                public void onFailure (Call < List < ResponseAllReview >> call, Throwable t){
 
                 }
-            }
-        });*/
-    }
+            });
+        }
+        @Override
+        public void onNothingSelected (AdapterView < ? > parent){
+
+        }
+    });
+}
 }
