@@ -1,9 +1,11 @@
 package com.example.main;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,12 +14,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,15 +48,17 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     DrawerLayout drawerLayout;
     static String id;
     static int coupleID;
-    String nickname, email;
+    static String nickname, email;
     ViewPager viewPager;
     LinearLayout logout;
     ImageButton btnOverflow, btnBack;
     Intent intent;
     Toast toast;
     ImageView profile;
-
-
+    View profileLayout1;
+    ImageView storage;
+    ImageView profile_img;
+    EditText _email,_name;
     @Override
     public void insert(String name, String address, double latitude, double longitude, int year, int month, int date) {
         sqlDB = dbHelper.getWritableDatabase();
@@ -79,7 +86,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             int year = cursor.getInt(4);
             int month = cursor.getInt(5);
             int date = cursor.getInt(6);
-            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name, address, latitude, longitude, year, month, date,coupleID);
+            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name, address, latitude, longitude, year, month, date, coupleID);
             Log.d("III", "이름" + name);
             res.enqueue(new Callback<ResAddMarker>() {
                 @Override
@@ -104,6 +111,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("LOGINN","메인화면");
         super.onCreate(savedInstanceState);
         layout = findViewById(R.id.layout);
 
@@ -111,8 +119,8 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         id = intent1.getStringExtra("ID");
         nickname = intent1.getStringExtra("NICK");
         email = intent1.getStringExtra("EMAIL");
-        coupleID=intent1.getIntExtra("C_ID",0);
-        Log.d("C_ID","커플아이디:"+coupleID);
+        coupleID = intent1.getIntExtra("C_ID", 0);
+        Log.d("C_ID", "커플아이디:" + coupleID);
         Toast.makeText(MainActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
 
 
@@ -167,13 +175,13 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             public void onClick(View v) {
 //                layout.setClickable(false);
                 drawerLayout.openDrawer(Gravity.RIGHT);
-                Cursor cursor = sqlDB.rawQuery("select nickname, email from info where id='" + id + "';", null);
-                if (cursor.getCount() >= 1) {
-                    cursor.moveToFirst();
-                    nickname = cursor.getString(0);
-                    email = cursor.getString(1);
-                }
-                cursor.close();
+//                Cursor cursor = sqlDB.rawQuery("select nickname, email from info where id='" + id + "';", null);
+//                if (cursor.getCount() >= 1) {
+//                    cursor.moveToFirst();
+//                    nickname = cursor.getString(0);
+//                    email = cursor.getString(1);
+//                }
+//                cursor.close();
                 //저장된 프로필 보여주기
                 Glide.with(getApplicationContext())
                         .load(Main.uri_)
@@ -201,7 +209,81 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "개인정보 수정", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);                            //Main 화면에 다이얼로그 생성
+                final AlertDialog dl = dlg.create();                                                        //빌더를 이용해 AlertDialog 객체 생성
+                profileLayout1 = View.inflate(MainActivity.this, R.layout.profile1, null);                 //레이아웃뷰인 profileLayout을 메인에 profile.xml 사용해서 인플레이트
+                dl.setView(profileLayout1);                                                                 //porofileLayout을 AlertDialog 객체로 보여줌
+                dl.show();                                                                                  //다이얼로그 보여줌
 
+                //메인화면 다이얼로그에 들어가는 profile1의 뷰들 인플레이트
+                 storage = profileLayout1.findViewById(R.id.storage);
+                 profile_img = profileLayout1.findViewById(R.id.profile_img);
+                  _email = profileLayout1.findViewById(R.id.et_email);
+                  _name = profileLayout1.findViewById(R.id.name);
+
+                _name.setText(MainActivity.nickname);
+                _email.setText(MainActivity.email);
+
+
+                //입력 유형 이메일로 설정
+                _email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
+                //저장된 값 보여주기
+                Glide.with(MainActivity.this)
+                        .load(Main.uri_)
+                        .centerCrop()
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(MainActivity.this))
+                        .override(70, 70)
+                        .into(profile_img);
+
+
+                profile_img.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "사진 선택"), 1);
+                    }
+                });
+
+                //저장을 버튼을 클릭했을 때 수정된 내용을 저장한 후 다이얼로그 종료
+                storage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //메인화면 프로필 변경
+                        Glide.with(MainActivity.this)
+                                .load(Main.uri_)
+                                .centerCrop()
+                                .crossFade()
+                                .bitmapTransform(new CropCircleTransformation(MainActivity.this))
+                                .override(70, 70)
+                                .into(Main.profile_Btn1);
+
+                        //EditText에 변경한 값 받아오기
+                        Call<ResponseInfoUpdate> res = Net.getInstance().getApi().getInfoUpdate(MainActivity.id, MainActivity.nickname, MainActivity.email);
+                        res.enqueue(new Callback<ResponseInfoUpdate>() {
+                            @Override
+                            public void onResponse(Call<ResponseInfoUpdate> call, Response<ResponseInfoUpdate> response) {
+                                if (response.body().getUpdate()) {
+                                    Toast.makeText(MainActivity.this, "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                    MainActivity.email = _email.getText().toString();
+                                    MainActivity.nickname = _name.getText().toString();
+                                    dl.dismiss();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "정보가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseInfoUpdate> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                });
+                drawerLayout.closeDrawer(Gravity.RIGHT);
             }
         });
         notice.setOnClickListener(new View.OnClickListener() {
@@ -241,9 +323,30 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+
+            try {
+                Uri uri = data.getData();
+
+               profile_img = profileLayout1.findViewById(R.id.profile_img);
+                Glide.with(MainActivity.this)
+                        .load(uri)
+                        .centerCrop()
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(MainActivity.this))
+                        .override(70, 70)
+                        .into(profile_img);
+
+                Main.uri_ = uri;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 
     class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments = new ArrayList<Fragment>();

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.io.File;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Story_Create extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
 
@@ -33,6 +43,8 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
     DbOpenHelper mDbOpenHelper;
     int year, month, day;
     Uri mUri;
+    String mTitle, story_id, contents, imgPath;
+    String imgFileLocation = "";
 
     @Override
     public void onDatePickerSet(int y, int m, int d){ //DatePickerFragment 로부터 날짜를 받아온다.
@@ -77,16 +89,21 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
                 Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
-                story.setTitle(etStoryTitle.getText().toString());
+                mTitle = etStoryTitle.getText().toString();
+                story.setTitle(mTitle);
                 story.setYear(year);
                 story.setMonth(month);
                 story.setDay(day);
                 story.setContents_text(etWriteText.getText().toString());
                 story.setMainImg(mUri);
+                story_id = story.getId().toString();
+                contents = etWriteText.getText().toString();
                 Album_singleton.get(getApplicationContext()).addStory(story);
                 mDbOpenHelper.close();
 //                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
 //                startActivity(intent);
+//                uploadFile(); //서버에 이미지 업로드
+                saveStoryData(); //서버에 story data 저장
                 finish();
             }
         });
@@ -132,8 +149,10 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 //                    ivStoryMainImg.setImageBitmap(img);
                     Uri uri = data.getData();
                     Glide.with(this).load(uri).into(ivStoryMainImg);
-                    Log.d("test", uri.toString());
+                    Log.d("test", "파일 경로" + uri.getPath());
                     mUri = uri;
+                    imgPath = uri.getPath();
+                    uploadFile(); //서버에 이미지 업로드
 
 
                 } catch (Exception e) {
@@ -143,6 +162,84 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    //TODO 서버에 이미지 저장하기
+    void uploadFile() {
+        if (imgPath == null || imgPath.equals("")) { //선택된 이미지가 없는 경우
+            Toast.makeText(this, "이미지를 선택하세요", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            //showpDialog();
+
+            Map<String, RequestBody> map = new HashMap<>();
+            File file = new File(imgPath);
+
+
+            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file); //File 형태로 변환(parsing)
+            map.put("file\"; filename=\"" + file.getName() + "\"", requestBody);
+            API getResponse = Net.getInstance().getApi();
+            Call<ResponseImgUpload> call = getResponse.upload("token", map);
+            call.enqueue(new Callback<ResponseImgUpload>() {
+                @Override
+                public void onResponse(Call<ResponseImgUpload> call, Response<ResponseImgUpload> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body().getSuccess()) {
+                            //hidepDialog();
+                            ResponseImgUpload responseImgUpload = response.body();
+                            Log.d("test", "서버연동4");
+                            Toast.makeText(Story_Create.this, "호롤로"+ responseImgUpload.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("test", "서버연동6");
+                        }
+                    } else {
+                        //hidepDialog();
+                        Log.d("test", "서버연동5");
+                        Toast.makeText(Story_Create.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseImgUpload> call, Throwable t) {
+                    //hidepDialog();
+                    Log.d("test", t.getMessage());
+                }
+            });
+        }
+    }
+
+    private boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void saveDataInServer() {
+
+    }
+
+    //TODO 서버에 story data 저장하기
+    public void saveStoryData() { //서버에 저장은 되는데 통신3에러가 뜬다.
+        final Call<ResponseSaveStory> res = Net.getInstance().getApi().setStoryData(story_id, MainActivity.id, year, month, day, mTitle, imgPath, contents);
+        res.enqueue(new Callback<ResponseSaveStory>() {
+            @Override
+            public void onResponse(Call<ResponseSaveStory> call, Response<ResponseSaveStory> response) {
+                if (response.isSuccessful()) {
+                    ResponseSaveStory responseGet = response.body();
+                    if (responseGet.setStoryData() == true ) {
+                        Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } else Toast.makeText(Story_Create.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseSaveStory> call, Throwable t) {
+                Toast.makeText(Story_Create.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

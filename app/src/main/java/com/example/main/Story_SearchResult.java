@@ -18,6 +18,7 @@ import java.util.List;
 
 public class Story_SearchResult extends AppCompatActivity {
     RecyclerView mRecyclerView;
+    StoryListFragment.StoryAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,6 +27,20 @@ public class Story_SearchResult extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.story_search_result_rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
+    }
+
+    public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
+        Album_singleton album_singleton = Album_singleton.get(getApplication());
+        List<Story> stories = album_singleton.getStories();
+
+        if (mAdapter == null) {
+//            mAdapter = new StoryListFragment.StoryAdapter(stories);
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
+            mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
+            Log.d("test", "리스트 다시 로드하기");
+        }
     }
 
 }

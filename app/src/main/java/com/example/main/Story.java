@@ -6,17 +6,28 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Story {
-    private UUID mId;
+    private String mId, mWriter;
     private String mTitle, mContents_text;
     private int mYear, mMonth, mDay;
     private Uri mMainImg;
 
     public Story() {
-        mId = UUID.randomUUID();
+        mId = UUID.randomUUID().toString();
     } //고유한 식별자 생성
-    public UUID getId(){
+    public String getId(){
         return mId;
     }
+    public void setId(String storyid) {
+        mId = storyid;
+    }
+    public String  getWriter(){
+        return mWriter;
+    }
+
+    public void setWriter(String writer) {
+        mWriter = writer;
+    }
+
     public String getTitle() {
         return mTitle;
     }

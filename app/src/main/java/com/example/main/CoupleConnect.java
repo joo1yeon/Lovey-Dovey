@@ -47,17 +47,17 @@ public class CoupleConnect extends Activity {
                                 @Override
                                 public void onResponse(Call<UpdateOppoID> call, Response<UpdateOppoID> response) {
                                     if (response.body().getUpdate()) {
-                                        Call<responseConnect> res=Net.getInstance().getApi().getConnect(id,edtID.getText().toString());
+
+                                        Call<responseConnect> res=Net.getInstance().getApi().getConn(id,edtID.getText().toString());
                                         res.enqueue(new Callback<responseConnect>() {
                                             @Override
                                             public void onResponse(Call<responseConnect> call, Response<responseConnect> response) {
-                                                Log.d("CCC","connect : "+response.body().getConnect());
                                                 if(response.body().getConnect()){
-                                                    Toast.makeText(CoupleConnect.this,"connect : "+response.body().getConnect(),Toast.LENGTH_SHORT).show();
                                                     Intent intent1 = new Intent(CoupleConnect.this, MainActivity.class);
                                                     intent1.putExtra("ID", id);
                                                     intent1.putExtra("NICK", nickname);
                                                     intent1.putExtra("EMAIL", email);
+                                                    intent1.putExtra("COUPLE",response.body().getCouple());
                                                     startActivity(intent1);
                                                     finish();
                                                 }

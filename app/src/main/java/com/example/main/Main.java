@@ -44,6 +44,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @SuppressLint("ValidFragment")
 public class Main extends Fragment {
@@ -51,37 +54,35 @@ public class Main extends Fragment {
     String id;
 
 
-    private static int REQUEST_CODE = 1;
+     static int REQUEST_CODE = 1;
     private Context context;
 
-    ConstraintLayout photo_change;
-    ImageView profile_Btn1, profile_Btn2, storage, close, profile_img;
-    TextView  date, textView;
+   static ImageView profile_Btn1;
+    static ImageView profile_Btn2, storage, close, profile_img;
+    TextView date, textView;
     View profileLayout1, profileLayout2;
     ArrayList<String> todo = new ArrayList<String>();
     TextSwitcher to_do_Btn;
     Thread todoThread;
-    EditText email, birthday, name;
-    String em1, em2, bth1, bth2, nm1, nm2;
-    String strCoupleID = "couple0";
+    EditText email, name;
 
     //sqlite 관련 변수
     MyDBHelper mainDB;
     SQLiteDatabase sqlDB;
     Cursor cursor;
 
-    static Uri uri_=Uri.parse("android.resource://com.example.main/drawable/basic");
+    static Uri uri_ = Uri.parse("android.resource://com.example.main/drawable/basic");
 
     //화면 보여주기 전에 todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
     @Override
     public void onStart() {
         super.onStart();
         todo.clear();
-        Item_Content(strCoupleID);
+        Item_Content(MainActivity.coupleID);
     }
 
 
-    Handler handler=new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -89,18 +90,19 @@ public class Main extends Fragment {
     };
 
     @SuppressLint("ValidFragment")
-    public Main(){}
+    public Main() {
+    }
 
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main,container,false);
+        final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main, container, false);
 
 
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
         context = getContext();
         todo.clear();
-        Item_Content(strCoupleID);
+        Item_Content(MainActivity.coupleID);
 
 
         //인플레이트
@@ -156,10 +158,6 @@ public class Main extends Fragment {
         });
 
 
-        bth1 = "1998년 5월 19일";
-        nm1 =  "꽁순이";
-        em1 =  "abc123@maver.com";
-
         //왼쪽 프로필을 누를 때 -->  정보 변경 가능한 다이얼로그 창
         profile_Btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,10 +172,12 @@ public class Main extends Fragment {
                 storage = profileLayout1.findViewById(R.id.storage);
                 profile_img = profileLayout1.findViewById(R.id.profile_img);
                 email = profileLayout1.findViewById(R.id.et_email);
-                birthday = profileLayout1.findViewById(R.id.et_birthday);
                 name = profileLayout1.findViewById(R.id.name);
 
-                photo_change = profileLayout1.findViewById(R.id.photo_change);
+                name.setText(MainActivity.nickname);
+                email.setText(MainActivity.email);
+
+                Log.d("PPPPP", name.getText().toString());
 
                 //입력 유형 이메일로 설정
                 email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -191,11 +191,8 @@ public class Main extends Fragment {
                         .override(70, 70)
                         .into(profile_img);
 
-                email.setText(em1);
-                birthday.setText(bth1);
-                name.setText(nm1);
 
-                photo_change.setOnClickListener(new View.OnClickListener() {
+                profile_img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
@@ -209,7 +206,6 @@ public class Main extends Fragment {
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         //메인화면 프로필 변경
                         Glide.with(context)
                                 .load(uri_)
@@ -220,26 +216,31 @@ public class Main extends Fragment {
                                 .into(profile_Btn1);
 
                         //EditText에 변경한 값 받아오기
-                        bth1 = birthday.getText().toString();
-                        nm1 = name.getText().toString();
-                        em1 = email.getText().toString();
+                        Call<ResponseInfoUpdate> res = Net.getInstance().getApi().getInfoUpdate(MainActivity.id, name.getText().toString(), email.getText().toString());
+                        res.enqueue(new Callback<ResponseInfoUpdate>() {
+                            @Override
+                            public void onResponse(Call<ResponseInfoUpdate> call, Response<ResponseInfoUpdate> response) {
+                                if (response.body().getUpdate()) {
+                                    Toast.makeText(getContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                    MainActivity.email = email.getText().toString();
+                                    MainActivity.nickname = name.getText().toString();
+                                    dl.dismiss();
+                                } else {
+                                    Toast.makeText(getContext(), "정보가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-                        //변경한 값 보여주기
-                        email.setText(em1);
-                        birthday.setText(bth1);
-                        name.setText(nm1);
+                            @Override
+                            public void onFailure(Call<ResponseInfoUpdate> call, Throwable t) {
 
-                        dl.dismiss();                       //다이얼로그 닫기
+                            }
+                        });
                     }
                 });
 
             }
         });
 
-
-        bth2 = "2000년 07월 07일";
-        nm2 =  "꽉냥이";
-        em2 =  "qwerty15@naver.com";
 
         //TODO# 데이터 베이스로 상태방 정보 불러오기
         //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
@@ -254,15 +255,23 @@ public class Main extends Fragment {
 
                 //메인화면 다이얼로그에 들어가는 profile2의 뷰들 인플레이트
                 close = profileLayout2.findViewById(R.id.close);
-                email = profileLayout2.findViewById(R.id.et_email);
-                birthday = profileLayout2.findViewById(R.id.et_birthday);
-                name = profileLayout2.findViewById(R.id.name);
+                final TextView email = profileLayout2.findViewById(R.id.et_email);
+                final TextView name = profileLayout2.findViewById(R.id.name);
 
                 //저장된 값 보여주기
-                email.setText(em2);
-                birthday.setText(bth2);
-                name.setText(nm2);
+                Call<ResponseProfile> res = Net.getInstance().getApi().getProfile(MainActivity.id);
+                res.enqueue(new Callback<ResponseProfile>() {
+                    @Override
+                    public void onResponse(Call<ResponseProfile> call, Response<ResponseProfile> response) {
+                        name.setText(response.body().getName());
+                        email.setText(response.body().getEmail());
+                    }
 
+                    @Override
+                    public void onFailure(Call<ResponseProfile> call, Throwable t) {
+
+                    }
+                });
 
                 //닫기 버튼 클릭했을 때 다이얼로그 종료
                 close.setOnClickListener(new View.OnClickListener() {
@@ -278,38 +287,30 @@ public class Main extends Fragment {
     }
 
 
-
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if(isVisibleToUser){
+        if (isVisibleToUser) {
             //스레드 객체 생성 및 시작
-            todoThread=null;
+            todoThread = null;
             todoThread = new TodoThread();
             todoThread.start();
             Log.e("화면켜졌을 때", "나 켜졌어!");
-            }
-           else {
-            try
-            {
-                Log.e("화면꺼졌을 때","나 다른화면에 있다!?" );
+        } else {
+            try {
+                Log.e("화면꺼졌을 때", "나 다른화면에 있다!?");
                 todoThread.interrupt();             //스레드 멈추기
-                Log.e("화면 멈췄다면...","스레드는 잘 멈췄어!" );
-            }
-            catch (Exception e)
-            {
+                Log.e("화면 멈췄다면...", "스레드는 잘 멈췄어!");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
-           }
+        }
     }
 
 
-
-
     //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
-    public void doDateSystem(){
+    public void doDateSystem() {
         String start = "2019-03-04";        // 사귄 날짜 입력
 
         try {
@@ -319,14 +320,14 @@ public class Main extends Fragment {
             Date endDate = formatter.parse(end);                                            //현재날짜를 받아온 문자열을 date 형식으로 변경
 
             // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
-            long diff =  endDate.getTime() - beginDate.getTime();
+            long diff = endDate.getTime() - beginDate.getTime();
             long coupleDays = diff / (24 * 60 * 60 * 1000);
 
             //사귄 날짜가 1000일이 넘으면 textSize 변경
-            if(coupleDays > 1000) {
+            if (coupleDays > 1000) {
                 date.setTextSize(30);
             }
-            date.setText (coupleDays+" 일");     //사귄날짜 + 일 출력
+            date.setText(coupleDays + " 일");     //사귄날짜 + 일 출력
 
 
         } catch (ParseException e) {
@@ -335,20 +336,20 @@ public class Main extends Fragment {
     }
 
     //ToDoList Check false인 내용 순서대로 삽입
-    public void Item_Content(String id){
+    public void Item_Content(int id) {
         sqlDB = mainDB.getReadableDatabase();
 
-        cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+ false +"';",null);
+        cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='" + id + "' AND checked = '" + false + "';", null);
         int count = cursor.getCount();
 
-        for(int i=0;i<count;i++) {
+        for (int i = 0; i < count; i++) {
             cursor.moveToNext();                                    //커서 넘기기
             todo.add(cursor.getString(3));   //체크하지 않은 내용 넣기
             //String 배열 때 todo[i] = cursor.getString(3);
         }
 
         //todoArrayList 배열에 아무것도 들어있지 않을 때
-        if (count==0){
+        if (count == 0) {
             todo.add("TODO_LIST에 내용을 입력해주세요");
         }
 
@@ -357,15 +358,15 @@ public class Main extends Fragment {
     }
 
     //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
-    public class TodoThread extends Thread{
-        boolean running =false;     //시작과 종료에 필요한 변수
+    public class TodoThread extends Thread {
+        boolean running = false;     //시작과 종료에 필요한 변수
         int index = 0;
 
         @Override
         public void run() {
-            running=true;
+            running = true;
 
-            while (running){                            //무한루프, Todolist 계속 돌아가게 함
+            while (running) {                            //무한루프, Todolist 계속 돌아가게 함
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -377,19 +378,20 @@ public class Main extends Fragment {
                 try {
 
                     Thread.sleep(3000);
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     halt();
                     e.printStackTrace();
                 }
                 index++;
-                if(index >= todo.size()){   //String 배열 때length
-                    index=0;}
+                if (index >= todo.size()) {   //String 배열 때length
+                    index = 0;
+                }
 
             }
         }
-        public void halt(){
-            running=false;
+
+        public void halt() {
+            running = false;
         }
 
 
@@ -399,25 +401,25 @@ public class Main extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == REQUEST_CODE&&resultCode == Activity.RESULT_OK&& data != null && data.getData() != null) {
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
 
-                try {
-                    Uri uri = data.getData();
+            try {
+                Uri uri = data.getData();
 
-                    profile_img = profileLayout1.findViewById(R.id.profile_img);
-                    Glide.with(context)
-                            .load(uri)
-                            .centerCrop()
-                            .crossFade()
-                            .bitmapTransform(new CropCircleTransformation(context))
-                            .override(70, 70)
-                            .into(profile_img);
+                profile_img = profileLayout1.findViewById(R.id.profile_img);
+                Glide.with(context)
+                        .load(uri)
+                        .centerCrop()
+                        .crossFade()
+                        .bitmapTransform(new CropCircleTransformation(context))
+                        .override(70, 70)
+                        .into(profile_img);
 
-                    uri_ = uri;
+                uri_ = uri;
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

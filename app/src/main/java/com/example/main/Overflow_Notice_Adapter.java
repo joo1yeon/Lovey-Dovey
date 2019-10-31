@@ -17,7 +17,7 @@ import java.util.zip.Inflater;
 public class Overflow_Notice_Adapter extends BaseAdapter {
 
     public static Object context;
-    TextView tvTitle,tvContent;
+    TextView tvTitle;
     ArrayList<Overflow_Notice_Item> listItem = new ArrayList<Overflow_Notice_Item>();
 
     public Overflow_Notice_Adapter(){
@@ -45,19 +45,14 @@ public class Overflow_Notice_Adapter extends BaseAdapter {
            convertView=inflater.inflate(R.layout.notice_list,parent,false);
        }
         tvTitle=convertView.findViewById(R.id.noticeTitle);
-        tvContent=convertView.findViewById(R.id.noticeContent);
         Overflow_Notice_Item item=listItem.get(position);
         tvTitle.setText(item.getTitle());
-        tvContent.setText(item.getContent());
-
         return convertView;
     }
 
-    public void addItem(String title,String content) {
+    public void addItem(String title) {
         Overflow_Notice_Item item = new Overflow_Notice_Item();
-
         item.setTitle(title);
-        item.setContent(content);
         listItem.add(item);
     }
 }
