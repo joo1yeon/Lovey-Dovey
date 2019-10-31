@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import retrofit2.Call;
@@ -44,6 +45,8 @@ public class LoadingActivity extends Activity {
                                 ResponseLogin responseGet = response.body();
                                 if (responseGet.getLogin()) {
                                     if(responseGet.getCouple()){
+                                        Log.d("LOGINN","자동로그인 성공");
+
                                         String nickname = responseGet.getNickname();
                                         String email = responseGet.getEmail();
                                         int coupleID=responseGet.getCoupleID();
@@ -52,6 +55,7 @@ public class LoadingActivity extends Activity {
                                         intent.putExtra("NICK", nickname);
                                         intent.putExtra("EMAIL", email);
                                         intent.putExtra("C_ID",coupleID);
+
                                         startActivity(intent);
                                         finish();
                                     }else{
@@ -72,7 +76,7 @@ public class LoadingActivity extends Activity {
 
                         @Override
                         public void onFailure(Call<ResponseLogin> call, Throwable t) {
-                            Toast.makeText(LoadingActivity.this, "통신3 에러", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoadingActivity.this, "로그인에러", Toast.LENGTH_SHORT).show();
                         }
                     });
 

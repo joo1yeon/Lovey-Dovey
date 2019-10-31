@@ -54,10 +54,11 @@ public class Main extends Fragment {
     String id;
 
 
-    private static int REQUEST_CODE = 1;
+     static int REQUEST_CODE = 1;
     private Context context;
 
-    ImageView profile_Btn1, profile_Btn2, storage, close, profile_img;
+   static ImageView profile_Btn1;
+    static ImageView profile_Btn2, storage, close, profile_img;
     TextView date, textView;
     View profileLayout1, profileLayout2;
     ArrayList<String> todo = new ArrayList<String>();
@@ -219,13 +220,12 @@ public class Main extends Fragment {
                         res.enqueue(new Callback<ResponseInfoUpdate>() {
                             @Override
                             public void onResponse(Call<ResponseInfoUpdate> call, Response<ResponseInfoUpdate> response) {
-                                if (response.body().getUpdate()){
-                                    Toast.makeText(getContext(),"정보가 저장되었습니다.",Toast.LENGTH_SHORT).show();
-                                    MainActivity.email=email.getText().toString();
-                                    MainActivity.nickname=name.getText().toString();
+                                if (response.body().getUpdate()) {
+                                    Toast.makeText(getContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                    MainActivity.email = email.getText().toString();
+                                    MainActivity.nickname = name.getText().toString();
                                     dl.dismiss();
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(getContext(), "정보가 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
                                 }
                             }

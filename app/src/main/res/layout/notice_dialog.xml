@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#b8d9c0"
+        android:fontFamily="@font/netmarble_b"
+        android:padding="5dp"
+        android:text="공지사항"
+        android:textAlignment="center"
+        android:textColor="#5d5d5d"
+        android:textSize="17dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="제목 : "
+        android:textAlignment="center"
+        android:textColor="#5d5d5d"
+        android:fontFamily="@font/netmarble_b"
+        android:textSize="15dp"
+        android:id="@+id/textTitle"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="날짜"
+        android:textAlignment="viewEnd"
+        android:gravity="end"
+        android:paddingRight="10dp"
+        android:id="@+id/textDate"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="내용 : "
+        android:textColor="#8c8c8c"
+        android:fontFamily="@font/netmarble_b"
+        android:textSize="15dp"
+        android:id="@+id/textContent"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>
