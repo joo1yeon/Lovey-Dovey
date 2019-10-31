@@ -70,6 +70,11 @@ public class LocSearch extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("ID", MainActivity.id);
+                intent.putExtra("NICK", MainActivity.nickname);
+                intent.putExtra("EMAIL", MainActivity.email);
+                intent.putExtra("COUPLE", MainActivity.coupleID);
+
                 startActivity(intent);
             }
         });
