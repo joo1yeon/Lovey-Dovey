@@ -70,7 +70,7 @@ public interface API {
     @GET("printReview.php")
     Call<List<ResponseGetReview>> getPrintReview(@Query("Place_id") String place_id);
 
-    @GET("AllReview.php")
+    @GET("printAllReview.php")
     Call<List<ResponseAllReview>> getAllReview(@Query("tag") int tag,@Query("place_id") String place_id);
 
 }

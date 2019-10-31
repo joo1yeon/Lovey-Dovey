@@ -27,7 +27,7 @@ public class AllReview extends AppCompatActivity {
 
     ListView listView;
     TextView name;
-
+    DateReview_listViewAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,35 +56,42 @@ public class AllReview extends AppCompatActivity {
         reviewAdapter = new ArrayAdapter(AllReview.this, android.R.layout.simple_spinner_dropdown_item, reviewList);
         spinner.setAdapter(reviewAdapter);
 
-        final DateReview_listViewAdapter adapter = new DateReview_listViewAdapter();
+        adapter = new DateReview_listViewAdapter();
+
         listView = findViewById(R.id.listView);
-        listView.setAdapter(((Date_Review) Date_Review.context).adapter);
+        //listView.setAdapter(((Date_Review) Date_Review.context).adapter);
+        listView.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 int tag = position;
-                Log.d("spinner", position + "");
                 Call<List<ResponseAllReview>> res = Net.getInstance().getApi().getAllReview(tag, place_id);
                 res.enqueue(new Callback<List<ResponseAllReview>>() {
                     @Override
                     public void onResponse(Call<List<ResponseAllReview>> call, Response<List<ResponseAllReview>> response) {
                         List<ResponseAllReview> responseGet = response.body();
+                        adapter.review_listItem.clear();
                         for (ResponseAllReview responseAllReview : responseGet) {
-                            adapter.addItem(responseAllReview.getRate());
+                           /* ((Date_Review) Date_Review.context).adapter.addItem(responseAllReview.getRate(), responseAllReview.getContent(), responseAllReview.getYear() + "/" + responseAllReview.getMonth() + "/" + responseAllReview.getDay(), responseAllReview.getID());
+                            ((Date_Review) Date_Review.context).adapter.notifyDataSetChanged();*/
+                            adapter.addItem(responseAllReview.getRate(), responseAllReview.getContent(), responseAllReview.getYear() + "/" + responseAllReview.getMonth() + "/" + responseAllReview.getDay(), responseAllReview.getID());
+                            adapter.notifyDataSetChanged();
+
                         }
-                }
+                    }
 
-                @Override
-                public void onFailure (Call < List < ResponseAllReview >> call, Throwable t){
+                    @Override
+                    public void onFailure(Call<List<ResponseAllReview>> call, Throwable t) {
 
-                }
-            });
-        }
-        @Override
-        public void onNothingSelected (AdapterView < ? > parent){
+                    }
+                });
+            }
 
-        }
-    });
-}
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 }

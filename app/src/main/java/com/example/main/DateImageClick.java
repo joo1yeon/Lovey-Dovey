@@ -38,8 +38,6 @@ public class DateImageClick extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dateimage_click);
 
-        ImageButton btnHome = findViewById(R.id.btnHome);
-
         Intent intent = getIntent();
         final int id = intent.getIntExtra("ID", 0);
 
@@ -83,13 +81,6 @@ public class DateImageClick extends AppCompatActivity {
                 intent.putExtra("Placeimage", Placeimage[position]);
                 intent.putExtra("Placeid", place_id[position]);
                 intent.putExtra("id",id);
-                startActivity(intent);
-            }
-        });
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DateImageClick.this, MainActivity.class);
                 startActivity(intent);
             }
         });
