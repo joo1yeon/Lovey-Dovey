@@ -40,7 +40,6 @@ public interface API {
     @GET("date_img2.php")
     Call<List<ResponseDate_image2>> getDate_image2(@Query("ID") int id);
     Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("EMAIL") String email);
-    Call<List<ResponseDate_image2>> getDate_image2();
 
     @GET("date_img3.php")
     Call<ResponseDate_image3> getDate_image3(@Query("Place_id")String place_id,@Query("id") int id);
@@ -69,7 +68,7 @@ public interface API {
     @GET("printAllReview.php")
     Call<List<ResponseAllReview>> getAllReview(@Query("tag") int tag,@Query("place_id") String place_id);
 
-   
+
     @GET("profile.php")
     Call<ResponseProfile> getProfile(@Query("ID") String id);
 
