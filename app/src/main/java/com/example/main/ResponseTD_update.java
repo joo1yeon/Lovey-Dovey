@@ -12,7 +12,7 @@ public class ResponseTD_update {
         result = _result;
     }
 
-    public boolean setTDModify() {
+    public boolean getTDModify() {
         return result;
     }
 }

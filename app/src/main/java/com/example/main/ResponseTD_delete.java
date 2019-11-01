@@ -11,7 +11,7 @@ public class ResponseTD_delete {
         result = _result;
     }
 
-    public boolean setTDDelt() {
+    public boolean getTDDelt() {
         return result;
     }
 }

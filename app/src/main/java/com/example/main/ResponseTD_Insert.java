@@ -11,7 +11,7 @@ public class ResponseTD_Insert {
         result = _result;
     }
 
-    public boolean setTDInsert() {
+    public boolean getTDInsert() {
         return result;
     }
 

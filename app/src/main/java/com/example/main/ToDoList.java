@@ -301,14 +301,12 @@ public class ToDoList extends AppCompatActivity {
     //To-Do-List 추가
     public void Item_add(int todoID, int coupleID, String content){
 
-        Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(todoID, coupleID," ", content,"false");
+        Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(todoID, coupleID,"", content,"false");
         res.enqueue(new Callback<ResponseTD_Insert>() {
             @Override
             public void onResponse(Call<ResponseTD_Insert> call, Response<ResponseTD_Insert> response) {
-                if(response.isSuccessful()){
-                    ResponseTD_Insert responseGet = response.body();
-                    if (responseGet.setTDInsert() == true ) {
-                    }
+                if(response.body().getTDInsert()){
+                    Log.e("test", "에러끝");
                 }
                 else Log.e("test", "통신1 에러");
             }
@@ -341,11 +339,8 @@ public class ToDoList extends AppCompatActivity {
         res.enqueue(new Callback<ResponseTD_update>() {
             @Override
             public void onResponse(Call<ResponseTD_update> call, Response<ResponseTD_update> response) {
-                if(response.isSuccessful()){
-                    ResponseTD_update responseGet = response.body();
-                    if (responseGet.setTDModify() == true ) {
-                        Toast.makeText(getApplication(),"수정 완료",Toast.LENGTH_SHORT).show();
-                    }
+                if(response.body().getTDModify()){
+                    Log.e("test", "에러끝");
                 }
                 else Log.e("test", "통신1 에러");
 
@@ -390,8 +385,8 @@ public class ToDoList extends AppCompatActivity {
             public void onResponse(Call<ResponseTD_delete> call, Response<ResponseTD_delete> response) {
                 if(response.isSuccessful()){
                     ResponseTD_delete responseGet = response.body();
-                    if (responseGet.setTDDelt() == true ) {
-                        Toast.makeText(getApplication(),"삭제완료",Toast.LENGTH_SHORT).show();
+                    if(response.body().getTDDelt()){
+                        Log.e("test", "에러끝");
                     }
                 }
                 else Log.e("test", "통신1 에러");
