@@ -316,8 +316,6 @@ public class Main extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 

@@ -396,16 +396,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             }
         }
     }
-
-   /* @SuppressLint("RestrictedApi")
-    public void backgroundSave() {
-        sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("insert into background(num,path) values('" + id + "','" + uri_ + "');");
-        Toast.makeText(MainActivity.this, "배경으로 저장되었습니다.", Toast.LENGTH_SHORT).show();
-        btnSave.setVisibility(View.INVISIBLE);
-        btnGallery.setVisibility(View.INVISIBLE);
-    }
-*/
     class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments = new ArrayList<Fragment>();
         private String titles[] = new String[]{"홈", "데이트코스", "발자국", "앨범"};
