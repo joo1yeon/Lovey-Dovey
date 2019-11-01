@@ -54,10 +54,10 @@ public class Main extends Fragment {
     String id;
 
 
-     static int REQUEST_CODE = 1;
+    static int REQUEST_CODE = 1;
     private Context context;
 
-   static ImageView profile_Btn1;
+    static ImageView profile_Btn1;
     static ImageView profile_Btn2, storage, close, profile_img;
     TextView date, textView;
     View profileLayout1, profileLayout2;
@@ -65,6 +65,8 @@ public class Main extends Fragment {
     TextSwitcher to_do_Btn;
     Thread todoThread;
     EditText email, name;
+    String path;
+    static ImageView img_ground;
 
     //sqlite 관련 변수
     MyDBHelper mainDB;
@@ -104,11 +106,20 @@ public class Main extends Fragment {
         todo.clear();
         Item_Content(MainActivity.coupleID);
 
-
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼, To-do-list 보여주기
-        date = layout.findViewById(R.id.date);                                      //메인화면 사귄날짜
+        date = layout.findViewById(R.id.date);
+        img_ground = layout.findViewById(R.id.img_ground);
 
+        sqlDB = mainDB.getReadableDatabase();
+        Cursor cursor = sqlDB.rawQuery("select path from background ;",null);
+        while (cursor.moveToNext()) {
+            path = cursor.getString(0);
+        }
+        Glide.with(this).load(path).into(img_ground);
+        sqlDB.close();
+
+        //메인화면 사귄날짜
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);                      //프로필사진1(나) 버튼
         profile_Btn2 = layout.findViewById(R.id.profile_Btn2);                      //프로필사진2(상대방) 버튼
 

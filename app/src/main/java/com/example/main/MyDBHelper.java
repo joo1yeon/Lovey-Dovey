@@ -19,6 +19,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("create table info(id varchar(50) not null, passwd varchar(50) not null,nickname varchar(50) not null, email varchar(50) not null);");
         db.execSQL("create table  to_do_list(num integer primary key, couple_id char(20) not null, date_check char(15), content char(50) not null, checked char(5) not null);");
         db.execSQL("create table marker(name varchar(70) not null, address varchar(70) not null, latitude double not null, longitude double not null,year int not null,month int not null,date int not null)");
+        db.execSQL("create table background(num integer primary key AUTOINCREMENT,path varchar(100) not null);");
 
         //TODO_LIST 내용
         db.execSQL("INSERT INTO to_do_list VALUES( 0,'couple0',' ','인형뽑기에서 원하는 인형 뽑아주기','false');");

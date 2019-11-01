@@ -71,7 +71,6 @@ public class Date_Review extends Fragment {
                 final AlertDialog _dig = dig.create();
                 final View digView = View.inflate(getContext(), R.layout.dialog_date_review, null);
 
-
                 OK = digView.findViewById(R.id.OK);
                 cancel = digView.findViewById(R.id.cancel);
                 _ratingbar = digView.findViewById(R.id._ratingBar);
