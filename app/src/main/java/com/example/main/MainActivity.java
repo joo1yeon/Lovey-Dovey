@@ -134,7 +134,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         Log.d("C_ID", "커플아이디:" + coupleID);
         Toast.makeText(MainActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
 
-
         setContentView(R.layout.activity_main);
         sqlDB = dbHelper.getWritableDatabase();
 //        Cursor cursor = sqlDB.rawQuery("select * from info;",null);
@@ -384,7 +383,11 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
                 btnSave.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        backgroundSave();
+                        sqlDB = dbHelper.getWritableDatabase();
+                        sqlDB.execSQL("insert into back values('" + id + "','" + uri_ + "');");
+                        Toast.makeText(MainActivity.this, "배경으로 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                        btnSave.setVisibility(View.INVISIBLE);
+                        btnGallery.setVisibility(View.INVISIBLE);
                     }
                 });
 
@@ -394,16 +397,15 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         }
     }
 
-    @SuppressLint("RestrictedApi")
+   /* @SuppressLint("RestrictedApi")
     public void backgroundSave() {
         sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("insert into background(path) values('" + uri_ + "');");
-        sqlDB.close();
+        sqlDB.execSQL("insert into background(num,path) values('" + id + "','" + uri_ + "');");
         Toast.makeText(MainActivity.this, "배경으로 저장되었습니다.", Toast.LENGTH_SHORT).show();
         btnSave.setVisibility(View.INVISIBLE);
         btnGallery.setVisibility(View.INVISIBLE);
     }
-
+*/
     class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments = new ArrayList<Fragment>();
         private String titles[] = new String[]{"홈", "데이트코스", "발자국", "앨범"};

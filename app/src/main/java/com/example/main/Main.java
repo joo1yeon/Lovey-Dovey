@@ -53,7 +53,6 @@ public class Main extends Fragment {
 
     String id;
 
-
     static int REQUEST_CODE = 1;
     private Context context;
 
@@ -83,7 +82,6 @@ public class Main extends Fragment {
         Item_Content(MainActivity.coupleID);
     }
 
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -100,11 +98,12 @@ public class Main extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main, container, false);
 
-
+        id = MainActivity.id;
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
         context = getContext();
         todo.clear();
         Item_Content(MainActivity.coupleID);
+
 
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼, To-do-list 보여주기
@@ -112,12 +111,15 @@ public class Main extends Fragment {
         img_ground = layout.findViewById(R.id.img_ground);
 
         sqlDB = mainDB.getReadableDatabase();
-        Cursor cursor = sqlDB.rawQuery("select path from background ;",null);
+        Cursor cursor = sqlDB.rawQuery("select path from back where id='" + id + "';", null);
         while (cursor.moveToNext()) {
             path = cursor.getString(0);
         }
-        Glide.with(this).load(path).into(img_ground);
-        sqlDB.close();
+        if (path != null) {
+            Glide.with(this).load(path).into(img_ground);
+        } else {
+            Glide.with(this).load(R.drawable.ground).into(img_ground);
+        }
 
         //메인화면 사귄날짜
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);                      //프로필사진1(나) 버튼
