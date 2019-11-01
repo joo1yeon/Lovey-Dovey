@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class ToDoList extends AppCompatActivity {
     String strContent, strDate;
 
     int i1, i2;
+
 
 
     @Override
@@ -77,6 +79,7 @@ public class ToDoList extends AppCompatActivity {
         //Adapter 달기
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
+
 
         //todolist 조회
         Item_show();
@@ -152,10 +155,7 @@ public class ToDoList extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 String text = contents.getText().toString();
-
                                 Item_modify(listItem.getContent(),text);
-                                Item_show();
-
                                 dl.dismiss();
                             }
                         });
@@ -175,11 +175,8 @@ public class ToDoList extends AppCompatActivity {
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         //TODO DB todoid 값 넘기는법... 삭제 후 조회가 안됨.. 왜징..
                         Item_Delete(listItem.getContent());
-                        Item_show();
-
                         dl2.dismiss();
                     }
                 });
@@ -230,12 +227,8 @@ public class ToDoList extends AppCompatActivity {
                 add.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         String text = contents.getText().toString();
-
                         Item_add(i1+i2,MainActivity.coupleID,text);
-                        Item_show();
-
                         dl.dismiss();
 
                     }
@@ -261,6 +254,7 @@ public class ToDoList extends AppCompatActivity {
         return date_;
     }
 
+
     //To-Do-List 조회
     public void Item_show(){
         Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
@@ -268,6 +262,8 @@ public class ToDoList extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
                 if(response.isSuccessful()){
+                    Log.d("TTT","아이템호출");
+
                     adapter1.clearItem();
                     adapter2.clearItem();
                     i1 = 0;
@@ -278,21 +274,25 @@ public class ToDoList extends AppCompatActivity {
                     for (ResponseTODO responseTodo_ : responseTodo){
 
                         if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
+                            Log.d("TTT","아이템추가1"+responseTodo_.getContent_td());
+
                             adapter1.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
                             listView1.setItemChecked(i1++,false);
                             adapter1.notifyDataSetChanged();
                         } else {
+                            Log.d("TTT","아이템추가2"+ responseTodo_.getContent_td());
+
                             adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
                             listView2.setItemChecked(i2++,true);
                             adapter2.notifyDataSetChanged();
                         }
                     }
                 }
-                else Log.d("test", "통신 1 에러");
+                else Log.d("TTT", "통신 1 에러~~~~~");
             }
             @Override
             public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
-                Log.d("test", "통신3 에러" + t.getMessage());
+                Log.d("TTT", "통신3 에러 ~~~~~" + t.getMessage());
             }
         });
 
@@ -300,22 +300,20 @@ public class ToDoList extends AppCompatActivity {
 
     //To-Do-List 추가
     public void Item_add(int todoID, int coupleID, String content){
-
         Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(todoID, coupleID,"", content,"false");
         res.enqueue(new Callback<ResponseTD_Insert>() {
             @Override
             public void onResponse(Call<ResponseTD_Insert> call, Response<ResponseTD_Insert> response) {
                 if(response.body().getTDInsert()){
                     Log.e("test", "에러끝");
-                }
-                else Log.e("test", "통신1 에러");
+                    Item_show();
+                } else Log.e("test", "통신1 에러++++");
             }
             @Override
             public void onFailure(Call<ResponseTD_Insert> call, Throwable t) {
-                Log.e("test", "통신3 에러" + t.getMessage());
+                Log.e("test", "통신3 에러++++" + t.getMessage());
             }
         });
-
     }
 
         //To-Do-List 추가
@@ -341,6 +339,7 @@ public class ToDoList extends AppCompatActivity {
             public void onResponse(Call<ResponseTD_update> call, Response<ResponseTD_update> response) {
                 if(response.body().getTDModify()){
                     Log.e("test", "에러끝");
+                    Item_show();
                 }
                 else Log.e("test", "통신1 에러");
 
@@ -386,16 +385,18 @@ public class ToDoList extends AppCompatActivity {
                 if(response.isSuccessful()){
                     ResponseTD_delete responseGet = response.body();
                     if(response.body().getTDDelt()){
+                        Log.d("TTT","아이템삭제");
                         Log.e("test", "에러끝");
+                        Item_show();
                     }
                 }
-                else Log.e("test", "통신1 에러");
+                else Log.e("test", "통신1 에러-->>");
 
             }
 
             @Override
             public void onFailure(Call<ResponseTD_delete> call, Throwable t) {
-                Log.e("test", "통신3 에러" + t.getMessage());
+                Log.e("test", "통신3 에러-->>" + t.getMessage());
             }
         });
     }
