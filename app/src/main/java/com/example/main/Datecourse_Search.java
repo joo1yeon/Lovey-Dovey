@@ -23,7 +23,6 @@ public class Datecourse_Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.datecourse_search);
 
-        ImageButton btnHome = findViewById(R.id.btnHome);
         background = findViewById(R.id.background);
         final boolean[] color = {false};
 
@@ -42,14 +41,6 @@ public class Datecourse_Search extends AppCompatActivity {
                         background.setBackgroundColor(Color.rgb(255, 255, 255));
                     }
                 });
-            }
-        });
-
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Datecourse_Search.this, MainActivity.class);
-                startActivity(intent);
             }
         });
     }

@@ -28,25 +28,24 @@ public class DateImageClick extends AppCompatActivity {
     ListView listView;
     Datecourse_ListViewAdapter adapter;
     ArrayList<Datecourse_ListViewItem> date_listItem;
-    String[] PlaceN= new String[6];;
-    String[] PlaceUrl= new String[6];
+    String[] PlaceN = new String[6];
+    String[] Placeimage = new String[6];
+    String[] place_id=new String[6];
+    int position;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dateimage_click);
 
-        ImageButton btnHome = findViewById(R.id.btnHome);
-/*        final String[] PlaceUrl={"http://mjckjs.gabia.io//whispering/image/datecourse/date_seok.jpg", "http://mjckjs.gabia.io//whispering/image/datecourse/date_child.jpg",
-                "http://mjckjs.gabia.io//whispering/image/datecourse/date_incheon.jpg", "http://mjckjs.gabia.io//whispering/image/datecourse/date_suwon.jpg",
-                "http://mjckjs.gabia.io//whispering/image/datecourse/date_yeouido.jpg", "http://mjckjs.gabia.io//whispering/image/datecourse/date_gyeongpo.jpg"};
-        final String[] PlaceN={"석촌호수","어린이 대공원","인천대공원","수원 경기도청","여의도","경포호수"};*/
+        Intent intent = getIntent();
+        final int id = intent.getIntExtra("ID", 0);
 
         listView = findViewById(R.id.imagelist);
         date_listItem = new ArrayList<Datecourse_ListViewItem>();
-        adapter = new Datecourse_ListViewAdapter(this, date_listItem);
+        adapter = new Datecourse_ListViewAdapter(this, date_listItem, id, position);
 
-        Call<List<ResponseDate_image2>> res = Net.getInstance().getApi().getDate_image2();
+        Call<List<ResponseDate_image2>> res = Net.getInstance().getApi().getDate_image2(id);
         res.enqueue(new Callback<List<ResponseDate_image2>>() {
             @Override
             public void onResponse(Call<List<ResponseDate_image2>> call, Response<List<ResponseDate_image2>> response) {
@@ -55,7 +54,8 @@ public class DateImageClick extends AppCompatActivity {
                     int i = 0;
                     for (ResponseDate_image2 responseDate_Image2 : responseGet) {
                         PlaceN[i] = responseDate_Image2.getname();
-                        PlaceUrl[i]=responseDate_Image2.getDate_image();
+                        Placeimage[i] = responseDate_Image2.getimage();
+                        place_id[i]=responseDate_Image2.getPlace_id();
                         ++i;
                     }
                 }
@@ -67,7 +67,7 @@ public class DateImageClick extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ResponseDate_image2>> call, Throwable t) {
-                Log.d("III","fail");
+                Log.d("III", "fail");
             }
         });
 
@@ -75,17 +75,12 @@ public class DateImageClick extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id2) {
                 Intent intent = new Intent(DateImageClick.this, Datecourse_Fragment.class);
                 intent.putExtra("PlaceN", PlaceN[position]);
-                intent.putExtra("PlaceUrl", PlaceUrl[position]);
-                startActivity(intent);
-            }
-        });
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DateImageClick.this, MainActivity.class);
+                intent.putExtra("Placeimage", Placeimage[position]);
+                intent.putExtra("Placeid", place_id[position]);
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });

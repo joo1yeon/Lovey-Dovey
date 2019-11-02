@@ -5,13 +5,12 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv1"
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/netmarble_m"
         android:gravity="center"
-        android:text="석촌호수"
         android:textSize="35dp"
         android:paddingBottom="5dp"
         android:background="@drawable/cutom_textview_undrline"
@@ -23,7 +22,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
-        app:layout_constraintTop_toBottomOf="@id/tv1"
+        app:layout_constraintTop_toBottomOf="@id/name"
         app:layout_constraintRight_toRightOf="parent"
         />
     <ListView

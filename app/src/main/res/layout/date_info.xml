@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvPlace"
@@ -23,10 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/netmarble_m"
-        android:text="서울 송파구 잠실동"
-        android:textSize="20dp"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
         app:layout_constraintLeft_toRightOf="@id/tvPlace"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,19 +38,19 @@
         android:text="시간 : "
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPlace" />
+        app:layout_constraintTop_toBottomOf="@+id/place" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/netmarble_m"
-        android:text="매일 00:00~24:00"
-        android:textSize="20dp"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
         app:layout_constraintLeft_toRightOf="@id/tvTime"
-        app:layout_constraintTop_toBottomOf="@+id/tvPlace" />
+        app:layout_constraintTop_toBottomOf="@+id/place" />
 
     <TextView
         android:id="@+id/tvTel"
@@ -64,22 +62,22 @@
         android:text="전화번호 : "
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTime" />
+        app:layout_constraintTop_toBottomOf="@+id/time" />
 
     <TextView
         android:id="@+id/tel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/netmarble_m"
-        android:text="없음"
-        android:textSize="20dp"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
         app:layout_constraintLeft_toRightOf="@id/tvTel"
-        app:layout_constraintTop_toBottomOf="@+id/tvTime" />
+        app:layout_constraintTop_toBottomOf="@+id/time" />
 
     <TextView
-        android:id="@+id/tvPrice"
+        android:id="@+id/tvContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
@@ -88,22 +86,24 @@
         android:text="입장료 : "
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTel" />
+        app:layout_constraintTop_toBottomOf="@+id/tel" />
 
     <TextView
-        android:id="@+id/price"
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="18dp"
+        android:autoLink="web"
         android:fontFamily="@font/netmarble_m"
-        android:text="무료"
-        android:textSize="20dp"
-        app:layout_constraintLeft_toRightOf="@id/tvPrice"
-        app:layout_constraintTop_toBottomOf="@+id/tvTel" />
+        android:textColorLink="#000fff"
+        android:textSize="15dp"
+        android:maxWidth="320dp"
+        app:layout_constraintLeft_toRightOf="@+id/tvContent"
+        app:layout_constraintTop_toBottomOf="@+id/tel" />
 
     <TextView
-        android:id="@+id/tvSub"
+        android:id="@+id/tvContent2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
@@ -112,19 +112,18 @@
         android:text="역 정보 : "
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/content" />
 
     <TextView
-        android:id="@+id/sub"
+        android:id="@+id/content2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/netmarble_m"
-        android:breakStrategy="simple"
-        android:text="잠실역 3번 출구(2,8호선)->석촌호수(도보 5분)"
-        android:textSize="16dp"
-        app:layout_constraintLeft_toRightOf="@id/tvSub"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+        android:textSize="15dp"
+        android:maxWidth="320dp"
+        app:layout_constraintLeft_toRightOf="@+id/tvContent2"
+        app:layout_constraintTop_toBottomOf="@+id/content" />
 
 </android.support.constraint.ConstraintLayout>
