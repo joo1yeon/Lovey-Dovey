@@ -2,6 +2,7 @@ package com.example.main;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
@@ -47,6 +48,17 @@ public class Album_singleton { //Story 객체들을 저장하는 저장소
 //            story.setDay(tempDay);
 //            mStories.add(story);
 //        }
+//        MyDBHelper storyDB;
+//        SQLiteDatabase sqlDB;
+//        Cursor cursor;
+//
+//        storyDB = new MyDBHelper(context);
+//        try {
+//            sqlDB = storyDB.getWritableDatabase();
+//            cursor = sqlDB.rawQuery("SELECT * FROM story;", null);
+//            int count = cursor.getCount();
+////            sqlDB.execSQL("INSERT INTO to_do_list VALUES (" + ++count + ",'" + id + "','','" + content + "','" + false + "');");
+//        } catch (Exception e) {}
 
         Call<List<ResponseStory>> res = Net.getInstance().getApi().getStoryData();
         res.enqueue(new Callback<List<ResponseStory>>() {

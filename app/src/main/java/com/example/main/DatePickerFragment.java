@@ -29,7 +29,7 @@ public class DatePickerFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setTitle("날짜 선택")
+//                .setTitle("날짜 선택")
                 .setPositiveButton("선택", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

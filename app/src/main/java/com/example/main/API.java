@@ -68,6 +68,9 @@ public interface API {
     @GET("printStoryData.php")
     Call<List<ResponseStory>> getStoryData();
 
+    @GET("searchStory.php")
+//    Call<ResponseSaveStory> searchStory(@Query("YEAR") int year, @Query("WRITER") String writer, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title,@Query("IMG_PATH") String img_path, @Query("CONTENTS") String contents);
+
     @Multipart
     @POST("upload_img.php")
     Call<ResponseImgUpload> upload(

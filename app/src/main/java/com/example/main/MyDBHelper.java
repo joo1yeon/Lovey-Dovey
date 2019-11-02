@@ -19,6 +19,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("create table info(id varchar(50) not null, passwd varchar(50) not null,nickname varchar(50) not null, email varchar(50) not null);");
         db.execSQL("create table  to_do_list(num integer primary key, couple_id char(20) not null, date_check char(15), content char(50) not null, checked char(5) not null);");
         db.execSQL("create table marker(name varchar(70) not null, address varchar(70) not null, latitude double not null, longitude double not null,year int not null,month int not null,date int not null)");
+        db.execSQL("create table story(story_id integer primary key autoincrement not null, writer varchar(20) not null, year integer, month integer, day integer, title varchar(100), main_img varchar(100), contents varchar(200))");
 
         //TODO_LIST 내용
         db.execSQL("INSERT INTO to_do_list VALUES( 0,'couple0',' ','인형뽑기에서 원하는 인형 뽑아주기','false');");
@@ -33,7 +34,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO to_do_list VALUES( 9,'couple0','','종로가서 커플링 맞추기','false');");
         db.execSQL("INSERT INTO to_do_list VALUES( 10,'couple0','','커플 키링 만들어보기','false');");
 
-
+        //story 내용
+        db.execSQL("INSERT INTO story VALUES(0, 'test1', 2019, 10, 30, '이것은 테스트이다.', 'path', '꽁냥꽁냥')");
 
 
     }
