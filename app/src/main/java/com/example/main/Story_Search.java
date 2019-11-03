@@ -53,6 +53,7 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
         rdo_user1.setText(MainActivity.nickname);
         storyTitle = etTitleSearch.getText().toString();
 
+//        mRadioGroup.check(R.id.radio1);
         rdo_user1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

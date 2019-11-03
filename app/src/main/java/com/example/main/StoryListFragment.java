@@ -26,6 +26,10 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 @SuppressLint("ValidFragment")
 public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 때 뜨는 화면
     String id;
@@ -33,9 +37,11 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     public StoryAdapter mAdapter;
     public Button addBtn;
     public FloatingActionButton searchBtn;
+    Album_singleton album_singleton;
+    List<Story> stories;
     DbOpenHelper mDbOpenHelper;
 
-    public StoryListFragment(){
+    public StoryListFragment() {
     }
 
     @Override
@@ -44,7 +50,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
         mStoryRecyclerView = view.findViewById(R.id.story_recycler_view);
         mStoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        updateUI();
+//        updateUI();
 
         addBtn = view.findViewById(R.id.add_btn);
         searchBtn = view.findViewById(R.id.search_btn);
@@ -76,17 +82,49 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     }
 
     public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
-        Album_singleton album_singleton = Album_singleton.get(getActivity());
-        List<Story> stories = album_singleton.getStories();
+        album_singleton = Album_singleton.get(getActivity());
+        stories = album_singleton.getStories();
 
-        if (mAdapter == null) {
-            mAdapter = new StoryAdapter(stories);
-            mStoryRecyclerView.setAdapter(mAdapter);
-        } else {
-            mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
-            mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
-            Log.d("test", "리스트 다시 로드하기");
-        }
+        Log.d("test", "updateUI 에서 서버연동");
+        Call<List<ResponseStory>> res = Net.getInstance().getApi().getStoryData();
+        res.enqueue(new Callback<List<ResponseStory>>() {
+            @Override
+            public void onResponse(Call<List<ResponseStory>> call, Response<List<ResponseStory>> response) {
+                if (response.isSuccessful()) {
+                    List<ResponseStory> responseGet = response.body();
+                    for (ResponseStory responseStory : responseGet) {
+
+                        Story story = new Story();
+                        story.setId(responseStory.getStoryID());
+                        story.setWriter(responseStory.getWriter());
+                        story.setYear(responseStory.getYear());
+                        story.setMonth(responseStory.getMonth());
+                        story.setDay(responseStory.getDay());
+                        story.setTitle(responseStory.getTitle());
+                        story.setMainImg(Uri.parse(responseStory.getImgPath()));
+                        story.setContents_text(responseStory.getContents());
+                        stories.add(story);
+                        Log.d("test", "스토리 내용 추가");
+                    }
+                } else Log.d("test", "통신 1 에러");
+
+                if (mAdapter == null) {
+                    mAdapter = new StoryAdapter(stories);
+                    mStoryRecyclerView.setAdapter(mAdapter);
+                } else {
+                    mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
+                    mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
+                    Log.d("test", "리스트 다시 로드하기");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ResponseStory>> call, Throwable t) {
+                Log.d("test", "통신 실패" + t.getMessage());
+            }
+        });
+
+
     }
 
 //    public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {

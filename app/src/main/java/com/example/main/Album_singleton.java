@@ -60,33 +60,7 @@ public class Album_singleton { //Story 객체들을 저장하는 저장소
 ////            sqlDB.execSQL("INSERT INTO to_do_list VALUES (" + ++count + ",'" + id + "','','" + content + "','" + false + "');");
 //        } catch (Exception e) {}
 
-        Call<List<ResponseStory>> res = Net.getInstance().getApi().getStoryData();
-        res.enqueue(new Callback<List<ResponseStory>>() {
-            @Override
-            public void onResponse(Call<List<ResponseStory>> call, Response<List<ResponseStory>> response) {
-                if (response.isSuccessful()) {
-                    List<ResponseStory> responseGet = response.body();
-                    for (ResponseStory responseStory : responseGet) {
 
-                        Story story = new Story();
-                        story.setId(responseStory.getStoryID());
-                        story.setWriter(responseStory.getWriter());
-                        story.setYear(responseStory.getYear());
-                        story.setMonth(responseStory.getMonth());
-                        story.setDay(responseStory.getDay());
-                        story.setTitle(responseStory.getTitle());
-                        story.setMainImg(Uri.parse(responseStory.getImgPath()));
-                        story.setContents_text(responseStory.getContents());
-                        mStories.add(story);
-                    }
-                } else Log.d("test", "통신 1 에러");
-            }
-
-            @Override
-            public void onFailure(Call<List<ResponseStory>> call, Throwable t) {
-                Log.d("test", "통신 실패" + t.getMessage());
-            }
-        });
         
     }
     //TODO 새로운 story 객체를 리스트에 추가하는 메소드
