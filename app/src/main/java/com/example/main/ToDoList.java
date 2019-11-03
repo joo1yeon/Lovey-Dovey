@@ -84,7 +84,7 @@ public class ToDoList extends AppCompatActivity {
         //todolist 조회
         Item_show();
 
-        //체크되지 않은 투두리스트 클릭했을 때
+        //TODO# 체크되지 않은 투두리스트 클릭했을 때 (클릭제어)
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -96,7 +96,7 @@ public class ToDoList extends AppCompatActivity {
 
 
 
-        //체크하지 않은 리스트를 길게 클릭했을 때
+        //TODO# 체크하지 않은 리스트를 길게 클릭했을 때 (수정, 삭제)
         listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -122,7 +122,7 @@ public class ToDoList extends AppCompatActivity {
                 change = menuLayout.findViewById(R.id.change);
                 delete = menuLayout.findViewById(R.id.delete);
 
-                //수정버튼 클릭했을 때
+                //TODO# 수정버튼 클릭했을 때
                 change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -162,7 +162,7 @@ public class ToDoList extends AppCompatActivity {
                     }
                 });
 
-                //삭제버튼 클릭했을 때
+                //TODO# 삭제버튼 클릭했을 때
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -175,7 +175,7 @@ public class ToDoList extends AppCompatActivity {
         });
 
 
-        //체크된 투두리스트 클릭했을 때
+        //TODO# 체크된 투두리스트 클릭했을 때 (클릭제어)
         listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -190,7 +190,7 @@ public class ToDoList extends AppCompatActivity {
         //추가버튼 인플레이트
         btnAdd = findViewById(R.id.btnAdd);
 
-        //투두리스트를 추가 버튼을 클릭했을 떄
+        //TODO# 투두리스트를 추가 버튼을 클릭했을 떄
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,7 +229,7 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
-    //현재 날짜 찍기
+    //TODO# 현재 날짜 찍기
     public String Date(){
         SimpleDateFormat format = new SimpleDateFormat ( "yyyy년 MM월 dd일");
         Date date = new Date();
@@ -237,7 +237,7 @@ public class ToDoList extends AppCompatActivity {
         return date_;
     }
 
-    //To-Do-List 조회
+    //TODO# To-Do-List 조회
     public void Item_show(){
         Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
         res.enqueue(new Callback<List<ResponseTODO>>() {
@@ -279,7 +279,7 @@ public class ToDoList extends AppCompatActivity {
 
     }
 
-    //To-Do-List 추가
+    //TODO# To-Do-List 추가
     public void Item_add(int coupleID, String content){
         Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(coupleID,"", content,"false");
         res.enqueue(new Callback<ResponseTD_Insert>() {
@@ -297,7 +297,7 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
-       //To-Do-List 수정
+       //TODO# To-Do-List 수정
        public void Item_modify(String content1, String content2){
         final Call<ResponseTD_update> res = Net.getInstance().getApi().getTD_Modify(MainActivity.coupleID, content1, content2);
         res.enqueue(new Callback<ResponseTD_update>() {
@@ -319,7 +319,7 @@ public class ToDoList extends AppCompatActivity {
 
        }
 
-    //To-Do-List 삭제
+    //TODO# To-Do-List 삭제
     public void Item_Delete(String Content){
         Call<ResponseTD_delete> res = Net.getInstance().getApi().getTD_Delt(MainActivity.coupleID, Content);
         res.enqueue(new Callback<ResponseTD_delete>() {
@@ -343,7 +343,7 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
-    //To-Do-List 클릭했을 때 넘어가기(클릭제어)
+    //TODO# To-Do-List 클릭했을 때 넘어가기(클릭제어)
     public void Item_Click(String Content,String Date,String bool){
         Call<ResponseTD_click> res = Net.getInstance().getApi().getTD_Click(MainActivity.coupleID, Content, Date, bool);
         res.enqueue(new Callback<ResponseTD_click>() {
@@ -365,7 +365,7 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
-    //TODO 로컬디비 조회, 삭제, 수정, 클릭제어
+    //TODO# 로컬디비 조회, 삭제, 수정, 클릭제어
 
     //To-Do-List 조회
       /* public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){

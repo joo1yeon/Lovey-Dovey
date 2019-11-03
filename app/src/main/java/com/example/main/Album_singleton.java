@@ -60,14 +60,8 @@ public class Album_singleton { //Story 객체들을 저장하는 저장소
 ////            sqlDB.execSQL("INSERT INTO to_do_list VALUES (" + ++count + ",'" + id + "','','" + content + "','" + false + "');");
 //        } catch (Exception e) {}
 
-
-            @Override
-            public void onFailure(Call<List<ResponseStory>> call, Throwable t) {
-                Log.d("test", "통신 실패" + t.getMessage());
-            }
-        });
-
     }
+
     //TODO 새로운 story 객체를 리스트에 추가하는 메소드
     public void addStory(Story s) {
         mStories.add(0, s);
@@ -87,4 +81,5 @@ public class Album_singleton { //Story 객체들을 저장하는 저장소
         }
         return null;
     }
+
 }
