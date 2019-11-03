@@ -82,11 +82,6 @@ public class Main extends Fragment {
         super.onStart();
         todo.clear();
         Item_Content();
-
-        //todoArrayList 배열에 아무것도 들어있지 않을 때
-        if (todo.isEmpty()) {
-            todo.add("TODO_LIST에 내용을 입력해주세요");
-        }
     }
 
 
@@ -389,8 +384,16 @@ public class Main extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        to_do_Btn.setText("•  " + todo.get(index)); //String 배열 때 todo[index]
-                        to_do_Btn.invalidate();
+                        //todoArrayList 배열에 아무것도 들어있지 않을 때
+                        if (todo.isEmpty()) {
+                            to_do_Btn.setText("•  TODO_LIST에 내용을 입력해주세요");
+                        }
+                        else {
+                            to_do_Btn.setText("•  " + todo.get(index)); //String 배열 때 todo[index]
+                            to_do_Btn.invalidate();
+                        }
+
+
                     }
                 });
 
