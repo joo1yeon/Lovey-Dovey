@@ -34,12 +34,11 @@ import retrofit2.Response;
 public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 때 뜨는 화면
     String id;
     public RecyclerView mStoryRecyclerView;
-    public StoryAdapter mAdapter;
+    static public StoryAdapter mAdapter;
     public Button addBtn;
     public FloatingActionButton searchBtn;
     Album_singleton album_singleton;
     List<Story> stories;
-    DbOpenHelper mDbOpenHelper;
 
     public StoryListFragment() {
     }
@@ -85,45 +84,47 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
         album_singleton = Album_singleton.get(getActivity());
         stories = album_singleton.getStories();
 
-        Log.d("test", "updateUI 에서 서버연동");
-        Call<List<ResponseStory>> res = Net.getInstance().getApi().getStoryData();
-        res.enqueue(new Callback<List<ResponseStory>>() {
-            @Override
-            public void onResponse(Call<List<ResponseStory>> call, Response<List<ResponseStory>> response) {
-                if (response.isSuccessful()) {
-                    List<ResponseStory> responseGet = response.body();
-                    for (ResponseStory responseStory : responseGet) {
+        if (mAdapter == null) {
 
-                        Story story = new Story();
-                        story.setId(responseStory.getStoryID());
-                        story.setWriter(responseStory.getWriter());
-                        story.setYear(responseStory.getYear());
-                        story.setMonth(responseStory.getMonth());
-                        story.setDay(responseStory.getDay());
-                        story.setTitle(responseStory.getTitle());
-                        story.setMainImg(Uri.parse(responseStory.getImgPath()));
-                        story.setContents_text(responseStory.getContents());
-                        stories.add(story);
-                        Log.d("test", "스토리 내용 추가");
-                    }
-                } else Log.d("test", "통신 1 에러");
+            //adapter가 null 일때 서버에서 스토리 가져온다.
+            Call<List<ResponseStory>> res = Net.getInstance().getApi().getStoryData();
+            res.enqueue(new Callback<List<ResponseStory>>() {
+                @Override
+                public void onResponse(Call<List<ResponseStory>> call, Response<List<ResponseStory>> response) {
+                    if (response.isSuccessful()) {
+                        List<ResponseStory> responseGet = response.body();
+                        for (ResponseStory responseStory : responseGet) {
 
-                if (mAdapter == null) {
-                    mAdapter = new StoryAdapter(stories);
-                    mStoryRecyclerView.setAdapter(mAdapter);
-                } else {
-                    mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
-                    mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
-                    Log.d("test", "리스트 다시 로드하기");
+                            Story story = new Story();
+                            story.setId(responseStory.getStoryID());
+                            story.setWriter(responseStory.getWriter());
+                            story.setYear(responseStory.getYear());
+                            story.setMonth(responseStory.getMonth());
+                            story.setDay(responseStory.getDay());
+                            story.setTitle(responseStory.getTitle());
+                            story.setMainImg(Uri.parse(responseStory.getImgPath()));
+                            story.setContents_text(responseStory.getContents());
+                            stories.add(story);
+                            Log.d("test", "스토리 내용 추가");
+                        }
+
+                        mAdapter = new StoryAdapter(stories);
+                        mStoryRecyclerView.setAdapter(mAdapter);
+
+                    } else Log.d("test", "통신 1 에러");
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<ResponseStory>> call, Throwable t) {
-                Log.d("test", "통신 실패" + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<List<ResponseStory>> call, Throwable t) {
+                    Log.d("test", "통신 실패" + t.getMessage());
+                }
+            });
 
+        } else {
+            mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
+            mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
+            Log.d("test", "리스트 다시 로드하기");
+        }
 
     }
 

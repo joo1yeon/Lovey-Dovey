@@ -99,23 +99,24 @@ public class Story_SearchResult extends AppCompatActivity {
                         Log.d("test", "스토리 리스트에 추가");
                         Log.d("test", String.valueOf(count));
 
-                        if (mAdapter == null) {
-                            mAdapter = new StoryAdapter(stories);
-                            mRecyclerView.setAdapter(mAdapter);
-                            Log.d("test", "if문");
-                        } else {
-                            mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
-                            mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
-                            Log.d("test", "리스트 다시 로드하기");
-                        }
-
-                        if (count == 0) {
-                            textResult.setText("검색 결과가 업습니다.");
-                        } else {
-                            textResult.setText("검색 결과: " + count + "개의 스토리");
-                        }
                     }
                 } else Log.d("test", "통신 1 에러");
+
+                if (mAdapter == null) {
+                    mAdapter = new StoryAdapter(stories);
+                    mRecyclerView.setAdapter(mAdapter);
+                    Log.d("test", "if문");
+                } else {
+                    mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
+                    mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
+                    Log.d("test", "리스트 다시 로드하기");
+                }
+
+                if (count == 0) {
+                    textResult.setText("검색 결과가 없습니다.");
+                } else {
+                    textResult.setText("검색 결과: " + count + "개의 스토리");
+                }
             }
 
             @Override

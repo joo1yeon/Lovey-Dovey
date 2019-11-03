@@ -11,16 +11,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {
     public Story mStory;
     public ImageView mStoryMainImg;
     public TextView mStoryTitle, mStoryDate, mContentsText;
     private Context mContext;
+    String story_id;
 
     //TODO 항목 구성을 위한 뷰들을 findViewById 해주는 역할
     public StoryHolder(View itemView) {
@@ -69,20 +75,35 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
 
+            Album_singleton album_singleton = Album_singleton.get(mContext);
+            List<Story> stories = album_singleton.getStories();
+
             switch (menuItem.getItemId()) {
                 case 1002: //수정 항목 선택시
-//                    Intent intent = new Intent(getActivity(), Story_EditMainListItem.class);
+
+                    story_id = stories.get(getAdapterPosition()).getId();
+                    deleteStory_server(); //서버에서 story 삭제
+
                     Intent intent = new Intent(mContext, Story_EditMainListItem.class);
-//                    startActivity(intent);
+                    intent.putExtra("story_id", stories.get(getAdapterPosition()).getId());
+                    intent.putExtra("title", stories.get(getAdapterPosition()).getTitle());
+                    intent.putExtra("year", stories.get(getAdapterPosition()).getYear());
+                    intent.putExtra("month", stories.get(getAdapterPosition()).getMonth());
+                    intent.putExtra("day", stories.get(getAdapterPosition()).getDay());
+                    intent.putExtra("imgpath", stories.get(getAdapterPosition()).getMainImg().toString());
+                    intent.putExtra("contents", stories.get(getAdapterPosition()).getContents_text());
+                    mContext.startActivity(intent);
+                    stories.remove(getAdapterPosition());
 
                     break;
                 case 1003: //삭제 항목 선택시
 //                    Album_singleton album_singleton = Album_singleton.get(getActivity());
-                    Album_singleton album_singleton = Album_singleton.get(mContext);
-                    List<Story> stories = album_singleton.getStories();
+
+                    story_id = stories.get(getAdapterPosition()).getId();
                     stories.remove(getAdapterPosition());
-//                    mAdapter.notifyItemRemoved(getAdapterPosition());
-//                    mAdapter.notifyItemRangeChanged(getAdapterPosition(), stories.size());
+                    deleteStory_server(); //서버에서 story 삭제
+                    StoryListFragment.mAdapter.notifyItemRemoved(getAdapterPosition());
+                    StoryListFragment.mAdapter.notifyItemRangeChanged(getAdapterPosition(), stories.size());
                     //TODO DB에서 data 삭제
 //                    mDbOpenHelper = new DbOpenHelper(getActivity());
 //                    mDbOpenHelper.open();
@@ -96,4 +117,24 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
             return true;
         }
     };
+
+    void deleteStory_server() {
+        Call<ResponseServer_Story> res = Net.getInstance().getApi().deleteStoryData(story_id);
+        res.enqueue(new Callback<ResponseServer_Story>() {
+            @Override
+            public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
+                if (response.isSuccessful()) {
+                    ResponseServer_Story responseGet = response.body();
+                    if (responseGet.deleteStoryData() ) {
+//                        Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } else Toast.makeText(mContext,"통신1 에러",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseServer_Story> call, Throwable t) {
+                Toast.makeText(mContext,"통신 실패",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

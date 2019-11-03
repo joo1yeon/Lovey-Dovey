@@ -219,12 +219,12 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
 
     //TODO 서버에 story data 저장하기
     public void saveStoryData() { //서버에 저장은 되는데 통신3에러가 뜬다.
-        Call<ResponseSaveStory> res = Net.getInstance().getApi().setStoryData(story_id, MainActivity.id, year, month, day, mTitle, imgPath, contents);
-        res.enqueue(new Callback<ResponseSaveStory>() {
+        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, MainActivity.id, year, month, day, mTitle, imgPath, contents);
+        res.enqueue(new Callback<ResponseServer_Story>() {
             @Override
-            public void onResponse(Call<ResponseSaveStory> call, Response<ResponseSaveStory> response) {
+            public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
                 if (response.isSuccessful()) {
-                    ResponseSaveStory responseGet = response.body();
+                    ResponseServer_Story responseGet = response.body();
                     if (responseGet.setStoryData() == true ) {
                         Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -232,7 +232,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
             }
 
             @Override
-            public void onFailure(Call<ResponseSaveStory> call, Throwable t) {
+            public void onFailure(Call<ResponseServer_Story> call, Throwable t) {
                 Toast.makeText(Story_Create.this,"통신3 에러",Toast.LENGTH_SHORT).show();
             }
         });

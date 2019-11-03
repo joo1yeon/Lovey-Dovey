@@ -73,7 +73,10 @@ public interface API {
     Call<ResponseProfile> getProfile(@Query("ID") String id);
 
     @GET("save_storyData.php")
-    Call<ResponseSaveStory> setStoryData(@Query("STORY_ID") String story_id, @Query("WRITER") String writer, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title, @Query("IMG_PATH") String img_path, @Query("CONTENTS") String contents);
+    Call<ResponseServer_Story> setStoryData(@Query("STORY_ID") String story_id, @Query("WRITER") String writer, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title, @Query("IMG_PATH") String img_path, @Query("CONTENTS") String contents);
+
+    @GET("deleteStory.php")
+    Call<ResponseServer_Story> deleteStoryData(@Query("STORY_ID") String story_id);
 
     @GET("printStoryData.php")
     Call<List<ResponseStory>> getStoryData();
