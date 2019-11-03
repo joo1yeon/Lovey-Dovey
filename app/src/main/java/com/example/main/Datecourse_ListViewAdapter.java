@@ -22,11 +22,15 @@ import retrofit2.Response;
 public class Datecourse_ListViewAdapter extends BaseAdapter {
     Context context;
     ArrayList<Datecourse_ListViewItem> date_listItem = new ArrayList<Datecourse_ListViewItem>();
-    String[] PlaceUrl= new String[6];
+    String[] Placeimage = new String[6];
+    int id;
+    int position;
 
-    public Datecourse_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> date_listItem) {
+    public Datecourse_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> date_listItem, int id, int position) {
         this.context = context;
         this.date_listItem = date_listItem;
+        this.id = id;
+        this.position = position;
     }
 
     @Override
@@ -57,7 +61,7 @@ public class Datecourse_ListViewAdapter extends BaseAdapter {
 
         placeName.setText(date_listItem.get(position).getTitle());
 
-        Call<List<ResponseDate_image2>> res = Net.getInstance().getApi().getDate_image2();
+        Call<List<ResponseDate_image2>> res = Net.getInstance().getApi().getDate_image2(id);
         res.enqueue(new Callback<List<ResponseDate_image2>>() {
             @Override
             public void onResponse(Call<List<ResponseDate_image2>> call, Response<List<ResponseDate_image2>> response) {
@@ -65,11 +69,12 @@ public class Datecourse_ListViewAdapter extends BaseAdapter {
                     List<ResponseDate_image2> responseGet = response.body();
                     int i = 0;
                     for (ResponseDate_image2 responseDate_Image2 : responseGet) {
-                        PlaceUrl[i] = responseDate_Image2.getDate_image();
-                        Log.d("OKK",PlaceUrl[i]);
+                        Placeimage[i] = responseDate_Image2.getimage();
+                        Log.d("OKK", Placeimage[i]);
                         ++i;
                     }
-                    Glide.with(context).load(PlaceUrl[position]).into(image);
+                    Glide.with(context).load(Placeimage[position]).into(image);
+                    Log.d("WWW",id+"");
                 }
             }
 

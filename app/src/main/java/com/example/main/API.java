@@ -29,20 +29,23 @@ public interface API {
     Call<ResponseRepeat> getRepeat(@Query("ID") String id);
 
     @GET("printMarker.php")
-    Call<List<ResponseMarker>> getMarker(@Query("coupleID") int id, @Query("year") int year, @Query("month") int month, @Query("day")int day);
+    Call<List<ResponseMarker>> getMarker(@Query("coupleID") int id, @Query("year") int year, @Query("month") int month, @Query("day") int day);
 
     @GET("Join.php")
-    Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("NUM") int num,@Query("EMAIL") String email);
+    Call<ResponseJoin> getJoin(@Query("NAME") String name, @Query("ID") String id, @Query("PW") String pw, @Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender, @Query("NUM") int num, @Query("EMAIL") String email);
 
     @GET("date_img.php")
     Call<List<ResponseDate_image>> getDate_image();
 
     @GET("date_img2.php")
-    Call<List<ResponseDate_image2>> getDate_image2();
+    Call<List<ResponseDate_image2>> getDate_image2(@Query("ID") int id);
     Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("EMAIL") String email);
 
+    @GET("date_img3.php")
+    Call<ResponseDate_image3> getDate_image3(@Query("Place_id")String place_id,@Query("id") int id);
+
     @GET("addMarker.php")
-    Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date,@Query("COUPLE") int couple);
+    Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
 
     @GET("resetTable.php")
     Call<ResReset> getReset();
@@ -57,19 +60,26 @@ public interface API {
     Call<responseConnect> getConn(@Query("ID") String id, @Query("OPPO") String oppo);
 
     @GET("addReview.php")
-    Call<ResponseReview> getReview(@Query("PLACE") String place, @Query("RATE") float rate, @Query("ID") String id, @Query("CONTENT") String content, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY")int day);
+    Call<ResponseReview> getReview(@Query("Place_id") String place_id, @Query("RATE") float rate, @Query("ID") String id, @Query("CONTENT") String content, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY")int day);
 
     @GET("printReview.php")
-    Call<List<ResponseGetReview>> getPrintReview(@Query("PLACE") String place);
+    Call<List<ResponseGetReview>> getPrintReview(@Query("Place_id") String place_id);
+
+    @GET("printAllReview.php")
+    Call<List<ResponseAllReview>> getAllReview(@Query("tag") int tag,@Query("place_id") String place_id);
+
 
     @GET("profile.php")
     Call<ResponseProfile> getProfile(@Query("ID") String id);
 
     @GET("save_storyData.php")
-    Call<ResponseSaveStory> setStoryData(@Query("STORY_ID") String story_id, @Query("WRITER") String writer, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title,@Query("IMG_PATH") String img_path, @Query("CONTENTS") String contents);
+    Call<ResponseSaveStory> setStoryData(@Query("STORY_ID") String story_id, @Query("WRITER") String writer, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title, @Query("IMG_PATH") String img_path, @Query("CONTENTS") String contents);
 
     @GET("printStoryData.php")
     Call<List<ResponseStory>> getStoryData();
+
+    @GET("searchStory.php")
+    Call<List<ResponseStory>> searchStory(@Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title, @Query("WRITER") String writer);
 
     @Multipart
     @POST("upload_img.php")
@@ -100,6 +110,12 @@ public interface API {
     Call<ResponseDate> getDate(@Query("id") String id);
 
     //@Query("todo_id") int id, @Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked
+
+    @GET("printNotice.php")
+    Call<List<ResponseNotice>> getNotice();
+
+    @GET("noticeInfo.php")
+    Call<NoticeInfo> getNoticeInfo(@Query("ID") int id);
 
 }
 

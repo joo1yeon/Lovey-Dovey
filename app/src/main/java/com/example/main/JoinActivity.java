@@ -192,16 +192,16 @@ public class JoinActivity extends AppCompatActivity {
                     String api_nick = edtNickName.getText().toString();
                     String api_email = edtEmail.getText().toString() + "@" + edtDomain.getText().toString();
 
-                    if(!api_name.equals(null)&&!api_id.equals(null)&&!api_pw.equals(null)&&!api_date.equals(null)&&!api_gender.equals(null)&&!api_nick.equals(null)&&!api_email.equals(null)){
-                        Call<ResponseJoin> res = Net.getInstance().getApi().getJoin(api_name, api_id, api_pw,api_nick,api_date, api_gender ,  api_email);
+                    if (!api_name.equals(null) && !api_id.equals(null) && !api_pw.equals(null) && !api_date.equals(null) && !api_gender.equals(null) && !api_nick.equals(null) && !api_email.equals(null)) {
+                        Call<ResponseJoin> res = Net.getInstance().getApi().getJoin(api_name, api_id, api_pw, api_nick, api_date, api_gender, api_email);
                         res.enqueue(new Callback<ResponseJoin>() {
                             @Override
                             public void onResponse(Call<ResponseJoin> call, Response<ResponseJoin> response) {
-                                if(response.isSuccessful()){
-                                    ResponseJoin responseJoin=response.body();
-                                    if(responseJoin.getJoin()){
-                                        Toast.makeText(JoinActivity.this,"회원가입에 성공하였습니다.",Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(JoinActivity.this,LoginActivity.class);
+                                if (response.isSuccessful()) {
+                                    ResponseJoin responseJoin = response.body();
+                                    if (responseJoin.getJoin()) {
+                                        Toast.makeText(JoinActivity.this, "회원가입에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(JoinActivity.this, LoginActivity.class);
                                         startActivity(intent);
                                     }
                                 }
@@ -209,15 +209,15 @@ public class JoinActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<ResponseJoin> call, Throwable t) {
-                                Toast.makeText(JoinActivity.this,"회원가입에 실패하였습니다.",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(JoinActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
 
                             }
                         });
-                    }else{
-                        Toast.makeText(JoinActivity.this,"입력되지 않은 정보가 있습니다.",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(JoinActivity.this, "입력되지 않은 정보가 있습니다.", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(JoinActivity.this,"잘못된 정보가 입력되었습니다.",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(JoinActivity.this, "잘못된 정보가 입력되었습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

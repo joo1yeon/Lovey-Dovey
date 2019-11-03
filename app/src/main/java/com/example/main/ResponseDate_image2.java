@@ -6,17 +6,24 @@ public class ResponseDate_image2 {
     @SerializedName("name")
     private String name;
     @SerializedName("image")
-    private String date_image;
+    private String image;
+    @SerializedName("place_id")
+    private String place_id;
 
-    public ResponseDate_image2(String _name, String _date_image) {
-        name=_name;
-        date_image = _date_image;
+    public ResponseDate_image2(String _name, String _image,String _place_id) {
+        name = _name;
+        image = _image;
+        place_id=_place_id;
     }
 
     public String getname() {
         return name;
     }
-    public String getDate_image(){
-        return date_image;
+    public String getimage() {
+        return image;
     }
+    public String getPlace_id() {
+        return place_id;
+    }
+
 }
