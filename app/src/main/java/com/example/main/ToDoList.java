@@ -40,10 +40,10 @@ public class ToDoList extends AppCompatActivity {
     ListView listView1, listView2;                                      //선택한거, 안한거
     ToDoList_ChoiceListAdapter adapter1, adapter2;                     //선택한거, 안한거
 
-    MyDBHelper todoDB;
-    SQLiteDatabase sqlDB;
-    Cursor cursor;
-    String strContent, strDate;
+    //MyDBHelper todoDB;
+    //SQLiteDatabase sqlDB;
+    //Cursor cursor;
+    //String strContent, strDate;
 
     int i1, i2;
 
@@ -54,7 +54,7 @@ public class ToDoList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist);
 
-        todoDB = new MyDBHelper(this);          //헬퍼클래스 객체 생성
+        //todoDB = new MyDBHelper(this);          //헬퍼클래스 객체 생성
 
         //뒤로가기 버튼 인플레이트
         btnBack = findViewById(R.id.btnBack);
@@ -92,13 +92,7 @@ public class ToDoList extends AppCompatActivity {
                 ToDoList_ListItem listItem = adapter1.listViewItems.get(i);
                 String content = listItem.getContent();
 
-                /*Item_Click(adapter1,strCoupleID,true, content,i);
-                adapter1.clearItem();
-                Item_show(adapter1, strCoupleID,false);
-                adapter2.clearItem();
-                Item_show(adapter2, strCoupleID,true);
-                adapter2.notifyDataSetChanged();*/
-
+                Item_Click(content,Date(),"true");
             }
         });
 
@@ -147,7 +141,6 @@ public class ToDoList extends AppCompatActivity {
                         cancel = addLayout.findViewById(R.id.cancel);
                         contents = addLayout.findViewById(R.id.content);
 
-                        //TODO 데이터 베이스에서 가져온 내용 수정하는 내용 에디트텍스트에 출력
                         contents.setText(listItem.getContent());        // 수정할 아이템의 내용을 EditText에 보여줌
 
                         //수정
@@ -175,7 +168,6 @@ public class ToDoList extends AppCompatActivity {
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO DB todoid 값 넘기는법... 삭제 후 조회가 안됨.. 왜징..
                         Item_Delete(listItem.getContent());
                         dl2.dismiss();
                     }
@@ -185,7 +177,6 @@ public class ToDoList extends AppCompatActivity {
         });
 
 
-        //TODO 보충 : 전부 다 체크 상태여야 함, 체크했을 때 아래꺼까지 체크 안되는 방법
         //체크된 투두리스트 클릭했을 때
         listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -193,13 +184,7 @@ public class ToDoList extends AppCompatActivity {
                 ToDoList_ListItem listItem = adapter2.listViewItems.get(i);
                 String content = listItem.getContent();
 
-                /*Item_Click(adapter2,strCoupleID,false,content,i);
-                adapter2.clearItem();
-                Item_show(adapter2, strCoupleID,true);
-                adapter1.clearItem();
-                Item_show(adapter1, strCoupleID,false);
-                adapter1.notifyDataSetChanged();*/
-
+                Item_Click(content,"","false");
             }
         });
 
@@ -228,7 +213,7 @@ public class ToDoList extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String text = contents.getText().toString();
-                        Item_add(i1+i2,MainActivity.coupleID,text);
+                        Item_add(MainActivity.coupleID,text);
                         dl.dismiss();
 
                     }
@@ -297,8 +282,8 @@ public class ToDoList extends AppCompatActivity {
     }
 
     //To-Do-List 추가
-    public void Item_add(int todoID, int coupleID, String content){
-        Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(todoID, coupleID,"", content,"false");
+    public void Item_add(int coupleID, String content){
+        Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(coupleID,"", content,"false");
         res.enqueue(new Callback<ResponseTD_Insert>() {
             @Override
             public void onResponse(Call<ResponseTD_Insert> call, Response<ResponseTD_Insert> response) {
