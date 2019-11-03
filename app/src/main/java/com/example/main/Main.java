@@ -82,6 +82,11 @@ public class Main extends Fragment {
         super.onStart();
         todo.clear();
         Item_Content();
+
+        //todoArrayList 배열에 아무것도 들어있지 않을 때
+        if (todo.isEmpty()) {
+            todo.add("TODO_LIST에 내용을 입력해주세요");
+        }
     }
 
 
@@ -148,7 +153,7 @@ public class Main extends Fragment {
         to_do_Btn.setOutAnimation(out);
 
         //Date 날짜 계산 함수
-        doDateSystem();
+        DateSystem();
 
 
         //to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
@@ -247,7 +252,6 @@ public class Main extends Fragment {
         });
 
 
-        //TODO# 데이터 베이스로 상태방 정보 불러오기
         //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
         profile_Btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,12 +290,12 @@ public class Main extends Fragment {
             todoThread = null;
             todoThread = new TodoThread();
             todoThread.start();
-            Log.e("화면켜졌을 때", "나 켜졌어!");
+            Log.e("screen", "현재화면");
         } else {
             try {
-                Log.e("화면꺼졌을 때", "나 다른화면에 있다!?");
+                Log.e("screen", "다른화면");
                 todoThread.interrupt();             //스레드 멈추기
-                Log.e("화면 멈췄다면...", "스레드는 잘 멈췄어!");
+                Log.e("screen", "스레드 정지");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -301,9 +305,8 @@ public class Main extends Fragment {
     }
 
 
-    //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
-    public void doDateSystem() {
-        String start = "2019-03-04";        // 사귄 날짜 입력
+    //Data 날짜 계산 함수
+    public void doDateSystem(String start) {
 
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");        //SimpleDataFormat 형태의 변수를 년-월-일로 생성
@@ -327,6 +330,27 @@ public class Main extends Fragment {
         }
     }
 
+    public void DateSystem(){
+        Call<ResponseDate> res = Net.getInstance().getApi().getDate(MainActivity.id);
+        res.enqueue(new Callback<ResponseDate>() {
+            @Override
+            public void onResponse(Call<ResponseDate> call, Response<ResponseDate> response) {
+                if(response.isSuccessful()){
+                    Log.d("test", "사귄날짜 계산 성공");
+                    ResponseDate responseDate = response.body();
+                    doDateSystem(responseDate.getDate_m());
+                }
+                else Log.d("test", "사귄날짜 통신1 에러");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDate> call, Throwable t) {
+                Log.d("test", "사귄날짜 통신3 에러");
+            }
+        });
+
+    }
+
     //ToDoList Check false인 내용 순서대로 삽입
     public void Item_Content() {
         i=0;
@@ -343,24 +367,16 @@ public class Main extends Fragment {
                         }
                     }
                 }
-                else Log.d("test", "통신 1 에러");
+                else Log.d("Todo", "Todo 내용 통신1 에러");
             }
             @Override
             public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
-                Log.d("test", "통신3 에러" + t.getMessage());
+                Log.d("Todo", "Todo 내용 통신3 에러" + t.getMessage());
             }
         });
-
-        //todoArrayList 배열에 아무것도 들어있지 않을 때
-        if (todo.isEmpty()) {
-            todo.add("TODO_LIST에 내용을 입력해주세요");
-        }
-
     }
 
 
-
-    //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
     public class TodoThread extends Thread {
         boolean running = false;     //시작과 종료에 필요한 변수
         int index = 0;

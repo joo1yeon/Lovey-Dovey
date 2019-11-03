@@ -84,14 +84,12 @@ public class ToDoList extends AppCompatActivity {
         //todolist 조회
         Item_show();
 
-        //TODO 보충 : 전부 다 체크해제 상태여야 함, 체크했을 때 아래꺼까지 체크 안되는 방법
         //체크되지 않은 투두리스트 클릭했을 때
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ToDoList_ListItem listItem = adapter1.listViewItems.get(i);
                 String content = listItem.getContent();
-
                 Item_Click(content,Date(),"true");
             }
         });
