@@ -254,7 +254,6 @@ public class ToDoList extends AppCompatActivity {
         return date_;
     }
 
-
     //To-Do-List 조회
     public void Item_show(){
         Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
@@ -262,7 +261,6 @@ public class ToDoList extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
                 if(response.isSuccessful()){
-                    Log.d("TTT","아이템호출");
 
                     adapter1.clearItem();
                     adapter2.clearItem();
@@ -274,13 +272,13 @@ public class ToDoList extends AppCompatActivity {
                     for (ResponseTODO responseTodo_ : responseTodo){
 
                         if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
-                            Log.d("TTT","아이템추가1"+responseTodo_.getContent_td());
+                            Log.d("select","추가완료1"+responseTodo_.getContent_td());
 
                             adapter1.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
                             listView1.setItemChecked(i1++,false);
                             adapter1.notifyDataSetChanged();
                         } else {
-                            Log.d("TTT","아이템추가2"+ responseTodo_.getContent_td());
+                            Log.d("select","추가완료2"+ responseTodo_.getContent_td());
 
                             adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
                             listView2.setItemChecked(i2++,true);
@@ -288,11 +286,11 @@ public class ToDoList extends AppCompatActivity {
                         }
                     }
                 }
-                else Log.d("TTT", "통신 1 에러~~~~~");
+                else Log.d("select", "조회 통신 1 에러");
             }
             @Override
             public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
-                Log.d("TTT", "통신3 에러 ~~~~~" + t.getMessage());
+                Log.d("select", "조회 통신3 에러" + t.getMessage());
             }
         });
 
@@ -305,18 +303,115 @@ public class ToDoList extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseTD_Insert> call, Response<ResponseTD_Insert> response) {
                 if(response.body().getTDInsert()){
-                    Log.e("test", "에러끝");
+                    Log.d("insert", "추가완료");
                     Item_show();
-                } else Log.e("test", "통신1 에러++++");
+                } else Log.d("insert", "추가 통신1 에러");
             }
             @Override
             public void onFailure(Call<ResponseTD_Insert> call, Throwable t) {
-                Log.e("test", "통신3 에러++++" + t.getMessage());
+                Log.d("insert", "추가 통신3 에러" + t.getMessage());
             }
         });
     }
 
-        //To-Do-List 추가
+       //To-Do-List 수정
+       public void Item_modify(String content1, String content2){
+        final Call<ResponseTD_update> res = Net.getInstance().getApi().getTD_Modify(MainActivity.coupleID, content1, content2);
+        res.enqueue(new Callback<ResponseTD_update>() {
+            @Override
+            public void onResponse(Call<ResponseTD_update> call, Response<ResponseTD_update> response) {
+                if(response.body().getTDModify()){
+                    Log.d("update", "수정완료");
+                    Item_show();
+                }
+                else Log.d("update", "수정 통신1 에러");
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseTD_update> call, Throwable t) {
+                Log.d("update", "수정 통신3 에러" + t.getMessage());
+            }
+        });
+
+       }
+
+    //To-Do-List 삭제
+    public void Item_Delete(String Content){
+        Call<ResponseTD_delete> res = Net.getInstance().getApi().getTD_Delt(MainActivity.coupleID, Content);
+        res.enqueue(new Callback<ResponseTD_delete>() {
+            @Override
+            public void onResponse(Call<ResponseTD_delete> call, Response<ResponseTD_delete> response) {
+                if(response.isSuccessful()){
+                    ResponseTD_delete responseGet = response.body();
+                    if(response.body().getTDDelt()){
+                        Log.d("delete","삭제완료");
+                        Item_show();
+                    }
+                }
+                else Log.d("delete", "삭제 통신1 에러");
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseTD_delete> call, Throwable t) {
+                Log.d("delete", "삭제 통신3 에러" + t.getMessage());
+            }
+        });
+    }
+
+    //To-Do-List 클릭했을 때 넘어가기(클릭제어)
+    public void Item_Click(String Content,String Date,String bool){
+        Call<ResponseTD_click> res = Net.getInstance().getApi().getTD_Click(MainActivity.coupleID, Content, Date, bool);
+        res.enqueue(new Callback<ResponseTD_click>() {
+            @Override
+            public void onResponse(Call<ResponseTD_click> call, Response<ResponseTD_click> response) {
+                if(response.isSuccessful()){
+                    if(response.body().getTDClick()){
+                        Log.e("click","클릭제어완료");
+                        Item_show();
+                    }
+                }
+                else Log.e("click","클릭 통신1 에러");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseTD_click> call, Throwable t) {
+                Log.e("click", "클릭 통신3 에러");
+            }
+        });
+    }
+
+    //TODO 로컬디비 조회, 삭제, 수정, 클릭제어
+
+    //To-Do-List 조회
+      /* public void Item_show(ToDoList_ChoiceListAdapter adapter, String id, boolean check){
+           sqlDB = todoDB.getReadableDatabase();
+
+            cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='"+id+"' AND checked = '"+check+"';",null);
+            int count = cursor.getCount();
+
+
+            for(int i=0;i<count;i++) {
+                cursor.moveToNext();                                    //커서 넘기기
+
+                strDate = cursor.getString(2);
+                strContent = cursor.getString(3);
+                adapter.addItem(strContent, strDate);
+
+                //Check박스가 adapter1에서는 체크 X , adapter2 에서는 체크 O
+                if(adapter == adapter1)
+                    listView1.setItemChecked(i,false);
+                else if(adapter == adapter2) {
+                    listView2.setItemChecked(i, true);
+                }
+                }
+
+            cursor.close();
+            sqlDB.close();
+       }*/
+
+    //To-Do-List 추가
        /*public void Item_add(ToDoList_ChoiceListAdapter adapter, String id, String content){
            try{
                sqlDB = todoDB.getWritableDatabase();
@@ -329,30 +424,7 @@ public class ToDoList extends AppCompatActivity {
            sqlDB.close();
        }*/
 
-
-       //To-Do-List 수정
-       public void Item_modify(String content1, String content2){
-
-        final Call<ResponseTD_update> res = Net.getInstance().getApi().getTD_Modify(MainActivity.coupleID, content1, content2);
-        res.enqueue(new Callback<ResponseTD_update>() {
-            @Override
-            public void onResponse(Call<ResponseTD_update> call, Response<ResponseTD_update> response) {
-                if(response.body().getTDModify()){
-                    Log.e("test", "에러끝");
-                    Item_show();
-                }
-                else Log.e("test", "통신1 에러");
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseTD_update> call, Throwable t) {
-                Log.e("test", "통신3 에러" + t.getMessage());
-            }
-        });
-
-       }
-
+    //To-Do-List 수정
        /*public void Item_modify(ToDoList_ChoiceListAdapter adapter,String id, String content, String content_){
         sqlDB = todoDB.getWritableDatabase();
         sqlDB.execSQL("update to_do_list set content='" + content + "' where couple_id='" + id + "' and content='"+ content_ +"';");
@@ -375,31 +447,6 @@ public class ToDoList extends AppCompatActivity {
         sqlDB.close();
 
     }*/
-
-    //To-Do-List 삭제
-    public void Item_Delete(String Content){
-        Call<ResponseTD_delete> res = Net.getInstance().getApi().getTD_Delt(MainActivity.coupleID, Content);
-        res.enqueue(new Callback<ResponseTD_delete>() {
-            @Override
-            public void onResponse(Call<ResponseTD_delete> call, Response<ResponseTD_delete> response) {
-                if(response.isSuccessful()){
-                    ResponseTD_delete responseGet = response.body();
-                    if(response.body().getTDDelt()){
-                        Log.d("TTT","아이템삭제");
-                        Log.e("test", "에러끝");
-                        Item_show();
-                    }
-                }
-                else Log.e("test", "통신1 에러-->>");
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseTD_delete> call, Throwable t) {
-                Log.e("test", "통신3 에러-->>" + t.getMessage());
-            }
-        });
-    }
 
     /*//To-Do-List 삭제
        public void Item_Delete(ToDoList_ChoiceListAdapter adapter,String id, String content){

@@ -93,10 +93,11 @@ public interface API {
     @GET("todoRemove.php")
     Call<ResponseTD_delete> getTD_Delt(@Query("coupleID") int c_id, @Query("Content") String content);
 
-    /*
-    @GET("todo.php")
-    Call<ResponseTD_click> getTD_Click(@Query("coupleID") int c_id, @Query("Date") String date, @Query("Checked") String checked);
-    */
+    @GET("todoClick.php")
+    Call<ResponseTD_click> getTD_Click(@Query("coupleID") int c_id, @Query("Content") String content, @Query("Date") String date, @Query("Checked") String checked);
+
+    @GET("mainDate.php")
+    Call<ResponseDate> getDate(@Query("id") String id);
 
     //@Query("todo_id") int id, @Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked
 
