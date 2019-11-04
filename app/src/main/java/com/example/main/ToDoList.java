@@ -285,9 +285,11 @@ public class ToDoList extends AppCompatActivity {
         res.enqueue(new Callback<ResponseTD_Insert>() {
             @Override
             public void onResponse(Call<ResponseTD_Insert> call, Response<ResponseTD_Insert> response) {
-                if(response.body().getTDInsert()){
+                if(response.isSuccessful()){
+                if(response.body().getTDInsert()) {
                     Log.d("insert", "추가완료");
                     Item_show();
+                }
                 } else Log.d("insert", "추가 통신1 에러");
             }
             @Override
@@ -303,12 +305,13 @@ public class ToDoList extends AppCompatActivity {
         res.enqueue(new Callback<ResponseTD_update>() {
             @Override
             public void onResponse(Call<ResponseTD_update> call, Response<ResponseTD_update> response) {
-                if(response.body().getTDModify()){
-                    Log.d("update", "수정완료");
-                    Item_show();
+                if(response.isSuccessful()) {
+                    if (response.body().getTDModify()) {
+                        Log.d("update", "수정완료");
+                        Item_show();
+                    }
                 }
                 else Log.d("update", "수정 통신1 에러");
-
             }
 
             @Override
@@ -326,7 +329,6 @@ public class ToDoList extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseTD_delete> call, Response<ResponseTD_delete> response) {
                 if(response.isSuccessful()){
-                    ResponseTD_delete responseGet = response.body();
                     if(response.body().getTDDelt()){
                         Log.d("delete","삭제완료");
                         Item_show();

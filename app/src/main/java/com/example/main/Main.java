@@ -82,7 +82,6 @@ public class Main extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        todo.clear();
         Item_Content();
     }
 
@@ -105,8 +104,6 @@ public class Main extends Fragment {
         id = MainActivity.id;
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
         context = getContext();
-        todo.clear();
-        Item_Content();
 
 
         //인플레이트
@@ -165,7 +162,7 @@ public class Main extends Fragment {
         DateSystem();
 
 
-        //to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
+        //TODO to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
         to_do_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +173,7 @@ public class Main extends Fragment {
         });
 
 
-        //왼쪽 프로필을 누를 때 -->  정보 변경 가능한 다이얼로그 창
+        //TODO 왼쪽 프로필을 누를 때 -->  정보 변경 가능한 다이얼로그 창
         profile_Btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,7 +217,7 @@ public class Main extends Fragment {
                     }
                 });
 
-                //저장을 버튼을 클릭했을 때 수정된 내용을 저장한 후 다이얼로그 종료
+                //TODO 저장을 버튼을 클릭했을 때 수정된 내용을 저장한 후 다이얼로그 종료
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -260,7 +257,7 @@ public class Main extends Fragment {
         });
 
 
-        //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
+        //TODO 오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
         profile_Btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,6 +288,7 @@ public class Main extends Fragment {
     }
 
 
+    //TODO 스레드 오류 해결
    @Override
    public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
@@ -311,7 +309,7 @@ public class Main extends Fragment {
     }
 
 
-    //Data 날짜 계산 함수
+    //TODO Data 날짜 계산 함수
     public void doDateSystem(String start) {
 
         try {
@@ -336,6 +334,7 @@ public class Main extends Fragment {
         }
     }
 
+    //TODO 사귄날짜 가져오기
     public void DateSystem(){
         Call<ResponseDate> res = Net.getInstance().getApi().getDate(MainActivity.id);
         res.enqueue(new Callback<ResponseDate>() {
@@ -357,15 +356,21 @@ public class Main extends Fragment {
 
     }
 
-    //ToDoList Check false인 내용 순서대로 삽입
+    //TODO ToDoList Check false인 내용 순서대로 삽입
     public void Item_Content() {
         i=0;
+        todo.clear();
+
         Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
         res.enqueue(new Callback<List<ResponseTODO>>() {
             @Override
             public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
                 if(response.isSuccessful()){
                     List<ResponseTODO> responseTodo = response.body();
+                    if (responseTodo.isEmpty()){
+                        todo.add("TODO_LIST를 추가해주세용");
+                    }
+
                     for (ResponseTODO responseTodo_ : responseTodo){
                         if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
                             todo.add(responseTodo_.getContent_td());
@@ -383,6 +388,7 @@ public class Main extends Fragment {
     }
 
 
+    //TODO TextSwitcher 스레드
     public class TodoThread extends Thread {
         boolean running = false;     //시작과 종료에 필요한 변수
         int index = 0;
@@ -395,16 +401,8 @@ public class Main extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        //todoArrayList 배열에 아무것도 들어있지 않을 때
-                        if (todo.isEmpty()) {
-                            to_do_Btn.setText("•  TODO_LIST에 내용을 입력해주세요");
-                        }
-                        else {
-                            to_do_Btn.setText("•  " + todo.get(index)); //String 배열 때 todo[index]
+                            to_do_Btn.setText("•  " + todo.get(index++));
                             to_do_Btn.invalidate();
-                        }
-
-
                     }
                 });
 
@@ -415,7 +413,6 @@ public class Main extends Fragment {
                     halt();
                     e.printStackTrace();
                 }
-                index++;
                 if (index >= todo.size()) {   //String 배열 때length
                     index = 0;
                 }
@@ -426,11 +423,9 @@ public class Main extends Fragment {
         public void halt() {
             running = false;
         }
-
-
     }
 
-    //앨범들어가서 사진 크롭하기
+    //TODO 앨범들어가서 사진 크롭하기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
