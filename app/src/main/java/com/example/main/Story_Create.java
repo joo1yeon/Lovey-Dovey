@@ -224,8 +224,7 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
             @Override
             public void onResponse(Call<ResponseSaveStory> call, Response<ResponseSaveStory> response) {
                 if (response.isSuccessful()) {
-                    ResponseSaveStory responseGet = response.body();
-                    if (responseGet.setStoryData() == true ) {
+                    if (response.body().setStoryData()) {
                         Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else Toast.makeText(Story_Create.this,"통신1 에러",Toast.LENGTH_SHORT).show();
