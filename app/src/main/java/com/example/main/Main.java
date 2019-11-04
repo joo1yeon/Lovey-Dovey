@@ -92,8 +92,10 @@ public class Main extends Fragment {
         }
     };
 
+
     @SuppressLint("ValidFragment")
     public Main() {
+
     }
 
     @Override
@@ -104,7 +106,6 @@ public class Main extends Fragment {
         id = MainActivity.id;
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
         context = getContext();
-
 
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼, To-do-list 보여주기
@@ -160,6 +161,8 @@ public class Main extends Fragment {
 
         //Date 날짜 계산 함수
         DateSystem();
+
+
 
 
         //TODO to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
@@ -367,10 +370,6 @@ public class Main extends Fragment {
             public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
                 if(response.isSuccessful()){
                     List<ResponseTODO> responseTodo = response.body();
-                    if (responseTodo.isEmpty()){
-                        todo.add("TODO_LIST를 추가해주세용");
-                    }
-
                     for (ResponseTODO responseTodo_ : responseTodo){
                         if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
                             todo.add(responseTodo_.getContent_td());
@@ -398,13 +397,18 @@ public class Main extends Fragment {
             running = true;
 
             while (running) {                            //무한루프, Todolist 계속 돌아가게 함
-                handler.post(new Runnable() {
+                handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if(todo.isEmpty()){              //todoArrayList 배열에 아무것도 들어있지 않을 때
+                            to_do_Btn.setText("•  TODO_LIST에 내용을 입력해주세요");
+                        }
+                        else {
                             to_do_Btn.setText("•  " + todo.get(index++));
                             to_do_Btn.invalidate();
+                        }
                     }
-                });
+                },1200);
 
                 try {
 
