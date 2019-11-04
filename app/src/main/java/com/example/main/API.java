@@ -109,8 +109,6 @@ public interface API {
     @GET("mainDate.php")
     Call<ResponseDate> getDate(@Query("id") String id);
 
-    //@Query("todo_id") int id, @Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked
-
     @GET("printNotice.php")
     Call<List<ResponseNotice>> getNotice();
 
