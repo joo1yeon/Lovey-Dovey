@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
@@ -114,6 +115,12 @@ public interface API {
 
     @GET("noticeInfo.php")
     Call<NoticeInfo> getNoticeInfo(@Query("ID") int id);
+
+    @Multipart
+    @POST("profileImg.php")
+    Call<ResponseProfile_m> getLoad(
+            @Part("coupleID") String c_id,
+            @PartMap() Map<String, RequestBody> params);
 
 }
 

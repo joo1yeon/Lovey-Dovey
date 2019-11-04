@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.inputmethodservice.Keyboard;
@@ -40,6 +41,7 @@ import android.widget.ViewSwitcher;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Key;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +49,9 @@ import java.util.Date;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -224,6 +229,7 @@ public class Main extends Fragment {
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         //메인화면 프로필 변경
                         Glide.with(context)
                                 .load(uri_)
@@ -478,4 +484,30 @@ public class Main extends Fragment {
             }
         }
     }
+
+
+    /*public void img(){
+        File file = new File(uri_.getPath());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName());
+        Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(MainActivity.coupleID,);
+        res.enqueue(new Callback<ResponseProfile_m>() {
+            @Override
+            public void onResponse(Call<ResponseProfile_m> call, Response<ResponseProfile_m> response) {
+                if(response.isSuccessful()){
+                    if(response.body().getmProfile()) {
+                        Toast.makeText(getContext(), "사진전송!", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else
+                    Log.d("profile", "프로필 내용 통신2 에러");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseProfile_m> call, Throwable t) {
+                Log.d("profile", "프로필 통신3 에러" + t.getMessage());
+            }
+        });
+
+    }*/
 }
