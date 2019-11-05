@@ -328,6 +328,7 @@ public class ToDoList extends AppCompatActivity {
                 adapter.addItem(strContent, strDate);
 
                 //Check박스가 adapter1에서는 체크 X , adapter2 에서는 체크 O
+
                 if(adapter == adapter1)
                     listView1.setItemChecked(i,false);
                 else if(adapter == adapter2) {

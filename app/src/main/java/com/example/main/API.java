@@ -93,5 +93,11 @@ public interface API {
 
     @GET("noticeInfo.php")
     Call<NoticeInfo> getNoticeInfo(@Query("ID") int id);
+
+    @GET("UpdateMarker.php")
+    Call<updateMark> getUpdateMark(@Query("NAME") String name, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
+
+    @GET("deleteMark.php")
+    Call<deleteMark> getDeleteMark(@Query("NAME") String name,@Query("ADDRESS") String address, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
 }
 
