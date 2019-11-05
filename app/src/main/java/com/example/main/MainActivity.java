@@ -56,7 +56,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     static String id;
     static int coupleID;
     static String nickname, email;
-    ViewPager viewPager;
+    NonSwipeViewPager viewPager;
     LinearLayout logout;
     ImageButton btnOverflow, btnBack;
     Intent intent;
@@ -152,6 +152,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         background = findViewById(R.id.btnBG);
         bookmark = findViewById(R.id.btnBookMark);
         viewPager = findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = findViewById(R.id.tab);
         logout = findViewById(R.id.btnLogout);
@@ -317,6 +318,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "즐겨찾기", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
 

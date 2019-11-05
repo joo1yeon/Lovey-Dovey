@@ -250,10 +250,8 @@ public class Main extends Fragment {
                         });
                     }
                 });
-
             }
         });
-
 
         //TODO# 데이터 베이스로 상태방 정보 불러오기
         //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
@@ -318,7 +316,6 @@ public class Main extends Fragment {
             }
         }
     }
-
 
     //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
     public void doDateSystem() {
