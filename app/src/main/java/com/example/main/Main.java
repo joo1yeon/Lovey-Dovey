@@ -9,8 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,13 +39,19 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Key;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,11 +61,10 @@ public class Main extends Fragment {
 
     String id;
 
-
-     static int REQUEST_CODE = 1;
+    static int REQUEST_CODE = 1;
     private Context context;
 
-   static ImageView profile_Btn1;
+    static ImageView profile_Btn1;
     static ImageView profile_Btn2, storage, close, profile_img;
     TextView date, textView;
     View profileLayout1, profileLayout2;
@@ -65,11 +72,14 @@ public class Main extends Fragment {
     TextSwitcher to_do_Btn;
     Thread todoThread;
     EditText email, name;
+    String path;
+    static ImageView img_ground;
 
     //sqlite 관련 변수
     MyDBHelper mainDB;
     SQLiteDatabase sqlDB;
     Cursor cursor;
+    int i;
 
     static Uri uri_ = Uri.parse("android.resource://com.example.main/drawable/basic");
 
@@ -77,10 +87,8 @@ public class Main extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        todo.clear();
-        Item_Content(MainActivity.coupleID);
+        Item_Content();
     }
-
 
     Handler handler = new Handler() {
         @Override
@@ -89,8 +97,10 @@ public class Main extends Fragment {
         }
     };
 
+
     @SuppressLint("ValidFragment")
     public Main() {
+
     }
 
     @Override
@@ -98,17 +108,27 @@ public class Main extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_main, container, false);
 
-
+        id = MainActivity.id;
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
         context = getContext();
-        todo.clear();
-        Item_Content(MainActivity.coupleID);
-
 
         //인플레이트
         to_do_Btn = layout.findViewById(R.id.to_do_Btn);                            //투두리스트 버튼, To-do-list 보여주기
-        date = layout.findViewById(R.id.date);                                      //메인화면 사귄날짜
+        date = layout.findViewById(R.id.date);
+        img_ground = layout.findViewById(R.id.img_ground);
 
+        sqlDB = mainDB.getReadableDatabase();
+        Cursor cursor = sqlDB.rawQuery("select path from back where id='" + id + "';", null);
+        while (cursor.moveToNext()) {
+            path = cursor.getString(0);
+        }
+        if (path != null) {
+            Glide.with(this).load(path).into(img_ground);
+        } else {
+            Glide.with(this).load(R.drawable.ground).into(img_ground);
+        }
+
+        //메인화면 사귄날짜
         profile_Btn1 = layout.findViewById(R.id.profile_Btn1);                      //프로필사진1(나) 버튼
         profile_Btn2 = layout.findViewById(R.id.profile_Btn2);                      //프로필사진2(상대방) 버튼
 
@@ -145,20 +165,22 @@ public class Main extends Fragment {
         to_do_Btn.setOutAnimation(out);
 
         //Date 날짜 계산 함수
-        doDateSystem();
+        DateSystem();
 
 
-        //to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
+
+        //TODO to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
         to_do_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ToDoList.class);                                   //인텐트 선언 및 생성
                 startActivity(intent);
             }
+
         });
 
 
-        //왼쪽 프로필을 누를 때 -->  정보 변경 가능한 다이얼로그 창
+        //TODO 왼쪽 프로필을 누를 때 -->  정보 변경 가능한 다이얼로그 창
         profile_Btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,10 +224,11 @@ public class Main extends Fragment {
                     }
                 });
 
-                //저장을 버튼을 클릭했을 때 수정된 내용을 저장한 후 다이얼로그 종료
+                //TODO 저장을 버튼을 클릭했을 때 수정된 내용을 저장한 후 다이얼로그 종료
                 storage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         //메인화면 프로필 변경
                         Glide.with(context)
                                 .load(uri_)
@@ -242,8 +265,7 @@ public class Main extends Fragment {
         });
 
 
-        //TODO# 데이터 베이스로 상태방 정보 불러오기
-        //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
+        //TODO 오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
         profile_Btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,19 +281,6 @@ public class Main extends Fragment {
                 final TextView name = profileLayout2.findViewById(R.id.name);
 
                 //저장된 값 보여주기
-                Call<ResponseProfile> res = Net.getInstance().getApi().getProfile(MainActivity.id);
-                res.enqueue(new Callback<ResponseProfile>() {
-                    @Override
-                    public void onResponse(Call<ResponseProfile> call, Response<ResponseProfile> response) {
-                        name.setText(response.body().getName());
-                        email.setText(response.body().getEmail());
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseProfile> call, Throwable t) {
-
-                    }
-                });
 
                 //닫기 버튼 클릭했을 때 다이얼로그 종료
                 close.setOnClickListener(new View.OnClickListener() {
@@ -287,139 +296,196 @@ public class Main extends Fragment {
     }
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser) {
-            //스레드 객체 생성 및 시작
-            todoThread = null;
-            todoThread = new TodoThread();
-            todoThread.start();
-            Log.e("화면켜졌을 때", "나 켜졌어!");
-        } else {
-            try {
-                Log.e("화면꺼졌을 때", "나 다른화면에 있다!?");
-                todoThread.interrupt();             //스레드 멈추기
-                Log.e("화면 멈췄다면...", "스레드는 잘 멈췄어!");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    //TODO 스레드 오류 해결
+   @Override
+   public void setUserVisibleHint(boolean isVisibleToUser) {
+           if (isVisibleToUser) {
+               //스레드 객체 생성 및 시작
+               todoThread = null;
+               todoThread = new TodoThread();
+               todoThread.start();
+               Log.e("screen", "현재화면");
+           } else {
+               try {
+                   Log.e("screen", "다른화면");
+                   todoThread.interrupt();             //스레드 멈추기
+                   Log.e("screen", "스레드 정지");
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       }
 
 
-        }
-    }
+       //TODO Data 날짜 계산 함수
+       public void doDateSystem (String start){
+
+           try {
+               SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");        //SimpleDataFormat 형태의 변수를 년-월-일로 생성
+               Date beginDate = formatter.parse(start);                                        //사귄날짜를 입력받은 문자열을 date 형식으로 변경
+               String end = formatter.format(new Date());                                      //현재날짜를 문자열로 받아옴
+               Date endDate = formatter.parse(end);                                            //현재날짜를 받아온 문자열을 date 형식으로 변경
+
+               // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+               long diff = endDate.getTime() - beginDate.getTime();
+               long coupleDays = diff / (24 * 60 * 60 * 1000) + 1;
+
+               //사귄 날짜가 1000일이 넘으면 textSize 변경
+               if (coupleDays > 1000) {
+                   date.setTextSize(30);
+               }
+               date.setText(coupleDays + " 일");     //사귄날짜 + 일 출력
 
 
-    //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
-    public void doDateSystem() {
-        String start = "2019-03-04";        // 사귄 날짜 입력
+           } catch (ParseException e) {
+               e.printStackTrace();
+           }
+       }
 
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");        //SimpleDataFormat 형태의 변수를 년-월-일로 생성
-            Date beginDate = formatter.parse(start);                                        //사귄날짜를 입력받은 문자열을 date 형식으로 변경
-            String end = formatter.format(new Date());                                      //현재날짜를 문자열로 받아옴
-            Date endDate = formatter.parse(end);                                            //현재날짜를 받아온 문자열을 date 형식으로 변경
+       //TODO 사귄날짜 가져오기
+       public void DateSystem () {
+           Call<ResponseDate> res = Net.getInstance().getApi().getDate(MainActivity.id);
+           res.enqueue(new Callback<ResponseDate>() {
+               @Override
+               public void onResponse(Call<ResponseDate> call, Response<ResponseDate> response) {
+                   if (response.isSuccessful()) {
+                       Log.d("test", "사귄날짜 계산 성공");
+                       ResponseDate responseDate = response.body();
+                       doDateSystem(responseDate.getDate_m());
+                   } else Log.d("test", "사귄날짜 통신1 에러");
+               }
 
-            // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
-            long diff = endDate.getTime() - beginDate.getTime();
-            long coupleDays = diff / (24 * 60 * 60 * 1000);
+               @Override
+               public void onFailure(Call<ResponseDate> call, Throwable t) {
+                   Log.d("test", "사귄날짜 통신3 에러");
+               }
+           });
 
-            //사귄 날짜가 1000일이 넘으면 textSize 변경
-            if (coupleDays > 1000) {
-                date.setTextSize(30);
-            }
-            date.setText(coupleDays + " 일");     //사귄날짜 + 일 출력
+       }
+
+       //TODO ToDoList Check false인 내용 순서대로 삽입
+       public void Item_Content () {
+           i = 0;
+           todo.clear();
+
+           Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
+           res.enqueue(new Callback<List<ResponseTODO>>() {
+               @Override
+               public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
+                   if (response.isSuccessful()) {
+                       List<ResponseTODO> responseTodo = response.body();
+                       for (ResponseTODO responseTodo_ : responseTodo) {
+                           if (false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
+                               todo.add(responseTodo_.getContent_td());
+                               i++;
+                           }
+                       }
+                   } else Log.d("Todo", "Todo 내용 통신1 에러");
+               }
+
+               @Override
+               public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
+                   Log.d("Todo", "Todo 내용 통신3 에러" + t.getMessage());
+               }
+           });
+       }
 
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
+       //TODO TextSwitcher 스레드
+       public class TodoThread extends Thread {
+           boolean running = false;     //시작과 종료에 필요한 변수
+           int index = 0;
 
-    //ToDoList Check false인 내용 순서대로 삽입
-    public void Item_Content(int id) {
-        sqlDB = mainDB.getReadableDatabase();
+           @Override
+           public void run() {
+               running = true;
 
-        cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='" + id + "' AND checked = '" + false + "';", null);
-        int count = cursor.getCount();
+               while (running) {                            //무한루프, Todolist 계속 돌아가게 함
+                   handler.postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           if (todo.isEmpty()) {              //todoArrayList 배열에 아무것도 들어있지 않을 때
+                               to_do_Btn.setText("•  TODO_LIST에 내용을 입력해주세요");
+                           } else {
+                               to_do_Btn.setText("•  " + todo.get(index++));
+                               to_do_Btn.invalidate();
+                           }
+                       }
+                   }, 1200);
 
-        for (int i = 0; i < count; i++) {
-            cursor.moveToNext();                                    //커서 넘기기
-            todo.add(cursor.getString(3));   //체크하지 않은 내용 넣기
-            //String 배열 때 todo[i] = cursor.getString(3);
-        }
+                   try {
 
-        //todoArrayList 배열에 아무것도 들어있지 않을 때
-        if (count == 0) {
-            todo.add("TODO_LIST에 내용을 입력해주세요");
-        }
+                       Thread.sleep(3000);
+                   } catch (InterruptedException e) {
+                       halt();
+                       e.printStackTrace();
+                   }
+                   if (index >= todo.size()) {   //String 배열 때length
+                       index = 0;
+                   }
 
-        cursor.close();
-        sqlDB.close();
-    }
+               }
+           }
 
-    //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
-    public class TodoThread extends Thread {
-        boolean running = false;     //시작과 종료에 필요한 변수
-        int index = 0;
+           public void halt() {
+               running = false;
+           }
+       }
 
-        @Override
-        public void run() {
-            running = true;
+       //TODO 앨범들어가서 사진 크롭하기
+       @Override
+       public void onActivityResult ( int requestCode, int resultCode, Intent data){
+           super.onActivityResult(requestCode, resultCode, data);
+           if (requestCode == REQUEST_CODE) {
+               if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
 
-            while (running) {                            //무한루프, Todolist 계속 돌아가게 함
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        to_do_Btn.setText("•  " + todo.get(index)); //String 배열 때 todo[index]
-                        to_do_Btn.invalidate();
+                   try {
+                       Uri uri = data.getData();
+
+                       profile_img = profileLayout1.findViewById(R.id.profile_img);
+                       Glide.with(context)
+                               .load(uri)
+                               .centerCrop()
+                               .crossFade()
+                               .bitmapTransform(new CropCircleTransformation(context))
+                               .override(70, 70)
+                               .into(profile_img);
+
+                       uri_ = uri;
+
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+               } else if (resultCode == Activity.RESULT_CANCELED) {
+                   Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
+               }
+           }
+           }
+
+
+
+    /*public void img(){
+        File file = new File(uri_.getPath());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName());
+        Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(MainActivity.coupleID,);
+        res.enqueue(new Callback<ResponseProfile_m>() {
+            @Override
+            public void onResponse(Call<ResponseProfile_m> call, Response<ResponseProfile_m> response) {
+                if(response.isSuccessful()){
+                    if(response.body().getmProfile()) {
+                        Toast.makeText(getContext(), "사진전송!", Toast.LENGTH_LONG).show();
                     }
-                });
-
-                try {
-
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    halt();
-                    e.printStackTrace();
                 }
-                index++;
-                if (index >= todo.size()) {   //String 배열 때length
-                    index = 0;
-                }
-
+                else
+                    Log.d("profile", "프로필 내용 통신2 에러");
             }
-        }
 
-        public void halt() {
-            running = false;
-        }
-
-
-    }
-
-    //앨범들어가서 사진 크롭하기
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-
-            try {
-                Uri uri = data.getData();
-
-                profile_img = profileLayout1.findViewById(R.id.profile_img);
-                Glide.with(context)
-                        .load(uri)
-                        .centerCrop()
-                        .crossFade()
-                        .bitmapTransform(new CropCircleTransformation(context))
-                        .override(70, 70)
-                        .into(profile_img);
-
-                uri_ = uri;
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            @Override
+            public void onFailure(Call<ResponseProfile_m> call, Throwable t) {
+                Log.d("profile", "프로필 통신3 에러" + t.getMessage());
             }
-        }
-    }
+        });
+
+    }*/
 }

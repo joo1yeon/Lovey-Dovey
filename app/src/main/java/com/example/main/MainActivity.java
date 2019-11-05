@@ -2,12 +2,15 @@ package com.example.main;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +25,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,6 +43,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.main.R.layout.find_id;
+import static com.example.main.R.layout.fragment_main;
+
 
 public class MainActivity<insertDB> extends AppCompatActivity implements InsertDB {
     LinearLayout layout;
@@ -49,7 +56,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     static String id;
     static int coupleID;
     static String nickname, email;
-    ViewPager viewPager;
+    NonSwipeViewPager viewPager;
     LinearLayout logout;
     ImageButton btnOverflow, btnBack;
     Intent intent;
@@ -58,11 +65,15 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     View profileLayout1;
     ImageView storage;
     ImageView profile_img;
-    EditText _email,_name;
+    EditText _email, _name;
+    FloatingActionButton btnSave, btnGallery;
+    int REQUEST_CODE = 2;
+    String uri_;
+
     @Override
     public void insert(String name, String address, double latitude, double longitude, int year, int month, int date) {
         sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("insert into marker values('" + address + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ");");
+        sqlDB.execSQL("insert into marker values('" + name + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ");");
         sqlDB.close();
     }
 
@@ -105,7 +116,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("LOGINN","메인화면");
+        Log.d("LOGINN", "메인화면");
         super.onCreate(savedInstanceState);
         layout = findViewById(R.id.layout);
 
@@ -116,7 +127,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         coupleID = intent1.getIntExtra("C_ID", 0);
         Log.d("C_ID", "커플아이디:" + coupleID);
         Toast.makeText(MainActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
-
 
         setContentView(R.layout.activity_main);
         sqlDB = dbHelper.getWritableDatabase();
@@ -136,6 +146,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         background = findViewById(R.id.btnBG);
         bookmark = findViewById(R.id.btnBookMark);
         viewPager = findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = findViewById(R.id.tab);
         logout = findViewById(R.id.btnLogout);
@@ -184,6 +195,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
                         .bitmapTransform(new CropCircleTransformation(getApplicationContext()))
                         .override(70, 70)
                         .into(profile);
+
                 TextView tvNick = drawerLayout.findViewById(R.id.nickname);
                 TextView tvEmail = drawerLayout.findViewById(R.id.email);
                 tvNick.setText(nickname);
@@ -210,10 +222,10 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
                 dl.show();                                                                                  //다이얼로그 보여줌
 
                 //메인화면 다이얼로그에 들어가는 profile1의 뷰들 인플레이트
-                 storage = profileLayout1.findViewById(R.id.storage);
-                 profile_img = profileLayout1.findViewById(R.id.profile_img);
-                  _email = profileLayout1.findViewById(R.id.et_email);
-                  _name = profileLayout1.findViewById(R.id.name);
+                storage = profileLayout1.findViewById(R.id.storage);
+                profile_img = profileLayout1.findViewById(R.id.profile_img);
+                _email = profileLayout1.findViewById(R.id.et_email);
+                _name = profileLayout1.findViewById(R.id.name);
 
                 _name.setText(MainActivity.nickname);
                 _email.setText(MainActivity.email);
@@ -291,13 +303,17 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         background.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "배경화면 설정", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
         bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "즐겨찾기", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
 
@@ -313,18 +329,17 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             }
         });
 
-
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-
             try {
                 Uri uri = data.getData();
 
-               profile_img = profileLayout1.findViewById(R.id.profile_img);
+                profile_img = profileLayout1.findViewById(R.id.profile_img);
                 Glide.with(MainActivity.this)
                         .load(uri)
                         .centerCrop()
@@ -338,10 +353,46 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            try {
+                Uri uri = data.getData();
+                uri_ = String.valueOf(uri);
+                drawerLayout.closeDrawer(Gravity.RIGHT);
+
+                Glide.with(this).load(uri_).into(Main.img_ground);
+
+                btnSave = findViewById(R.id.btnSave);
+                btnGallery = findViewById(R.id.btnGallery);
+
+                btnSave.setVisibility(View.VISIBLE);
+                btnGallery.setVisibility(View.VISIBLE);
+
+                btnGallery.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(intent, REQUEST_CODE);
+                    }
+                });
+
+                btnSave.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sqlDB = dbHelper.getWritableDatabase();
+                        sqlDB.execSQL("insert into back values('" + id + "','" + uri_ + "');");
+                        Toast.makeText(MainActivity.this, "배경으로 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                        btnSave.setVisibility(View.INVISIBLE);
+                        btnGallery.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
-
-
     class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments = new ArrayList<Fragment>();
         private String titles[] = new String[]{"홈", "데이트코스", "발자국", "앨범"};
