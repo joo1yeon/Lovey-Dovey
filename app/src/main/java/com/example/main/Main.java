@@ -255,10 +255,10 @@ public class Main extends Fragment {
                         });
                     }
                 });
+
             }
         });
 
-        //TODO# 데이터 베이스로 상태방 정보 불러오기
 
         //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
         profile_Btn2.setOnClickListener(new View.OnClickListener() {
@@ -291,8 +291,8 @@ public class Main extends Fragment {
     }
 
 
-   @Override
-   public void setUserVisibleHint(boolean isVisibleToUser) {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             //스레드 객체 생성 및 시작
             todoThread = null;
@@ -310,9 +310,6 @@ public class Main extends Fragment {
         }
     }
 
-    //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
-    public void doDateSystem() {
-        String start = "2019-03-04";        // 사귄 날짜 입력
 
     //Data 날짜 계산 함수
     public void doDateSystem(String start) {
@@ -385,6 +382,7 @@ public class Main extends Fragment {
         });
     }
 
+
     public class TodoThread extends Thread {
         boolean running = false;     //시작과 종료에 필요한 변수
         int index = 0;
@@ -436,30 +434,30 @@ public class Main extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == REQUEST_CODE) {
-                if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
 
-                    try {
-                        Uri uri = data.getData();
+                try {
+                    Uri uri = data.getData();
 
-                        profile_img = profileLayout1.findViewById(R.id.profile_img);
-                        Glide.with(context)
-                                .load(uri)
-                                .centerCrop()
-                                .crossFade()
-                                .bitmapTransform(new CropCircleTransformation(context))
-                                .override(70, 70)
-                                .into(profile_img);
+                    profile_img = profileLayout1.findViewById(R.id.profile_img);
+                    Glide.with(context)
+                            .load(uri)
+                            .centerCrop()
+                            .crossFade()
+                            .bitmapTransform(new CropCircleTransformation(context))
+                            .override(70, 70)
+                            .into(profile_img);
 
-                        uri_ = uri;
+                    uri_ = uri;
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (resultCode == Activity.RESULT_CANCELED) {
-                    Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
             }
+        }
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
 
             try {
