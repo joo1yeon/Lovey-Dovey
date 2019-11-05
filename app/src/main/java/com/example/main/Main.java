@@ -300,192 +300,171 @@ public class Main extends Fragment {
     //TODO 스레드 오류 해결
    @Override
    public void setUserVisibleHint(boolean isVisibleToUser) {
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser) {
-            //스레드 객체 생성 및 시작
-            todoThread = null;
-            todoThread = new TodoThread();
-            todoThread.start();
-            Log.e("screen", "현재화면");
-        } else {
-            try {
-                Log.e("screen", "다른화면");
-                todoThread.interrupt();             //스레드 멈추기
-                Log.e("screen", "스레드 정지");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+       @Override
+       public void setUserVisibleHint ( boolean isVisibleToUser){
+           if (isVisibleToUser) {
+               //스레드 객체 생성 및 시작
+               todoThread = null;
+               todoThread = new TodoThread();
+               todoThread.start();
+               Log.e("screen", "현재화면");
+           } else {
+               try {
+                   Log.e("screen", "다른화면");
+                   todoThread.interrupt();             //스레드 멈추기
+                   Log.e("screen", "스레드 정지");
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }
+       }
 
 
-    //TODO Data 날짜 계산 함수
-    public void doDateSystem(String start) {
+       //TODO Data 날짜 계산 함수
+       public void doDateSystem (String start){
 
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");        //SimpleDataFormat 형태의 변수를 년-월-일로 생성
-            Date beginDate = formatter.parse(start);                                        //사귄날짜를 입력받은 문자열을 date 형식으로 변경
-            String end = formatter.format(new Date());                                      //현재날짜를 문자열로 받아옴
-            Date endDate = formatter.parse(end);                                            //현재날짜를 받아온 문자열을 date 형식으로 변경
+           try {
+               SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");        //SimpleDataFormat 형태의 변수를 년-월-일로 생성
+               Date beginDate = formatter.parse(start);                                        //사귄날짜를 입력받은 문자열을 date 형식으로 변경
+               String end = formatter.format(new Date());                                      //현재날짜를 문자열로 받아옴
+               Date endDate = formatter.parse(end);                                            //현재날짜를 받아온 문자열을 date 형식으로 변경
 
-            // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
-            long diff = endDate.getTime() - beginDate.getTime();
-            long coupleDays = diff / (24 * 60 * 60 * 1000);
+               // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+               long diff = endDate.getTime() - beginDate.getTime();
+               long coupleDays = diff / (24 * 60 * 60 * 1000);
 
-            //사귄 날짜가 1000일이 넘으면 textSize 변경
-            if (coupleDays > 1000) {
-                date.setTextSize(30);
-            }
-            date.setText(coupleDays + " 일");     //사귄날짜 + 일 출력
-
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //TODO 사귄날짜 가져오기
-    public void DateSystem(){
-        Call<ResponseDate> res = Net.getInstance().getApi().getDate(MainActivity.id);
-        res.enqueue(new Callback<ResponseDate>() {
-            @Override
-            public void onResponse(Call<ResponseDate> call, Response<ResponseDate> response) {
-                if(response.isSuccessful()){
-                    Log.d("test", "사귄날짜 계산 성공");
-                    ResponseDate responseDate = response.body();
-                    doDateSystem(responseDate.getDate_m());
-                }
-                else Log.d("test", "사귄날짜 통신1 에러");
-            }
-
-            @Override
-            public void onFailure(Call<ResponseDate> call, Throwable t) {
-                Log.d("test", "사귄날짜 통신3 에러");
-            }
-        });
-
-    }
-
-    //TODO ToDoList Check false인 내용 순서대로 삽입
-    public void Item_Content() {
-        i=0;
-        todo.clear();
-
-        Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
-        res.enqueue(new Callback<List<ResponseTODO>>() {
-            @Override
-            public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
-                if(response.isSuccessful()){
-                    List<ResponseTODO> responseTodo = response.body();
-                    for (ResponseTODO responseTodo_ : responseTodo){
-                        if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
-                            todo.add(responseTodo_.getContent_td());
-                            i++;
-                        }
-                    }
-                }
-                else Log.d("Todo", "Todo 내용 통신1 에러");
-            }
-            @Override
-            public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
-                Log.d("Todo", "Todo 내용 통신3 에러" + t.getMessage());
-            }
-        });
-    }
+               //사귄 날짜가 1000일이 넘으면 textSize 변경
+               if (coupleDays > 1000) {
+                   date.setTextSize(30);
+               }
+               date.setText(coupleDays + " 일");     //사귄날짜 + 일 출력
 
 
-    //TODO TextSwitcher 스레드
-    public class TodoThread extends Thread {
-        boolean running = false;     //시작과 종료에 필요한 변수
-        int index = 0;
+           } catch (ParseException e) {
+               e.printStackTrace();
+           }
+       }
 
-        @Override
-        public void run() {
-            running = true;
+       //TODO 사귄날짜 가져오기
+       public void DateSystem () {
+           Call<ResponseDate> res = Net.getInstance().getApi().getDate(MainActivity.id);
+           res.enqueue(new Callback<ResponseDate>() {
+               @Override
+               public void onResponse(Call<ResponseDate> call, Response<ResponseDate> response) {
+                   if (response.isSuccessful()) {
+                       Log.d("test", "사귄날짜 계산 성공");
+                       ResponseDate responseDate = response.body();
+                       doDateSystem(responseDate.getDate_m());
+                   } else Log.d("test", "사귄날짜 통신1 에러");
+               }
 
-            while (running) {                            //무한루프, Todolist 계속 돌아가게 함
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(todo.isEmpty()){              //todoArrayList 배열에 아무것도 들어있지 않을 때
-                            to_do_Btn.setText("•  TODO_LIST에 내용을 입력해주세요");
-                        }
-                        else {
-                            to_do_Btn.setText("•  " + todo.get(index++));
-                            to_do_Btn.invalidate();
-                        }
-                    }
-                },1200);
+               @Override
+               public void onFailure(Call<ResponseDate> call, Throwable t) {
+                   Log.d("test", "사귄날짜 통신3 에러");
+               }
+           });
 
-                try {
+       }
 
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    halt();
-                    e.printStackTrace();
-                }
-                if (index >= todo.size()) {   //String 배열 때length
-                    index = 0;
-                }
+       //TODO ToDoList Check false인 내용 순서대로 삽입
+       public void Item_Content () {
+           i = 0;
+           todo.clear();
 
-            }
-        }
+           Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
+           res.enqueue(new Callback<List<ResponseTODO>>() {
+               @Override
+               public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
+                   if (response.isSuccessful()) {
+                       List<ResponseTODO> responseTodo = response.body();
+                       for (ResponseTODO responseTodo_ : responseTodo) {
+                           if (false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
+                               todo.add(responseTodo_.getContent_td());
+                               i++;
+                           }
+                       }
+                   } else Log.d("Todo", "Todo 내용 통신1 에러");
+               }
 
-        public void halt() {
-            running = false;
-        }
-    }
+               @Override
+               public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
+                   Log.d("Todo", "Todo 내용 통신3 에러" + t.getMessage());
+               }
+           });
+       }
 
-    //TODO 앨범들어가서 사진 크롭하기
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
 
-                try {
-                    Uri uri = data.getData();
+       //TODO TextSwitcher 스레드
+       public class TodoThread extends Thread {
+           boolean running = false;     //시작과 종료에 필요한 변수
+           int index = 0;
 
-                    profile_img = profileLayout1.findViewById(R.id.profile_img);
-                    Glide.with(context)
-                            .load(uri)
-                            .centerCrop()
-                            .crossFade()
-                            .bitmapTransform(new CropCircleTransformation(context))
-                            .override(70, 70)
-                            .into(profile_img);
+           @Override
+           public void run() {
+               running = true;
 
-                    uri_ = uri;
+               while (running) {                            //무한루프, Todolist 계속 돌아가게 함
+                   handler.postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           if (todo.isEmpty()) {              //todoArrayList 배열에 아무것도 들어있지 않을 때
+                               to_do_Btn.setText("•  TODO_LIST에 내용을 입력해주세요");
+                           } else {
+                               to_do_Btn.setText("•  " + todo.get(index++));
+                               to_do_Btn.invalidate();
+                           }
+                       }
+                   }, 1200);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
-            }
-        }
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+                   try {
 
-            try {
-                Uri uri = data.getData();
+                       Thread.sleep(3000);
+                   } catch (InterruptedException e) {
+                       halt();
+                       e.printStackTrace();
+                   }
+                   if (index >= todo.size()) {   //String 배열 때length
+                       index = 0;
+                   }
 
-                profile_img = profileLayout1.findViewById(R.id.profile_img);
-                Glide.with(context)
-                        .load(uri)
-                        .centerCrop()
-                        .crossFade()
-                        .bitmapTransform(new CropCircleTransformation(context))
-                        .override(70, 70)
-                        .into(profile_img);
+               }
+           }
 
-                uri_ = uri;
+           public void halt() {
+               running = false;
+           }
+       }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+       //TODO 앨범들어가서 사진 크롭하기
+       @Override
+       public void onActivityResult ( int requestCode, int resultCode, Intent data){
+           super.onActivityResult(requestCode, resultCode, data);
+           if (requestCode == REQUEST_CODE) {
+               if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+
+                   try {
+                       Uri uri = data.getData();
+
+                       profile_img = profileLayout1.findViewById(R.id.profile_img);
+                       Glide.with(context)
+                               .load(uri)
+                               .centerCrop()
+                               .crossFade()
+                               .bitmapTransform(new CropCircleTransformation(context))
+                               .override(70, 70)
+                               .into(profile_img);
+
+                       uri_ = uri;
+
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+               } else if (resultCode == Activity.RESULT_CANCELED) {
+                   Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
+               }
+           }
+           }
+       }
 
 
     /*public void img(){
