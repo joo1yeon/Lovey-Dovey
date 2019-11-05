@@ -300,6 +300,8 @@ public class Main extends Fragment {
     //TODO 스레드 오류 해결
    @Override
    public void setUserVisibleHint(boolean isVisibleToUser) {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             //스레드 객체 생성 및 시작
             todoThread = null;
@@ -439,30 +441,30 @@ public class Main extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == REQUEST_CODE) {
-                if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
 
-                    try {
-                        Uri uri = data.getData();
+                try {
+                    Uri uri = data.getData();
 
-                        profile_img = profileLayout1.findViewById(R.id.profile_img);
-                        Glide.with(context)
-                                .load(uri)
-                                .centerCrop()
-                                .crossFade()
-                                .bitmapTransform(new CropCircleTransformation(context))
-                                .override(70, 70)
-                                .into(profile_img);
+                    profile_img = profileLayout1.findViewById(R.id.profile_img);
+                    Glide.with(context)
+                            .load(uri)
+                            .centerCrop()
+                            .crossFade()
+                            .bitmapTransform(new CropCircleTransformation(context))
+                            .override(70, 70)
+                            .into(profile_img);
 
-                        uri_ = uri;
+                    uri_ = uri;
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (resultCode == Activity.RESULT_CANCELED) {
-                    Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
             }
+        }
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
 
             try {

@@ -1,7 +1,6 @@
 package com.example.main;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,22 +67,21 @@ public class Datecourse_ListViewAdapter extends BaseAdapter {
                 if (response.isSuccessful()) {
                     List<ResponseDate_image2> responseGet = response.body();
                     int i = 0;
+
                     for (ResponseDate_image2 responseDate_Image2 : responseGet) {
                         Placeimage[i] = responseDate_Image2.getimage();
-                        Log.d("OKK", Placeimage[i]);
                         ++i;
                     }
                     Glide.with(context).load(Placeimage[position]).into(image);
                     Log.d("WWW",id+"");
                 }
             }
-
             @Override
             public void onFailure(Call<List<ResponseDate_image2>> call, Throwable t) {
                 Log.d("III", "fail");
             }
         });
-
         return convertView;
     }
+
 }
