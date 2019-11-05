@@ -7,16 +7,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Story_Search extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
 
     ImageView icCalendar;
     Button btnConfirm, btnCancel;
     TextView tvPressIcon;
+    EditText etTitleSearch;
+    RadioGroup mRadioGroup;
+    RadioButton rdo_user1, rdo_user2;
     private static final String DIALOG_DATE = "DialogDate";
     int year, month, day;
+    String storyTitle, storyWriter;
 
     @Override
     public void onDatePickerSet(int y, int m, int d){ //DatePickerFragment 로부터 날짜를 받아온다.
@@ -32,10 +41,34 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.story_search);
-        btnConfirm = findViewById(R.id.btn_confirm);
-        btnCancel = findViewById(R.id.btn_cancel);
+        etTitleSearch = findViewById(R.id.et_title_search);
         icCalendar = findViewById(R.id.ic_calendar);
         tvPressIcon = findViewById(R.id.tv_press_icon);
+        mRadioGroup = findViewById(R.id.rGroup1);
+        rdo_user1 = findViewById(R.id.radio1);
+        rdo_user2 = findViewById(R.id.radio2);
+        btnConfirm = findViewById(R.id.btn_confirm);
+        btnCancel = findViewById(R.id.btn_cancel);
+
+        rdo_user1.setText(MainActivity.nickname);
+        storyTitle = etTitleSearch.getText().toString();
+
+//        mRadioGroup.check(R.id.radio1);
+        rdo_user1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                storyWriter = MainActivity.id;
+                Toast.makeText(Story_Search.this, MainActivity.nickname + "선택", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        rdo_user2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Toast.makeText(Story_Search.this, "사용자2 선택", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         icCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +82,11 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Story_Search.this, Story_SearchResult.class);
+                intent.putExtra("year", year);
+                intent.putExtra("montn", month);
+                intent.putExtra("day", day);
+                intent.putExtra("storyTitle", storyTitle);
+                intent.putExtra("storyWriter", storyWriter);
                 startActivity(intent);
                 finish();
             }

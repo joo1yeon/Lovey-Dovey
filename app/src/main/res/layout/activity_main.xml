@@ -74,7 +74,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:background="#ffffff"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clickable="true">
 
 
         <LinearLayout

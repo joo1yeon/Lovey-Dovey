@@ -79,6 +79,9 @@ public interface API {
     @GET("printStoryData.php")
     Call<List<ResponseStory>> getStoryData();
 
+    @GET("searchStory.php")
+    Call<List<ResponseStory>> searchStory(@Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title, @Query("WRITER") String writer);
+
     @Multipart
     @POST("upload_img.php")
     Call<ResponseImgUpload> upload(
@@ -88,6 +91,26 @@ public interface API {
 
     @GET("updateProfile.php")
     Call<ResponseInfoUpdate> getInfoUpdate(@Query("ID") String id, @Query("NICK") String nickname, @Query("EMAIL") String email);
+
+    @GET("todoData.php")
+    Call<List<ResponseTODO>> getInquiry(@Query("coupleID") int couple_id);
+
+    @GET("todoAdd.php")
+    Call<ResponseTD_Insert> getTD_Add(@Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked);
+
+    @GET("todoUpdate.php")
+    Call<ResponseTD_update> getTD_Modify(@Query("coupleID") int c_id, @Query("Content1") String content1, @Query("Content2") String content2);
+
+    @GET("todoRemove.php")
+    Call<ResponseTD_delete> getTD_Delt(@Query("coupleID") int c_id, @Query("Content") String content);
+
+    @GET("todoClick.php")
+    Call<ResponseTD_click> getTD_Click(@Query("coupleID") int c_id, @Query("Content") String content, @Query("Date") String date, @Query("Checked") String checked);
+
+    @GET("mainDate.php")
+    Call<ResponseDate> getDate(@Query("id") String id);
+
+    //@Query("todo_id") int id, @Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked
 
     @GET("printNotice.php")
     Call<List<ResponseNotice>> getNotice();

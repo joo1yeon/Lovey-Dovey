@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,11 +38,13 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Key;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import retrofit2.Call;
@@ -71,6 +74,7 @@ public class Main extends Fragment {
     MyDBHelper mainDB;
     SQLiteDatabase sqlDB;
     Cursor cursor;
+    int i;
 
     static Uri uri_ = Uri.parse("android.resource://com.example.main/drawable/basic");
 
@@ -79,7 +83,7 @@ public class Main extends Fragment {
     public void onStart() {
         super.onStart();
         todo.clear();
-        Item_Content(MainActivity.coupleID);
+        Item_Content();
     }
 
     Handler handler = new Handler() {
@@ -102,7 +106,7 @@ public class Main extends Fragment {
         mainDB = new MyDBHelper(getContext());          //헬퍼클래스 객체 생성
         context = getContext();
         todo.clear();
-        Item_Content(MainActivity.coupleID);
+        Item_Content();
 
 
         //인플레이트
@@ -158,7 +162,7 @@ public class Main extends Fragment {
         to_do_Btn.setOutAnimation(out);
 
         //Date 날짜 계산 함수
-        doDateSystem();
+        DateSystem();
 
 
         //to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
@@ -168,6 +172,7 @@ public class Main extends Fragment {
                 Intent intent = new Intent(getContext(), ToDoList.class);                                   //인텐트 선언 및 생성
                 startActivity(intent);
             }
+
         });
 
 
@@ -254,6 +259,7 @@ public class Main extends Fragment {
         });
 
         //TODO# 데이터 베이스로 상태방 정보 불러오기
+
         //오른쪽 프로필을 누를 때 -->  정보 변경 불가능한 다이얼로그 창
         profile_Btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,19 +276,6 @@ public class Main extends Fragment {
                 final TextView name = profileLayout2.findViewById(R.id.name);
 
                 //저장된 값 보여주기
-                Call<ResponseProfile> res = Net.getInstance().getApi().getProfile(MainActivity.id);
-                res.enqueue(new Callback<ResponseProfile>() {
-                    @Override
-                    public void onResponse(Call<ResponseProfile> call, Response<ResponseProfile> response) {
-                        name.setText(response.body().getName());
-                        email.setText(response.body().getEmail());
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseProfile> call, Throwable t) {
-
-                    }
-                });
 
                 //닫기 버튼 클릭했을 때 다이얼로그 종료
                 close.setOnClickListener(new View.OnClickListener() {
@@ -298,19 +291,19 @@ public class Main extends Fragment {
     }
 
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
+   @Override
+   public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             //스레드 객체 생성 및 시작
             todoThread = null;
             todoThread = new TodoThread();
             todoThread.start();
-            Log.e("화면켜졌을 때", "나 켜졌어!");
+            Log.e("screen", "현재화면");
         } else {
             try {
-                Log.e("화면꺼졌을 때", "나 다른화면에 있다!?");
+                Log.e("screen", "다른화면");
                 todoThread.interrupt();             //스레드 멈추기
-                Log.e("화면 멈췄다면...", "스레드는 잘 멈췄어!");
+                Log.e("screen", "스레드 정지");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -320,6 +313,9 @@ public class Main extends Fragment {
     //TODO# Data 날짜 계산 함수 -> 데이터베이스로 사귄날짜 받아오기
     public void doDateSystem() {
         String start = "2019-03-04";        // 사귄 날짜 입력
+
+    //Data 날짜 계산 함수
+    public void doDateSystem(String start) {
 
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");        //SimpleDataFormat 형태의 변수를 년-월-일로 생성
@@ -343,29 +339,52 @@ public class Main extends Fragment {
         }
     }
 
-    //ToDoList Check false인 내용 순서대로 삽입
-    public void Item_Content(int id) {
-        sqlDB = mainDB.getReadableDatabase();
+    public void DateSystem(){
+        Call<ResponseDate> res = Net.getInstance().getApi().getDate(MainActivity.id);
+        res.enqueue(new Callback<ResponseDate>() {
+            @Override
+            public void onResponse(Call<ResponseDate> call, Response<ResponseDate> response) {
+                if(response.isSuccessful()){
+                    Log.d("test", "사귄날짜 계산 성공");
+                    ResponseDate responseDate = response.body();
+                    doDateSystem(responseDate.getDate_m());
+                }
+                else Log.d("test", "사귄날짜 통신1 에러");
+            }
 
-        cursor = sqlDB.rawQuery("SELECT * FROM to_do_list WHERE couple_id='" + id + "' AND checked = '" + false + "';", null);
-        int count = cursor.getCount();
+            @Override
+            public void onFailure(Call<ResponseDate> call, Throwable t) {
+                Log.d("test", "사귄날짜 통신3 에러");
+            }
+        });
 
-        for (int i = 0; i < count; i++) {
-            cursor.moveToNext();                                    //커서 넘기기
-            todo.add(cursor.getString(3));   //체크하지 않은 내용 넣기
-            //String 배열 때 todo[i] = cursor.getString(3);
-        }
-
-        //todoArrayList 배열에 아무것도 들어있지 않을 때
-        if (count == 0) {
-            todo.add("TODO_LIST에 내용을 입력해주세요");
-        }
-
-        cursor.close();
-        sqlDB.close();
     }
 
-    //ToDoList 함수 TODO 탭 변경시 겹치는 오류..
+    //ToDoList Check false인 내용 순서대로 삽입
+    public void Item_Content() {
+        i=0;
+        Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
+        res.enqueue(new Callback<List<ResponseTODO>>() {
+            @Override
+            public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
+                if(response.isSuccessful()){
+                    List<ResponseTODO> responseTodo = response.body();
+                    for (ResponseTODO responseTodo_ : responseTodo){
+                        if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
+                            todo.add(responseTodo_.getContent_td());
+                            i++;
+                        }
+                    }
+                }
+                else Log.d("Todo", "Todo 내용 통신1 에러");
+            }
+            @Override
+            public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
+                Log.d("Todo", "Todo 내용 통신3 에러" + t.getMessage());
+            }
+        });
+    }
+
     public class TodoThread extends Thread {
         boolean running = false;     //시작과 종료에 필요한 변수
         int index = 0;
@@ -378,8 +397,16 @@ public class Main extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        to_do_Btn.setText("•  " + todo.get(index)); //String 배열 때 todo[index]
-                        to_do_Btn.invalidate();
+                        //todoArrayList 배열에 아무것도 들어있지 않을 때
+                        if (todo.isEmpty()) {
+                            to_do_Btn.setText("•  TODO_LIST에 내용을 입력해주세요");
+                        }
+                        else {
+                            to_do_Btn.setText("•  " + todo.get(index)); //String 배열 때 todo[index]
+                            to_do_Btn.invalidate();
+                        }
+
+
                     }
                 });
 
@@ -409,6 +436,30 @@ public class Main extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == REQUEST_CODE) {
+                if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+
+                    try {
+                        Uri uri = data.getData();
+
+                        profile_img = profileLayout1.findViewById(R.id.profile_img);
+                        Glide.with(context)
+                                .load(uri)
+                                .centerCrop()
+                                .crossFade()
+                                .bitmapTransform(new CropCircleTransformation(context))
+                                .override(70, 70)
+                                .into(profile_img);
+
+                        uri_ = uri;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    Toast.makeText(getContext(), "사진 선택 취소", Toast.LENGTH_SHORT).show();
+                }
+            }
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
 
             try {
