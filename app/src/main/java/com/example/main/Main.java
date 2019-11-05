@@ -169,7 +169,6 @@ public class Main extends Fragment {
 
 
 
-
         //TODO to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
         to_do_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -300,8 +299,6 @@ public class Main extends Fragment {
     //TODO 스레드 오류 해결
    @Override
    public void setUserVisibleHint(boolean isVisibleToUser) {
-       @Override
-       public void setUserVisibleHint ( boolean isVisibleToUser){
            if (isVisibleToUser) {
                //스레드 객체 생성 및 시작
                todoThread = null;
@@ -331,7 +328,7 @@ public class Main extends Fragment {
 
                // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
                long diff = endDate.getTime() - beginDate.getTime();
-               long coupleDays = diff / (24 * 60 * 60 * 1000);
+               long coupleDays = diff / (24 * 60 * 60 * 1000) + 1;
 
                //사귄 날짜가 1000일이 넘으면 textSize 변경
                if (coupleDays > 1000) {
@@ -464,7 +461,7 @@ public class Main extends Fragment {
                }
            }
            }
-       }
+
 
 
     /*public void img(){
