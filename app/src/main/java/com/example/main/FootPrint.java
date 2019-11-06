@@ -78,8 +78,9 @@ import static android.app.Activity.RESULT_OK;
 
 @SuppressLint("ValidFragment")
 public class FootPrint extends Fragment implements OnMapReadyCallback {
+    String[] markerSrc={"marker1","marker2","marker3","marker4","marker5","marker6","marker7","marker8","marker9","marker10"};
     InsertDB insert;
-
+    int index=0;
     String id = MainActivity.id;
     MarkerOptions markerOptions = new MarkerOptions();
     GoogleMap gMap;
@@ -269,7 +270,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         setGoogleMap(googleMap);
 
         gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584, 126.925), 15));
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.566660, 126.978393), 15));
         gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
         gMap.getUiSettings().setZoomControlsEnabled(false);
         gMap.getUiSettings().isMyLocationButtonEnabled();
@@ -292,7 +293,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2);
                 markerOptions.title(address);
                 markerOptions.snippet(address);
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index++], 100, 120)));
                 markerOptions.position(latLng);
                 gMap.addMarker(markerOptions);
                 insert.insert(address, address, latLng.latitude, latLng.longitude, year, month, date);
@@ -389,7 +390,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             LatLng point = new LatLng(latitude, longitude);
             markerOptions.title(name);
             markerOptions.snippet(address);
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index++], 100, 120)));
             markerOptions.position(point);
             gMap.addMarker(markerOptions);
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
@@ -438,8 +439,10 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     }
 
     public void printMarker(GoogleMap _gMap, int year, int month, int day) {
-
+        index=0;
         final GoogleMap gMap = _gMap;
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.566660, 126.978393), 15));
+
         gMap.clear();
         Call<List<ResponseMarker>> res = Net.getInstance().getApi().getMarker(MainActivity.coupleID, year, month, day);
         res.enqueue(new Callback<List<ResponseMarker>>() {
@@ -454,7 +457,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
 
                             markerOptions.title(responseMarker.getName());
                             markerOptions.snippet(responseMarker.getAddress());
-                            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
+                            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index++], 100, 120)));
                             markerOptions.position(point);
                             gMap.addMarker(markerOptions);
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));

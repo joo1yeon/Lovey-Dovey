@@ -25,7 +25,7 @@ public class LoadingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
         sqlDB = dbHelper.getReadableDatabase();
-        animationView=findViewById(R.id.animation);
+//        animationView=findViewById(R.id.animation);
 //        animationView.setAnimation("heart3.json");    //하트 날아가는 효과
 //        animationView.loop(true);
 //       animationView.playAnimation();
