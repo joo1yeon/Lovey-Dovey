@@ -89,7 +89,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
-    int month = cal.get(Calendar.MONTH);
+    int month = cal.get(Calendar.MONTH)+1;
     int day = cal.get(Calendar.DATE);
     MapView map;
     Date today = cal.getTime();
@@ -113,7 +113,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
 
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
-        Log.d("date", year + "" + month + 1 + "" + day);
 
         btnFab = layout.findViewById(R.id.btnFab);
         fabToday = layout.findViewById(R.id.fabToday);
@@ -140,7 +139,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
                 cal.set(year, month, day);
-                printMarker(gMap, year, month, day);
+                printMarker(gMap,year, month, day);
                 tvToday.setText(sdf.format(today));
 
             }
@@ -195,7 +194,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
                         printMarker(gMap, year, month + 1, dayOfMonth);
-                        Log.d("DDD", year + "/" + (month + 1) + "/" + dayOfMonth);
 
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
                         cal.set(year, month, dayOfMonth);
@@ -212,8 +210,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 cal.add(Calendar.DATE, -1);
                 tvToday.setText(sdf.format(cal.getTime()));
                 printMarker(gMap, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-
-                Log.d("DDD", cal.get(Calendar.YEAR) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DATE));
                 Toast.makeText(getContext(), "어제 날짜로 이동합니다", Toast.LENGTH_SHORT).show();
             }
         });
@@ -225,7 +221,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 cal.add(Calendar.DATE, +1);
                 tvToday.setText(sdf.format(cal.getTime()));
                 printMarker(gMap, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-                Log.d("DDD", cal.get(Calendar.YEAR) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DATE));
                 Toast.makeText(getContext(), "내일 날짜로 이동합니다", Toast.LENGTH_SHORT).show();
             }
         });
@@ -288,16 +283,15 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Log.i("TTT", list.get(0).toString());
                 String[] splitStr = list.get(0).toString().split(",");
                 String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2);
                 markerOptions.title(address);
                 markerOptions.snippet(address);
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index++], 100, 120)));
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index], 150, 170)));
                 markerOptions.position(latLng);
                 gMap.addMarker(markerOptions);
-                insert.insert(address, address, latLng.latitude, latLng.longitude, year, month, date);
-
+                insert.insert(address, address, latLng.latitude, latLng.longitude, year, month, date,index);
+                index++;
             }
         });
         //TODO 마커 클릭 이벤트1
@@ -307,7 +301,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 final int year = cal.getTime().getYear() + 1900;
                 final int month = cal.getTime().getMonth() + 1;
                 final int date = cal.getTime().getDate();
-                Log.i("tt", "마커클릭이벤트 호출");
                 final View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
                 TextView placeAddress;
                 final EditText placeName;
@@ -320,6 +313,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 Button btnModifyMark, btnDelMark;
                 btnModifyMark = view.findViewById(R.id.btnModifyMark);
                 btnDelMark = view.findViewById(R.id.btnDelMark);
+                //TODO 마커수정하기 버튼 클릭
                 btnModifyMark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -341,6 +335,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                         });
                     }
                 });
+                //TODO 마커삭제하기 버튼 클릭
                 btnDelMark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -348,7 +343,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                         res.enqueue(new Callback<deleteMark>() {
                             @Override
                             public void onResponse(Call<deleteMark> call, Response<deleteMark> response) {
-                                Log.d("DELMARK", response.body().getSuccess());
                                 printMarker(gMap, year, month, date);
                                 modalBottomSheet.dismiss();
                             }
@@ -386,19 +380,17 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             Double latitude = data.getDoubleExtra("latitude", 0);
             Double longitude = data.getDoubleExtra("longitude", 0);
             String address = data.getStringExtra("address");
-            Log.d("TITLE", name);
             LatLng point = new LatLng(latitude, longitude);
             markerOptions.title(name);
             markerOptions.snippet(address);
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index++], 100, 120)));
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index], 150, 170)));
             markerOptions.position(point);
             gMap.addMarker(markerOptions);
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
             gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
 
-            insert.insert(name, markerOptions.getSnippet(), latitude, longitude, year, month, date);
-            Log.d("TITLE2", name);
-
+            insert.insert(name, markerOptions.getSnippet(), latitude, longitude, year, month, date,index);
+            index++;
         }
     }
 
@@ -438,6 +430,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         map.onPause();
     }
 
+    //TODO 마커 출력 메소드
     public void printMarker(GoogleMap _gMap, int year, int month, int day) {
         index=0;
         final GoogleMap gMap = _gMap;
@@ -453,11 +446,9 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                     for (ResponseMarker responseMarker : responseGet) {
                         if (responseMarker.getName() != null && responseMarker.getAddress() != null && responseMarker.getLng() != 0 && responseMarker.getLat() != 0) {
                             LatLng point = new LatLng(responseMarker.getLat(), responseMarker.getLng());
-                            Log.d("marker", "위도경도 : " + point);
-
                             markerOptions.title(responseMarker.getName());
                             markerOptions.snippet(responseMarker.getAddress());
-                            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index++], 100, 120)));
+                            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index++], 150, 170)));
                             markerOptions.position(point);
                             gMap.addMarker(markerOptions);
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
@@ -475,7 +466,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             @Override
             public void onFailure(Call<List<ResponseMarker>> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("TTT", t.getMessage());
             }
         });
     }

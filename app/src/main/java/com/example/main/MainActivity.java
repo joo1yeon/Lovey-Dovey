@@ -71,9 +71,9 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     String uri_;
 
     @Override
-    public void insert(String name, String address, double latitude, double longitude, int year, int month, int date) {
+    public void insert(String name, String address, double latitude, double longitude, int year, int month, int date,int num) {
         sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("insert into marker values('" + name + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ");");
+        sqlDB.execSQL("insert into marker values('" + name + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ","+num+");");
         sqlDB.close();
     }
 
