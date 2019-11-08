@@ -21,15 +21,15 @@ import retrofit2.Response;
 public class Datecourse_ListViewAdapter extends BaseAdapter {
     Context context;
     ArrayList<Datecourse_ListViewItem> date_listItem = new ArrayList<Datecourse_ListViewItem>();
+    ArrayList<Datecourse_ListViewItem> bookmark = new ArrayList<Datecourse_ListViewItem>();
     String[] Placeimage = new String[6];
     int id;
     int position;
 
-    public Datecourse_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> date_listItem, int id, int position) {
+    public Datecourse_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> date_listItem, int id) {
         this.context = context;
         this.date_listItem = date_listItem;
         this.id = id;
-        this.position = position;
     }
 
     @Override
