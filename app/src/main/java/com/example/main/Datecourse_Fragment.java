@@ -76,22 +76,32 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 }
                 Call<ResponseBookmark> res = Net.getInstance().getApi().getBookmark(place_id, PlaceName, Placeimage, star, nickname);
-                Log.d("EYE", "성공");
                 res.enqueue(new Callback<ResponseBookmark>() {
                     @Override
                     public void onResponse(Call<ResponseBookmark> call, Response<ResponseBookmark> response) {
-                        if (response.isSuccessful()) {
-                            Log.d("EYE", "성공2");
-                            ResponseBookmark responseGet = response.body();
-                            favorite.setBackgroundResource(ic_star_black_24dp);
-                        }
                     }
-
                     @Override
                     public void onFailure(Call<ResponseBookmark> call, Throwable t) {
                         Log.d("III", "fail");
                     }
                 });
+            }
+        });
+
+        Call<ResponseBookmarkSel> res = Net.getInstance().getApi().getBookmarkSel(place_id,nickname);
+        res.enqueue(new Callback<ResponseBookmarkSel>() {
+            @Override
+            public void onResponse(Call<ResponseBookmarkSel> call, Response<ResponseBookmarkSel> response) {
+                if (response.isSuccessful()) {
+                    ResponseBookmarkSel responseookmarkSel= response.body();
+                    if(responseookmarkSel.getSuccess()) {
+                        favorite.setSelected(true);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBookmarkSel> call, Throwable t) {
+                Log.d("III", "fail");
             }
         });
 
