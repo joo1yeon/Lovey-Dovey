@@ -119,6 +119,6 @@ public interface API {
     Call<NoticeInfo> getNoticeInfo(@Query("ID") int id);
 
     @GET("bookmark.php")
-    Call<List<ResponseBookmark>> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("num") int num);
+    Call<ResponseBookmark> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("star") int star,@Query("nickname") String nickname);
 }
 

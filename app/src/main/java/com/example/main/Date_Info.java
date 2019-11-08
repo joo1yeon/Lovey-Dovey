@@ -35,7 +35,6 @@ public class Date_Info extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.date_info, container, false);
 
-
         place = layout.findViewById(R.id.place);
         time = layout.findViewById(R.id.time);
         tel = layout.findViewById(R.id.tel);
@@ -54,7 +53,7 @@ public class Date_Info extends Fragment {
                     time.setText(responseGet.gettime());
                     tel.setText(responseGet.gettel());
 
-                    if (id == 1) {
+                    if (id % 2 != 0) {
                         content.setText(responseGet.getcontent());
                         content2.setText(responseGet.getcontent2());
                     } else {

@@ -26,7 +26,6 @@ public class DateImageClick extends AppCompatActivity {
     String[] PlaceN = new String[6];
     String[] Placeimage = new String[6];
     String[] place_id = new String[6];
-    int position;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class DateImageClick extends AppCompatActivity {
 
         listView = findViewById(R.id.imagelist);
         date_listItem = new ArrayList<Datecourse_ListViewItem>();
-        adapter = new Datecourse_ListViewAdapter(this, date_listItem,id,position);
+        adapter = new Datecourse_ListViewAdapter(this, date_listItem,id);
 
         Call<List<ResponseDate_image2>> res = Net.getInstance().getApi().getDate_image2(id);
         res.enqueue(new Callback<List<ResponseDate_image2>>() {

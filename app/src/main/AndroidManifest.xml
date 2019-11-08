@@ -69,6 +69,7 @@
         <activity android:name=".Story_Contents" />
         <activity android:name=".ToDoList" />
         <activity android:name=".Notice" />
+        <activity android:name=".Bookmark" />
 
         <activity android:name=".Story_SearchResult" />
         <activity android:name=".Story_EditMainListItem" />
