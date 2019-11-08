@@ -47,7 +47,7 @@ public interface API {
     Call<ResponseDate_image3> getDate_image3(@Query("Place_id") String place_id, @Query("id") int id);
 
     @GET("addMarker.php")
-    Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
+    Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple,@Query("NUM") int num);
 
     @GET("resetTable.php")
     Call<ResReset> getReset();
