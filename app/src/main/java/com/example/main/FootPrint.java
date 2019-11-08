@@ -89,7 +89,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
-    int month = cal.get(Calendar.MONTH)+1;
+    int month = cal.get(Calendar.MONTH);
     int day = cal.get(Calendar.DATE);
     MapView map;
     Date today = cal.getTime();
