@@ -77,12 +77,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         sqlDB.close();
     }
 
-    @Override
-    public void delete(double latitude, double longitude, int year, int month, int date) {
-        sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("delete from marker where latitude=" + latitude + " and longitude=" + longitude + " and year =" + year + " and month=" + month + " and date =" + date + ";");
-        sqlDB.close();
-    }
 
     @Override
     public void save() {

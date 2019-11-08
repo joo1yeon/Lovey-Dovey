@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
@@ -110,15 +111,26 @@ public interface API {
     @GET("mainDate.php")
     Call<ResponseDate> getDate(@Query("id") String id);
 
-    //@Query("todo_id") int id, @Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked
-
     @GET("printNotice.php")
     Call<List<ResponseNotice>> getNotice();
 
     @GET("noticeInfo.php")
     Call<NoticeInfo> getNoticeInfo(@Query("ID") int id);
 
+    @GET("UpdateMarker.php")
+    Call<updateMark> getUpdateMark(@Query("NAME") String name, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
+
+    @GET("deleteMark.php")
+    Call<deleteMark> getDeleteMark(@Query("NAME") String name,@Query("ADDRESS") String address, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
+
+    @Multipart
+    @POST("profileImg.php")
+    Call<ResponseProfile_m> getLoad(
+            @Part("coupleID") String c_id,
+            @PartMap() Map<String, RequestBody> params);
+
     @GET("bookmark.php")
     Call<ResponseBookmark> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("star") int star,@Query("nickname") String nickname);
-}
+
+
 

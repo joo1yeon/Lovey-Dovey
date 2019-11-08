@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,13 +18,17 @@ import retrofit2.Response;
 public class LoadingActivity extends Activity {
     MyDBHelper dbHelper = new MyDBHelper(this);
     SQLiteDatabase sqlDB;
+    LottieAnimationView animationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
         sqlDB = dbHelper.getReadableDatabase();
-
+        animationView=findViewById(R.id.animation);
+        animationView.setAnimation("heart3.json");
+        animationView.loop(true);
+       animationView.playAnimation();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() { //특정 시간 후 작업 처리하는 메소드
             @Override
@@ -86,7 +92,7 @@ public class LoadingActivity extends Activity {
                 }
                 finish();
             }
-        }, 1700);    //1.7초 후에 MainActivity로 넘어감
+        }, 4000);    //5초 후에 MainActivity로 넘어감
 
 
     }

@@ -22,7 +22,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.execSQL("create table marker(name varchar(70) not null, address varchar(70) not null, latitude double not null, longitude double not null,year int not null,month int not null,date int not null)");
         db.execSQL("create table story(story_id integer primary key autoincrement not null, writer varchar(20) not null, year integer, month integer, day integer, title varchar(100), main_img varchar(100), contents varchar(200))");
         db.execSQL("create table back(id varchar(50) not null, path varchar(50) not null);");
-        
+
+
         //story 내용
         db.execSQL("INSERT INTO story VALUES(0, 'test1', 2019, 10, 30, '이것은 테스트이다.', 'path', '꽁냥꽁냥')");
 

@@ -33,6 +33,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -66,6 +67,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,7 +80,7 @@ import static android.app.Activity.RESULT_OK;
 public class FootPrint extends Fragment implements OnMapReadyCallback {
     InsertDB insert;
 
-    String id=MainActivity.id;
+    String id = MainActivity.id;
     MarkerOptions markerOptions = new MarkerOptions();
     GoogleMap gMap;
     ImageButton btnTomorrow, btnYesterday;
@@ -170,16 +173,19 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        //TODO 마커저장버튼 클릭
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int year = cal.getTime().getYear()+1900;
-                int month = cal.getTime().getMonth()+1;
+                int year = cal.getTime().getYear() + 1900;
+                int month = cal.getTime().getMonth() + 1;
                 int date = cal.getTime().getDate();
                 Toast.makeText(getContext(), "마커 저장", Toast.LENGTH_SHORT).show();
                 insert.save();
             }
         });
+
+        //TODO 오늘 날짜 클릭 이벤트
         tvToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,14 +270,15 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
 
         gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.584, 126.925), 15));
+        gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
         gMap.getUiSettings().setZoomControlsEnabled(false);
         gMap.getUiSettings().isMyLocationButtonEnabled();
         //TODO 지도위에 마커 찍기
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                int year = cal.getTime().getYear()+1900;
-                int month = cal.getTime().getMonth()+1;
+                int year = cal.getTime().getYear() + 1900;
+                int month = cal.getTime().getMonth() + 1;
                 int date = cal.getTime().getDate();
                 Geocoder geocoder = new Geocoder(getContext());
                 List<Address> list = null;
@@ -288,7 +295,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("marker2", 100, 120)));
                 markerOptions.position(latLng);
                 gMap.addMarker(markerOptions);
-                insert.insert(address,address,latLng.latitude,latLng.longitude,year, month , date);
+                insert.insert(address, address, latLng.latitude, latLng.longitude, year, month, date);
 
             }
         });
@@ -296,34 +303,60 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
-                final int year = cal.getTime().getYear()+1900;
-                final int month = cal.getTime().getMonth()+1;
+                final int year = cal.getTime().getYear() + 1900;
+                final int month = cal.getTime().getMonth() + 1;
                 final int date = cal.getTime().getDate();
                 Log.i("tt", "마커클릭이벤트 호출");
-                View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-                TextView placeName, placeAddress;
+                final View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+                TextView placeAddress;
+                final EditText placeName;
                 placeName = view.findViewById(R.id.placeName);
                 placeAddress = view.findViewById(R.id.placeAddress);
                 placeName.setText(marker.getTitle());
                 if (marker.getSnippet() != null) {
                     placeAddress.setText(marker.getSnippet());
                 } else placeAddress.setText("");
-                Button btnAddPicture, btnDelMark;
-                btnAddPicture = view.findViewById(R.id.btnAddPicture);
+                Button btnModifyMark, btnDelMark;
+                btnModifyMark = view.findViewById(R.id.btnModifyMark);
                 btnDelMark = view.findViewById(R.id.btnDelMark);
-                btnAddPicture.setOnClickListener(new View.OnClickListener() {
+                btnModifyMark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), "사진추가하기", Toast.LENGTH_SHORT).show();
+                        Call<updateMark> r = Net.getInstance().getApi().getUpdateMark(placeName.getText().toString(), marker.getPosition().latitude, marker.getPosition().longitude, year, month, date, MainActivity.coupleID);
+
+                        r.enqueue(new Callback<updateMark>() {
+                            @Override
+                            public void onResponse(Call<updateMark> call, Response<updateMark> response) {
+                                if (response.body().getSuccess()) {
+                                    printMarker(gMap, year, month, date);
+                                    modalBottomSheet.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<updateMark> call, Throwable t) {
+
+                            }
+                        });
                     }
                 });
                 btnDelMark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        marker.remove();
-                        insert.delete(marker.getPosition().latitude,marker.getPosition().longitude,year , month , date);
+                        Call<deleteMark> res = Net.getInstance().getApi().getDeleteMark(marker.getTitle(), marker.getSnippet(), marker.getPosition().latitude, marker.getPosition().longitude, year, month, date, MainActivity.coupleID);
+                        res.enqueue(new Callback<deleteMark>() {
+                            @Override
+                            public void onResponse(Call<deleteMark> call, Response<deleteMark> response) {
+                                Log.d("DELMARK", response.body().getSuccess());
+                                printMarker(gMap, year, month, date);
+                                modalBottomSheet.dismiss();
+                            }
 
-                        modalBottomSheet.dismiss();
+                            @Override
+                            public void onFailure(Call<deleteMark> call, Throwable t) {
+
+                            }
+                        });
                     }
                 });
                 modalBottomSheet = new BottomSheetDialog(getContext());
@@ -338,21 +371,21 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        insert=(InsertDB)context;
+        insert = (InsertDB) context;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            int year=cal.getTime().getYear()+1900;
-            int month=cal.getTime().getMonth()+1;
-            int date=cal.getTime().getDate();
+            int year = cal.getTime().getYear() + 1900;
+            int month = cal.getTime().getMonth() + 1;
+            int date = cal.getTime().getDate();
             String name = data.getStringExtra("name");
             Double latitude = data.getDoubleExtra("latitude", 0);
             Double longitude = data.getDoubleExtra("longitude", 0);
             String address = data.getStringExtra("address");
-            Log.d("TITLE",name);
+            Log.d("TITLE", name);
             LatLng point = new LatLng(latitude, longitude);
             markerOptions.title(name);
             markerOptions.snippet(address);
@@ -360,8 +393,10 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             markerOptions.position(point);
             gMap.addMarker(markerOptions);
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
-            insert.insert(name,markerOptions.getSnippet(),latitude,longitude,year, month , date);
-            Log.d("TITLE2",name);
+            gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+
+            insert.insert(name, markerOptions.getSnippet(), latitude, longitude, year, month, date);
+            Log.d("TITLE2", name);
 
         }
     }
@@ -423,6 +458,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                             markerOptions.position(point);
                             gMap.addMarker(markerOptions);
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+                            gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+
 
                         } else {
                             gMap.clear();
