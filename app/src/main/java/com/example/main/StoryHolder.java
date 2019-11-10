@@ -35,9 +35,9 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
         itemView.setOnClickListener(this);
 
         //필요한 View를 findViewById
-        mStoryMainImg = (ImageView) itemView.findViewById(R.id.story_mainImg1);
-        mStoryTitle = (TextView) itemView.findViewById(R.id.story_title1);
-        mStoryDate = (TextView) itemView.findViewById(R.id.story_date1);
+        mStoryMainImg = itemView.findViewById(R.id.story_mainImg1);
+        mStoryTitle = itemView.findViewById(R.id.story_title1);
+        mStoryDate = itemView.findViewById(R.id.story_date1);
         mContentsText = itemView.findViewById(R.id.contents_text);
 
         itemView.setOnCreateContextMenuListener(this); //OnCreateContextMenuListener를 현재 클래스에서 구현한다고 설정
@@ -51,19 +51,16 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     public void bindStory(Story story) { //제목과 날짜를 화면에 출력
         mStory = story;
-        //mStoryMainImg.setImageDrawable();
         mStoryTitle.setText(mStory.getTitle());
         mStoryDate.setText(mStory.getYear() + "년 " + mStory.getMonth() + "월 " + mStory.getDay() + "일");
         mContentsText.setText(mStory.getContents_text());
         Uri uri = mStory.getMainImg();
-//            Log.d("test", uri.toString());
-//        Glide.with(getContext()).load(uri).into(mStoryMainImg);
         Glide.with(mContext).load(uri).into(mStoryMainImg);
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-        MenuItem Gotofootprint = contextMenu.add(Menu.NONE, 1001, 1, "발자국으로 이동");
+//        MenuItem Gotofootprint = contextMenu.add(Menu.NONE, 1001, 1, "발자국으로 이동");
         MenuItem Edit = contextMenu.add(Menu.NONE, 1002, 2, "수정");
         MenuItem Delete = contextMenu.add(Menu.NONE, 1003, 3, "삭제");
 
@@ -82,7 +79,6 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
                 case 1002: //수정 항목 선택시
 
                     story_id = stories.get(getAdapterPosition()).getId();
-                    deleteStory_server(); //서버에서 story 삭제
 
                     Intent intent = new Intent(mContext, Story_EditMainListItem.class);
                     intent.putExtra("story_id", stories.get(getAdapterPosition()).getId());
@@ -92,12 +88,11 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
                     intent.putExtra("day", stories.get(getAdapterPosition()).getDay());
                     intent.putExtra("imgpath", stories.get(getAdapterPosition()).getMainImg().toString());
                     intent.putExtra("contents", stories.get(getAdapterPosition()).getContents_text());
+                    intent.putExtra("position", getAdapterPosition());
                     mContext.startActivity(intent);
-                    stories.remove(getAdapterPosition());
 
                     break;
                 case 1003: //삭제 항목 선택시
-//                    Album_singleton album_singleton = Album_singleton.get(getActivity());
 
                     story_id = stories.get(getAdapterPosition()).getId();
                     stories.remove(getAdapterPosition());
@@ -127,7 +122,7 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
                 if (response.isSuccessful()) {
                     ResponseServer_Story responseGet = response.body();
                     if (responseGet.deleteStoryData() ) {
-//                        Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else Toast.makeText(mContext,"통신1 에러",Toast.LENGTH_SHORT).show();
             }

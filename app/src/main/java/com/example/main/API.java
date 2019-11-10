@@ -81,7 +81,7 @@ public interface API {
     Call<ResponseServer_Story> deleteStoryData(@Query("STORY_ID") String story_id);
 
     @GET("printStoryData.php")
-    Call<List<ResponseStory>> getStoryData();
+    Call<List<ResponseStory>> getStoryData(@Query("COUPLE_ID") String couple_id);
 
     @GET("searchStory.php")
     Call<List<ResponseStory>> searchStory(@Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String storyTitle, @Query("WRITER") String storyWriter);

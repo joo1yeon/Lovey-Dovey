@@ -81,8 +81,10 @@ public class Story_Create extends AppCompatActivity {
             public void onClick(View view) {
                 DatePickerDialog dateDialog = new DatePickerDialog(Story_Create.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tvPressIcon.setText(year + "년 " + (month+1) + "월 " + dayOfMonth + "일");
+                    public void onDateSet(DatePicker view, int _year, int _month, int _dayOfMonth) {
+                        tvPressIcon.setText(_year + "년 " + (_month+1) + "월 " + _dayOfMonth + "일");
+                        year = _year; month = _month + 1; day = _dayOfMonth;
+
                     }
                 }, year, month, day);
                 dateDialog.show();
@@ -110,7 +112,7 @@ public class Story_Create extends AppCompatActivity {
                 story.setDay(day);
                 story.setContents_text(etWriteText.getText().toString());
                 story.setMainImg(mUri);
-                story_id = story.getId().toString();
+                story_id = story.getId();
                 contents = etWriteText.getText().toString();
                 Album_singleton.get(getApplicationContext()).addStory(story);
                 mDbOpenHelper.close();
@@ -129,7 +131,6 @@ public class Story_Create extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, REQUEST_CODE);
-
             }
         });
 
@@ -150,17 +151,11 @@ public class Story_Create extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 try {
 
-                    InputStream in = getContentResolver().openInputStream(data.getData());
-                    Bitmap img = BitmapFactory.decodeStream(in);
-                    in.close();
-
-                    ivStoryMainImg.setImageBitmap(img);
-
 //                    InputStream in = getContentResolver().openInputStream(data.getData());
 //                    Bitmap img = BitmapFactory.decodeStream(in);
 //                    in.close();
-//
 //                    ivStoryMainImg.setImageBitmap(img);
+
                     Uri uri = data.getData();
                     Glide.with(this).load(uri).into(ivStoryMainImg);
                     Log.d("test", "파일 경로" + uri.getPath());
@@ -221,37 +216,32 @@ public class Story_Create extends AppCompatActivity {
         }
     }
 
-    private boolean isExternalStorageAvailable() {
-        String state = Environment.getExternalStorageState();
-        if(Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+//    private boolean isExternalStorageAvailable() {
+//        String state = Environment.getExternalStorageState();
+//        if(Environment.MEDIA_MOUNTED.equals(state)) {
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//    }
 
     //TODO 서버에 story data 저장하기
     public void saveStoryData() {
-        Log.d("test", "스토리 저장1");
         Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, imgPath, contents);
-        Log.d("test", String.valueOf(year));
-        Log.d("test", "스토리 저장2");
         res.enqueue(new Callback<ResponseServer_Story>() {
             @Override
             public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
                 if (response.isSuccessful()) {
-                    Log.d("test", "스토리 저장3");
-//                    ResponseServer_Story responseGet = response.body();
                     if (response.body().setStoryData()) {
                         Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     }
-                } else Toast.makeText(Story_Create.this,"통신1 에러",Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(Story_Create.this,"response false",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<ResponseServer_Story> call, Throwable t) {
-                Toast.makeText(Story_Create.this,"통신3 에러",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Story_Create.this,"통신 실패",Toast.LENGTH_SHORT).show();
             }
         });
     }
