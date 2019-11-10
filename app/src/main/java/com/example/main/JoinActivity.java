@@ -37,7 +37,7 @@ public class JoinActivity extends AppCompatActivity {
     EditText edtName, edtID, edtPW, edtPWCheck, edtNickName, edtEmail, edtDomain;
     Button btnCheck, btnJoin;
     TextView txtDate;
-    String name, id, pw, nickname, date, email, gender;
+    String name, id, pw, nickname, date, email, gender="남";
     boolean bool_id = false, bool_pw = true;
     RadioGroup rgGender;
     RadioButton rgMale, rgFemale;
@@ -108,15 +108,16 @@ public class JoinActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 pw = edtPW.getText().toString();
-                if (pw.equals( edtPWCheck.getText().toString())) {
+                if (pw.equals(edtPWCheck.getText().toString())) {
                     bool_pw = true;
-                    imgError.setVisibility(View.INVISIBLE);
+
                 } else {
-                    bool_pw = false;
                     edtPWCheck.setHint("비밀번호를 입력해주세요");
                     edtPWCheck.setHintTextColor(Color.rgb(204, 61, 61));
-                    imgError.setVisibility(View.VISIBLE);
+                    bool_pw = false;
                 }
+                if (bool_pw) imgError.setVisibility(View.INVISIBLE);
+                else imgError.setVisibility(View.VISIBLE);
             }
         });
 
@@ -183,7 +184,7 @@ public class JoinActivity extends AppCompatActivity {
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bool_id && bool_pw && !edtName.equals(null) && !edtEmail.equals(null) && !edtDomain.equals(null)) {
+                if (bool_id && bool_pw && !edtName.getText().toString().equals(null) && !edtEmail.getText().toString().equals(null) && !edtDomain.getText().toString().equals(null)) {
                     String api_name = edtName.getText().toString();
                     String api_id = edtID.getText().toString();
                     String api_pw = edtPW.getText().toString();
@@ -191,8 +192,10 @@ public class JoinActivity extends AppCompatActivity {
                     String api_gender = gender;
                     String api_nick = edtNickName.getText().toString();
                     String api_email = edtEmail.getText().toString() + "@" + edtDomain.getText().toString();
+                    Log.d("TTT",api_name+"/"+api_id+"/"+api_pw+"/"+api_date+"/"+api_gender+"/"+api_nick+"/"+api_email);
 
                     if (!api_name.equals(null) && !api_id.equals(null) && !api_pw.equals(null) && !api_date.equals(null) && !api_gender.equals(null) && !api_nick.equals(null) && !api_email.equals(null)) {
+                        Log.d("TTT","로그인 호출");
                         Call<ResponseJoin> res = Net.getInstance().getApi().getJoin(api_name, api_id, api_pw, api_nick, api_date, api_gender, api_email);
                         res.enqueue(new Callback<ResponseJoin>() {
                             @Override
@@ -203,6 +206,7 @@ public class JoinActivity extends AppCompatActivity {
                                         Toast.makeText(JoinActivity.this, "회원가입에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(JoinActivity.this, LoginActivity.class);
                                         startActivity(intent);
+                                        finish();
                                     }
                                 }
                             }

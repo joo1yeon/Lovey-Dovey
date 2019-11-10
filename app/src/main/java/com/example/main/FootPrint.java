@@ -89,7 +89,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
-    int month = cal.get(Calendar.MONTH);
+    int month = cal.get(Calendar.MONTH)+1;
     int day = cal.get(Calendar.DATE);
     MapView map;
     Date today = cal.getTime();
@@ -141,6 +141,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 cal.set(year, month, day);
                 printMarker(gMap,year, month, day);
                 tvToday.setText(sdf.format(today));
+                Log.d("TTT",year+"/"+month+"/"+day);
 
             }
         });
@@ -163,12 +164,14 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
+                        cal.set(year, month, dayOfMonth);
+                        tvToday.setText(sdf.format(cal.getTime()));
                         printMarker(gMap, year, month + 1, dayOfMonth);
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
-                        cal.set(year, month, dayOfMonth);
+                        Log.d("TTT",year+"/"+month+"/"+dayOfMonth);
+
                     }
-                }, year, month, day);
+                }, year, month-1, day);
                 dateDialog.show();
             }
         });
@@ -192,15 +195,14 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tvToday.setText(year + "년 " + (month + 1) + "월 " + dayOfMonth + "일");
-                        printMarker(gMap, year, month + 1, dayOfMonth);
-
-                        Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
                         cal.set(year, month, dayOfMonth);
+                        tvToday.setText(sdf.format(cal.getTime()));
+                        printMarker(gMap, year, month + 1, dayOfMonth);
+                        Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
+                        Log.d("TTT",year+"/"+month+"/"+dayOfMonth);
                     }
-                }, year, month, day);
+                }, year, month-1, day);
                 dateDialog.show();
-
             }
         });
         //TODO 날짜 이동 버튼(하루 전)
@@ -222,6 +224,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 tvToday.setText(sdf.format(cal.getTime()));
                 printMarker(gMap, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
                 Toast.makeText(getContext(), "내일 날짜로 이동합니다", Toast.LENGTH_SHORT).show();
+
             }
         });
         map = layout.findViewById(R.id.map);
@@ -261,7 +264,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
-        printMarker(gMap, year, month + 1, day);
+        printMarker(gMap, year, month , day);
         setGoogleMap(googleMap);
 
         gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
