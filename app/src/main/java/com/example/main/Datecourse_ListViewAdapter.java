@@ -1,7 +1,6 @@
 package com.example.main;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +21,15 @@ import retrofit2.Response;
 public class Datecourse_ListViewAdapter extends BaseAdapter {
     Context context;
     ArrayList<Datecourse_ListViewItem> date_listItem = new ArrayList<Datecourse_ListViewItem>();
+    ArrayList<Datecourse_ListViewItem> bookmark = new ArrayList<Datecourse_ListViewItem>();
     String[] Placeimage = new String[6];
     int id;
     int position;
 
-    public Datecourse_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> date_listItem, int id, int position) {
+    public Datecourse_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> date_listItem, int id) {
         this.context = context;
         this.date_listItem = date_listItem;
         this.id = id;
-        this.position = position;
     }
 
     @Override
@@ -68,22 +67,21 @@ public class Datecourse_ListViewAdapter extends BaseAdapter {
                 if (response.isSuccessful()) {
                     List<ResponseDate_image2> responseGet = response.body();
                     int i = 0;
+
                     for (ResponseDate_image2 responseDate_Image2 : responseGet) {
                         Placeimage[i] = responseDate_Image2.getimage();
-                        Log.d("OKK", Placeimage[i]);
                         ++i;
                     }
                     Glide.with(context).load(Placeimage[position]).into(image);
                     Log.d("WWW",id+"");
                 }
             }
-
             @Override
             public void onFailure(Call<List<ResponseDate_image2>> call, Throwable t) {
                 Log.d("III", "fail");
             }
         });
-
         return convertView;
     }
+
 }

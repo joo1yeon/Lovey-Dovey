@@ -56,13 +56,13 @@
             app:tabGravity="fill"
             app:tabMode="fixed" />
 
-        <android.support.v4.view.ViewPager
+        <com.example.main.NonSwipeViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@+id/tab"
             android:layout_weight="13"
-            app:layout_constraintTop_toBottomOf="@id/tab"></android.support.v4.view.ViewPager>
+            app:layout_constraintTop_toBottomOf="@id/tab"/>
 
     </LinearLayout>
 

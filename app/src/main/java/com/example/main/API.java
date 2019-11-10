@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
@@ -39,13 +40,14 @@ public interface API {
 
     @GET("date_img2.php")
     Call<List<ResponseDate_image2>> getDate_image2(@Query("ID") int id);
-    Call<ResponseJoin> getJoin(@Query ("NAME") String name, @Query("ID") String id, @Query("PW") String pw,@Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender,@Query("EMAIL") String email);
+
+    Call<ResponseJoin> getJoin(@Query("NAME") String name, @Query("ID") String id, @Query("PW") String pw, @Query("NICK") String nick, @Query("DATE") String date, @Query("GENDER") String gender, @Query("EMAIL") String email);
 
     @GET("date_img3.php")
-    Call<ResponseDate_image3> getDate_image3(@Query("Place_id")String place_id,@Query("id") int id);
+    Call<ResponseDate_image3> getDate_image3(@Query("Place_id") String place_id, @Query("id") int id);
 
     @GET("addMarker.php")
-    Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
+    Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple,@Query("NUM") int num);
 
     @GET("resetTable.php")
     Call<ResReset> getReset();
@@ -60,13 +62,13 @@ public interface API {
     Call<responseConnect> getConn(@Query("ID") String id, @Query("OPPO") String oppo);
 
     @GET("addReview.php")
-    Call<ResponseReview> getReview(@Query("Place_id") String place_id, @Query("RATE") float rate, @Query("ID") String id, @Query("CONTENT") String content, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY")int day);
+    Call<ResponseReview> getReview(@Query("Place_id") String place_id, @Query("RATE") float rate, @Query("ID") String id, @Query("CONTENT") String content, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day);
 
     @GET("printReview.php")
     Call<List<ResponseGetReview>> getPrintReview(@Query("Place_id") String place_id);
 
     @GET("printAllReview.php")
-    Call<List<ResponseAllReview>> getAllReview(@Query("tag") int tag,@Query("place_id") String place_id);
+    Call<List<ResponseAllReview>> getAllReview(@Query("tag") int tag, @Query("place_id") String place_id);
 
 
     @GET("profile.php")
@@ -112,13 +114,26 @@ public interface API {
     @GET("mainDate.php")
     Call<ResponseDate> getDate(@Query("id") String id);
 
-    //@Query("todo_id") int id, @Query("coupleID") int c_id, @Query("Date") String date, @Query("Content") String content, @Query("Checked") String checked
-
     @GET("printNotice.php")
     Call<List<ResponseNotice>> getNotice();
 
     @GET("noticeInfo.php")
     Call<NoticeInfo> getNoticeInfo(@Query("ID") int id);
 
+    @GET("UpdateMarker.php")
+    Call<updateMark> getUpdateMark(@Query("NAME") String name, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
+
+    @GET("deleteMark.php")
+    Call<deleteMark> getDeleteMark(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
+
+    @Multipart
+    @POST("profileImg.php")
+    Call<ResponseProfile_m> getLoad(
+            @Part("coupleID") String c_id,
+            @PartMap() Map<String, RequestBody> params);
+
+    @GET("bookmark.php")
+    Call<ResponseBookmark> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("star") int star, @Query("nickname") String nickname);
 }
+
 

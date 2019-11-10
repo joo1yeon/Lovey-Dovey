@@ -83,7 +83,6 @@ public class Notice extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Notice.this, position + "번", Toast.LENGTH_SHORT).show();
                 view = View.inflate(Notice.this, R.layout.notice_dialog, null);
                 final TextView title = view.findViewById(R.id.textTitle);
                 final TextView content = view.findViewById(R.id.textContent);
@@ -110,7 +109,6 @@ public class Notice extends AppCompatActivity {
 
                 WindowManager.LayoutParams params = dlg.getWindow().getAttributes();
                 params.width=800;
-                params.height=900;
                 dlg.getWindow().setAttributes(params);
 
             }
