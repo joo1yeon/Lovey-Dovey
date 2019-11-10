@@ -168,7 +168,7 @@ public class Story_EditMainListItem extends AppCompatActivity {
 
     //TODO 서버에 story data 저장하기
     public void saveStoryData() {
-        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, MainActivity.id, year, month, day, mTitle, imgPath, contents);
+        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, imgPath, contents);
         res.enqueue(new Callback<ResponseServer_Story>() {
             @Override
             public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
@@ -212,6 +212,7 @@ public class Story_EditMainListItem extends AppCompatActivity {
         Story story = new Story();
         mTitle = etStoryTitle.getText().toString();
         story.setTitle(mTitle);
+        story.setWriter(String.valueOf(MainActivity.coupleID));
         story.setYear(year);
         story.setMonth(month);
         story.setDay(day);
@@ -219,6 +220,6 @@ public class Story_EditMainListItem extends AppCompatActivity {
         story.setMainImg(mUri);
         story_id = story.getId();
         contents = etWriteText.getText().toString();
-        Album_singleton.get(getApplicationContext()).addStory(story);
+//        Album_singleton.get(getApplicationContext()).addStory(story);
     }
 }

@@ -127,12 +127,13 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
                             stories_tmp.add(story);
                             Log.d("test", "스토리 내용 추가");
                         }
-                        mSwipeRefreshLayout.setRefreshing(false);
 
                         stories.clear();
                         stories.addAll(stories_tmp);
                         mAdapter = new StoryAdapter(stories);
                         mStoryRecyclerView.setAdapter(mAdapter);
+
+                        mSwipeRefreshLayout.setRefreshing(false);
                     } else Log.d("test", "통신 1 에러");
                 }
 
@@ -145,7 +146,6 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
         /*} else {
             mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
             mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
-            Log.d("test", "리스트 다시 로드하기");
         }*/
     }
 }

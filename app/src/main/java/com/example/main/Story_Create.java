@@ -98,15 +98,16 @@ public class Story_Create extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDbOpenHelper = new DbOpenHelper(getApplicationContext());
-                mDbOpenHelper.open();
-                mDbOpenHelper.create();
-                mDbOpenHelper.deleteAllColumns();
-                mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
-                Log.d("test", "DB에 저장됨/삭제됨");
+//                mDbOpenHelper = new DbOpenHelper(getApplicationContext());
+//                mDbOpenHelper.open();
+//                mDbOpenHelper.create();
+//                mDbOpenHelper.deleteAllColumns();
+//                mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
+//                Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
                 mTitle = etStoryTitle.getText().toString();
                 story.setTitle(mTitle);
+                story.setWriter(String.valueOf(MainActivity.coupleID));
                 story.setYear(year);
                 story.setMonth(month);
                 story.setDay(day);
@@ -115,7 +116,7 @@ public class Story_Create extends AppCompatActivity {
                 story_id = story.getId();
                 contents = etWriteText.getText().toString();
                 Album_singleton.get(getApplicationContext()).addStory(story);
-                mDbOpenHelper.close();
+//                mDbOpenHelper.close();
 //                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
 //                startActivity(intent);
 //                uploadFile(); //서버에 이미지 업로드
@@ -161,7 +162,7 @@ public class Story_Create extends AppCompatActivity {
                     Log.d("test", "파일 경로" + uri.getPath());
                     mUri = uri;
                     imgPath = uri.getPath();
-                    uploadFile(); //서버에 이미지 업로드
+//                    uploadFile(); //서버에 이미지 업로드
 
 
                 } catch (Exception e) {
