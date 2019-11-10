@@ -86,6 +86,8 @@ public class Story_EditMainListItem extends AppCompatActivity implements DatePic
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mTitle = etStoryTitle.getText().toString();
+                contents = etWriteText.getText().toString();
                 saveStoryData();
                 editStory_singleton();
                 finish();
@@ -135,7 +137,7 @@ public class Story_EditMainListItem extends AppCompatActivity implements DatePic
         story.setDay(day);
         story.setContents_text(etWriteText.getText().toString());
         story.setMainImg(mUri);
-        story_id = story.getId().toString();
+        story_id = story.getId();
         contents = etWriteText.getText().toString();
         Album_singleton.get(getApplicationContext()).addStory(story);
     }

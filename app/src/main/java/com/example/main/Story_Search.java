@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -51,7 +52,11 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
         btnCancel = findViewById(R.id.btn_cancel);
 
         rdo_user1.setText(MainActivity.nickname);
-        storyTitle = etTitleSearch.getText().toString();
+
+//        if (storyTitle.equals("")) storyTitle;
+
+        Log.d("test","1" + storyTitle );
+        Log.d("test","2" + storyWriter );
 
 //        mRadioGroup.check(R.id.radio1);
         rdo_user1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -81,14 +86,24 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Story_Search.this, Story_SearchResult.class);
-                intent.putExtra("year", year);
-                intent.putExtra("montn", month);
-                intent.putExtra("day", day);
-                intent.putExtra("storyTitle", storyTitle);
-                intent.putExtra("storyWriter", storyWriter);
-                startActivity(intent);
-                finish();
+                storyTitle = etTitleSearch.getText().toString();
+                if (year == 0 || month == 0 || day == 0) {
+                    Toast.makeText(Story_Search.this, "날짜를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                } else if (storyTitle.equals("")) {
+                    Toast.makeText(Story_Search.this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                } else if (storyWriter.equals("")) {
+                    storyWriter = MainActivity.id + "test2";
+                }else {
+                    Intent intent = new Intent(Story_Search.this, Story_SearchResult.class);
+                    intent.putExtra("year", year);
+                    intent.putExtra("montn", month);
+                    intent.putExtra("day", day);
+                    intent.putExtra("storyTitle", storyTitle);
+                    Log.d("test", "인텐트로 보내는 제목:" + storyTitle);
+                    intent.putExtra("storyWriter", storyWriter);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 

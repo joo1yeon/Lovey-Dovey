@@ -118,6 +118,7 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
         }
     };
 
+    //TODO 서버에서 스토리 삭제
     void deleteStory_server() {
         Call<ResponseServer_Story> res = Net.getInstance().getApi().deleteStoryData(story_id);
         res.enqueue(new Callback<ResponseServer_Story>() {

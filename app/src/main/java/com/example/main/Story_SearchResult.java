@@ -52,9 +52,10 @@ public class Story_SearchResult extends AppCompatActivity {
         month = intent.getIntExtra("month", 0);
         day = intent.getIntExtra("day", 0);
         storyTitle = intent.getStringExtra("storyTitle");
-        Log.d("test", storyTitle);
+        Log.d("test", "인텐트에서 받아온 제목: "+ storyTitle);
+
         storyWriter = intent.getStringExtra("storyWriter");
-//        Log.d("test", storyWriter);
+        Log.d("test", "인텐트에서 받아온 작성자: "+storyWriter);
 
         updateUI();
 
@@ -82,9 +83,10 @@ public class Story_SearchResult extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ResponseStory>> call, Response<List<ResponseStory>> response) {
                 if (response.isSuccessful()) {
+                    Log.d("test", "통신 성공");
                     List<ResponseStory> responseGet = response.body();
                     for (ResponseStory responseStory : responseGet) {
-
+                        Log.d("test", "for문 안으로 들어옴");
                         Story story = new Story();
                         story.setId(responseStory.getStoryID());
                         story.setWriter(responseStory.getWriter());
