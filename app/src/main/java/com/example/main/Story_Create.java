@@ -233,11 +233,15 @@ public class Story_Create extends AppCompatActivity {
 
     //TODO 서버에 story data 저장하기
     public void saveStoryData() {
-        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, MainActivity.id, year, month, day, mTitle, imgPath, contents);
+        Log.d("test", "스토리 저장1");
+        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, imgPath, contents);
+        Log.d("test", String.valueOf(year));
+        Log.d("test", "스토리 저장2");
         res.enqueue(new Callback<ResponseServer_Story>() {
             @Override
             public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
                 if (response.isSuccessful()) {
+                    Log.d("test", "스토리 저장3");
 //                    ResponseServer_Story responseGet = response.body();
                     if (response.body().setStoryData()) {
                         Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();

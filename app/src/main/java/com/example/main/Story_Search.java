@@ -45,13 +45,13 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
         etTitleSearch = findViewById(R.id.et_title_search);
         icCalendar = findViewById(R.id.ic_calendar);
         tvPressIcon = findViewById(R.id.tv_press_icon);
-        mRadioGroup = findViewById(R.id.rGroup1);
-        rdo_user1 = findViewById(R.id.radio1);
-        rdo_user2 = findViewById(R.id.radio2);
+//        mRadioGroup = findViewById(R.id.rGroup1);
+//        rdo_user1 = findViewById(R.id.radio1);
+//        rdo_user2 = findViewById(R.id.radio2);
         btnConfirm = findViewById(R.id.btn_confirm);
         btnCancel = findViewById(R.id.btn_cancel);
 
-        rdo_user1.setText(MainActivity.nickname);
+//        rdo_user1.setText(MainActivity.nickname);
 
 //        if (storyTitle.equals("")) storyTitle;
 
@@ -59,20 +59,21 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
         Log.d("test","2" + storyWriter );
 
 //        mRadioGroup.check(R.id.radio1);
-        rdo_user1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                storyWriter = MainActivity.id;
-                Toast.makeText(Story_Search.this, MainActivity.nickname + "선택", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        rdo_user1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                storyWriter = MainActivity.id;
+//                Toast.makeText(Story_Search.this, MainActivity.nickname + "선택", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        rdo_user2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                Toast.makeText(Story_Search.this, "사용자2 선택", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-        rdo_user2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Toast.makeText(Story_Search.this, "사용자2 선택", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         icCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,16 +92,13 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
                     Toast.makeText(Story_Search.this, "날짜를 선택해주세요.", Toast.LENGTH_SHORT).show();
                 } else if (storyTitle.equals("")) {
                     Toast.makeText(Story_Search.this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                } else if (storyWriter.equals("")) {
-                    storyWriter = MainActivity.id + "test2";
                 }else {
                     Intent intent = new Intent(Story_Search.this, Story_SearchResult.class);
                     intent.putExtra("year", year);
-                    intent.putExtra("montn", month);
+                    intent.putExtra("month", month);
                     intent.putExtra("day", day);
                     intent.putExtra("storyTitle", storyTitle);
                     Log.d("test", "인텐트로 보내는 제목:" + storyTitle);
-                    intent.putExtra("storyWriter", storyWriter);
                     startActivity(intent);
                     finish();
                 }
