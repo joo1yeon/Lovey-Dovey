@@ -12,6 +12,7 @@
         android:fontFamily="@font/netmarble_b"
         android:padding="10dp"
         android:text="스토리 검색하기"
+        android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="20dp"
         android:textStyle="bold"
