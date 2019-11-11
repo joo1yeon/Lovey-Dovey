@@ -21,7 +21,6 @@ import retrofit2.Response;
 public class Datecourse_ListViewAdapter extends BaseAdapter {
     Context context;
     ArrayList<Datecourse_ListViewItem> date_listItem = new ArrayList<Datecourse_ListViewItem>();
-    ArrayList<Datecourse_ListViewItem> bookmark = new ArrayList<Datecourse_ListViewItem>();
     String[] Placeimage = new String[6];
     int id;
     int position;
