@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,13 +29,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Story_EditMainListItem extends AppCompatActivity {
+
     TextView topTextView, tvPressIcon;
     Button btnCancel, btnConfirm;
     ImageView icCalendar, icSelectMainImg, ivStoryMainImg;
     EditText etStoryTitle, etWriteText;
     int year, month, day, story_index;
     Uri mUri;
-    String story_id, mTitle, imgPath, contents;
+    String story_id, mTitle, img_uri, contents;
 //    private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_CODE = 10; //갤러리 연동 요청 상수
 
@@ -63,16 +65,16 @@ public class Story_EditMainListItem extends AppCompatActivity {
         contents = intent.getStringExtra("contents");
         story_index = intent.getIntExtra("position", 0);
         story_id = intent.getStringExtra("story_id");
+        img_uri = intent.getStringExtra("img_uri");
 
         etStoryTitle.setText(mTitle);
         tvPressIcon.setText(year + "년 " + month + "월 " + day + "일");
         etWriteText.setText(contents);
 
-        Uri uri = Uri.parse(intent.getStringExtra("imgpath"));
+        Uri uri = Uri.parse(img_uri);
         Glide.with(this).load(uri).into(ivStoryMainImg);
-        Log.d("test", "파일 경로" + uri.getPath());
+        Log.d("test", "파일 경로" + uri.toString());
         mUri = uri;
-        imgPath = uri.getPath();
 
         icCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +85,7 @@ public class Story_EditMainListItem extends AppCompatActivity {
                         tvPressIcon.setText(_year + "년 " + (_month+1) + "월 " + _dayOfMonth + "일");
                         year = _year; month = _month + 1; day = _dayOfMonth;
                     }
-                }, year, month, day);
+                }, year, month - 1, day);
                 dateDialog.show();
 //                FragmentManager manager = getSupportFragmentManager();
 //                DatePickerFragment dialog = new DatePickerFragment();
@@ -118,11 +120,15 @@ public class Story_EditMainListItem extends AppCompatActivity {
                 List<Story> stories = album_singleton.getStories();
 
                 deleteStory_server(); //서버에서 story 삭제
+                Log.d("test", "스토리 수정_1. 서버에서 삭제됨");
                 stories.remove(story_index);
+                Log.d("test", "스토리 수정_2. 싱글톤에서 삭제됨");
                 mTitle = etStoryTitle.getText().toString();
                 contents = etWriteText.getText().toString();
                 saveStoryData();
+                Log.d("test", "스토리 수정_3. 서버에 저장");
                 editStory_singleton();
+                Log.d("test", "스토리 수정_4. 싱글톤에 추가");
                 finish();
             }
         });
@@ -151,9 +157,8 @@ public class Story_EditMainListItem extends AppCompatActivity {
 
                     Uri uri = data.getData();
                     Glide.with(this).load(uri).into(ivStoryMainImg);
-                    Log.d("test", "파일 경로" + uri.getPath());
                     mUri = uri;
-                    imgPath = uri.getPath();
+                    img_uri = uri.toString();
 //                    uploadFile(); //서버에 이미지 업로드
 
 
@@ -168,13 +173,13 @@ public class Story_EditMainListItem extends AppCompatActivity {
 
     //TODO 서버에 story data 저장하기
     public void saveStoryData() {
-        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, imgPath, contents);
+        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, img_uri, contents);
         res.enqueue(new Callback<ResponseServer_Story>() {
             @Override
             public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
                 if (response.isSuccessful()) {
                     ResponseServer_Story responseGet = response.body();
-                    if (responseGet.setStoryData() == true ) {
+                    if (responseGet.setStoryData() ) {
                         Toast.makeText(Story_EditMainListItem.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else Toast.makeText(Story_EditMainListItem.this,"서버 연결 ㅇㅇ 저장은 ㄴㄴ",Toast.LENGTH_SHORT).show();
@@ -220,6 +225,6 @@ public class Story_EditMainListItem extends AppCompatActivity {
         story.setMainImg(mUri);
         story_id = story.getId();
         contents = etWriteText.getText().toString();
-//        Album_singleton.get(getApplicationContext()).addStory(story);
+        Album_singleton.get(getApplicationContext()).addStory(story);
     }
 }

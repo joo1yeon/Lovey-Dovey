@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -134,7 +135,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
                         mStoryRecyclerView.setAdapter(mAdapter);
 
                         mSwipeRefreshLayout.setRefreshing(false);
-                    } else Log.d("test", "통신 1 에러");
+                    } else Toast.makeText(getContext(), "스토리 로딩 실패", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

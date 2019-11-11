@@ -49,7 +49,7 @@ public class Story_Create extends AppCompatActivity {
     //private static final int REQUEST_DATE = 0; // DatePicker 에서 데이터 반환하기 위해 요청 코드 상수 정의
     DbOpenHelper mDbOpenHelper;
     Uri mUri;
-    String mTitle, story_id, contents, imgPath;
+    String mTitle, story_id, contents, img_uri;
     String imgFileLocation = "";
 
 //    @Override
@@ -135,7 +135,6 @@ public class Story_Create extends AppCompatActivity {
             }
         });
 
-
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,9 +160,8 @@ public class Story_Create extends AppCompatActivity {
                     Glide.with(this).load(uri).into(ivStoryMainImg);
                     Log.d("test", "파일 경로" + uri.getPath());
                     mUri = uri;
-                    imgPath = uri.getPath();
+                    img_uri = uri.toString();
 //                    uploadFile(); //서버에 이미지 업로드
-
 
                 } catch (Exception e) {
 
@@ -174,16 +172,46 @@ public class Story_Create extends AppCompatActivity {
         }
     }
 
+//    private boolean isExternalStorageAvailable() {
+//        String state = Environment.getExternalStorageState();
+//        if(Environment.MEDIA_MOUNTED.equals(state)) {
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//    }
+
+    //TODO 서버에 story data 저장하기
+    public void saveStoryData() {
+        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, mUri.toString(), contents);
+        res.enqueue(new Callback<ResponseServer_Story>() {
+            @Override
+            public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().setStoryData()) {
+                        Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } else Toast.makeText(Story_Create.this,"response false",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseServer_Story> call, Throwable t) {
+                Toast.makeText(Story_Create.this,"통신 실패",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     //TODO 서버에 이미지 저장하기
     void uploadFile() {
-        if (imgPath == null || imgPath.equals("")) { //선택된 이미지가 없는 경우
+        if (img_uri == null || img_uri.equals("")) { //선택된 이미지가 없는 경우
             Toast.makeText(this, "이미지를 선택하세요", Toast.LENGTH_SHORT).show();
             return;
         } else {
             //showpDialog();
 
             Map<String, RequestBody> map = new HashMap<>();
-            File file = new File(imgPath);
+            File file = new File(img_uri);
 
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file); //File 형태로 변환(parsing)
@@ -215,36 +243,6 @@ public class Story_Create extends AppCompatActivity {
                 }
             });
         }
-    }
-
-//    private boolean isExternalStorageAvailable() {
-//        String state = Environment.getExternalStorageState();
-//        if(Environment.MEDIA_MOUNTED.equals(state)) {
-//            return true;
-//        }
-//        else {
-//            return false;
-//        }
-//    }
-
-    //TODO 서버에 story data 저장하기
-    public void saveStoryData() {
-        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, imgPath, contents);
-        res.enqueue(new Callback<ResponseServer_Story>() {
-            @Override
-            public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
-                if (response.isSuccessful()) {
-                    if (response.body().setStoryData()) {
-                        Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                } else Toast.makeText(Story_Create.this,"response false",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseServer_Story> call, Throwable t) {
-                Toast.makeText(Story_Create.this,"통신 실패",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 }
