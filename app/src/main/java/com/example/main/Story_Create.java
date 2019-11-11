@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +33,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Story_Create extends AppCompatActivity implements DatePickerFragment.OnDatePickerSetListener {
+public class Story_Create extends AppCompatActivity {
+    Calendar cal = Calendar.getInstance();
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH);
+    int day = cal.get(Calendar.DATE);
 
     Button btnNext,btnCancel;
     ImageView icCalendar, icSelectMainImg, ivStoryMainImg;
@@ -41,20 +48,19 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
     private static final int REQUEST_CODE = 10;
     //private static final int REQUEST_DATE = 0; // DatePicker 에서 데이터 반환하기 위해 요청 코드 상수 정의
     DbOpenHelper mDbOpenHelper;
-    int year, month, day;
     Uri mUri;
-    String mTitle, story_id, contents, imgPath;
+    String mTitle, story_id, contents, img_uri;
     String imgFileLocation = "";
 
-    @Override
-    public void onDatePickerSet(int y, int m, int d){ //DatePickerFragment 로부터 날짜를 받아온다.
-        year = y;
-        month = m;
-        day = d;
-        if (year != 0 && month != 0 && day != 0) {
-            tvPressIcon.setText(year + "년 " + month + "월 " + day + "일");
-        }
-    }
+//    @Override
+//    public void onDatePickerSet(int y, int m, int d){ //DatePickerFragment 로부터 날짜를 받아온다.
+//        year = y;
+//        month = m;
+//        day = d;
+//        if (year != 0 && month != 0 && day != 0) {
+//            tvPressIcon.setText(year + "년 " + month + "월 " + day + "일");
+//        }
+//    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,33 +79,44 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
         icCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager manager = getSupportFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
-                dialog.show(manager, DIALOG_DATE); //DialogFragment 를 화면에 보여주기 위해 FragmentManager가 onCreateDialog 호출
+                DatePickerDialog dateDialog = new DatePickerDialog(Story_Create.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int _year, int _month, int _dayOfMonth) {
+                        tvPressIcon.setText(_year + "년 " + (_month+1) + "월 " + _dayOfMonth + "일");
+                        year = _year; month = _month + 1; day = _dayOfMonth;
+
+                    }
+                }, year, month, day);
+                dateDialog.show();
+
+//                FragmentManager manager = getSupportFragmentManager();
+//                DatePickerFragment dialog = new DatePickerFragment();
+//                dialog.show(manager, DIALOG_DATE); //DialogFragment 를 화면에 보여주기 위해 FragmentManager가 onCreateDialog 호출
             }
         });
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDbOpenHelper = new DbOpenHelper(getApplicationContext());
-                mDbOpenHelper.open();
-                mDbOpenHelper.create();
-                mDbOpenHelper.deleteAllColumns();
-                mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
-                Log.d("test", "DB에 저장됨/삭제됨");
+//                mDbOpenHelper = new DbOpenHelper(getApplicationContext());
+//                mDbOpenHelper.open();
+//                mDbOpenHelper.create();
+//                mDbOpenHelper.deleteAllColumns();
+//                mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
+//                Log.d("test", "DB에 저장됨/삭제됨");
                 Story story = new Story();
                 mTitle = etStoryTitle.getText().toString();
                 story.setTitle(mTitle);
+                story.setWriter(String.valueOf(MainActivity.coupleID));
                 story.setYear(year);
                 story.setMonth(month);
                 story.setDay(day);
                 story.setContents_text(etWriteText.getText().toString());
                 story.setMainImg(mUri);
-                story_id = story.getId().toString();
+                story_id = story.getId();
                 contents = etWriteText.getText().toString();
                 Album_singleton.get(getApplicationContext()).addStory(story);
-                mDbOpenHelper.close();
+//                mDbOpenHelper.close();
 //                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
 //                startActivity(intent);
 //                uploadFile(); //서버에 이미지 업로드
@@ -115,10 +132,8 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, REQUEST_CODE);
-
             }
         });
-
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,24 +151,17 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
             if (resultCode == RESULT_OK) {
                 try {
 
-                    InputStream in = getContentResolver().openInputStream(data.getData());
-                    Bitmap img = BitmapFactory.decodeStream(in);
-                    in.close();
-
-                    ivStoryMainImg.setImageBitmap(img);
-
 //                    InputStream in = getContentResolver().openInputStream(data.getData());
 //                    Bitmap img = BitmapFactory.decodeStream(in);
 //                    in.close();
-//
 //                    ivStoryMainImg.setImageBitmap(img);
+
                     Uri uri = data.getData();
                     Glide.with(this).load(uri).into(ivStoryMainImg);
                     Log.d("test", "파일 경로" + uri.getPath());
                     mUri = uri;
-                    imgPath = uri.getPath();
-                    uploadFile(); //서버에 이미지 업로드
-
+                    img_uri = uri.toString();
+//                    uploadFile(); //서버에 이미지 업로드
 
                 } catch (Exception e) {
 
@@ -164,16 +172,46 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
         }
     }
 
+//    private boolean isExternalStorageAvailable() {
+//        String state = Environment.getExternalStorageState();
+//        if(Environment.MEDIA_MOUNTED.equals(state)) {
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//    }
+
+    //TODO 서버에 story data 저장하기
+    public void saveStoryData() {
+        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, mUri.toString(), contents);
+        res.enqueue(new Callback<ResponseServer_Story>() {
+            @Override
+            public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().setStoryData()) {
+                        Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                } else Toast.makeText(Story_Create.this,"response false",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseServer_Story> call, Throwable t) {
+                Toast.makeText(Story_Create.this,"통신 실패",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     //TODO 서버에 이미지 저장하기
     void uploadFile() {
-        if (imgPath == null || imgPath.equals("")) { //선택된 이미지가 없는 경우
+        if (img_uri == null || img_uri.equals("")) { //선택된 이미지가 없는 경우
             Toast.makeText(this, "이미지를 선택하세요", Toast.LENGTH_SHORT).show();
             return;
         } else {
             //showpDialog();
 
             Map<String, RequestBody> map = new HashMap<>();
-            File file = new File(imgPath);
+            File file = new File(img_uri);
 
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file); //File 형태로 변환(parsing)
@@ -205,36 +243,6 @@ public class Story_Create extends AppCompatActivity implements DatePickerFragmen
                 }
             });
         }
-    }
-
-    private boolean isExternalStorageAvailable() {
-        String state = Environment.getExternalStorageState();
-        if(Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    //TODO 서버에 story data 저장하기
-    public void saveStoryData() { //서버에 저장은 되는데 통신3에러가 뜬다.
-        Call<ResponseSaveStory> res = Net.getInstance().getApi().setStoryData(story_id, MainActivity.id, year, month, day, mTitle, imgPath, contents);
-        res.enqueue(new Callback<ResponseSaveStory>() {
-            @Override
-            public void onResponse(Call<ResponseSaveStory> call, Response<ResponseSaveStory> response) {
-                if (response.isSuccessful()) {
-                    if (response.body().setStoryData()) {
-                        Toast.makeText(Story_Create.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                } else Toast.makeText(Story_Create.this,"통신1 에러",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseSaveStory> call, Throwable t) {
-                Toast.makeText(Story_Create.this,"통신3 에러",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 }

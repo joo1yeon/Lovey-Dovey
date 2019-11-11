@@ -82,4 +82,9 @@ public class Album_singleton { //Story 객체들을 저장하는 저장소
         return null;
     }
 
+    //TODO story 전체 삭제
+    public void deleteAllStory() {
+        mStories.clear();
+    }
+
 }

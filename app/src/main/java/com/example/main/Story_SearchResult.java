@@ -34,7 +34,7 @@ public class Story_SearchResult extends AppCompatActivity {
     StoryAdapter mAdapter;
     TextView textResult;
     int year, month, day, count = 0;
-    String storyTitle="1", storyWriter = MainActivity.id;
+    String storyTitle, storyWriter;
     public List<Story> stories; //Story 객체를 저장하는 비어있는 List 생성
 
     @Override
@@ -52,9 +52,8 @@ public class Story_SearchResult extends AppCompatActivity {
         month = intent.getIntExtra("month", 0);
         day = intent.getIntExtra("day", 0);
         storyTitle = intent.getStringExtra("storyTitle");
-        Log.d("test", storyTitle);
-        storyWriter = intent.getStringExtra("storyWriter");
-//        Log.d("test", storyWriter);
+//        Log.d("test", "인텐트에서 받아온 제목: "+ storyTitle);
+        storyWriter = String.valueOf(MainActivity.coupleID);
 
         updateUI();
 
@@ -78,13 +77,16 @@ public class Story_SearchResult extends AppCompatActivity {
     //TODO 스토리 검색
     public void searchStory() {
         Call<List<ResponseStory>> res = Net.getInstance().getApi().searchStory(year, month, day, storyTitle, storyWriter);
+        Log.d("test", storyTitle + storyWriter);
         res.enqueue(new Callback<List<ResponseStory>>() {
             @Override
             public void onResponse(Call<List<ResponseStory>> call, Response<List<ResponseStory>> response) {
                 if (response.isSuccessful()) {
+                    Log.d("test", "통신 성공");
                     List<ResponseStory> responseGet = response.body();
+                    if (response.body().isEmpty()) Log.d("test", "response body null");
                     for (ResponseStory responseStory : responseGet) {
-
+                        Log.d("test", "for문 안으로 들어옴");
                         Story story = new Story();
                         story.setId(responseStory.getStoryID());
                         story.setWriter(responseStory.getWriter());
@@ -99,23 +101,24 @@ public class Story_SearchResult extends AppCompatActivity {
                         Log.d("test", "스토리 리스트에 추가");
                         Log.d("test", String.valueOf(count));
 
-                        if (mAdapter == null) {
-                            mAdapter = new StoryAdapter(stories);
-                            mRecyclerView.setAdapter(mAdapter);
-                            Log.d("test", "if문");
-                        } else {
-                            mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
-                            mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
-                            Log.d("test", "리스트 다시 로드하기");
-                        }
-
-                        if (count == 0) {
-                            textResult.setText("검색 결과가 업습니다.");
-                        } else {
-                            textResult.setText("검색 결과: " + count + "개의 스토리");
-                        }
                     }
                 } else Log.d("test", "통신 1 에러");
+
+                if (mAdapter == null) {
+                    mAdapter = new StoryAdapter(stories);
+                    mRecyclerView.setAdapter(mAdapter);
+                    Log.d("test", "if문");
+                } else {
+                    mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
+                    mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
+                    Log.d("test", "리스트 다시 로드하기");
+                }
+
+                if (count == 0) {
+                    textResult.setText("검색 결과가 없습니다.");
+                } else {
+                    textResult.setText("검색 결과: " + count + "개의 스토리");
+                }
             }
 
             @Override

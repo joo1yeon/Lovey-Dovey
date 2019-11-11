@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_title_search" />
 
 
-    <TextView
+    <!--TextView
         android:id="@+id/tv_writer_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
             android:layout_marginTop="10dp"
             android:text="사용자2" />
 
-    </RadioGroup>
+    </RadioGroup -->
 
     <!--TextView
         android:id="@+id/tv_loc_search"

@@ -3,7 +3,9 @@ package com.example.main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +23,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.main.R.drawable.ic_star_black_24dp;
+import static com.example.main.R.drawable.ic_star_border_black_24dp;
+
 public class Datecourse_Fragment extends AppCompatActivity implements View.OnClickListener {
 
     TextView placeN, dateInfo, dateReview, infoLine, reviewLine;
@@ -29,7 +34,8 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
     ImageView favorite, place;
     String PlaceName, Placeimage, place_id;
     int id;
-    int i=0;
+    String nickname = MainActivity.id;
+    int star;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -60,25 +66,43 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ++i;
-                if (i % 2 != 0) {
+                if (!favorite.isSelected()) {
                     favorite.setSelected(true);
+                    star=0;
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     favorite.setSelected(false);
+                    star=1;
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 }
-                Log.d("favorite", i + "");
-                Call<List<ResponseBookmark>> res = Net.getInstance().getApi().getBookmark(place_id, PlaceName, Placeimage, i);
-                res.enqueue(new Callback<List<ResponseBookmark>>() {
+                Call<ResponseBookmark> res = Net.getInstance().getApi().getBookmark(place_id, PlaceName, Placeimage, star, nickname);
+                res.enqueue(new Callback<ResponseBookmark>() {
                     @Override
-                    public void onResponse(Call<List<ResponseBookmark>> call, Response<List<ResponseBookmark>> response) {
+                    public void onResponse(Call<ResponseBookmark> call, Response<ResponseBookmark> response) {
                     }
                     @Override
-                    public void onFailure(Call<List<ResponseBookmark>> call, Throwable t) {
+                    public void onFailure(Call<ResponseBookmark> call, Throwable t) {
                         Log.d("III", "fail");
                     }
                 });
+            }
+        });
+
+
+        Call<ResponseBookmarkSel> res = Net.getInstance().getApi().getBookmarkSel(place_id,nickname);
+        res.enqueue(new Callback<ResponseBookmarkSel>() {
+            @Override
+            public void onResponse(Call<ResponseBookmarkSel> call, Response<ResponseBookmarkSel> response) {
+                if (response.isSuccessful()) {
+                    ResponseBookmarkSel responseookmarkSel= response.body();
+                    if(responseookmarkSel.getSuccess()) {
+                        favorite.setSelected(true);
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBookmarkSel> call, Throwable t) {
+                Log.d("III", "fail");
             }
         });
 
