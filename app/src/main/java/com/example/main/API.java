@@ -4,6 +4,7 @@ package com.example.main;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -120,8 +121,9 @@ public interface API {
     @Multipart
     @POST("profileImg.php")
     Call<ResponseProfile_m> getLoad(
-            @Part("coupleID") String c_id,
-            @PartMap() Map<String, RequestBody> params);
+            @Part MultipartBody.Part upLoad );
+    //@Part("coupleID") String c_id,
+    //@PartMap() Map<String, RequestBody> params
 
     @GET("bookmark.php")
     Call<List<ResponseBookmark>> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("num") int num);

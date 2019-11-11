@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -231,7 +232,7 @@ public class ToDoList extends AppCompatActivity {
 
     //TODO# 현재 날짜 찍기
     public String Date(){
-        SimpleDateFormat format = new SimpleDateFormat ( "yyyy년 MM월 dd일");
+        SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd");
         Date date = new Date();
         String date_ = format.format(date);
         return date_;
@@ -257,7 +258,7 @@ public class ToDoList extends AppCompatActivity {
                         if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
                             Log.d("select","추가완료1"+responseTodo_.getContent_td());
 
-                            adapter1.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
+                            adapter1.addItem(responseTodo_.getContent_td(), "");
                             listView1.setItemChecked(i1++,false);
                             adapter1.notifyDataSetChanged();
                         } else {
