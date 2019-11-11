@@ -18,17 +18,22 @@ import retrofit2.Response;
 public class LoadingActivity extends Activity {
     MyDBHelper dbHelper = new MyDBHelper(this);
     SQLiteDatabase sqlDB;
-    LottieAnimationView animationView;
+    LottieAnimationView animationView,anim2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
         sqlDB = dbHelper.getReadableDatabase();
-        animationView=findViewById(R.id.animation);
-        animationView.setAnimation("heart3.json");
-        animationView.loop(true);
-       animationView.playAnimation();
+//        animationView=findViewById(R.id.animation);
+//        animationView.setAnimation("heart2.json");    //하트 날아가는 효과
+//        animationView.loop(true);
+//       animationView.playAnimation();
+        anim2=findViewById(R.id.anim2);
+        anim2.setAnimation("heart.json");          //하트 돌아가는 효과
+        anim2.loop(true);
+        anim2.playAnimation();
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() { //특정 시간 후 작업 처리하는 메소드
             @Override

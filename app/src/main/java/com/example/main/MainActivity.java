@@ -71,9 +71,9 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     String uri_;
 
     @Override
-    public void insert(String name, String address, double latitude, double longitude, int year, int month, int date) {
+    public void insert(String name, String address, double latitude, double longitude, int year, int month, int date,int num) {
         sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("insert into marker values('" + name + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ");");
+        sqlDB.execSQL("insert into marker values('" + name + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ","+num+");");
         sqlDB.close();
     }
 
@@ -91,7 +91,8 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             int year = cursor.getInt(4);
             int month = cursor.getInt(5);
             int date = cursor.getInt(6);
-            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name, address, latitude, longitude, year, month, date, coupleID);
+            int num = cursor.getInt(7);
+            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name, address, latitude, longitude, year, month, date, coupleID,num);
             Log.d("III", "이름" + name);
             res.enqueue(new Callback<ResAddMarker>() {
                 @Override
