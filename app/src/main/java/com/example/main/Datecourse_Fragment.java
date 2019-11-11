@@ -88,6 +88,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
             }
         });
 
+
         Call<ResponseBookmarkSel> res = Net.getInstance().getApi().getBookmarkSel(place_id,nickname);
         res.enqueue(new Callback<ResponseBookmarkSel>() {
             @Override
