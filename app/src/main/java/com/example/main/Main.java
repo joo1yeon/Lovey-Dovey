@@ -232,7 +232,7 @@ public class Main extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        profile_UpLoad();
+                        //profile_UpLoad();
 
                         //메인화면 프로필 변경
                         Glide.with(context)
