@@ -27,6 +27,7 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
     public TextView mStoryTitle, mStoryDate, mContentsText;
     private Context mContext;
     String story_id;
+    Uri mUri;
 
     //TODO 항목 구성을 위한 뷰들을 findViewById 해주는 역할
     public StoryHolder(View itemView) {
@@ -49,7 +50,7 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
 //            startActivity(intent); //스토리 대표사진을 누르면 액티비티 시작
     }
 
-    public void bindStory(Story story) { //제목과 날짜를 화면에 출력
+    public void bindStory(Story story) { //스토리 내용을 화면에 출력
         mStory = story;
         mStoryTitle.setText(mStory.getTitle());
         mStoryDate.setText(mStory.getYear() + "년 " + mStory.getMonth() + "월 " + mStory.getDay() + "일");
@@ -86,7 +87,7 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
                     intent.putExtra("year", stories.get(getAdapterPosition()).getYear());
                     intent.putExtra("month", stories.get(getAdapterPosition()).getMonth());
                     intent.putExtra("day", stories.get(getAdapterPosition()).getDay());
-                    intent.putExtra("imgpath", stories.get(getAdapterPosition()).getMainImg().toString());
+                    intent.putExtra("img_uri", stories.get(getAdapterPosition()).getMainImg().toString());
                     intent.putExtra("contents", stories.get(getAdapterPosition()).getContents_text());
                     intent.putExtra("position", getAdapterPosition());
                     mContext.startActivity(intent);
@@ -124,7 +125,7 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
                     if (responseGet.deleteStoryData() ) {
                         Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     }
-                } else Toast.makeText(mContext,"통신1 에러",Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(mContext,"삭제 실패",Toast.LENGTH_SHORT).show();
             }
 
             @Override
