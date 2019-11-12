@@ -63,6 +63,7 @@ public class Bookmark extends AppCompatActivity {
                 Log.d("III", "fail");
             }
         });
+
     }
 
     public class Bookmark_ListViewAdapter extends BaseAdapter {
