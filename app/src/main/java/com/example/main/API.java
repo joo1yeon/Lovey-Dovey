@@ -4,6 +4,7 @@ package com.example.main;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -85,12 +86,16 @@ public interface API {
     @GET("searchStory.php")
     Call<List<ResponseStory>> searchStory(@Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String storyTitle, @Query("WRITER") String storyWriter);
 
+//    @Multipart
+//    @POST("upload_img.php")
+//    Call<ResponseImgUpload> upload(
+//            @Header("Authorization") String authorization,
+//            @PartMap Map<String, RequestBody> map
+//    );
+
     @Multipart
     @POST("upload_img.php")
-    Call<ResponseImgUpload> upload(
-            @Header("Authorization") String authorization,
-            @PartMap Map<String, RequestBody> map
-    );
+    Call<ResponseImgUpload> upload(@Part MultipartBody.Part File);
 
     @GET("updateProfile.php")
     Call<ResponseInfoUpdate> getInfoUpdate(@Query("ID") String id, @Query("NICK") String nickname, @Query("EMAIL") String email);
