@@ -34,7 +34,7 @@ public class CoupleConnect extends Activity {
         num = intent.getIntExtra("NUM", -1);
         btnStart = findViewById(R.id.btnStart);
         edtID = findViewById(R.id.edtID);
-
+        oppoId=edtID.getText().toString();
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
