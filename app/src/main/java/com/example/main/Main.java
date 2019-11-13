@@ -281,7 +281,21 @@ public class Main extends Fragment {
                 final TextView name = profileLayout2.findViewById(R.id.name);
 
                 //저장된 값 보여주기
+                Call<ResponseProfile> res= Net.getInstance().getApi().getProfile(CoupleConnect.oppoId);
+                res.enqueue(new Callback<ResponseProfile>() {
+                    @Override
+                    public void onResponse(Call<ResponseProfile> call, Response<ResponseProfile> response) {
+                        if(response.isSuccessful()){
+                            email.setText(response.body().getEmail());
+                            name.setText(response.body().getName());
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<ResponseProfile> call, Throwable t) {
+
+                    }
+                });
                 //닫기 버튼 클릭했을 때 다이얼로그 종료
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
