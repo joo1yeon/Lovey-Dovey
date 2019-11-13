@@ -133,8 +133,9 @@ public interface API {
     @Multipart
     @POST("profileImg.php")
     Call<ResponseProfile_m> getLoad(
-            @Part("coupleID") String c_id,
-            @PartMap() Map<String, RequestBody> params);
+            @Part MultipartBody.Part upLoad );
+    //@Part("coupleID") String c_id,
+    //@PartMap() Map<String, RequestBody> params
 
     @GET("bookmark.php")
     Call<ResponseBookmark> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("star") int star, @Query("nickname") String nickname);

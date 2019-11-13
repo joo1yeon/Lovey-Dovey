@@ -46,11 +46,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -229,6 +232,8 @@ public class Main extends Fragment {
                     @Override
                     public void onClick(View v) {
 
+                        //profile_UpLoad();
+
                         //메인화면 프로필 변경
                         Glide.with(context)
                                 .load(uri_)
@@ -244,7 +249,7 @@ public class Main extends Fragment {
                             @Override
                             public void onResponse(Call<ResponseInfoUpdate> call, Response<ResponseInfoUpdate> response) {
                                 if (response.body().getUpdate()) {
-                                    Toast.makeText(getContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                                     MainActivity.email = email.getText().toString();
                                     MainActivity.nickname = name.getText().toString();
                                     dl.dismiss();
@@ -463,16 +468,25 @@ public class Main extends Fragment {
            }
 
 
-
-    /*public void img(){
+    //TODO 이미지 업로드 하기
+    public void profile_UpLoad(){
+        //Map<String, RequestBody> map = new HashMap<>();
         File file = new File(uri_.getPath());
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName());
-        Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(MainActivity.coupleID,);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        //map.put("file\"; filename=\"" + file.getName() + "\"", requestBody);
+        MultipartBody.Part upLoad = MultipartBody.Part.createFormData("file", file.getName(),requestBody);
+        Log.e("profile", "되라얍"+ file);
+        Log.e("profile", "되라얍"+ requestBody.toString());
+        Log.e("profile", "되라얍"+ upLoad.toString());
+
+
+        Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(upLoad);
+        Log.e("profile", "Call 다음");
         res.enqueue(new Callback<ResponseProfile_m>() {
             @Override
             public void onResponse(Call<ResponseProfile_m> call, Response<ResponseProfile_m> response) {
                 if(response.isSuccessful()){
+                    Log.e("profile", "성공!");
                     if(response.body().getmProfile()) {
                         Toast.makeText(getContext(), "사진전송!", Toast.LENGTH_LONG).show();
                     }
@@ -487,5 +501,5 @@ public class Main extends Fragment {
             }
         });
 
-    }*/
+    }
 }
