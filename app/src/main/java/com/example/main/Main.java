@@ -282,8 +282,8 @@ public class Main extends Fragment {
 
                 //메인화면 다이얼로그에 들어가는 profile2의 뷰들 인플레이트
                 close = profileLayout2.findViewById(R.id.close);
-                final TextView email = profileLayout2.findViewById(R.id.et_email);
-                final TextView name = profileLayout2.findViewById(R.id.name);
+                final TextView email = profileLayout2.findViewById(R.id.oppo_email);
+                final TextView name = profileLayout2.findViewById(R.id.oppo_name);
 
                 //저장된 값 보여주기
                 Call<ResponseProfile> res= Net.getInstance().getApi().getProfile(MainActivity.id);

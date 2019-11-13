@@ -301,9 +301,9 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
-                final int year = cal.getTime().getYear() + 1900;
-                final int month = cal.getTime().getMonth()+1;
-                final int date = cal.getTime().getDate();
+                final int y = cal.getTime().getYear() + 1900;
+                final int m = cal.getTime().getMonth()+1;
+                final int d = cal.getTime().getDate();
                 final View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
                 TextView placeAddress;
                 final EditText placeName;
@@ -320,12 +320,12 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 btnModifyMark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Call<updateMark> r = Net.getInstance().getApi().getUpdateMark(placeName.getText().toString(), marker.getPosition().latitude, marker.getPosition().longitude, year, month, date, MainActivity.coupleID);
+                        Call<updateMark> r = Net.getInstance().getApi().getUpdateMark(placeName.getText().toString(), marker.getPosition().latitude, marker.getPosition().longitude, y, m, d, MainActivity.coupleID);
                         r.enqueue(new Callback<updateMark>() {
                             @Override
                             public void onResponse(Call<updateMark> call, Response<updateMark> response) {
                                 if (response.body().getSuccess()) {
-                                    printMarker(gMap, year,month,date);
+                                    printMarker(gMap, y,m,d);
                                     modalBottomSheet.dismiss();
                                 }
                             }
@@ -340,11 +340,11 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 btnDelMark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Call<deleteMark> res = Net.getInstance().getApi().getDeleteMark(marker.getTitle(), marker.getSnippet(), marker.getPosition().latitude, marker.getPosition().longitude, year, month, date, MainActivity.coupleID);
+                        Call<deleteMark> res = Net.getInstance().getApi().getDeleteMark(marker.getTitle(), marker.getSnippet(), marker.getPosition().latitude, marker.getPosition().longitude, y, m, d, MainActivity.coupleID);
                         res.enqueue(new Callback<deleteMark>() {
                             @Override
                             public void onResponse(Call<deleteMark> call, Response<deleteMark> response) {
-                                printMarker(gMap, year,month,date);
+                                printMarker(gMap, y,m,d);
                                 modalBottomSheet.dismiss();
                             }
 

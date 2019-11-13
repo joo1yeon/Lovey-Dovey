@@ -299,6 +299,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
                 intent = new Intent(getApplicationContext(), Notice.class);
                 startActivity(intent);
                 Toast.makeText(MainActivity.this, "공지사항", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
         background.setOnClickListener(new View.OnClickListener() {
@@ -317,6 +318,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
                 Intent intent=new Intent(MainActivity.this,Bookmark.class);
                 intent.putExtra("id",id);
                 startActivity(intent);
+                finish();
             }
         });
 
