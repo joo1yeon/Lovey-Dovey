@@ -4,6 +4,7 @@ package com.example.main;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -80,7 +81,7 @@ public interface API {
     Call<ResponseServer_Story> deleteStoryData(@Query("STORY_ID") String story_id);
 
     @GET("printStoryData.php")
-    Call<List<ResponseStory>> getStoryData();
+    Call<List<ResponseStory>> getStoryData(@Query("COUPLE_ID") String couple_id);
 
     @GET("searchStory.php")
     Call<List<ResponseStory>> searchStory(@Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String storyTitle, @Query("WRITER") String storyWriter);
@@ -128,11 +129,18 @@ public interface API {
     @Multipart
     @POST("profileImg.php")
     Call<ResponseProfile_m> getLoad(
-            @Part("coupleID") String c_id,
-            @PartMap() Map<String, RequestBody> params);
+            @Part MultipartBody.Part upLoad );
+    //@Part("coupleID") String c_id,
+    //@PartMap() Map<String, RequestBody> params
 
     @GET("bookmark.php")
     Call<ResponseBookmark> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("star") int star, @Query("nickname") String nickname);
+
+    @GET("bookmarkList.php")
+    Call<List<ResponseBookmarkList>> getBookmarkList();
+
+    @GET("bookmarkSelect.php")
+    Call<ResponseBookmarkSel> getBookmarkSel(@Query("id") String id,@Query("nickname") String nickname);
 }
 
 

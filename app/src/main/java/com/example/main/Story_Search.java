@@ -108,6 +108,7 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(Story_Search.this, "취소되었습니다.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

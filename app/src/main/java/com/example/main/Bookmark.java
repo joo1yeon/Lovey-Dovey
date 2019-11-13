@@ -25,11 +25,10 @@ import retrofit2.Response;
 public class Bookmark extends AppCompatActivity {
 
     ListView bookmarklist;
-    Datecourse_ListViewAdapter adapter;
+    Bookmark_ListViewAdapter adapter;
     ArrayList<Datecourse_ListViewItem> bookmark;
-    String[] PlaceN = new String[6];
-    String[] Placeimage = new String[6];
-    String[] place_id = new String[6];
+    String[] PlaceN = new String[15];
+    String[] place_id = new String[15];
     int id;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,21 +37,44 @@ public class Bookmark extends AppCompatActivity {
 
         bookmarklist = findViewById(R.id.bookmark);
         bookmark = new ArrayList<Datecourse_ListViewItem>();
-        adapter = new Datecourse_ListViewAdapter(this, bookmark,id);
+        adapter = new Bookmark_ListViewAdapter(this, bookmark);
+
+        Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList();
+        res.enqueue(new Callback<List<ResponseBookmarkList>>() {
+            @Override
+            public void onResponse(Call<List<ResponseBookmarkList>> call, Response<List<ResponseBookmarkList>> response) {
+                if (response.isSuccessful()) {
+                    List<ResponseBookmarkList> responseGet = response.body();
+                    int i = 0;
+                    for (ResponseBookmarkList responseBookmarkList : responseGet) {
+                        PlaceN[i] = responseBookmarkList.getName();
+                        place_id[i] = responseBookmarkList.getId();
+                        ++i;
+                    }
+                }
+                for (int i = 0; i < PlaceN.length; i++) {
+                    bookmark.add(new Datecourse_ListViewItem(PlaceN[i]));
+                    bookmarklist.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ResponseBookmarkList>> call, Throwable t) {
+                Log.d("III", "fail");
+            }
+        });
 
     }
 
     public class Bookmark_ListViewAdapter extends BaseAdapter {
         Context context;
         ArrayList<Datecourse_ListViewItem> bookmark = new ArrayList<Datecourse_ListViewItem>();
-        String[] Placeimage = new String[6];
-        int id;
-        int position;
+        String[] Placeimage = new String[15];
 
-        public Bookmark_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> _bookmark, int id) {
+
+        public Bookmark_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> _bookmark) {
             this.context = context;
             this.bookmark = _bookmark;
-            this.id = id;
         }
 
         @Override
@@ -82,6 +104,28 @@ public class Bookmark extends AppCompatActivity {
             TextView placeName = convertView.findViewById(R.id.placeName);
 
             placeName.setText(bookmark.get(position).getTitle());
+
+            Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList();
+            res.enqueue(new Callback<List<ResponseBookmarkList>>() {
+                @Override
+                public void onResponse(Call<List<ResponseBookmarkList>> call, Response<List<ResponseBookmarkList>> response) {
+                    if (response.isSuccessful()) {
+                        List<ResponseBookmarkList> responseGet = response.body();
+                        int i = 0;
+
+                        for (ResponseBookmarkList responseBookmarkList : responseGet) {
+                            Placeimage[i] = responseBookmarkList.getImage();
+                            ++i;
+                        }
+                        Glide.with(context).load(Placeimage[position]).into(image);
+                        Log.d("WWW",id+"");
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<ResponseBookmarkList>> call, Throwable t) {
+                    Log.d("III", "fail");
+                }
+            });
 
             return convertView;
         }
