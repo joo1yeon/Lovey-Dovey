@@ -50,7 +50,7 @@ public class Story_Create extends AppCompatActivity {
     private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_CODE = 10;
     //private static final int REQUEST_DATE = 0; // DatePicker 에서 데이터 반환하기 위해 요청 코드 상수 정의
-    DbOpenHelper mDbOpenHelper;
+//    DbOpenHelper mDbOpenHelper;
     Uri mUri;
     String mTitle, story_id, contents, img_uri;
     String imgFileLocation = "";

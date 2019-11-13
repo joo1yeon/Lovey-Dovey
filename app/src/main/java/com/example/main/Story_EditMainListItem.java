@@ -86,6 +86,7 @@ public class Story_EditMainListItem extends AppCompatActivity {
                         year = _year; month = _month + 1; day = _dayOfMonth;
                     }
                 }, year, month - 1, day);
+                Log.d("test", "y" + year + "m" + month + "d" + day);
                 dateDialog.show();
 //                FragmentManager manager = getSupportFragmentManager();
 //                DatePickerFragment dialog = new DatePickerFragment();
@@ -174,11 +175,19 @@ public class Story_EditMainListItem extends AppCompatActivity {
     //TODO 서버에 story data 저장하기
     public void saveStoryData() {
         Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, img_uri, contents);
+        Log.d("test", story_id + "스토리 아이디");
+        Log.d("test", String.valueOf(MainActivity.coupleID) + "년");
+        Log.d("test", mTitle + "제목");
+        Log.d("test", img_uri + "이미지경로");
+        Log.d("test", year + "년");
+        Log.d("test", month + "월");
+        Log.d("test", day + "일");
         res.enqueue(new Callback<ResponseServer_Story>() {
             @Override
             public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
                 if (response.isSuccessful()) {
                     ResponseServer_Story responseGet = response.body();
+                    Log.d("test", "스토리 수정 통신 성공" );
                     if (responseGet.setStoryData() ) {
                         Toast.makeText(Story_EditMainListItem.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     }
