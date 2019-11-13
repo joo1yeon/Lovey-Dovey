@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class Bookmark extends AppCompatActivity {
     String[] PlaceN = new String[15];
     String[] place_id = new String[15];
     String id;
+    ImageButton btnBack;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,7 @@ public class Bookmark extends AppCompatActivity {
         bookmarklist = findViewById(R.id.bookmark);
         bookmark = new ArrayList<Datecourse_ListViewItem>();
         adapter = new Bookmark_ListViewAdapter(this, bookmark);
+        btnBack=findViewById(R.id.btnBack);
 
         Intent intent=getIntent();
         id=intent.getStringExtra("id");
@@ -65,6 +68,20 @@ public class Bookmark extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<ResponseBookmarkList>> call, Throwable t) {
                 Log.d("III", "fail");
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Bookmark.this,MainActivity.class);
+                intent.putExtra("ID", MainActivity.id);
+                intent.putExtra("NICK", MainActivity.nickname);
+                intent.putExtra("EMAIL", MainActivity.email);
+                intent.putExtra("C_ID",MainActivity.coupleID);
+                startActivity(intent);
+                finish();
+
             }
         });
 
