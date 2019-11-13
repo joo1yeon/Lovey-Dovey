@@ -41,6 +41,7 @@ import android.widget.ViewSwitcher;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Key;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,6 +59,8 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @SuppressLint("ValidFragment")
 public class Main extends Fragment {
@@ -85,7 +88,7 @@ public class Main extends Fragment {
     int i;
 
     static Uri uri_ = Uri.parse("android.resource://com.example.main/drawable/basic");
-
+    String url="android.resource://com.example.main/drawable/basic";
     //화면 보여주기 전에 todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
     @Override
     public void onStart() {
@@ -232,7 +235,7 @@ public class Main extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        //profile_UpLoad();
+                        profile_UpLoad();
 
                         //메인화면 프로필 변경
                         Glide.with(context)
@@ -471,17 +474,22 @@ public class Main extends Fragment {
     //TODO 이미지 업로드 하기
     public void profile_UpLoad(){
         //Map<String, RequestBody> map = new HashMap<>();
+
         File file = new File(uri_.getPath());
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         //map.put("file\"; filename=\"" + file.getName() + "\"", requestBody);
-        MultipartBody.Part upLoad = MultipartBody.Part.createFormData("file", file.getName(),requestBody);
+        MultipartBody.Part upLoad = MultipartBody.Part.createFormData("upload_file", file.getName(),requestBody);
         Log.e("profile", "되라얍"+ file);
         Log.e("profile", "되라얍"+ requestBody.toString());
         Log.e("profile", "되라얍"+ upLoad.toString());
 
 
+        /*Request request = new Request.Builder()
+                .url("")
+                .post(requestBody)
+                .build();*/
+
         Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(upLoad);
-        Log.e("profile", "Call 다음");
         res.enqueue(new Callback<ResponseProfile_m>() {
             @Override
             public void onResponse(Call<ResponseProfile_m> call, Response<ResponseProfile_m> response) {
