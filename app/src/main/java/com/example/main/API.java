@@ -137,7 +137,7 @@ public interface API {
     Call<ResponseBookmark> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("star") int star, @Query("nickname") String nickname);
 
     @GET("bookmarkList.php")
-    Call<List<ResponseBookmarkList>> getBookmarkList();
+    Call<List<ResponseBookmarkList>> getBookmarkList(@Query("id") String id);
 
     @GET("bookmarkSelect.php")
     Call<ResponseBookmarkSel> getBookmarkSel(@Query("id") String id,@Query("nickname") String nickname);

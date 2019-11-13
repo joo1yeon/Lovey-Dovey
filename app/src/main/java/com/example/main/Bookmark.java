@@ -1,6 +1,7 @@
 package com.example.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,7 @@ public class Bookmark extends AppCompatActivity {
     ArrayList<Datecourse_ListViewItem> bookmark;
     String[] PlaceN = new String[15];
     String[] place_id = new String[15];
-    int id;
+    String id;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,10 @@ public class Bookmark extends AppCompatActivity {
         bookmark = new ArrayList<Datecourse_ListViewItem>();
         adapter = new Bookmark_ListViewAdapter(this, bookmark);
 
-        Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList();
+        Intent intent=getIntent();
+        id=intent.getStringExtra("id");
+
+        Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList(id);
         res.enqueue(new Callback<List<ResponseBookmarkList>>() {
             @Override
             public void onResponse(Call<List<ResponseBookmarkList>> call, Response<List<ResponseBookmarkList>> response) {
@@ -105,7 +109,7 @@ public class Bookmark extends AppCompatActivity {
 
             placeName.setText(bookmark.get(position).getTitle());
 
-            Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList();
+            Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList(id);
             res.enqueue(new Callback<List<ResponseBookmarkList>>() {
                 @Override
                 public void onResponse(Call<List<ResponseBookmarkList>> call, Response<List<ResponseBookmarkList>> response) {
