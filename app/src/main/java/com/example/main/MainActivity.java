@@ -315,6 +315,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "즐겨찾기", Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(MainActivity.this,Bookmark.class);
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });
