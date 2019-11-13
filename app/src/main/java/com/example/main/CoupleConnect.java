@@ -20,7 +20,6 @@ public class CoupleConnect extends Activity {
     int num;
     Button btnStart;
     EditText edtID;
-    public static String oppoId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +33,6 @@ public class CoupleConnect extends Activity {
         num = intent.getIntExtra("NUM", -1);
         btnStart = findViewById(R.id.btnStart);
         edtID = findViewById(R.id.edtID);
-        oppoId=edtID.getText().toString();
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +53,6 @@ public class CoupleConnect extends Activity {
                                             public void onResponse(Call<responseConnect> call, Response<responseConnect> response) {
                                                 if(response.body().getConnect()){
                                                     Intent intent1 = new Intent(CoupleConnect.this, MainActivity.class);
-                                                    oppoId=edtID.getText().toString();
                                                     intent1.putExtra("ID", id);
                                                     intent1.putExtra("NICK", nickname);
                                                     intent1.putExtra("EMAIL", email);
