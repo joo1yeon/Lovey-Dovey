@@ -138,6 +138,9 @@ public interface API {
 
     @GET("withdraw.php")
     Call<ResponseWithdraw> getOut(@Query("ID") String id, @Query("COUPLE") int couple);
+
+    @GET("updateDate.php")
+    Call<ResponseUpdateDate> getUpdate(@Query("id") String id,@Query("DATE") String date);
 }
 
 

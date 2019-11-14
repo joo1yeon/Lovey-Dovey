@@ -252,7 +252,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/netmarble_m"
-            android:text="연동끊기"
+            android:text="연결해제하기"
             app:layout_constraintBottom_toTopOf="@id/btnLogout"
             app:layout_constraintRight_toRightOf="parent"
             android:textSize="15sp"/>

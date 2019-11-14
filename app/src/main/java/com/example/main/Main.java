@@ -4,6 +4,7 @@ package com.example.main;
 import android.annotation.SuppressLint;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -170,7 +172,50 @@ public class Main extends Fragment {
         //Date 날짜 계산 함수
         DateSystem();
 
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<ResponseDate> res = Net.getInstance().getApi().getDate(MainActivity.id);
+                res.enqueue(new Callback<ResponseDate>() {
+                    @Override
+                    public void onResponse(Call<ResponseDate> call, Response<ResponseDate> response) {
+                        if (response.isSuccessful()) {
+                            String date = response.body().getDate_m();
+                            String d[]=date.split("-");
+                            DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                    final int y=year,m=month+1,d=dayOfMonth;
+                                    Call<ResponseUpdateDate> res= Net.getInstance().getApi().getUpdate(id,y+"-"+m+"-"+d);
+                                    res.enqueue(new Callback<ResponseUpdateDate>() {
+                                        @Override
+                                        public void onResponse(Call<ResponseUpdateDate> call, Response<ResponseUpdateDate> response) {
+                                            if(response.body().getUpdate()){
+                                                doDateSystem(y+"-"+m+"-"+d);
+                                            }
+                                        }
 
+                                        @Override
+                                        public void onFailure(Call<ResponseUpdateDate> call, Throwable t) {
+
+                                        }
+                                    });
+                                }
+                            }, Integer.parseInt(d[0]), Integer.parseInt(d[1])-1, Integer.parseInt(d[2]));
+                            dateDialog.show();
+
+                        } else Log.d("test", "사귄날짜 통신1 에러");
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseDate> call, Throwable t) {
+                        Log.d("test", "사귄날짜 통신3 에러");
+                    }
+                });
+
+
+            }
+        });
 
         //TODO to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
         to_do_Btn.setOnClickListener(new View.OnClickListener() {

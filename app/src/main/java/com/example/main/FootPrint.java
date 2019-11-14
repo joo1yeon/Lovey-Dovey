@@ -138,10 +138,11 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
-                cal.set(year, month, day);
-                printMarker(gMap, year, month, day);
-                tvToday.setText(sdf.format(today));
-                Log.d("TTT", year + "/" + month + "/" + day);
+                Calendar c= Calendar.getInstance();
+                cal.set(c.getTime().getYear()+1900,c.getTime().getMonth(),c.getTime().getDate());
+                printMarker(gMap, c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1, c.get(Calendar.DATE));
+                tvToday.setText(sdf.format(c.getTime()));
+                Log.d("TTT", c.get(Calendar.YEAR) + "/" + c.get(Calendar.MONTH)+1 + "/" + c.get(Calendar.MONTH)+1);
 
             }
         });

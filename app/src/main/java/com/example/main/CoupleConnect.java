@@ -88,4 +88,11 @@ public class CoupleConnect extends Activity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(CoupleConnect.this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 }
