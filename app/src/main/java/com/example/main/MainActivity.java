@@ -302,7 +302,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), Notice.class);
                 startActivity(intent);
-                Toast.makeText(MainActivity.this, "공지사항", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -318,9 +317,9 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "즐겨찾기", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, Bookmark.class);
-                intent.putExtra("id", id);
+                Intent intent=new Intent(MainActivity.this,Bookmark.class);
+                intent.putExtra("id",id);
+
                 startActivity(intent);
                 finish();
             }
