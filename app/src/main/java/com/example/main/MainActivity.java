@@ -35,8 +35,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import retrofit2.Call;
@@ -69,11 +72,12 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     FloatingActionButton btnSave, btnGallery;
     int REQUEST_CODE = 2;
     String uri_;
+    TextView btnDelete;
 
     @Override
-    public void insert(String name, String address, double latitude, double longitude, int year, int month, int date,int num) {
+    public void insert(String name, String address, double latitude, double longitude, int year, int month, int date, int num) {
         sqlDB = dbHelper.getWritableDatabase();
-        sqlDB.execSQL("insert into marker values('" + name + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ","+num+");");
+        sqlDB.execSQL("insert into marker values('" + name + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + "," + num + ");");
     }
 
 
@@ -91,7 +95,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             int month = cursor.getInt(5);
             int date = cursor.getInt(6);
             int num = cursor.getInt(7);
-            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name, address, latitude, longitude, year, month, date, coupleID,num);
+            Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name, address, latitude, longitude, year, month, date, coupleID, num);
             Log.d("III", "이름" + name);
             res.enqueue(new Callback<ResAddMarker>() {
                 @Override
@@ -124,7 +128,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         nickname = intent1.getStringExtra("NICK");
         email = intent1.getStringExtra("EMAIL");
         coupleID = intent1.getIntExtra("C_ID", 0);
-        Log.d("INNN2","coupleID : "+coupleID);
+        Log.d("INNN2", "coupleID : " + coupleID);
         Log.d("C_ID", "커플아이디:" + coupleID);
         Toast.makeText(MainActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
 
@@ -150,6 +154,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = findViewById(R.id.tab);
         logout = findViewById(R.id.btnLogout);
+        btnDelete = findViewById(R.id.btnDelete);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -314,10 +319,72 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "즐겨찾기", Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(MainActivity.this,Bookmark.class);
-                intent.putExtra("id",id);
+                Intent intent = new Intent(MainActivity.this, Bookmark.class);
+                intent.putExtra("id", id);
                 startActivity(intent);
                 finish();
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                dlg.setMessage("상대와의 연결을 해제하시겠습니까?")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AlertDialog.Builder d = new AlertDialog.Builder(MainActivity.this);
+                                View view = View.inflate(MainActivity.this, R.layout.dialog_withdraw, null);
+                                final TextView idEdt=view.findViewById(R.id.edtID);
+                                final TextView pwEdt=view.findViewById(R.id.edtPW);
+                                d.setTitle("아이디와 비밀번호를 입력해주세요")
+                                        .setView(view)
+                                        .setPositiveButton("연결끊기", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Call<ResponseLogin> res = Net.getInstance().getApi().getThird(idEdt.getText().toString(), pwEdt.getText().toString());
+                                                res.enqueue(new Callback<ResponseLogin>() {
+                                                    @Override
+                                                    public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
+                                                        if (response.isSuccessful()) {
+                                                            ResponseLogin responseGet = response.body();
+                                                            if (responseGet.getLogin()) {
+                                                                Call<ResponseWithdraw> res = Net.getInstance().getApi().getOut(id, coupleID);
+                                                                res.enqueue(new Callback<ResponseWithdraw>() {
+                                                                    @Override
+                                                                    public void onResponse(Call<ResponseWithdraw> call, Response<ResponseWithdraw> response) {
+                                                                        if (response.body().getSuccess()) {
+                                                                            sqlDB.execSQL("delete from info where id='" + id + "';");
+                                                                            Toast.makeText(MainActivity.this, "상대와의 연결이 해제되었습니다.", Toast.LENGTH_SHORT).show();
+                                                                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                                                            startActivity(intent);
+                                                                            finish();
+                                                                        }else Toast.makeText(MainActivity.this, "연결을 해제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onFailure(Call<ResponseWithdraw> call, Throwable t) {
+                                                                        Toast.makeText(MainActivity.this, "연결을 해제할 수 없습니다.11", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                });
+
+                                                            } else
+                                                                Toast.makeText(MainActivity.this, "일치하는 아이디 또는 비밀번호가 없습니다.", Toast.LENGTH_SHORT).show();
+                                                        } else
+                                                            Toast.makeText(MainActivity.this, "통신1 에러", Toast.LENGTH_SHORT).show();
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<ResponseLogin> call, Throwable t) {
+                                                        Toast.makeText(MainActivity.this, "통신3 에러", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+
+                                            }
+                                        }).show();
+                            }
+                        }).show();
             }
         });
 
@@ -397,6 +464,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             }
         }
     }
+
     class MyPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> fragments = new ArrayList<Fragment>();
         private String titles[] = new String[]{"홈", "데이트코스", "발자국", "앨범"};
