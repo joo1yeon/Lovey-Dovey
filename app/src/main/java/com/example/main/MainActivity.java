@@ -74,7 +74,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     public void insert(String name, String address, double latitude, double longitude, int year, int month, int date,int num) {
         sqlDB = dbHelper.getWritableDatabase();
         sqlDB.execSQL("insert into marker values('" + name + "','" + address + "'," + latitude + "," + longitude + "," + year + "," + month + "," + date + ","+num+");");
-        sqlDB.close();
     }
 
 
@@ -111,7 +110,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
 
         }
         sqlDB.execSQL("delete from marker;");
-        sqlDB.close();
     }
 
     @SuppressLint("WrongViewCast")
@@ -126,6 +124,7 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         nickname = intent1.getStringExtra("NICK");
         email = intent1.getStringExtra("EMAIL");
         coupleID = intent1.getIntExtra("C_ID", 0);
+        Log.d("INNN2","coupleID : "+coupleID);
         Log.d("C_ID", "커플아이디:" + coupleID);
         Toast.makeText(MainActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
 
@@ -456,10 +455,12 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         }
         if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
             finish();
+            sqlDB.execSQL("delete from marker;");
+            sqlDB.close();
+            dbHelper.close();
             toast.cancel();
         }
     }
-
 
 }
 

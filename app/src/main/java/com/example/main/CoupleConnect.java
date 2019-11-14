@@ -56,7 +56,9 @@ public class CoupleConnect extends Activity {
                                                     intent1.putExtra("ID", id);
                                                     intent1.putExtra("NICK", nickname);
                                                     intent1.putExtra("EMAIL", email);
-                                                    intent1.putExtra("COUPLE",response.body().getCouple());
+                                                    intent1.putExtra("C_ID",response.body().getCouple());
+                                                    Log.d("INNN1","coupleID : "+response.body().getCouple());
+
                                                     startActivity(intent1);
                                                     finish();
                                                 }
