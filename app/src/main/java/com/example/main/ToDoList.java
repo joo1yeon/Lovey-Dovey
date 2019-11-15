@@ -73,8 +73,6 @@ public class ToDoList extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Renewal.interrupt();
-        Log.e("TODO","스레드 멈춤");
-
     }
 
     @Override
