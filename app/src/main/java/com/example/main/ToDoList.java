@@ -282,6 +282,7 @@ public class ToDoList extends AppCompatActivity {
 
     //TODO# To-Do-List 추가
     public void Item_add(int coupleID, String content){
+        Log.d("INNN3","coupleID : "+coupleID);
         Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(coupleID,"", content,"false");
         res.enqueue(new Callback<ResponseTD_Insert>() {
             @Override

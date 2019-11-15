@@ -4,6 +4,7 @@ package com.example.main;
 import android.annotation.SuppressLint;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -170,7 +172,50 @@ public class Main extends Fragment {
         //Date 날짜 계산 함수
         DateSystem();
 
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<ResponseDate> res = Net.getInstance().getApi().getDate(MainActivity.id);
+                res.enqueue(new Callback<ResponseDate>() {
+                    @Override
+                    public void onResponse(Call<ResponseDate> call, Response<ResponseDate> response) {
+                        if (response.isSuccessful()) {
+                            String date = response.body().getDate_m();
+                            String d[]=date.split("-");
+                            DatePickerDialog dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                    final int y=year,m=month+1,d=dayOfMonth;
+                                    Call<ResponseUpdateDate> res= Net.getInstance().getApi().getUpdate(id,y+"-"+m+"-"+d);
+                                    res.enqueue(new Callback<ResponseUpdateDate>() {
+                                        @Override
+                                        public void onResponse(Call<ResponseUpdateDate> call, Response<ResponseUpdateDate> response) {
+                                            if(response.body().getUpdate()){
+                                                doDateSystem(y+"-"+m+"-"+d);
+                                            }
+                                        }
 
+                                        @Override
+                                        public void onFailure(Call<ResponseUpdateDate> call, Throwable t) {
+
+                                        }
+                                    });
+                                }
+                            }, Integer.parseInt(d[0]), Integer.parseInt(d[1])-1, Integer.parseInt(d[2]));
+                            dateDialog.show();
+
+                        } else Log.d("test", "사귄날짜 통신1 에러");
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseDate> call, Throwable t) {
+                        Log.d("test", "사귄날짜 통신3 에러");
+                    }
+                });
+
+
+            }
+        });
 
         //TODO to_do_list 버튼 눌렀을 때 --> to_do 화면 전환
         to_do_Btn.setOnClickListener(new View.OnClickListener() {
@@ -282,11 +327,25 @@ public class Main extends Fragment {
 
                 //메인화면 다이얼로그에 들어가는 profile2의 뷰들 인플레이트
                 close = profileLayout2.findViewById(R.id.close);
-                final TextView email = profileLayout2.findViewById(R.id.et_email);
-                final TextView name = profileLayout2.findViewById(R.id.name);
+                final TextView email = profileLayout2.findViewById(R.id.oppo_email);
+                final TextView name = profileLayout2.findViewById(R.id.oppo_name);
 
                 //저장된 값 보여주기
+                Call<ResponseProfile> res= Net.getInstance().getApi().getProfile(MainActivity.id);
+                res.enqueue(new Callback<ResponseProfile>() {
+                    @Override
+                    public void onResponse(Call<ResponseProfile> call, Response<ResponseProfile> response) {
+                        if(response.isSuccessful()){
+                            email.setText(response.body().getEmail());
+                            name.setText(response.body().getName());
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<ResponseProfile> call, Throwable t) {
+
+                    }
+                });
                 //닫기 버튼 클릭했을 때 다이얼로그 종료
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override

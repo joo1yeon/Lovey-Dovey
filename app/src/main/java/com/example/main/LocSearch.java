@@ -76,6 +76,7 @@ public class LocSearch extends Activity {
                 intent.putExtra("COUPLE", MainActivity.coupleID);
 
                 startActivity(intent);
+                finish();
             }
         });
 

@@ -6,10 +6,10 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/layout">
+        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/top"
@@ -62,20 +62,19 @@
             android:layout_height="0dp"
             android:layout_below="@+id/tab"
             android:layout_weight="13"
-            app:layout_constraintTop_toBottomOf="@id/tab"/>
+            app:layout_constraintTop_toBottomOf="@id/tab" />
 
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/drawer"
         android:layout_width="260dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:background="#ffffff"
-        android:orientation="vertical"
-        android:clickable="true">
+        android:clickable="true"
+        android:orientation="vertical">
 
 
         <LinearLayout
@@ -87,8 +86,7 @@
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/btnBack"
@@ -105,17 +103,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#f2ffe8"
+            android:gravity="center"
             android:orientation="vertical"
             android:padding="20dp"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/back"
-           >
+            app:layout_constraintTop_toBottomOf="@+id/back">
 
             <ImageView
                 android:id="@+id/profile"
                 android:layout_width="80dp"
-                android:layout_height="80dp"
-                />
+                android:layout_height="80dp" />
 
             <TextView
                 android:id="@+id/nickname"
@@ -125,8 +121,7 @@
                 android:fontFamily="@font/netmarble_m"
                 android:text="닉네임"
                 android:textColor="#8c8c8c"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/email"
@@ -144,10 +139,10 @@
             android:id="@+id/btnInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/info"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
-            android:layout_marginLeft="10dp">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/info">
 
             <ImageView
                 android:layout_width="30dp"
@@ -163,8 +158,7 @@
                 android:layout_marginLeft="10dp"
                 android:fontFamily="@font/netmarble_b"
                 android:text="개인정보수정"
-                android:textColor="#000000"
-                />
+                android:textColor="#000000" />
 
         </LinearLayout>
 
@@ -172,10 +166,10 @@
             android:id="@+id/btnNotice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/btnInfo"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/btnInfo">
 
             <ImageView
                 android:layout_width="30dp"
@@ -200,11 +194,11 @@
             android:id="@+id/btnBG"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
 
-            app:layout_constraintTop_toBottomOf="@id/btnNotice"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/btnNotice">
 
             <ImageView
                 android:layout_width="30dp"
@@ -228,10 +222,10 @@
             android:id="@+id/btnBookMark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/btnBG"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/btnBG">
 
             <ImageView
                 android:layout_width="30dp"
@@ -251,18 +245,28 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/netmarble_m"
+            android:text="연결해제하기"
+            app:layout_constraintBottom_toTopOf="@id/btnLogout"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textSize="15sp"/>
 
         <LinearLayout
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:background="#f2ffe8"
             android:gravity="bottom"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:padding="10dp"
-            android:background="#f2ffe8"
-            >
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageButton
                 android:layout_width="30dp"
@@ -274,12 +278,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:fontFamily="@font/netmarble_b"
                 android:gravity="bottom"
                 android:text="로그아웃"
                 android:textColor="#5d5d5d"
-                android:textSize="15sp"
-                android:layout_gravity="center_vertical"/>
+                android:textSize="15sp" />
 
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>

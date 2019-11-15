@@ -272,6 +272,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="10dp"
         android:lines="1"
+        android:inputType="textEmailAddress"
         />
 
     <Button

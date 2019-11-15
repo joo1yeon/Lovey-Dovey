@@ -1,6 +1,7 @@
 package com.example.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,7 +31,8 @@ public class Bookmark extends AppCompatActivity {
     ArrayList<Datecourse_ListViewItem> bookmark;
     String[] PlaceN = new String[15];
     String[] place_id = new String[15];
-    int id;
+    String id;
+    ImageButton btnBack;
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +41,12 @@ public class Bookmark extends AppCompatActivity {
         bookmarklist = findViewById(R.id.bookmark);
         bookmark = new ArrayList<Datecourse_ListViewItem>();
         adapter = new Bookmark_ListViewAdapter(this, bookmark);
+        btnBack=findViewById(R.id.btnBack);
 
-        Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList();
+        Intent intent=getIntent();
+        id=intent.getStringExtra("id");
+
+        Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList(id);
         res.enqueue(new Callback<List<ResponseBookmarkList>>() {
             @Override
             public void onResponse(Call<List<ResponseBookmarkList>> call, Response<List<ResponseBookmarkList>> response) {
@@ -63,6 +70,21 @@ public class Bookmark extends AppCompatActivity {
                 Log.d("III", "fail");
             }
         });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Bookmark.this,MainActivity.class);
+                intent.putExtra("ID", MainActivity.id);
+                intent.putExtra("NICK", MainActivity.nickname);
+                intent.putExtra("EMAIL", MainActivity.email);
+                intent.putExtra("C_ID",MainActivity.coupleID);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
     }
 
     public class Bookmark_ListViewAdapter extends BaseAdapter {
@@ -104,7 +126,7 @@ public class Bookmark extends AppCompatActivity {
 
             placeName.setText(bookmark.get(position).getTitle());
 
-            Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList();
+            Call<List<ResponseBookmarkList>> res = Net.getInstance().getApi().getBookmarkList(id);
             res.enqueue(new Callback<List<ResponseBookmarkList>>() {
                 @Override
                 public void onResponse(Call<List<ResponseBookmarkList>> call, Response<List<ResponseBookmarkList>> response) {
@@ -129,6 +151,16 @@ public class Bookmark extends AppCompatActivity {
             return convertView;
         }
 
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(Bookmark.this,MainActivity.class);
+        intent.putExtra("ID",MainActivity.id);
+        intent.putExtra("NICK",MainActivity.nickname);
+        intent.putExtra("EMAIL",MainActivity.email);
+        intent.putExtra("C_ID",MainActivity.coupleID);
+        startActivity(intent);
+        finish();
     }
 
 }

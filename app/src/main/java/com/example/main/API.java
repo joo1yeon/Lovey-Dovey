@@ -16,7 +16,6 @@ import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface API {
-    final String Base_URL = "http://mjckjs.gabia.io/whispering/php";
 
     @GET("FindID.php")
     Call<ResponseGet> getFirst(@Query("NAME") String name, @Query("EMAIL") String email);
@@ -49,14 +48,6 @@ public interface API {
     @GET("addMarker.php")
     Call<ResAddMarker> getAdd(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double latitude, @Query("LNG") double longitude, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple,@Query("NUM") int num);
 
-    @GET("resetTable.php")
-    Call<ResReset> getReset();
-
-    @GET("checkID.php")
-    Call<ResponseID> getID(@Query("ID") String id);
-
-    @GET("updateOppoID.php")
-    Call<UpdateOppoID> getUpdate(@Query("ID") String id, @Query("OPPO") String oppo);
 
     @GET("connectCouple.php")
     Call<responseConnect> getConn(@Query("ID") String id, @Query("OPPO") String oppo);
@@ -141,10 +132,19 @@ public interface API {
     Call<ResponseBookmark> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("star") int star, @Query("nickname") String nickname);
 
     @GET("bookmarkList.php")
-    Call<List<ResponseBookmarkList>> getBookmarkList();
+    Call<List<ResponseBookmarkList>> getBookmarkList(@Query("id") String id);
 
     @GET("bookmarkSelect.php")
     Call<ResponseBookmarkSel> getBookmarkSel(@Query("id") String id,@Query("nickname") String nickname);
+
+    @GET("connect.php")
+    Call<ResponseConn> getConnect(@Query("OPPO") String oppo);
+
+    @GET("withdraw.php")
+    Call<ResponseWithdraw> getOut(@Query("ID") String id, @Query("COUPLE") int couple);
+
+    @GET("updateDate.php")
+    Call<ResponseUpdateDate> getUpdate(@Query("id") String id,@Query("DATE") String date);
 }
 
 
