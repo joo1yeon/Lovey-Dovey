@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +42,8 @@ public class ToDoList extends AppCompatActivity {
     TextView change, delete;
     ListView listView1, listView2;                                      //선택한거, 안한거
     ToDoList_ChoiceListAdapter adapter1, adapter2;                     //선택한거, 안한거
+    Thread Renewal;
+
 
     //MyDBHelper todoDB;
     //SQLiteDatabase sqlDB;
@@ -48,7 +52,30 @@ public class ToDoList extends AppCompatActivity {
 
     int i1, i2;
 
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
 
+    //TODO 투두리스트 화면 켜지기 전에 스레드 호출
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Renewal = null;
+        Renewal = new Item_renewal();
+        Renewal.start();
+    }
+
+    //TODO 투두리스트 꺼지면 스레드 정지
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Renewal.interrupt();
+        Log.e("TODO","스레드 멈춤");
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +111,9 @@ public class ToDoList extends AppCompatActivity {
 
         //todolist 조회
         Item_show();
+
+
+
 
         //TODO# 체크되지 않은 투두리스트 클릭했을 때 (클릭제어)
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -370,6 +400,37 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
+    public class Item_renewal extends Thread {
+
+        boolean running = false;     //시작과 종료에 필요한 변수
+
+        @Override
+        public void run() {
+            running = true;
+
+            while (running) {                            //무한루프, Todolist 계속 돌아가게 함
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Item_show();
+                    }
+                });
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    halt();
+                    e.printStackTrace();
+                    Log.e("TODO","스레드 멈춘거 맞아^^");
+                }
+            }
+        }
+
+        public void halt() {
+            running = false;
+        }
+
+    }
 
     //TODO# 로컬디비 조회, 삭제, 수정, 클릭제어
 
