@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="test test test"
+        android:text="내용"
         android:textColor="#5D5D5D"
         android:textSize="15sp"
         app:layout_constraintLeft_toLeftOf="parent"

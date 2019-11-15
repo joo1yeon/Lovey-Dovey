@@ -73,9 +73,9 @@ public class AllReview extends AppCompatActivity {
                         List<ResponseAllReview> responseGet = response.body();
                         adapter.review_listItem.clear();
                         for (ResponseAllReview responseAllReview : responseGet) {
-                           /* ((Date_Review) Date_Review.context).adapter.addItem(responseAllReview.getRate(), responseAllReview.getContent(), responseAllReview.getYear() + "/" + responseAllReview.getMonth() + "/" + responseAllReview.getDay(), responseAllReview.getID());
-                            ((Date_Review) Date_Review.context).adapter.notifyDataSetChanged();*/
-                            adapter.addItem(responseAllReview.getRate(), responseAllReview.getContent(), responseAllReview.getYear() + "/" + responseAllReview.getMonth() + "/" + responseAllReview.getDay(), responseAllReview.getID());
+                            adapter.addItem(responseAllReview.getRate(), responseAllReview.getContent(),
+                                    responseAllReview.getYear() + "/" + responseAllReview.getMonth() + "/"
+                                            + responseAllReview.getDay(), responseAllReview.getID());
                             adapter.notifyDataSetChanged();
 
                         }

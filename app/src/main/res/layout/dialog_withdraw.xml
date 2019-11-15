@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="40dp"
+    android:paddingTop="10dp"
+    >
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="아이디"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/edtID"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <EditText
+        android:id="@+id/edtID"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/netmarble_m"
+        android:lines="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtName"
+        app:layout_constraintLeft_toLeftOf="@id/guideline7"/>
+
+    <TextView
+        android:id="@+id/pw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="비밀번호"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/edtPW"
+        app:layout_constraintLeft_toLeftOf="@+id/id" />
+
+    <EditText
+        android:id="@+id/edtPW"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/netmarble_m"
+        android:inputType="textPassword"
+        android:lines="1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtID"
+        app:layout_constraintLeft_toLeftOf="@id/guideline7"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="108dp" />
+
+</android.support.constraint.ConstraintLayout>

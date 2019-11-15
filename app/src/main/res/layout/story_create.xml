@@ -12,11 +12,24 @@
         android:fontFamily="@font/netmarble_b"
         android:padding="10dp"
         android:text="스토리 생성하기"
+        android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:background="#00000000"
+        android:scaleType="fitCenter"
+        android:src="@drawable/back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/topPanel"/>
 
     <TextView
         android:id="@+id/tv_story_title"
@@ -71,8 +84,8 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/netmarble_m"
-        android:text="달력 아이콘을 눌러주세요."
-        android:textSize="15sp"
+        android:text="선택된 날짜가 없는 경우 오늘 날짜로 스토리가 생성됩니다."
+        android:textSize="13sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date_select" />
 
@@ -128,8 +141,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
         android:layout_marginVertical="5dp"
-        android:fontFamily="@font/netmarble_m"
         android:background="@android:color/transparent"
+        android:fontFamily="@font/netmarble_m"
         android:hint="터치하여 입력"
         android:inputType="textMultiLine"
         app:layout_constraintLeft_toLeftOf="parent"

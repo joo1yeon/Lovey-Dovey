@@ -114,4 +114,15 @@ public class Notice extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(Notice.this,MainActivity.class);
+        intent.putExtra("ID",MainActivity.id);
+        intent.putExtra("NICK",MainActivity.nickname);
+        intent.putExtra("EMAIL",MainActivity.email);
+        intent.putExtra("C_ID",MainActivity.coupleID);
+        startActivity(intent);
+        finish();
+    }
+
 }

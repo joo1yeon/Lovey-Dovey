@@ -147,6 +147,7 @@
     android:layout_marginBottom="16dp"
     android:src="@drawable/ic_save"
     android:layout_gravity="bottom|start"
+    android:visibility="gone"
     />
 
 

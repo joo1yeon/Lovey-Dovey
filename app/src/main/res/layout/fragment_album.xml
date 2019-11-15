@@ -25,7 +25,8 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_panel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_btn">
 
@@ -33,13 +34,20 @@
                 android:id="@+id/story_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="80dp"
                 android:paddingTop="10dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/add_btn"
                 app:stackFromEnd="true" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/bottom_panel"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#EAEAEA"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/search_btn"

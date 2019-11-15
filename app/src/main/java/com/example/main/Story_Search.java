@@ -1,5 +1,6 @@
 package com.example.main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,6 +22,7 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
 
     ImageView icCalendar;
     Button btnConfirm, btnCancel;
+    ImageButton btnBack;
     TextView tvPressIcon;
     EditText etTitleSearch;
     RadioGroup mRadioGroup;
@@ -27,6 +30,7 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
     private static final String DIALOG_DATE = "DialogDate";
     int year, month, day;
     String storyTitle, storyWriter;
+    static Activity mActivity;
 
     @Override
     public void onDatePickerSet(int y, int m, int d){ //DatePickerFragment 로부터 날짜를 받아온다.
@@ -50,6 +54,9 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
 //        rdo_user2 = findViewById(R.id.radio2);
         btnConfirm = findViewById(R.id.btn_confirm);
         btnCancel = findViewById(R.id.btn_cancel);
+        btnBack = findViewById(R.id.btn_back);
+
+        mActivity = Story_Search.this;
 
 //        rdo_user1.setText(MainActivity.nickname);
 
@@ -100,7 +107,7 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
                     intent.putExtra("storyTitle", storyTitle);
                     Log.d("test", "인텐트로 보내는 제목:" + storyTitle);
                     startActivity(intent);
-                    finish();
+//                    finish();
                 }
             }
         });
@@ -113,5 +120,11 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
             }
         });
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }
