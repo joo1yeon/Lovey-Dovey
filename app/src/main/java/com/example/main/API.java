@@ -7,6 +7,7 @@ import java.util.Map;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -121,12 +122,14 @@ public interface API {
     @GET("deleteMark.php")
     Call<deleteMark> getDeleteMark(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
 
-    @Multipart
+    //@Multipart
     @POST("profileImg.php")
     Call<ResponseProfile_m> getLoad(
-            @Part MultipartBody.Part File);
+            @Body RequestBody requestBody);
+
     //@Part("coupleID") String c_id,
-    //@PartMap() Map<String, RequestBody> params
+    //@Part MultipartBody.Part file,
+    //PartMap() Map<String, RequestBody> params
 
     @GET("bookmark.php")
     Call<ResponseBookmark> getBookmark(@Query("id") String id, @Query("name") String name, @Query("image") String image, @Query("star") int star, @Query("nickname") String nickname);
@@ -145,6 +148,9 @@ public interface API {
 
     @GET("updateDate.php")
     Call<ResponseUpdateDate> getUpdate(@Query("id") String id,@Query("DATE") String date);
+
+    @GET("testcat.php")
+    Call<ResponseTestCat> getcat();
 }
 
 

@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.Typeface;
 import android.inputmethodservice.Keyboard;
 import android.net.Uri;
@@ -174,6 +175,9 @@ public class Main extends Fragment {
 
         //Date 날짜 계산 함수
         DateSystem();
+
+        //TODO######################################
+        cat();
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -488,6 +492,7 @@ public class Main extends Fragment {
                        e.printStackTrace();
                    }
                    if (index >= todo.size()) {   //String 배열 때length
+                       Item_Content();
                        index = 0;
                    }
 
@@ -535,20 +540,16 @@ public class Main extends Fragment {
         //Map<String, RequestBody> map = new HashMap<>();
 
         File file = new File(uri_.getPath());
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         //map.put("file\"; filename=\"" + file.getName() + "\"", requestBody);
-        MultipartBody.Part upLoad = MultipartBody.Part.createFormData("upload_file", file.getName(),requestBody);
-        Log.e("profile", "되라얍"+ file);
-        Log.e("profile", "되라얍"+ requestBody.toString());
-        Log.e("profile", "되라얍"+ upLoad.toString());
+        //MultipartBody.Part upLoad = MultipartBody.Part.createFormData("upload", file.getName(),requestBody);
+        //RequestBody des = RequestBody.create(MediaType.parse("text/plain"),"image-type");
+        //Log.e("profile", "되라얍"+ file);
+        //Log.e("profile", "되라얍"+ requestBody.toString());
+        //Log.e("profile", "되라얍"+ upLoad.toString());
 
 
-        /*Request request = new Request.Builder()
-                .url("")
-                .post(requestBody)
-                .build();*/
-
-        Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(upLoad);
+        Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(requestBody);
         res.enqueue(new Callback<ResponseProfile_m>() {
             @Override
             public void onResponse(Call<ResponseProfile_m> call, Response<ResponseProfile_m> response) {
@@ -568,5 +569,26 @@ public class Main extends Fragment {
             }
         });
 
+    }
+
+    public void cat(){
+        Call<ResponseTestCat> res = Net.getInstance().getApi().getcat();
+        res.enqueue(new Callback<ResponseTestCat>() {
+            @Override
+            public void onResponse(Call<ResponseTestCat> call, Response<ResponseTestCat> response) {
+                if(response.isSuccessful()){
+                    Log.e("cat","php 성공은했다?");
+                    }
+                else{
+                    Log.e("cat","통신에러22");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseTestCat> call, Throwable t) {
+                Log.e("cat","통신에러다 새꺄");
+
+            }
+        });
     }
 }

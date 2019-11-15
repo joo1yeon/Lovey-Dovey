@@ -60,7 +60,7 @@ public class ToDoList extends AppCompatActivity {
         //뒤로가기 버튼 인플레이트
         btnBack = findViewById(R.id.btnBack);
 
-        //뒤로가기 버튼 클릭 시 투두화면 닫힘
+        //TODO 뒤로가기 버튼 클릭 시 투두화면 닫힘
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -291,6 +291,8 @@ public class ToDoList extends AppCompatActivity {
                 if(response.body().getTDInsert()) {
                     Log.d("insert", "추가완료");
                     Item_show();
+                    adapter1.notifyDataSetChanged();
+                    adapter2.notifyDataSetChanged();
                 }
                 } else Log.d("insert", "추가 통신1 에러");
             }
@@ -311,6 +313,8 @@ public class ToDoList extends AppCompatActivity {
                     if (response.body().getTDModify()) {
                         Log.d("update", "수정완료");
                         Item_show();
+                        adapter1.notifyDataSetChanged();
+                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.d("update", "수정 통신1 에러");
@@ -334,6 +338,8 @@ public class ToDoList extends AppCompatActivity {
                     if(response.body().getTDDelt()){
                         Log.d("delete","삭제완료");
                         Item_show();
+                        adapter1.notifyDataSetChanged();
+                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.d("delete", "삭제 통신1 에러");
@@ -357,6 +363,8 @@ public class ToDoList extends AppCompatActivity {
                     if(response.body().getTDClick()){
                         Log.e("click","클릭제어완료");
                         Item_show();
+                        adapter1.notifyDataSetChanged();
+                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.e("click","클릭 통신1 에러");
@@ -368,6 +376,7 @@ public class ToDoList extends AppCompatActivity {
             }
         });
     }
+
 
     //TODO# 로컬디비 조회, 삭제, 수정, 클릭제어
 
