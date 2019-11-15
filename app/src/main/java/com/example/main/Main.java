@@ -485,6 +485,7 @@ public class Main extends Fragment {
                        e.printStackTrace();
                    }
                    if (index >= todo.size()) {   //String 배열 때length
+                       Item_Content();
                        index = 0;
                    }
 

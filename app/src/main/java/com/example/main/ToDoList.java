@@ -182,7 +182,6 @@ public class ToDoList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ToDoList_ListItem listItem = adapter2.listViewItems.get(i);
                 String content = listItem.getContent();
-
                 Item_Click(content,"","false");
             }
         });
@@ -260,14 +259,14 @@ public class ToDoList extends AppCompatActivity {
 
                             adapter1.addItem(responseTodo_.getContent_td(), "");
                             listView1.setItemChecked(i1++,false);
-                            adapter1.notifyDataSetChanged();
                         } else {
                             Log.d("select","추가완료2"+ responseTodo_.getContent_td());
 
                             adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
                             listView2.setItemChecked(i2++,true);
-                            adapter2.notifyDataSetChanged();
                         }
+                        adapter1.notifyDataSetChanged();
+                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.d("select", "조회 통신 1 에러");
@@ -355,16 +354,16 @@ public class ToDoList extends AppCompatActivity {
             public void onResponse(Call<ResponseTD_click> call, Response<ResponseTD_click> response) {
                 if(response.isSuccessful()){
                     if(response.body().getTDClick()){
-                        Log.e("click","클릭제어완료");
+                        Log.d("click","클릭제어완료");
                         Item_show();
                     }
                 }
-                else Log.e("click","클릭 통신1 에러");
+                else Log.d("click","클릭 통신1 에러");
             }
 
             @Override
             public void onFailure(Call<ResponseTD_click> call, Throwable t) {
-                Log.e("click", "클릭 통신3 에러");
+                Log.d("click", "클릭 통신3 에러");
             }
         });
     }
