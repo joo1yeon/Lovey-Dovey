@@ -149,8 +149,9 @@ public interface API {
     @GET("updateDate.php")
     Call<ResponseUpdateDate> getUpdate(@Query("id") String id,@Query("DATE") String date);
 
-    @GET("testcat.php")
-    Call<ResponseTestCat> getcat();
+
+
+
 }
 
 

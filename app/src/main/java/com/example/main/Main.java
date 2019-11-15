@@ -101,6 +101,7 @@ public class Main extends Fragment {
     };
 
 
+
     @SuppressLint("ValidFragment")
     public Main() {
 
@@ -170,8 +171,6 @@ public class Main extends Fragment {
         //Date 날짜 계산 함수
         DateSystem();
 
-        //TODO######################################
-        cat();
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -340,6 +339,8 @@ public class Main extends Fragment {
                             email.setText(response.body().getEmail());
                             name.setText(response.body().getName());
                         }
+
+
                     }
 
                     @Override
@@ -565,24 +566,5 @@ public class Main extends Fragment {
 
     }
 
-    public void cat(){
-        Call<ResponseTestCat> res = Net.getInstance().getApi().getcat();
-        res.enqueue(new Callback<ResponseTestCat>() {
-            @Override
-            public void onResponse(Call<ResponseTestCat> call, Response<ResponseTestCat> response) {
-                if(response.isSuccessful()){
-                    Log.e("cat","php 성공은했다?");
-                    }
-                else{
-                    Log.e("cat","통신에러22");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseTestCat> call, Throwable t) {
-                Log.e("cat","통신에러다 새꺄");
-
-            }
-        });
-    }
 }
