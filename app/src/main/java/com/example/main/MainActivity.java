@@ -38,6 +38,7 @@ import com.bumptech.glide.Glide;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -122,6 +123,10 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         Log.d("LOGINN", "메인화면");
         super.onCreate(savedInstanceState);
         layout = findViewById(R.id.layout);
+        Calendar c= Calendar.getInstance();
+        final int year = c.get(Calendar.YEAR);
+        final int month = c.get(Calendar.MONTH) + 1;
+        final int day = c.get(Calendar.DATE);
 
         Intent intent1 = getIntent();
         id = intent1.getStringExtra("ID");
@@ -167,6 +172,10 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                Toast.makeText(MainActivity.this,"화면전환",Toast.LENGTH_SHORT).show();
+//                FootPrint f=new FootPrint();
+//                f.printMarker(FootPrint.gMap,year,month,day);
+
             }
 
             @Override

@@ -25,6 +25,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +85,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     int index = 0;
     String id = MainActivity.id;
     MarkerOptions markerOptions = new MarkerOptions();
-    GoogleMap gMap;
+    public static GoogleMap gMap;
     ImageButton btnTomorrow, btnYesterday;
     TextView tvToday;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -97,6 +99,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday, btnSave;
     private BottomSheetDialog modalBottomSheet;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     public FootPrint() {
 
@@ -110,6 +113,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     @Nullable
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
+        mSwipeRefreshLayout = layout.findViewById(R.id.swipe_refresh);
 
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
@@ -138,11 +142,11 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 anim();
                 Toast.makeText(getContext(), "오늘 날짜로 이동", Toast.LENGTH_SHORT).show();
-                Calendar c= Calendar.getInstance();
-                cal.set(c.getTime().getYear()+1900,c.getTime().getMonth(),c.getTime().getDate());
-                printMarker(gMap, c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1, c.get(Calendar.DATE));
+                Calendar c = Calendar.getInstance();
+                cal.set(c.getTime().getYear() + 1900, c.getTime().getMonth(), c.getTime().getDate());
+                printMarker(gMap, c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DATE));
                 tvToday.setText(sdf.format(c.getTime()));
-                Log.d("TTT", c.get(Calendar.YEAR) + "/" + c.get(Calendar.MONTH)+1 + "/" + c.get(Calendar.MONTH)+1);
+                Log.d("TTT", c.get(Calendar.YEAR) + "/" + c.get(Calendar.MONTH) + 1 + "/" + c.get(Calendar.MONTH) + 1);
 
             }
         });
@@ -234,6 +238,19 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         map.onCreate(savedInstanceState);
         map.getMapAsync(this);
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                printMarker(gMap,year,month,day);
+            }
+        });
+
+        mSwipeRefreshLayout.setColorSchemeResources(
+//                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light
+        );
 
         return layout;
     }
@@ -266,6 +283,7 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     //TODO OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         gMap = googleMap;
         printMarker(gMap, year, month, day);
         setGoogleMap(googleMap);
@@ -285,9 +303,9 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                     int year = cal.getTime().getYear() + 1900;
                     int month = cal.getTime().getMonth() + 1;
                     int date = cal.getTime().getDate();
-                    int hour=cal.getTime().getHours();
-                    int min=cal.getTime().getMinutes();
-                    int sec=cal.getTime().getSeconds();
+                    int hour = cal.getTime().getHours();
+                    int min = cal.getTime().getMinutes();
+                    int sec = cal.getTime().getSeconds();
                     Geocoder geocoder = new Geocoder(getContext());
                     List<Address> list = null;
                     try {
@@ -394,18 +412,18 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-                btnSave.setVisibility(View.VISIBLE);
+            btnSave.setVisibility(View.VISIBLE);
 
-                int year = cal.getTime().getYear() + 1900;
-                int month = cal.getTime().getMonth() + 1;
-                int date = cal.getTime().getDate();
-                String name = data.getStringExtra("name");
-                Double latitude = data.getDoubleExtra("latitude", 0);
-                Double longitude = data.getDoubleExtra("longitude", 0);
-                String address = data.getStringExtra("address");
-                LatLng point = new LatLng(latitude, longitude);
-                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
-                gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+            int year = cal.getTime().getYear() + 1900;
+            int month = cal.getTime().getMonth() + 1;
+            int date = cal.getTime().getDate();
+            String name = data.getStringExtra("name");
+            Double latitude = data.getDoubleExtra("latitude", 0);
+            Double longitude = data.getDoubleExtra("longitude", 0);
+            String address = data.getStringExtra("address");
+            LatLng point = new LatLng(latitude, longitude);
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
+            gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
         }
     }
 
@@ -486,6 +504,8 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        mSwipeRefreshLayout.setRefreshing(false);
+
     }
 }
 
