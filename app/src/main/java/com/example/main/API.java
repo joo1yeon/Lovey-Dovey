@@ -127,7 +127,7 @@ public interface API {
     Call<deleteMark> getDeleteMark(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
 
     @Multipart
-    @POST("/whispering/php/profileImg.php")
+    @POST("profileImg.php")
     Call<ResponseProfile_m> getLoad(
             @Part MultipartBody.Part File);
     //@Part("coupleID") String c_id,
