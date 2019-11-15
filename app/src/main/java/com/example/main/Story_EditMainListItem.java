@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class Story_EditMainListItem extends AppCompatActivity {
 
     TextView topTextView, tvPressIcon;
     Button btnCancel, btnConfirm;
+    ImageButton btnBack;
     ImageView icCalendar, icSelectMainImg, ivStoryMainImg;
     EditText etStoryTitle, etWriteText;
     int year, month, day, story_index;
@@ -54,6 +56,7 @@ public class Story_EditMainListItem extends AppCompatActivity {
         etStoryTitle = findViewById(R.id.et_story_title);
         etWriteText = findViewById(R.id.et_write_text);
         ivStoryMainImg = findViewById(R.id.story_main_img);
+        btnBack = findViewById(R.id.btn_back);
 
         topTextView.setText("스토리 수정");
 
@@ -130,6 +133,13 @@ public class Story_EditMainListItem extends AppCompatActivity {
                 Log.d("test", "스토리 수정_3. 서버에 저장");
                 editStory_singleton();
                 Log.d("test", "스토리 수정_4. 싱글톤에 추가");
+                finish();
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 finish();
             }
         });

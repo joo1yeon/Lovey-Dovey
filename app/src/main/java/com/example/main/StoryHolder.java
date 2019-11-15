@@ -1,8 +1,12 @@
 package com.example.main;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -28,6 +32,9 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
     private Context mContext;
     String story_id;
     Uri mUri;
+    Album_singleton album_singleton;
+    List<Story> stories;
+    View alert_delete;
 
     //TODO 항목 구성을 위한 뷰들을 findViewById 해주는 역할
     public StoryHolder(View itemView) {
@@ -73,8 +80,8 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
 
-            Album_singleton album_singleton = Album_singleton.get(mContext);
-            List<Story> stories = album_singleton.getStories();
+            album_singleton = Album_singleton.get(mContext);
+            stories = album_singleton.getStories();
 
             switch (menuItem.getItemId()) {
                 case 1002: //수정 항목 선택시
@@ -95,20 +102,23 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
                     break;
                 case 1003: //삭제 항목 선택시
 
-                    story_id = stories.get(getAdapterPosition()).getId();
-                    stories.remove(getAdapterPosition());
-                    deleteStory_server(); //서버에서 story 삭제
-                    StoryListFragment.mAdapter.notifyItemRemoved(getAdapterPosition());
-                    StoryListFragment.mAdapter.notifyItemRangeChanged(getAdapterPosition(), stories.size());
-                    //TODO DB에서 data 삭제
-//                    mDbOpenHelper = new DbOpenHelper(getActivity());
-//                    mDbOpenHelper.open();
-//                    mDbOpenHelper.create();
-////                        mDbOpenHelper.deleteColumn();
-//                    Log.d("test", "db에서 삭제");
-//                    mDbOpenHelper.close();
-                    break;
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(mContext);
+                    alert_delete = View.inflate(mContext, R.layout.alert_dialog_delete, null);
+                    dlg.setView(alert_delete);
+                    dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            story_id = stories.get(getAdapterPosition()).getId();
+                            stories.remove(getAdapterPosition());
+                            deleteStory_server(); //서버에서 story 삭제
+                            StoryListFragment.mAdapter.notifyItemRemoved(getAdapterPosition());
+                            StoryListFragment.mAdapter.notifyItemRangeChanged(getAdapterPosition(), stories.size());
+                        }
+                    });
+                    dlg.setNegativeButton("취소", null);
+                    dlg.show();
 
+                    break;
             }
             return true;
         }

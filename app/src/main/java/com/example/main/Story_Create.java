@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,10 +40,11 @@ import retrofit2.Response;
 public class Story_Create extends AppCompatActivity {
     Calendar cal = Calendar.getInstance();
     int year = cal.get(Calendar.YEAR);
-    int month = cal.get(Calendar.MONTH);
+    int month = cal.get(Calendar.MONTH) + 1;
     int day = cal.get(Calendar.DATE);
 
     Button btnNext, btnCancel;
+    ImageButton btnBack;
     ImageView icCalendar, icSelectMainImg, ivStoryMainImg;
     EditText etStoryTitle, etWriteText;
     TextView tvPressIcon;
@@ -78,6 +80,7 @@ public class Story_Create extends AppCompatActivity {
         etStoryTitle = findViewById(R.id.et_story_title);
         etWriteText = findViewById(R.id.et_write_text);
         tvPressIcon = findViewById(R.id.tv_press_icon);
+        btnBack = findViewById(R.id.btn_back);
 
         icCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +94,7 @@ public class Story_Create extends AppCompatActivity {
                         day = _dayOfMonth;
 
                     }
-                }, year, month, day);
+                }, year, month - 1, day);
                 dateDialog.show();
 
 //                FragmentManager manager = getSupportFragmentManager();
@@ -103,30 +106,27 @@ public class Story_Create extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mDbOpenHelper = new DbOpenHelper(getApplicationContext());
-//                mDbOpenHelper.open();
-//                mDbOpenHelper.create();
-//                mDbOpenHelper.deleteAllColumns();
-//                mDbOpenHelper.insertColumn(etStoryTitle.getText().toString(), year, month, day);
-//                Log.d("test", "DB에 저장됨/삭제됨");
-                Story story = new Story();
-                mTitle = etStoryTitle.getText().toString();
-                story.setTitle(mTitle);
-                story.setWriter(String.valueOf(MainActivity.coupleID));
-                story.setYear(year);
-                story.setMonth(month);
-                story.setDay(day);
-                story.setContents_text(etWriteText.getText().toString());
-                story.setMainImg(mUri);
-                story_id = story.getId();
-                contents = etWriteText.getText().toString();
-                Album_singleton.get(getApplicationContext()).addStory(story);
-//                mDbOpenHelper.close();
+                if (mUri == null) {
+                    Toast.makeText(Story_Create.this, "사진을 선택해주세요!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Story story = new Story();
+                    mTitle = etStoryTitle.getText().toString();
+                    story.setTitle(mTitle);
+                    story.setWriter(String.valueOf(MainActivity.coupleID));
+                    story.setYear(year);
+                    story.setMonth(month);
+                    story.setDay(day);
+                    story.setContents_text(etWriteText.getText().toString());
+                    story.setMainImg(mUri);
+                    story_id = story.getId();
+                    contents = etWriteText.getText().toString();
+                    Album_singleton.get(getApplicationContext()).addStory(story);
 //                Intent intent = new Intent(Story_Create.this, Story_EditContents.class); //스토리 수정 화면으로 이동
 //                startActivity(intent);
 //                uploadFile(); //서버에 이미지 업로드
-                saveStoryData(); //서버에 story data 저장
-                finish();
+                    saveStoryData(); //서버에 story data 저장
+                    finish();
+                }
             }
         });
 
@@ -148,6 +148,13 @@ public class Story_Create extends AppCompatActivity {
             }
         });
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -163,7 +170,6 @@ public class Story_Create extends AppCompatActivity {
 
                     Uri uri = data.getData();
                     Glide.with(this).load(uri).into(ivStoryMainImg);
-                    Log.d("test", "파일 경로" + uri.getPath());
                     mUri = uri;
                     img_uri = uri.toString();
 //                    uploadFile(); //서버에 이미지 업로드
@@ -234,7 +240,6 @@ public class Story_Create extends AppCompatActivity {
                     Log.d("test", "실패");
                 }
             });
-
 
 
 //            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file); //File 형태로 변환(parsing)
