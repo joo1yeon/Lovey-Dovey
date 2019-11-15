@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class Story_SearchResult extends AppCompatActivity {
     RecyclerView mRecyclerView;
     StoryAdapter mAdapter;
     TextView textResult;
+    ImageButton btnBack, btnClear;
     int year, month, day, count = 0;
     String storyTitle, storyWriter;
     public List<Story> stories; //Story 객체를 저장하는 비어있는 List 생성
@@ -45,6 +47,8 @@ public class Story_SearchResult extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.story_search_result_rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
         textResult = findViewById(R.id.text_result);
+        btnBack = findViewById(R.id.btn_back);
+        btnClear = findViewById(R.id.btn_clear);
 
         Intent intent = getIntent();
         year = intent.getIntExtra("year", 0);
@@ -56,6 +60,21 @@ public class Story_SearchResult extends AppCompatActivity {
         storyWriter = String.valueOf(MainActivity.coupleID);
 
         updateUI();
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                Story_Search.mActivity.finish();
+            }
+        });
 
     }
 
