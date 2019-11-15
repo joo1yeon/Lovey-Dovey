@@ -417,7 +417,7 @@ public class ToDoList extends AppCompatActivity {
                 });
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     halt();
                     e.printStackTrace();
