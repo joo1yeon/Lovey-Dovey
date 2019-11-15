@@ -260,14 +260,15 @@ public class ToDoList extends AppCompatActivity {
 
                             adapter1.addItem(responseTodo_.getContent_td(), "");
                             listView1.setItemChecked(i1++,false);
-                            adapter1.notifyDataSetChanged();
                         } else {
                             Log.d("select","추가완료2"+ responseTodo_.getContent_td());
 
                             adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
                             listView2.setItemChecked(i2++,true);
-                            adapter2.notifyDataSetChanged();
                         }
+
+                        adapter1.notifyDataSetChanged();
+                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.d("select", "조회 통신 1 에러");
@@ -291,8 +292,6 @@ public class ToDoList extends AppCompatActivity {
                 if(response.body().getTDInsert()) {
                     Log.d("insert", "추가완료");
                     Item_show();
-                    adapter1.notifyDataSetChanged();
-                    adapter2.notifyDataSetChanged();
                 }
                 } else Log.d("insert", "추가 통신1 에러");
             }
@@ -313,8 +312,6 @@ public class ToDoList extends AppCompatActivity {
                     if (response.body().getTDModify()) {
                         Log.d("update", "수정완료");
                         Item_show();
-                        adapter1.notifyDataSetChanged();
-                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.d("update", "수정 통신1 에러");
@@ -338,8 +335,6 @@ public class ToDoList extends AppCompatActivity {
                     if(response.body().getTDDelt()){
                         Log.d("delete","삭제완료");
                         Item_show();
-                        adapter1.notifyDataSetChanged();
-                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.d("delete", "삭제 통신1 에러");
@@ -363,8 +358,6 @@ public class ToDoList extends AppCompatActivity {
                     if(response.body().getTDClick()){
                         Log.e("click","클릭제어완료");
                         Item_show();
-                        adapter1.notifyDataSetChanged();
-                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.e("click","클릭 통신1 에러");
