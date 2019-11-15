@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Typeface;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -85,6 +87,7 @@ public class Main extends Fragment {
     int i;
 
     static Uri uri_ = Uri.parse("android.resource://com.example.main/drawable/basic");
+    Bitmap bitmap;
     String url="android.resource://com.example.main/drawable/basic";
     //화면 보여주기 전에 todolist content가 담긴 ArrayList 삭제 및 초기화 후 추가
     @Override
@@ -340,7 +343,6 @@ public class Main extends Fragment {
                             name.setText(response.body().getName());
                         }
 
-
                     }
 
                     @Override
@@ -518,7 +520,11 @@ public class Main extends Fragment {
                                .override(70, 70)
                                .into(profile_img);
 
-                       uri_ = uri;
+                       Log.e("uri",uri.toString());
+                       uri_=uri;
+                       //uri_ = Uri.parse("file://" + data.getDataString());
+                       //bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                       Log.e("uri",uri_.toString());
 
                    } catch (Exception e) {
                        e.printStackTrace();
@@ -535,16 +541,14 @@ public class Main extends Fragment {
         //Map<String, RequestBody> map = new HashMap<>();
 
         File file = new File(uri_.getPath());
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         //map.put("file\"; filename=\"" + file.getName() + "\"", requestBody);
-        //MultipartBody.Part upLoad = MultipartBody.Part.createFormData("upload", file.getName(),requestBody);
-        //RequestBody des = RequestBody.create(MediaType.parse("text/plain"),"image-type");
-        //Log.e("profile", "되라얍"+ file);
-        //Log.e("profile", "되라얍"+ requestBody.toString());
-        //Log.e("profile", "되라얍"+ upLoad.toString());
+        MultipartBody.Part upLoad = MultipartBody.Part.createFormData("uploadfile", file.getName(),requestBody);
+        Log.e("profile", "되라얍"+ file);
+        Log.e("profile", "되라얍"+ requestBody.toString());
+        Log.e("profile", "되라얍"+ upLoad.toString());
 
-
-        Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(requestBody);
+        Call<ResponseProfile_m> res = Net.getInstance().getApi().getLoad(upLoad);
         res.enqueue(new Callback<ResponseProfile_m>() {
             @Override
             public void onResponse(Call<ResponseProfile_m> call, Response<ResponseProfile_m> response) {

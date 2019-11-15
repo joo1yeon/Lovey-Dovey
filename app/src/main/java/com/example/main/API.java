@@ -122,10 +122,10 @@ public interface API {
     @GET("deleteMark.php")
     Call<deleteMark> getDeleteMark(@Query("NAME") String name, @Query("ADDRESS") String address, @Query("LAT") double lat, @Query("LNG") double lng, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DATE") int date, @Query("COUPLE") int couple);
 
-    //@Multipart
+    @Multipart
     @POST("profileImg.php")
     Call<ResponseProfile_m> getLoad(
-            @Body RequestBody requestBody);
+            @Part MultipartBody.Part file);
 
     //@Part("coupleID") String c_id,
     //@Part MultipartBody.Part file,
