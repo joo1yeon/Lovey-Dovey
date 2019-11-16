@@ -2,17 +2,14 @@ package com.example.main;
 
 
 import android.annotation.SuppressLint;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Path;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +19,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -47,14 +45,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -489,7 +484,6 @@ public class Main extends Fragment {
                        e.printStackTrace();
                    }
                    if (index >= todo.size()) {   //String 배열 때length
-                       Item_Content();
                        index = 0;
                    }
 
@@ -539,8 +533,8 @@ public class Main extends Fragment {
     //TODO 이미지 업로드 하기
     public void profile_UpLoad(){
         //Map<String, RequestBody> map = new HashMap<>();
-
-        File file = new File(uri_.getPath());
+//"file://" + getRealPathFromURI(uri_)
+        File file = new File(getRealPathFromURI(uri_));
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         //map.put("file\"; filename=\"" + file.getName() + "\"", requestBody);
         MultipartBody.Part upLoad = MultipartBody.Part.createFormData("uploadfile", file.getName(),requestBody);
@@ -569,6 +563,15 @@ public class Main extends Fragment {
         });
 
     }
-
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(getContext(), contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
 
 }
