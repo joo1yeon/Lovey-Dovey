@@ -157,7 +157,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         Glide.with(this).load(image).into(imageView);
 
         place.addView(imageView);      // 이미지 추가
-        place.setFlipInterval(3000);       // 자동 이미지 슬라이드 딜레이시간(1000 당 1초)
+        place.setFlipInterval(2000);       // 자동 이미지 슬라이드 딜레이시간(1000 당 1초)
         place.setAutoStart(true);          // 자동 시작 유무 설정
 
         // animation
