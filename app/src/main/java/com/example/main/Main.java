@@ -275,7 +275,7 @@ public class Main extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        profile_UpLoad();
+                        //profile_UpLoad();
 
                         //메인화면 프로필 변경
                         Glide.with(context)
@@ -292,7 +292,7 @@ public class Main extends Fragment {
                             @Override
                             public void onResponse(Call<ResponseInfoUpdate> call, Response<ResponseInfoUpdate> response) {
                                 if (response.body().getUpdate()) {
-                                    //Toast.makeText(getContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                                     MainActivity.email = email.getText().toString();
                                     MainActivity.nickname = name.getText().toString();
                                     dl.dismiss();
