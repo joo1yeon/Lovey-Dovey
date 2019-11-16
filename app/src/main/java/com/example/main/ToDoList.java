@@ -95,10 +95,7 @@ public class ToDoList extends AppCompatActivity {
         //Adapter 달기
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
-
-
-        //todolist 조회
-        Item_show();
+        
 
 
 
