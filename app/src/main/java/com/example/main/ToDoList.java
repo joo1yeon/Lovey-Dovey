@@ -210,7 +210,6 @@ public class ToDoList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ToDoList_ListItem listItem = adapter2.listViewItems.get(i);
                 String content = listItem.getContent();
-
                 Item_Click(content,"","false");
             }
         });
@@ -384,16 +383,16 @@ public class ToDoList extends AppCompatActivity {
             public void onResponse(Call<ResponseTD_click> call, Response<ResponseTD_click> response) {
                 if(response.isSuccessful()){
                     if(response.body().getTDClick()){
-                        Log.e("click","클릭제어완료");
+                        Log.d("click","클릭제어완료");
                         Item_show();
                     }
                 }
-                else Log.e("click","클릭 통신1 에러");
+                else Log.d("click","클릭 통신1 에러");
             }
 
             @Override
             public void onFailure(Call<ResponseTD_click> call, Throwable t) {
-                Log.e("click", "클릭 통신3 에러");
+                Log.d("click", "클릭 통신3 에러");
             }
         });
     }
