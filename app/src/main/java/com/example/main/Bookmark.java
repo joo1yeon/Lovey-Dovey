@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ public class Bookmark extends AppCompatActivity {
     Bookmark_ListViewAdapter adapter;
     ArrayList<Datecourse_ListViewItem> bookmark;
     String[] PlaceN = new String[15];
+    String[] Placeimage = new String[15];
     String[] place_id = new String[15];
     String id;
     ImageButton btnBack;
@@ -71,6 +73,18 @@ public class Bookmark extends AppCompatActivity {
             }
         });
 
+        bookmarklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent2 = new Intent(Bookmark.this, Datecourse_Fragment.class);
+                intent2.putExtra("PlaceN", PlaceN[position]);
+                intent2.putExtra("Placeimage", Placeimage[position]);
+                intent2.putExtra("Placeid", place_id[position]);
+                intent2.putExtra("id", MainActivity.id);
+                startActivity(intent2);
+            }
+        });
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,8 +104,6 @@ public class Bookmark extends AppCompatActivity {
     public class Bookmark_ListViewAdapter extends BaseAdapter {
         Context context;
         ArrayList<Datecourse_ListViewItem> bookmark = new ArrayList<Datecourse_ListViewItem>();
-        String[] Placeimage = new String[15];
-
 
         public Bookmark_ListViewAdapter(Context context, ArrayList<Datecourse_ListViewItem> _bookmark) {
             this.context = context;

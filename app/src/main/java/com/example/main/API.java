@@ -41,7 +41,6 @@ public interface API {
     @GET("date_img2.php")
     Call<List<ResponseDate_image2>> getDate_image2(@Query("ID") int id);
 
-
     @GET("date_img3.php")
     Call<ResponseDate_image3> getDate_image3(@Query("Place_id") String place_id, @Query("id") int id);
 

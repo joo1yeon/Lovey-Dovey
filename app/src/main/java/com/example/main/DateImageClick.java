@@ -26,6 +26,7 @@ public class DateImageClick extends AppCompatActivity {
     String[] PlaceN = new String[6];
     String[] Placeimage = new String[6];
     String[] place_id = new String[6];
+    String[] Placeimage2 = new String[6];
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class DateImageClick extends AppCompatActivity {
                         PlaceN[i] = responseDate_Image2.getname();
                         Placeimage[i] = responseDate_Image2.getimage();
                         place_id[i] = responseDate_Image2.getPlace_id();
+                        Placeimage2[i]= responseDate_Image2.getimage2();
                         ++i;
                     }
                 }
@@ -73,6 +75,7 @@ public class DateImageClick extends AppCompatActivity {
                 Intent intent = new Intent(DateImageClick.this, Datecourse_Fragment.class);
                 intent.putExtra("PlaceN", PlaceN[position]);
                 intent.putExtra("Placeimage", Placeimage[position]);
+                intent.putExtra("Placeimage2", Placeimage2[position]);
                 intent.putExtra("Placeid", place_id[position]);
                 intent.putExtra("id", id);
                 startActivity(intent);
