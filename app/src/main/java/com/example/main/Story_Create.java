@@ -237,7 +237,6 @@ public class Story_Create extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseImgUpload> call, Throwable t) {
-                    Log.d("test", "실패");
                 }
             });
 
