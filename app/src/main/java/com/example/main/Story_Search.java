@@ -28,7 +28,7 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
     RadioGroup mRadioGroup;
     RadioButton rdo_user1, rdo_user2;
     private static final String DIALOG_DATE = "DialogDate";
-    int year, month, day;
+    int year, month, day, tag;
     String storyTitle, storyWriter;
     static Activity mActivity;
 
@@ -95,12 +95,26 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
             @Override
             public void onClick(View view) {
                 storyTitle = etTitleSearch.getText().toString();
-                if (year == 0 || month == 0 || day == 0) {
-                    Toast.makeText(Story_Search.this, "날짜를 선택해주세요.", Toast.LENGTH_SHORT).show();
-                } else if (storyTitle.equals("")) {
-                    Toast.makeText(Story_Search.this, "제목을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                }else {
+                if (year == 0 && month == 0 && day == 0 && storyTitle.equals("")) {
+                    Toast.makeText(Story_Search.this, "입력된 항목이 없습니다.", Toast.LENGTH_SHORT).show();
+                }else if (year == 0 || month == 0 || day == 0) {
+                    tag = 0;
                     Intent intent = new Intent(Story_Search.this, Story_SearchResult.class);
+                    intent.putExtra("tag", tag);
+                    intent.putExtra("storyTitle", storyTitle);
+                    startActivity(intent);
+                }else if (storyTitle.equals("")) {
+                    tag = 1;
+                    Intent intent = new Intent(Story_Search.this, Story_SearchResult.class);
+                    intent.putExtra("tag", tag);
+                    intent.putExtra("year", year);
+                    intent.putExtra("month", month);
+                    intent.putExtra("day", day);
+                    startActivity(intent);
+                }else {
+                    tag = 2;
+                    Intent intent = new Intent(Story_Search.this, Story_SearchResult.class);
+                    intent.putExtra("tag", tag);
                     intent.putExtra("year", year);
                     intent.putExtra("month", month);
                     intent.putExtra("day", day);

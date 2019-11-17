@@ -15,4 +15,5 @@ public class ResponseServer_Story {
         return result;
     }
     public boolean deleteStoryData() { return result; }
+    public boolean updateStory() {return result; }
 }
