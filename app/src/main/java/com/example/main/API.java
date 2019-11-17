@@ -77,6 +77,15 @@ public interface API {
     @GET("searchStory.php")
     Call<List<ResponseStory>> searchStory(@Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String storyTitle, @Query("WRITER") String storyWriter);
 
+    @GET("searchStory_title.php")
+    Call<List<ResponseStory>> searchStory_title(@Query("STORY_TITLE") String storyTitle, @Query("WRITER") String storyWriter);
+
+    @GET("searchStory_date.php")
+    Call<List<ResponseStory>> searchStory_date(@Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("WRITER") String storyWriter);
+
+    @GET("updateStory.php")
+    Call<ResponseServer_Story> updateStory(@Query("STORY_ID") String story_id, @Query("WRITER") String writer, @Query("YEAR") int year, @Query("MONTH") int month, @Query("DAY") int day, @Query("STORY_TITLE") String title, @Query("IMG_PATH") String img_path, @Query("CONTENTS") String contents);
+
 //    @Multipart
 //    @POST("upload_img.php")
 //    Call<ResponseImgUpload> upload(
