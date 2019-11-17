@@ -35,7 +35,7 @@ public class Story_SearchResult extends AppCompatActivity {
     StoryAdapter mAdapter;
     TextView textResult;
     ImageButton btnBack, btnClear;
-    int year, month, day, count = 0, tag;
+    int year, month, day, count = 0;
     String storyTitle, storyWriter;
 //    Album_singleton album_singleton;
     List<Story> stories; //Story 객체를 저장하는 비어있는 List 생성
@@ -51,31 +51,14 @@ public class Story_SearchResult extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
         btnClear = findViewById(R.id.btn_clear);
 
-        storyWriter = String.valueOf(MainActivity.coupleID);
-
         Intent intent = getIntent();
-        tag = intent.getIntExtra("tag", -1);
-
-        switch (tag) {
-            case 0: //제목만 입력한 경우
-                storyTitle = intent.getStringExtra("storyTitle");
-                break;
-            case 1: //날짜만 입력한 경우
-                year = intent.getIntExtra("year", 0);
-                month = intent.getIntExtra("month", 0);
-                day = intent.getIntExtra("day", 0);
-                break;
-            case 2: //모두 입력한 경우
-                storyTitle = intent.getStringExtra("storyTitle");
-                year = intent.getIntExtra("year", 0);
-                month = intent.getIntExtra("month", 0);
-                day = intent.getIntExtra("day", 0);
-                break;
-
-                default:
-                    Toast.makeText(this, "데이터가 없습니다.", Toast.LENGTH_SHORT).show();
-                    storyTitle = "null";
-        }
+        year = intent.getIntExtra("year", 0);
+        Log.d("test", String.valueOf(year));
+        month = intent.getIntExtra("month", 0);
+        day = intent.getIntExtra("day", 0);
+        storyTitle = intent.getStringExtra("storyTitle");
+//        Log.d("test", "인텐트에서 받아온 제목: "+ storyTitle);
+        storyWriter = String.valueOf(MainActivity.coupleID);
 
         stories = new ArrayList<>();
         searchStory();
@@ -105,28 +88,13 @@ public class Story_SearchResult extends AppCompatActivity {
 
     //TODO 스토리 검색
     public void searchStory() {
-        Call<List<ResponseStory>> res;
-        switch (tag) {
-            case 0: //제목만 입력한 경우
-                res = Net.getInstance().getApi().searchStory_title(storyTitle, storyWriter);
-                break;
-            case 1: //날짜만 입력한 경우
-                res = Net.getInstance().getApi().searchStory_date(year, month, day, storyWriter);
-                break;
-            case 2: //모두 입력한 경우
-                res = Net.getInstance().getApi().searchStory(year, month, day, storyTitle, storyWriter);
-                break;
-
-            default:
-                Toast.makeText(this, "데이터가 없습니다.", Toast.LENGTH_SHORT).show();
-                res = Net.getInstance().getApi().searchStory(year, month, day, storyTitle, storyWriter);
-        }
+        Call<List<ResponseStory>> res = Net.getInstance().getApi().searchStory(year, month, day, storyTitle, storyWriter);
+        Log.d("test", storyTitle + storyWriter);
         res.enqueue(new Callback<List<ResponseStory>>() {
             @Override
             public void onResponse(Call<List<ResponseStory>> call, Response<List<ResponseStory>> response) {
                 if (response.isSuccessful()) {
                     Log.d("test", "통신 성공");
-
                     List<ResponseStory> responseGet = response.body();
                     if (response.body().isEmpty()) Log.d("test", "response body null");
                     for (ResponseStory responseStory : responseGet) {

@@ -195,7 +195,7 @@ public class Story_Create extends AppCompatActivity {
 
     //TODO 서버에 story data 저장하기
     public void saveStoryData() {
-        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, img_uri, contents);
+        Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, mUri.toString(), contents);
         res.enqueue(new Callback<ResponseServer_Story>() {
             @Override
             public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {

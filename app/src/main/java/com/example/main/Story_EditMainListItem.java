@@ -39,8 +39,6 @@ public class Story_EditMainListItem extends AppCompatActivity {
     int year, month, day, story_index;
     Uri mUri;
     String story_id, mTitle, img_uri, contents;
-    Album_singleton album_singleton;
-    List<Story> mStories;
 //    private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_CODE = 10; //갤러리 연동 요청 상수
 
@@ -122,18 +120,19 @@ public class Story_EditMainListItem extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                album_singleton = Album_singleton.get(getApplicationContext());
-                mStories = album_singleton.getStories();
+                Album_singleton album_singleton = Album_singleton.get(Story_EditMainListItem.this);
+                List<Story> stories = album_singleton.getStories();
 
-                mStories.remove(story_index);
-                deleteStory_server();
+                deleteStory_server(); //서버에서 story 삭제
+                Log.d("test", "스토리 수정_1. 서버에서 삭제됨");
+                stories.remove(story_index);
+                Log.d("test", "스토리 수정_2. 싱글톤에서 삭제됨");
                 mTitle = etStoryTitle.getText().toString();
-                Log.d("test", "수정 내용" + etStoryTitle.getText().toString());
-                Log.d("test", "수정 내용" + mTitle);
                 contents = etWriteText.getText().toString();
-                editStory_singleton();
                 saveStoryData();
-//                updateStory();
+                Log.d("test", "스토리 수정_3. 서버에 저장");
+                editStory_singleton();
+                Log.d("test", "스토리 수정_4. 싱글톤에 추가");
                 finish();
             }
         });
@@ -162,11 +161,17 @@ public class Story_EditMainListItem extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 try {
 
+//                    InputStream in = getContentResolver().openInputStream(data.getData());
+//                    Bitmap img = BitmapFactory.decodeStream(in);
+//                    in.close();
+//                    ivStoryMainImg.setImageBitmap(img);
+
                     Uri uri = data.getData();
                     Glide.with(this).load(uri).into(ivStoryMainImg);
                     mUri = uri;
                     img_uri = uri.toString();
 //                    uploadFile(); //서버에 이미지 업로드
+
 
                 } catch (Exception e) {
 
@@ -180,6 +185,13 @@ public class Story_EditMainListItem extends AppCompatActivity {
     //TODO 서버에 story data 저장하기
     public void saveStoryData() {
         Call<ResponseServer_Story> res = Net.getInstance().getApi().setStoryData(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, img_uri, contents);
+        Log.d("test", story_id + "스토리 아이디");
+        Log.d("test", String.valueOf(MainActivity.coupleID) + "년");
+        Log.d("test", mTitle + "제목");
+        Log.d("test", img_uri + "이미지경로");
+        Log.d("test", year + "년");
+        Log.d("test", month + "월");
+        Log.d("test", day + "일");
         res.enqueue(new Callback<ResponseServer_Story>() {
             @Override
             public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
@@ -195,28 +207,6 @@ public class Story_EditMainListItem extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseServer_Story> call, Throwable t) {
                 Toast.makeText(Story_EditMainListItem.this,"통신 실패",Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    //TODO 스토리 수정
-    void updateStory() {
-        Call<ResponseServer_Story> res = Net.getInstance().getApi().updateStory(story_id, String.valueOf(MainActivity.coupleID), year, month, day, mTitle, img_uri, contents);
-        res.enqueue(new Callback<ResponseServer_Story>() {
-            @Override
-            public void onResponse(Call<ResponseServer_Story> call, Response<ResponseServer_Story> response) {
-                if (response.isSuccessful()) {
-                    ResponseServer_Story responseGet = response.body();
-                    Log.d("test", "스토리 수정 성공" );
-                    if (responseGet.updateStory()) {
-                        Toast.makeText(Story_EditMainListItem.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                } else Toast.makeText(Story_EditMainListItem.this,"서버 연결 ㅇㅇ 저장은 ㄴㄴ",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseServer_Story> call, Throwable t) {
-
             }
         });
     }
@@ -243,7 +233,6 @@ public class Story_EditMainListItem extends AppCompatActivity {
     }
 
     public void editStory_singleton() {
-
         Story story = new Story();
         mTitle = etStoryTitle.getText().toString();
         story.setTitle(mTitle);
@@ -255,7 +244,6 @@ public class Story_EditMainListItem extends AppCompatActivity {
         story.setMainImg(mUri);
         story_id = story.getId();
         contents = etWriteText.getText().toString();
-        album_singleton.addStory(story);
-//        Album_singleton.get(getApplicationContext()).addStory(story);
+        Album_singleton.get(getApplicationContext()).addStory(story);
     }
 }
