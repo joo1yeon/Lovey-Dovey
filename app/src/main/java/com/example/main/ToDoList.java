@@ -1,30 +1,22 @@
 package com.example.main;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SlidingDrawer;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +32,8 @@ public class ToDoList extends AppCompatActivity {
     TextView change, delete;
     ListView listView1, listView2;                                      //선택한거, 안한거
     ToDoList_ChoiceListAdapter adapter1, adapter2;                     //선택한거, 안한거
+    Thread Renewal;
+
 
     //MyDBHelper todoDB;
     //SQLiteDatabase sqlDB;
@@ -48,7 +42,28 @@ public class ToDoList extends AppCompatActivity {
 
     int i1, i2;
 
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
 
+    //TODO 투두리스트 화면 켜지기 전에 스레드 호출
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Renewal = null;
+        Renewal = new Item_renewal();
+        Renewal.start();
+    }
+
+    //TODO 투두리스트 꺼지면 스레드 정지
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Renewal.interrupt();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +75,7 @@ public class ToDoList extends AppCompatActivity {
         //뒤로가기 버튼 인플레이트
         btnBack = findViewById(R.id.btnBack);
 
-        //뒤로가기 버튼 클릭 시 투두화면 닫힘
+        //TODO 뒤로가기 버튼 클릭 시 투두화면 닫힘
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,10 +95,10 @@ public class ToDoList extends AppCompatActivity {
         //Adapter 달기
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
+        
 
 
-        //todolist 조회
-        Item_show();
+
 
         //TODO# 체크되지 않은 투두리스트 클릭했을 때 (클릭제어)
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -239,37 +254,36 @@ public class ToDoList extends AppCompatActivity {
 
     //TODO# To-Do-List 조회
     public void Item_show(){
+        adapter1.clearItem();
+        adapter2.clearItem();
+        i1 = 0;
+        i2 = 0;
         Call<List<ResponseTODO>> res = Net.getInstance().getApi().getInquiry(MainActivity.coupleID);
         res.enqueue(new Callback<List<ResponseTODO>>() {
             @Override
             public void onResponse(Call<List<ResponseTODO>> call, Response<List<ResponseTODO>> response) {
-                if(response.isSuccessful()){
-
-                    adapter1.clearItem();
-                    adapter2.clearItem();
-                    i1 = 0;
-                    i2 = 0;
+                if(response.isSuccessful()) {
 
                     List<ResponseTODO> responseTodo = response.body();
 
-                    for (ResponseTODO responseTodo_ : responseTodo){
+                    for (ResponseTODO responseTodo_ : responseTodo) {
 
-                        if(false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
-                            Log.d("select","추가완료1"+responseTodo_.getContent_td());
+                        if (false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
+                            //Log.d("select", "추가완료1" + responseTodo_.getContent_td());
 
                             adapter1.addItem(responseTodo_.getContent_td(), "");
-                            listView1.setItemChecked(i1++,false);
+                            listView1.setItemChecked(i1++, false);
                         } else {
-                            Log.d("select","추가완료2"+ responseTodo_.getContent_td());
+                            //Log.d("select", "추가완료2" + responseTodo_.getContent_td());
 
                             adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
-                            listView2.setItemChecked(i2++,true);
+                            listView2.setItemChecked(i2++, true);
                         }
+
                         adapter1.notifyDataSetChanged();
                         adapter2.notifyDataSetChanged();
                     }
-                }
-                else Log.d("select", "조회 통신 1 에러");
+                } else Log.d("select", "조회 통신 1 에러");
             }
             @Override
             public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
@@ -333,6 +347,8 @@ public class ToDoList extends AppCompatActivity {
                     if(response.body().getTDDelt()){
                         Log.d("delete","삭제완료");
                         Item_show();
+                        adapter1.notifyDataSetChanged();
+                        adapter2.notifyDataSetChanged();
                     }
                 }
                 else Log.d("delete", "삭제 통신1 에러");
@@ -366,6 +382,38 @@ public class ToDoList extends AppCompatActivity {
                 Log.d("click", "클릭 통신3 에러");
             }
         });
+    }
+
+    public class Item_renewal extends Thread {
+
+        boolean running = false;     //시작과 종료에 필요한 변수
+
+        @Override
+        public void run() {
+            running = true;
+
+            while (running) {                            //무한루프, Todolist 계속 돌아가게 함
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Item_show();
+                    }
+                });
+
+                try {
+                    Thread.sleep(800);
+                } catch (InterruptedException e) {
+                    halt();
+                    e.printStackTrace();
+                    Log.e("TODO","스레드 멈춘거 맞아^^");
+                }
+            }
+        }
+
+        public void halt() {
+            running = false;
+        }
+
     }
 
     //TODO# 로컬디비 조회, 삭제, 수정, 클릭제어

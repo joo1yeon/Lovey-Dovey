@@ -31,8 +31,10 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
     TextView placeN, dateInfo, dateReview, infoLine, reviewLine;
     Date_Info date_info;
     Date_Review date_review;
-    ImageView favorite, place;
-    String PlaceName, Placeimage, place_id;
+    ImageView favorite;
+    //ImageView place;
+    ViewFlipper place;
+    String PlaceName, Placeimage, Placeimage2, place_id;
     int id;
     String nickname = MainActivity.id;
     int star;
@@ -54,11 +56,16 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         Intent intent = getIntent();
         PlaceName = intent.getStringExtra("PlaceN");
         Placeimage = intent.getStringExtra("Placeimage");
+        Placeimage2 = intent.getStringExtra("Placeimage2");
         place_id = intent.getStringExtra("Placeid");
         id = intent.getIntExtra("id", 0);
 
         placeN.setText(PlaceName);
-        Glide.with(this).load(Placeimage).into(place);
+
+        String images[]={ Placeimage, Placeimage2};
+        for(String image : images){
+            fllipperImages(image);
+        }
 
         date_info = new Date_Info(place_id, id);
         date_review = new Date_Review(place_id, PlaceName);
@@ -68,11 +75,11 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 if (!favorite.isSelected()) {
                     favorite.setSelected(true);
-                    star=0;
+                    star = 0;
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     favorite.setSelected(false);
-                    star=1;
+                    star = 1;
                     Toast.makeText(Datecourse_Fragment.this, "즐겨찾기에서 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 }
                 Call<ResponseBookmark> res = Net.getInstance().getApi().getBookmark(place_id, PlaceName, Placeimage, star, nickname);
@@ -80,6 +87,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onResponse(Call<ResponseBookmark> call, Response<ResponseBookmark> response) {
                     }
+
                     @Override
                     public void onFailure(Call<ResponseBookmark> call, Throwable t) {
                         Log.d("III", "fail");
@@ -89,17 +97,18 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
         });
 
 
-        Call<ResponseBookmarkSel> res = Net.getInstance().getApi().getBookmarkSel(place_id,nickname);
+        Call<ResponseBookmarkSel> res = Net.getInstance().getApi().getBookmarkSel(place_id, nickname);
         res.enqueue(new Callback<ResponseBookmarkSel>() {
             @Override
             public void onResponse(Call<ResponseBookmarkSel> call, Response<ResponseBookmarkSel> response) {
                 if (response.isSuccessful()) {
-                    ResponseBookmarkSel responseookmarkSel= response.body();
-                    if(responseookmarkSel.getSuccess()) {
+                    ResponseBookmarkSel responseookmarkSel = response.body();
+                    if (responseookmarkSel.getSuccess()) {
                         favorite.setSelected(true);
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseBookmarkSel> call, Throwable t) {
                 Log.d("III", "fail");
@@ -141,5 +150,18 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
                         .commit();
                 break;
         }
+    }
+    public void fllipperImages(String image){
+        ImageView imageView = new ImageView(this);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        Glide.with(this).load(image).into(imageView);
+
+        place.addView(imageView);      // 이미지 추가
+        place.setFlipInterval(2000);       // 자동 이미지 슬라이드 딜레이시간(1000 당 1초)
+        place.setAutoStart(true);          // 자동 시작 유무 설정
+
+        // animation
+        place.setInAnimation(this,android.R.anim.slide_in_left);
+        place.setOutAnimation(this,android.R.anim.slide_out_right);
     }
 }

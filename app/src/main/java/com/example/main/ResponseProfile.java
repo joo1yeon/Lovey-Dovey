@@ -8,6 +8,7 @@ public class ResponseProfile {
     @SerializedName("email")
     private String email;
 
+
     public ResponseProfile(String _name, String _email){
         name=_name;
         email=_email;

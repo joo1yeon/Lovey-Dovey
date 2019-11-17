@@ -37,7 +37,8 @@ public class Story_SearchResult extends AppCompatActivity {
     ImageButton btnBack, btnClear;
     int year, month, day, count = 0;
     String storyTitle, storyWriter;
-    public List<Story> stories; //Story 객체를 저장하는 비어있는 List 생성
+//    Album_singleton album_singleton;
+    List<Story> stories; //Story 객체를 저장하는 비어있는 List 생성
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +60,8 @@ public class Story_SearchResult extends AppCompatActivity {
 //        Log.d("test", "인텐트에서 받아온 제목: "+ storyTitle);
         storyWriter = String.valueOf(MainActivity.coupleID);
 
-        updateUI();
+        stories = new ArrayList<>();
+        searchStory();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,15 +78,6 @@ public class Story_SearchResult extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
-//        Album_singleton album_singleton = Album_singleton.get(getApplication());
-//        List<Story> stories = album_singleton.getStories();
-
-        stories = new ArrayList<>();
-
-        searchStory();
     }
 
 //    @Override
@@ -123,15 +116,18 @@ public class Story_SearchResult extends AppCompatActivity {
                     }
                 } else Log.d("test", "통신 1 에러");
 
-                if (mAdapter == null) {
-                    mAdapter = new StoryAdapter(stories);
-                    mRecyclerView.setAdapter(mAdapter);
-                    Log.d("test", "if문");
-                } else {
-                    mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
-                    mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
-                    Log.d("test", "리스트 다시 로드하기");
-                }
+//                if (mAdapter == null) {
+//                    mAdapter = new StoryAdapter(stories);
+//                    mRecyclerView.setAdapter(mAdapter);
+//                    Log.d("test", "if문");
+//                } else {
+//                    mAdapter.notifyItemRangeInserted(stories.size(), stories.size() + 1);
+//                    mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
+//                    Log.d("test", "리스트 다시 로드하기");
+//                }
+
+                mAdapter = new StoryAdapter(stories);
+                mRecyclerView.setAdapter(mAdapter);
 
                 if (count == 0) {
                     textResult.setText("검색 결과가 없습니다.");

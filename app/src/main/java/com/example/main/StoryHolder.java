@@ -62,8 +62,9 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
         mStoryTitle.setText(mStory.getTitle());
         mStoryDate.setText(mStory.getYear() + "년 " + mStory.getMonth() + "월 " + mStory.getDay() + "일");
         mContentsText.setText(mStory.getContents_text());
-        Uri uri = mStory.getMainImg();
-        Glide.with(mContext).load(uri).into(mStoryMainImg);
+        mUri = mStory.getMainImg();
+        Glide.with(mContext).load(mUri).into(mStoryMainImg);
+        Log.d("test", "이미지 할당"+mUri.toString());
     }
 
     @Override
