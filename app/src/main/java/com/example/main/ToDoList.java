@@ -95,9 +95,6 @@ public class ToDoList extends AppCompatActivity {
         //Adapter 달기
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
-        
-
-
 
 
         //TODO# 체크되지 않은 투두리스트 클릭했을 때 (클릭제어)
@@ -401,7 +398,7 @@ public class ToDoList extends AppCompatActivity {
                 });
 
                 try {
-                    Thread.sleep(800);
+                    Thread.sleep(1500);
                 } catch (InterruptedException e) {
                     halt();
                     e.printStackTrace();
