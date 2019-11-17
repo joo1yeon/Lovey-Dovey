@@ -53,16 +53,16 @@ public class ToDoList extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Renewal = null;
-        Renewal = new Item_renewal();
-        Renewal.start();
+        //Renewal = null;
+        //Renewal = new Item_renewal();
+        //Renewal.start();
     }
 
     //TODO 투두리스트 꺼지면 스레드 정지
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Renewal.interrupt();
+        //Renewal.interrupt();
     }
 
     @Override
@@ -96,7 +96,7 @@ public class ToDoList extends AppCompatActivity {
         listView1.setAdapter(adapter1);
         listView2.setAdapter(adapter2);
         
-
+        Item_show();
 
 
 
@@ -384,7 +384,7 @@ public class ToDoList extends AppCompatActivity {
         });
     }
 
-    public class Item_renewal extends Thread {
+    /*public class Item_renewal extends Thread {
 
         boolean running = false;     //시작과 종료에 필요한 변수
 
@@ -414,7 +414,7 @@ public class ToDoList extends AppCompatActivity {
             running = false;
         }
 
-    }
+    }*/
 
     //TODO# 로컬디비 조회, 삭제, 수정, 클릭제어
 
