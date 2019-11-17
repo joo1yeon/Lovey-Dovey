@@ -71,10 +71,10 @@ public class Notice extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Notice.this, MainActivity.class);
-                intent.putExtra("ID", id);
-                intent.putExtra("NICK", nickname);
-                intent.putExtra("EMAIL", email);
-                intent.putExtra("COUPLE", couple);
+                intent.putExtra("ID", MainActivity.id);
+                intent.putExtra("NICK", MainActivity.nickname);
+                intent.putExtra("EMAIL", MainActivity.email);
+                intent.putExtra("COUPLE", MainActivity.coupleID);
                 startActivity(intent);
                 finish();
             }
