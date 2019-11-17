@@ -99,7 +99,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     private Boolean isFabOpen = false;
     private FloatingActionButton btnFab, fabSearch, fabCal, fabToday, btnSave;
     private BottomSheetDialog modalBottomSheet;
-    SwipeRefreshLayout mSwipeRefreshLayout;
 
     public FootPrint() {
 
@@ -113,7 +112,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     @Nullable
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_foot, container, false);
-        mSwipeRefreshLayout = layout.findViewById(R.id.swipe_refresh);
 
         fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
@@ -238,19 +236,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
         map.onCreate(savedInstanceState);
         map.getMapAsync(this);
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                printMarker(gMap,year,month,day);
-            }
-        });
-
-        mSwipeRefreshLayout.setColorSchemeResources(
-//                android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light
-        );
 
         return layout;
     }
@@ -299,37 +284,39 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapClick(LatLng latLng) {
                 try {
-                    btnSave.setVisibility(View.VISIBLE);
-                    int year = cal.getTime().getYear() + 1900;
-                    int month = cal.getTime().getMonth() + 1;
-                    int date = cal.getTime().getDate();
-                    int hour = cal.getTime().getHours();
-                    int min = cal.getTime().getMinutes();
-                    int sec = cal.getTime().getSeconds();
-                    Geocoder geocoder = new Geocoder(getContext());
-                    List<Address> list = null;
-                    try {
-                        list = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    String[] splitStr = list.get(0).toString().split(",");
-                    String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2);
-                    markerOptions.title(address);
-                    markerOptions.snippet(address);
-                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index], 150, 170)));
-                    markerOptions.position(latLng);
-                    gMap.addMarker(markerOptions);
-                    gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                    gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+                    if (index < 15) {
+                        btnSave.setVisibility(View.VISIBLE);
+                        int year = cal.getTime().getYear() + 1900;
+                        int month = cal.getTime().getMonth() + 1;
+                        int date = cal.getTime().getDate();
+                        int hour = cal.getTime().getHours();
+                        int min = cal.getTime().getMinutes();
+                        int sec = cal.getTime().getSeconds();
+                        Geocoder geocoder = new Geocoder(getContext());
+                        List<Address> list = null;
+                        try {
+                            list = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        String[] splitStr = list.get(0).toString().split(",");
+                        String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1, splitStr[0].length() - 2);
+                        markerOptions.title(address);
+                        markerOptions.snippet(address);
+                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index], 150, 170)));
+                        markerOptions.position(latLng);
+                        gMap.addMarker(markerOptions);
+                        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
 
-                    insert.insert(address, address, latLng.latitude, latLng.longitude, year, month, date, index);
-                    index++;
+                        insert.insert(address, address, latLng.latitude, latLng.longitude, year, month, date, index);
+                        Log.d("INDEXXX", "index : " + index);
 
-
+                        index++;
+                    } else
+                        Toast.makeText(getContext(), "마커 추가는 최대 15개까지 가능합니다.", Toast.LENGTH_SHORT).show();
                 } catch (IndexOutOfBoundsException e) {
                     Toast.makeText(getContext(), "마커 추가는 최대 15개까지 가능합니다.", Toast.LENGTH_SHORT).show();
-                    btnSave.setVisibility(View.GONE);
                 }
             }
         });
@@ -377,19 +364,36 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 btnDelMark.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Call<deleteMark> res = Net.getInstance().getApi().getDeleteMark(marker.getTitle(), marker.getSnippet(), marker.getPosition().latitude, marker.getPosition().longitude, y, m, d, MainActivity.coupleID);
-                        res.enqueue(new Callback<deleteMark>() {
+                        Call<ResponseMarkerNum> res = Net.getInstance().getApi().getNum(marker.getTitle(), marker.getSnippet(), marker.getPosition().latitude, marker.getPosition().longitude, y, m, d, MainActivity.coupleID);
+                        res.enqueue(new Callback<ResponseMarkerNum>() {
                             @Override
-                            public void onResponse(Call<deleteMark> call, Response<deleteMark> response) {
-                                printMarker(gMap, y, m, d);
-                                modalBottomSheet.dismiss();
+                            public void onResponse(Call<ResponseMarkerNum> call, Response<ResponseMarkerNum> response) {
+                                if(response.isSuccessful()){
+                                    Call<deleteMark> res = Net.getInstance().getApi().getDeleteMark(marker.getTitle(), marker.getSnippet(), marker.getPosition().latitude, marker.getPosition().longitude, y, m, d, MainActivity.coupleID,response.body().getNum());
+                                    res.enqueue(new Callback<deleteMark>() {
+                                        @Override
+                                        public void onResponse(Call<deleteMark> call, Response<deleteMark> response) {
+                                            printMarker(gMap, y, m, d);
+                                            modalBottomSheet.dismiss();
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<deleteMark> call, Throwable t) {
+
+                                        }
+                                    });
+
+                                }
+
                             }
 
                             @Override
-                            public void onFailure(Call<deleteMark> call, Throwable t) {
+                            public void onFailure(Call<ResponseMarkerNum> call, Throwable t) {
 
                             }
                         });
+
                     }
                 });
                 modalBottomSheet = new BottomSheetDialog(getContext());
@@ -466,7 +470,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     //TODO 마커 출력 메소드
     public void printMarker(GoogleMap _gMap, int year, int month, int day) {
         index = 0;
-        Log.d("DATEDD", year + "/" + month + "/" + day);
         final GoogleMap gMap = _gMap;
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.566660, 126.978393), 15));
 
@@ -483,11 +486,13 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                                 LatLng point = new LatLng(responseMarker.getLat(), responseMarker.getLng());
                                 markerOptions.title(responseMarker.getName());
                                 markerOptions.snippet(responseMarker.getAddress());
-                                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index++], 150, 170)));
+                                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(markerSrc[index], 150, 170)));
                                 markerOptions.position(point);
                                 gMap.addMarker(markerOptions);
                                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15));
                                 gMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+                                Log.d("INDEXX", "index : " + index);
+                                index++;
                             } else {
                                 gMap.clear();
                             }
@@ -504,8 +509,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        mSwipeRefreshLayout.setRefreshing(false);
-
     }
 }
 

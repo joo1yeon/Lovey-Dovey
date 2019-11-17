@@ -172,7 +172,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                Toast.makeText(MainActivity.this,"화면전환",Toast.LENGTH_SHORT).show();
 //                FootPrint f=new FootPrint();
 //                f.printMarker(FootPrint.gMap,year,month,day);
 
