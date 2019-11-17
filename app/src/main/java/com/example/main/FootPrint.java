@@ -142,7 +142,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                 cal.set(c.getTime().getYear()+1900,c.getTime().getMonth(),c.getTime().getDate());
                 printMarker(gMap, c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1, c.get(Calendar.DATE));
                 tvToday.setText(sdf.format(c.getTime()));
-                Log.d("TTT", c.get(Calendar.YEAR) + "/" + c.get(Calendar.MONTH)+1 + "/" + c.get(Calendar.MONTH)+1);
 
             }
         });
@@ -169,7 +168,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                         tvToday.setText(sdf.format(cal.getTime()));
                         printMarker(gMap, year, month + 1, dayOfMonth);
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
-                        Log.d("TTT", year + "/" + month + "/" + dayOfMonth);
 
                     }
                 }, year, month - 1, day);
@@ -202,7 +200,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
                         tvToday.setText(sdf.format(cal.getTime()));
                         printMarker(gMap, year, month + 1, dayOfMonth);
                         Toast.makeText(getContext(), "선택한 날짜로 이동합니당", Toast.LENGTH_SHORT).show();
-                        Log.d("TTT", year + "/" + month + "/" + dayOfMonth);
                     }
                 }, year, month - 1, day);
                 dateDialog.show();
@@ -448,7 +445,6 @@ public class FootPrint extends Fragment implements OnMapReadyCallback {
     //TODO 마커 출력 메소드
     public void printMarker(GoogleMap _gMap, int year, int month, int day) {
         index = 0;
-        Log.d("DATEDD", year + "/" + month + "/" + day);
         final GoogleMap gMap = _gMap;
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.566660, 126.978393), 15));
 

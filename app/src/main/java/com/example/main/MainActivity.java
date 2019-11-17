@@ -96,7 +96,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
             int date = cursor.getInt(6);
             int num = cursor.getInt(7);
             Call<ResAddMarker> res = Net.getInstance().getApi().getAdd(name, address, latitude, longitude, year, month, date, coupleID, num);
-            Log.d("III", "이름" + name);
             res.enqueue(new Callback<ResAddMarker>() {
                 @Override
                 public void onResponse(Call<ResAddMarker> call, Response<ResAddMarker> response) {
@@ -119,7 +118,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("LOGINN", "메인화면");
         super.onCreate(savedInstanceState);
         layout = findViewById(R.id.layout);
 
@@ -128,8 +126,6 @@ public class MainActivity<insertDB> extends AppCompatActivity implements InsertD
         nickname = intent1.getStringExtra("NICK");
         email = intent1.getStringExtra("EMAIL");
         coupleID = intent1.getIntExtra("C_ID", 0);
-        Log.d("INNN2", "coupleID : " + coupleID);
-        Log.d("C_ID", "커플아이디:" + coupleID);
         Toast.makeText(MainActivity.this, id + "로 로그인", Toast.LENGTH_SHORT).show();
 
         setContentView(R.layout.activity_main);

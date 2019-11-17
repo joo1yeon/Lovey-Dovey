@@ -207,7 +207,6 @@ public class Main extends Fragment {
 
                     @Override
                     public void onFailure(Call<ResponseDate> call, Throwable t) {
-                        Log.d("test", "사귄날짜 통신3 에러");
                     }
                 });
 
@@ -245,7 +244,6 @@ public class Main extends Fragment {
                 name.setText(MainActivity.nickname);
                 email.setText(MainActivity.email);
 
-                Log.d("PPPPP", name.getText().toString());
 
                 //입력 유형 이메일로 설정
                 email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -412,7 +410,6 @@ public class Main extends Fragment {
                @Override
                public void onResponse(Call<ResponseDate> call, Response<ResponseDate> response) {
                    if (response.isSuccessful()) {
-                       Log.d("test", "사귄날짜 계산 성공");
                        ResponseDate responseDate = response.body();
                        doDateSystem(responseDate.getDate_m());
                    } else Log.d("test", "사귄날짜 통신1 에러");
@@ -420,7 +417,6 @@ public class Main extends Fragment {
 
                @Override
                public void onFailure(Call<ResponseDate> call, Throwable t) {
-                   Log.d("test", "사귄날짜 통신3 에러");
                }
            });
 
@@ -448,7 +444,6 @@ public class Main extends Fragment {
 
                @Override
                public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
-                   Log.d("Todo", "Todo 내용 통신3 에러" + t.getMessage());
                }
            });
        }
@@ -558,7 +553,6 @@ public class Main extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseProfile_m> call, Throwable t) {
-                Log.d("profile", "프로필 통신3 에러" + t.getMessage());
             }
         });
 

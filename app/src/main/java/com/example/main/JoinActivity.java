@@ -196,10 +196,8 @@ public class JoinActivity extends AppCompatActivity {
                     String api_gender = gender;
                     String api_nick = edtNickName.getText().toString();
                     String api_email = edtEmail.getText().toString() + "@" + edtDomain.getText().toString();
-                    Log.d("TTT",api_name+"/"+api_id+"/"+api_pw+"/"+api_date+"/"+api_gender+"/"+api_nick+"/"+api_email);
 
                     if (api_name.getBytes().length > 0 && api_id.getBytes().length > 0&& api_pw.getBytes().length > 0 && api_date.getBytes().length > 0 && api_gender.getBytes().length > 0 && api_nick.getBytes().length > 0 && api_email.getBytes().length > 0) {
-                        Log.d("TTT","로그인 호출");
                         Call<ResponseJoin> res = Net.getInstance().getApi().getJoin(api_name, api_id, api_pw, api_nick, api_date, api_gender, api_email);
                         res.enqueue(new Callback<ResponseJoin>() {
                             @Override

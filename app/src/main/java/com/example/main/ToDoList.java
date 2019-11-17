@@ -269,12 +269,10 @@ public class ToDoList extends AppCompatActivity {
                     for (ResponseTODO responseTodo_ : responseTodo) {
 
                         if (false == Boolean.valueOf(responseTodo_.getChecked()).booleanValue()) {
-                            //Log.d("select", "추가완료1" + responseTodo_.getContent_td());
 
                             adapter1.addItem(responseTodo_.getContent_td(), "");
                             listView1.setItemChecked(i1++, false);
                         } else {
-                            //Log.d("select", "추가완료2" + responseTodo_.getContent_td());
 
                             adapter2.addItem(responseTodo_.getContent_td(), responseTodo_.getDate_td());
                             listView2.setItemChecked(i2++, true);
@@ -287,7 +285,6 @@ public class ToDoList extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<ResponseTODO>> call, Throwable t) {
-                Log.d("select", "조회 통신3 에러" + t.getMessage());
             }
         });
 
@@ -295,21 +292,18 @@ public class ToDoList extends AppCompatActivity {
 
     //TODO# To-Do-List 추가
     public void Item_add(int coupleID, String content){
-        Log.d("INNN3","coupleID : "+coupleID);
         Call<ResponseTD_Insert> res = Net.getInstance().getApi().getTD_Add(coupleID,"", content,"false");
         res.enqueue(new Callback<ResponseTD_Insert>() {
             @Override
             public void onResponse(Call<ResponseTD_Insert> call, Response<ResponseTD_Insert> response) {
                 if(response.isSuccessful()){
                 if(response.body().getTDInsert()) {
-                    Log.d("insert", "추가완료");
                     Item_show();
                 }
                 } else Log.d("insert", "추가 통신1 에러");
             }
             @Override
             public void onFailure(Call<ResponseTD_Insert> call, Throwable t) {
-                Log.d("insert", "추가 통신3 에러" + t.getMessage());
             }
         });
     }
@@ -322,7 +316,6 @@ public class ToDoList extends AppCompatActivity {
             public void onResponse(Call<ResponseTD_update> call, Response<ResponseTD_update> response) {
                 if(response.isSuccessful()) {
                     if (response.body().getTDModify()) {
-                        Log.d("update", "수정완료");
                         Item_show();
                     }
                 }
@@ -331,7 +324,6 @@ public class ToDoList extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseTD_update> call, Throwable t) {
-                Log.d("update", "수정 통신3 에러" + t.getMessage());
             }
         });
 
@@ -345,7 +337,6 @@ public class ToDoList extends AppCompatActivity {
             public void onResponse(Call<ResponseTD_delete> call, Response<ResponseTD_delete> response) {
                 if(response.isSuccessful()){
                     if(response.body().getTDDelt()){
-                        Log.d("delete","삭제완료");
                         Item_show();
                         adapter1.notifyDataSetChanged();
                         adapter2.notifyDataSetChanged();
@@ -357,7 +348,6 @@ public class ToDoList extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseTD_delete> call, Throwable t) {
-                Log.d("delete", "삭제 통신3 에러" + t.getMessage());
             }
         });
     }
@@ -370,7 +360,6 @@ public class ToDoList extends AppCompatActivity {
             public void onResponse(Call<ResponseTD_click> call, Response<ResponseTD_click> response) {
                 if(response.isSuccessful()){
                     if(response.body().getTDClick()){
-                        Log.d("click","클릭제어완료");
                         Item_show();
                     }
                 }
@@ -379,7 +368,6 @@ public class ToDoList extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseTD_click> call, Throwable t) {
-                Log.d("click", "클릭 통신3 에러");
             }
         });
     }

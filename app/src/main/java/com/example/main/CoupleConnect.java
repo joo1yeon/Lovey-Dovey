@@ -60,7 +60,6 @@ public class CoupleConnect extends Activity {
                                                             intent1.putExtra("NICK", nickname);
                                                             intent1.putExtra("EMAIL", email);
                                                             intent1.putExtra("C_ID", response.body().getCouple());
-                                                            Log.d("INNN1", "coupleID : " + response.body().getCouple());
                                                             startActivity(intent1);
                                                             finish();
                                                         }else Toast.makeText(CoupleConnect.this,"상대방이 다른 사용자와 연결되어있습니다.",Toast.LENGTH_SHORT).show();

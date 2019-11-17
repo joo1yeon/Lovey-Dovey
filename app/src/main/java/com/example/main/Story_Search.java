@@ -105,7 +105,6 @@ public class Story_Search extends AppCompatActivity implements DatePickerFragmen
                     intent.putExtra("month", month);
                     intent.putExtra("day", day);
                     intent.putExtra("storyTitle", storyTitle);
-                    Log.d("test", "인텐트로 보내는 제목:" + storyTitle);
                     startActivity(intent);
 //                    finish();
                 }
