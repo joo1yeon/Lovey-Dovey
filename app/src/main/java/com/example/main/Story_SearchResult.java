@@ -53,11 +53,9 @@ public class Story_SearchResult extends AppCompatActivity {
 
         Intent intent = getIntent();
         year = intent.getIntExtra("year", 0);
-        Log.d("test", String.valueOf(year));
         month = intent.getIntExtra("month", 0);
         day = intent.getIntExtra("day", 0);
         storyTitle = intent.getStringExtra("storyTitle");
-//        Log.d("test", "인텐트에서 받아온 제목: "+ storyTitle);
         storyWriter = String.valueOf(MainActivity.coupleID);
 
         stories = new ArrayList<>();
@@ -89,16 +87,13 @@ public class Story_SearchResult extends AppCompatActivity {
     //TODO 스토리 검색
     public void searchStory() {
         Call<List<ResponseStory>> res = Net.getInstance().getApi().searchStory(year, month, day, storyTitle, storyWriter);
-        Log.d("test", storyTitle + storyWriter);
         res.enqueue(new Callback<List<ResponseStory>>() {
             @Override
             public void onResponse(Call<List<ResponseStory>> call, Response<List<ResponseStory>> response) {
                 if (response.isSuccessful()) {
-                    Log.d("test", "통신 성공");
                     List<ResponseStory> responseGet = response.body();
                     if (response.body().isEmpty()) Log.d("test", "response body null");
                     for (ResponseStory responseStory : responseGet) {
-                        Log.d("test", "for문 안으로 들어옴");
                         Story story = new Story();
                         story.setId(responseStory.getStoryID());
                         story.setWriter(responseStory.getWriter());
@@ -110,8 +105,6 @@ public class Story_SearchResult extends AppCompatActivity {
                         story.setContents_text(responseStory.getContents());
                         stories.add(story);
                         count += 1;
-                        Log.d("test", "스토리 리스트에 추가");
-                        Log.d("test", String.valueOf(count));
 
                     }
                 } else Log.d("test", "통신 1 에러");

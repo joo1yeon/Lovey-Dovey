@@ -69,7 +69,6 @@ public class Bookmark extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ResponseBookmarkList>> call, Throwable t) {
-                Log.d("III", "fail");
             }
         });
 
@@ -151,12 +150,10 @@ public class Bookmark extends AppCompatActivity {
                             ++i;
                         }
                         Glide.with(context).load(Placeimage[position]).into(image);
-                        Log.d("WWW",id+"");
                     }
                 }
                 @Override
                 public void onFailure(Call<List<ResponseBookmarkList>> call, Throwable t) {
-                    Log.d("III", "fail");
                 }
             });
 

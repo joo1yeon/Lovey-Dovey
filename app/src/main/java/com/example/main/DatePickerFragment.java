@@ -38,7 +38,6 @@ public class DatePickerFragment extends DialogFragment {
                         int day = mDatePicker.getDayOfMonth();
                         onDatePickerSetListener.onDatePickerSet(year, month, day);
 
-                        Log.d("test", String.valueOf(month));
                     }
                 })
                 .create();

@@ -56,7 +56,6 @@ public class LoadingActivity extends Activity {
                                 ResponseLogin responseGet = response.body();
                                 if (responseGet.getLogin()) {
                                     if(responseGet.getCouple()){
-                                        Log.d("LOGINN","자동로그인 성공");
 
                                         String nickname = responseGet.getNickname();
                                         String email = responseGet.getEmail();

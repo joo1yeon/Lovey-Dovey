@@ -74,7 +74,7 @@ public class Notice extends AppCompatActivity {
                 intent.putExtra("ID", MainActivity.id);
                 intent.putExtra("NICK", MainActivity.nickname);
                 intent.putExtra("EMAIL", MainActivity.email);
-                intent.putExtra("COUPLE", MainActivity.coupleID);
+                intent.putExtra("C_ID", MainActivity.coupleID);
                 startActivity(intent);
                 finish();
             }

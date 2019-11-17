@@ -72,12 +72,10 @@ public class Datecourse_ListViewAdapter extends BaseAdapter {
                         ++i;
                     }
                     Glide.with(context).load(Placeimage[position]).into(image);
-                    Log.d("WWW",id+"");
                 }
             }
             @Override
             public void onFailure(Call<List<ResponseDate_image2>> call, Throwable t) {
-                Log.d("III", "fail");
             }
         });
         return convertView;

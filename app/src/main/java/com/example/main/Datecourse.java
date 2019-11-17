@@ -119,7 +119,6 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
 
                 @Override
                 public void onFailure(Call<List<ResponseDate_image>> call, Throwable t) {
-                    Log.d("UUU", "fail");
                 }
             });
             container.addView(view);
@@ -130,7 +129,6 @@ public class Datecourse extends Fragment implements ViewPager.PageTransformer {
                     public void onClick(View v) {
                         Intent intent = new Intent(getContext(), DateImageClick.class);
                         intent.putExtra("ID",position+1);
-                        Log.d("III",position+"");
                         startActivity(intent);
                     }
                 });

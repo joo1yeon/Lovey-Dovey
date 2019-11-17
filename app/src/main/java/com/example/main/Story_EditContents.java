@@ -53,7 +53,6 @@ public class Story_EditContents extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.story_contents_rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
-        Log.d("test", "setLayoutManager 실행");
 
         updateUI();
 
@@ -95,7 +94,6 @@ public class Story_EditContents extends AppCompatActivity {
         } else {
             mAdapter.notifyItemRangeInserted(contentsOfStoryList.size(), contentsOfStoryList.size() + 1);
             mAdapter.notifyDataSetChanged(); //리스트 다시 로드하기
-            Log.d("test", "스토리 내용 리스트 다시 로드하기");
         }
     }
 
@@ -114,7 +112,6 @@ public class Story_EditContents extends AppCompatActivity {
         public void bindEditContents(ContentsOfStory contentsOfStory) {
             mContentsOfStory = contentsOfStory;
             contentsText.setText(contentsOfStory.text);
-            Log.d("test", "set text 실행");
         }
 
     }
@@ -125,7 +122,6 @@ public class Story_EditContents extends AppCompatActivity {
 
         public EditContentsAdapter(List<ContentsOfStory> contentsOfStoryList) {
             mContentsOfStoryList = contentsOfStoryList;
-            Log.d("test", "storycontentadapter 생성자 실행");
         }
 
         @NonNull
@@ -141,7 +137,6 @@ public class Story_EditContents extends AppCompatActivity {
 //                    //getImages();
 //                }
 //            });
-            Log.d("test", "storycontentholder oncreateviewholder 실행");
             return new Story_EditContents.EditContentsHolder(view);
         }
 
@@ -149,7 +144,6 @@ public class Story_EditContents extends AppCompatActivity {
         public void onBindViewHolder(Story_EditContents.EditContentsHolder holder, int position) {
             ContentsOfStory contentsOfStory = mContentsOfStoryList.get(position);
             holder.bindEditContents(contentsOfStory);
-            Log.d("test", "onbindviewholder 실행");
         }
 
         @Override
@@ -180,7 +174,6 @@ public class Story_EditContents extends AppCompatActivity {
                         Toast.makeText(this, "다중선택이 불가능한 기기입니다.", Toast.LENGTH_SHORT).show();
                     } else {
                         ClipData clipData = data.getClipData();
-                        Log.d("clipdata", String.valueOf(clipData.getItemCount()));
 
                         if (clipData.getItemCount() > 9) {
                             Toast.makeText(Story_EditContents.this, "사진은 9장 까지 선택 가능합니다.", Toast.LENGTH_SHORT).show();
@@ -191,7 +184,6 @@ public class Story_EditContents extends AppCompatActivity {
 //                            imgView.setImageURI(Uri.fromFile(f1));
                         } else if (clipData.getItemCount() > 1 && clipData.getItemCount() < 9) {
                             for (int i = 0; i < clipData.getItemCount(); i++) {
-                                Log.d("test", String.valueOf(clipData.getItemAt(i).getUri()));
                                 imageListUri.add(clipData.getItemAt(i).getUri());
                                 mContentsOfStory.text = clipData.getItemAt(i).getUri().toString();
                             }
