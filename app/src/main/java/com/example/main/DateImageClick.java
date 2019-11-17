@@ -63,6 +63,7 @@ public class DateImageClick extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ResponseDate_image2>> call, Throwable t) {
+                Log.d("III", "fail");
             }
         });
 

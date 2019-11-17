@@ -64,6 +64,7 @@ public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClick
         mContentsText.setText(mStory.getContents_text());
         mUri = mStory.getMainImg();
         Glide.with(mContext).load(mUri).into(mStoryMainImg);
+        Log.d("test", "이미지 할당"+mUri.toString());
     }
 
     @Override

@@ -90,6 +90,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
 
                     @Override
                     public void onFailure(Call<ResponseBookmark> call, Throwable t) {
+                        Log.d("III", "fail");
                     }
                 });
             }
@@ -110,6 +111,7 @@ public class Datecourse_Fragment extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<ResponseBookmarkSel> call, Throwable t) {
+                Log.d("III", "fail");
             }
         });
 

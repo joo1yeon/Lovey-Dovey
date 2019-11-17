@@ -70,6 +70,7 @@ public class DateReview_listViewAdapter extends BaseAdapter {
         item.setRating(rating);
         item.setDate(date);
         item.setId(id);
+        Log.d("PPPPP","별점:"+item.getRating());
 
         review_listItem.add(item);
     }

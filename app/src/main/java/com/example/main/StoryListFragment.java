@@ -98,6 +98,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
     public void onResume() {
         super.onResume();
         updateUI(); //리스트로 돌아오기 위해 뒤로가기 버튼 눌렀을 때 StoryListFragment 재실행
+        Log.d("test", "onResume 실행");
     }
 
     public void updateUI() { //singleton으로 생성된 스토리를 리스트에 할당
@@ -125,6 +126,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
                             story.setMainImg(Uri.parse(responseStory.getImgPath()));
                             story.setContents_text(responseStory.getContents());
                             stories_tmp.add(story);
+                            Log.d("test", "스토리 내용 추가");
                         }
 
                         stories.clear();
@@ -138,6 +140,7 @@ public class StoryListFragment extends Fragment { //앨범 버튼을 눌렀을 �
 
                 @Override
                 public void onFailure(Call<List<ResponseStory>> call, Throwable t) {
+                    Log.d("test", "통신 실패" + t.getMessage());
                 }
             });
 

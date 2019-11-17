@@ -51,6 +51,7 @@ public class Date_Review extends Fragment {
         context = this;
         printReview();
 
+        Log.d("EWQ", place_id);
         listView = layout.findViewById(R.id.listView);
         adapter = new DateReview_listViewAdapter();
         listView.setAdapter(adapter);
@@ -116,6 +117,7 @@ public class Date_Review extends Fragment {
     }
 
     public void printReview() {
+        Log.d("PPP", "리뷰 출력하기");
         Call<List<ResponseGetReview>> res = Net.getInstance().getApi().getPrintReview(place_id);
         res.enqueue(new Callback<List<ResponseGetReview>>() {
             @Override
