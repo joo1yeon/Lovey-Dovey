@@ -1,6 +1,7 @@
 ![꽁냥꽁냥](README_asset/logo.png)
 
 # 소중한 사람과의 추억을 기록하는 폐쇄형 SNS
+> 🏆 캡스톤 디자인 장려상 <br>
 
 ### 프로젝트 개발 기간
 
@@ -10,11 +11,10 @@
 
 # 📌 기술 스택
 
-### App
+### Language
 
 <div>
     <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white" />
-    <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
     <img src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white" />
 </div>
 
@@ -36,8 +36,7 @@
 <div>
     <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white" />
     <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
-    <img src="https://img.shields.io/badge/GitHub 
-    desktop-181717?style=for-the-badge&logo=github&logoColor=white" />
+    <img src="https://img.shields.io/badge/GitHub desktop-181717?style=for-the-badge&logo=github&logoColor=white" />
 </div>
 
 ### Tools
@@ -45,6 +44,11 @@
 <div>
     <img src="https://img.shields.io/badge/filezilla-BF0000?style=for-the-badge&logo=filezilla&logoColor=white" />
 </div>
+
+### Library
+
+- [Retrofit2](https://github.com/square/retrofit)
+- [Glide](https://github.com/bumptech/glide)
 
 <br>
 
@@ -98,6 +102,5 @@
 
 |                              조환희                              |                               서한별                                |                              연주원                               |                               한민지                                |
 | :--------------------------------------------------------------: | :-----------------------------------------------------------------: | :---------------------------------------------------------------: | :-----------------------------------------------------------------: |
-|              [ghksgml](https://github.com/ghksgml)               |             [Seohanbyul](https://github.com/Seohanbyul)             |              [joo1yeon](https://github.com/joo1yeon)              |             [Twins-Dust](https://github.com/Twins-Dust)             |
-| ![ghksgml](https://avatars.githubusercontent.com/u/50977139?v=4) | ![Seohanbyul](https://avatars.githubusercontent.com/u/50897415?v=4) | ![joo1yeon](https://avatars.githubusercontent.com/u/50977497?v=4) | ![Twins-Dust](https://avatars.githubusercontent.com/u/50979160?v=4) |
+|              [![ghksgml](https://avatars.githubusercontent.com/u/50977139?v=4)](https://github.com/ghksgml)               |             [![Seohanbyul](https://avatars.githubusercontent.com/u/50897415?v=4)](https://github.com/Seohanbyul)             |              [![joo1yeon](https://avatars.githubusercontent.com/u/50977497?v=4)](https://github.com/joo1yeon)              |             [![Twins-Dust](https://avatars.githubusercontent.com/u/50979160?v=4)](https://github.com/Twins-Dust)             |
 |                팀장<br>데이트 코스 추천 기능<br>                 |                   PM<br>발자국 기능<br>최종 발표                    |                      앨범 기능<br>중간 발표                       |           메인 화면<br>계획 공유 기능<br>로고 디자인<br>            |
