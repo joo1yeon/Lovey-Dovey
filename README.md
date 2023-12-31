@@ -1,7 +1,9 @@
 ![꽁냥꽁냥](README_asset/logo.png)
 
 # 소중한 사람과의 추억을 기록하는 폐쇄형 SNS
-> 🏆 캡스톤 디자인 장려상 <br>
+> 🏆 졸업작품 전시회 장려상
+
+<br>
 
 ### 프로젝트 개발 기간
 
@@ -23,6 +25,12 @@
 <div>
     <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" />
     <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+</div>
+
+### API
+
+<div>
+    <img src="https://img.shields.io/badge/googlemaps-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" />
 </div>
 
 ### IDE
@@ -49,6 +57,24 @@
 
 - [Retrofit2](https://github.com/square/retrofit)
 - [Glide](https://github.com/bumptech/glide)
+- [Gson](https://github.com/google/gson)
+- [Lottie](https://lottiefiles.com)
+
+<br>
+
+# 📌 기능 설명
+
+**To-Do 리스트**
+- 상대방과 함께 하고 싶은 일을 실시간으로 기록하고 공유하는 기능
+
+**데이트 코스 추천**
+- 다양한 데이트 코스를 테마 별로 추천받고, 장소에 대한 정보 및 리뷰를 확인하는 기능
+
+**발자국**
+- 데이트를 했던 장소를 지도에 마커를 생성하여 기록하는 기능
+
+**앨범**
+- 사진을 올리고 글을 남겨 상대방과 추억을 공유하는 기능
 
 <br>
 
