@@ -85,21 +85,17 @@
 
 # 📌 실행 화면
 
-|                         스플래시                         |                         로그인                         |                         회원가입                         |
-| :------------------------------------------------------: | :----------------------------------------------------: | :------------------------------------------------------: |
-| <img src="README_asset/화면/스플래시.png" width="400px"> | <img src="README_asset/화면/로그인.png" width="400px"> | <img src="README_asset/화면/회원가입.png" width="400px"> |
+| 스플래시 | 로그인 | 회원가입 | 메인 |
+| :---: | :---: | :---: | :---: |
+| <img src="README_asset/화면/스플래시.png" width="400px"> | <img src="README_asset/화면/로그인.png" width="400px"> | <img src="README_asset/화면/회원가입.png" width="400px"> | <img src="README_asset/화면/메인.png" width="400px"> |
 
-|                         메인                         |                            메뉴                            |                        정보 수정                         |
-| :--------------------------------------------------: | :--------------------------------------------------------: | :------------------------------------------------------: |
-| <img src="README_asset/화면/메인.png" width="400px"> | <img src="README_asset/화면/마이페이지.png" width="400px"> | <img src="README_asset/화면/정보수정.png" width="400px"> |
+| 메뉴 | 정보 수정 | 공지사항 | 메인화면 설정 |
+| :---: | :---: | :---: | :---: |
+| <img src="README_asset/화면/마이페이지.png" width="400px"> | <img src="README_asset/화면/정보수정.png" width="400px"> | <img src="README_asset/화면/공지사항.png" width="400px"> | <img src="README_asset/화면/메인_설정.png" width="400px"> |
 
-|                         공지사항                         |                       메인화면 설정                       |                        할 일                         |
-| :------------------------------------------------------: | :-------------------------------------------------------: | :--------------------------------------------------: |
-| <img src="README_asset/화면/공지사항.png" width="400px"> | <img src="README_asset/화면/메인_설정.png" width="400px"> | <img src="README_asset/화면/할일.png" width="400px"> |
-
-|                        데이트 코스 추천                         |                         발자국                         |                         앨범                         |
-| :-------------------------------------------------------------: | :----------------------------------------------------: | :--------------------------------------------------: |
-| <img src="README_asset/화면/데이트코스_추천.png" width="400px"> | <img src="README_asset/화면/발자국.png" width="400px"> | <img src="README_asset/화면/앨범.PNG" width="400px"> |
+| 할 일 | 데이트 코스 추천 | 발자국 | 앨범 |
+| :---: | :---: | :---: | :---: |
+| <img src="README_asset/화면/할일.png" width="400px"> | <img src="README_asset/화면/데이트코스_추천.png" width="400px"> | <img src="README_asset/화면/발자국.png" width="400px"> | <img src="README_asset/화면/앨범.PNG" width="400px"> |
 
 <br>
 
